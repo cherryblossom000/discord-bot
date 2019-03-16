@@ -1,0 +1,17 @@
+{
+  "jest.pathToConfig": "jest.config.dev.js",
+  "typescript.tsc.autoDetect": "off",
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "search.exclude": {
+    "dist": true,
+    "node_modules": true,
+    "pnpm-lock.yaml": true,
+    "tests/coverage": true
+  },
+  "cSpell.words": [
+    "Noot",
+    "Pingu",
+    "iwillmurdereverylastcapitalist",
+    "iwmelc"
+  ]
+}

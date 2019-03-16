@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+  - 11.10.1
+  - 12
+  - 13
+before_install:
+  - npm i -g pnpm
+install:
+  - pnpm i
+jobs:
+  - stage: release
+    script: pnpm run build:ci
+    deploy:
+      provider: script
+      skip_cleanup: true
+      script: pnpx semantic-release
