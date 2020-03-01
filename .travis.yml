@@ -21,6 +21,3 @@ jobs:
       provider: script
       skip_cleanup: true
       script: pnpx semantic-release
-env:
-  global:
-    secure: XWvUOcbIZVVqm/N4nisw1H4qR32xODBQJnPrjWQHP5xWsTvbOH21PKV7iTB9XB7M6SCfZM1K7ObfY0roAiVYf8RLqx2P5SiZbvEYXBQwDuppLNmM5wKoOXvUSgHpzFIJ/ldQcmTTjx4dIJ2kwCFbHCfRHYrpJJ0XPo7hbeYKTyHEYVLzXSNPUJzP7PYJ7vo4mVBlBJ1TIXwhyMZGGzmDx3/ut4/yup2dEHyofSXBJyultO+Zd1vkl5Xxqxi1QZnHcsdGAcDNg5IRoeo6mqHrok5azJQLTSHp4YCko1ooovQIH0SnuLJEwunNTpcpugxYAe6BN5KSJ2axe83BPQQYN/DBvruPHwHBQ7++isCJnqa2sQcN0M9PfI0WPEUauOENcYEprmJsYSKZkOF1kcpDX8mWw0eAOSMdCVQFrxcPVHrY9BktHcekoWj6wBXvqjcAp+iOv3CQuO1xG3YC9Rr+HNovN76F6Aftt8/WXcPpaUoKpD2Kercx3RksdHknXP6qNeWRk2Ax59Hxh5H/hFeMs/SIelg0/PnDP+mhZvCOHuC5c07wzcpbHc4RdGjFt+n4Iy52em+dtooeZFcVW+kLXMSMM36YHcJ8H2ao/qxXme9C9+yJqSPjBxVapCoXRrJnvPMMfTXdhWBhYYo9KeQY4NpttE0P1ipZAPRAgnLW1J4=
