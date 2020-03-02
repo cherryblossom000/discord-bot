@@ -9,7 +9,7 @@ const command: PinguCommand = {
   description: 'Gets the meme that shows that \u{201c}noot noot\u{201d} in Pingu means \u{201c}i will murder every last ' +
     'capitalist\u{201d} in English.',
   execute: (message: Message) => {
-    message.channel.send(new Attachment(join(__dirname, '../../assets/iwmelc.jpg')))
+    message.channel.send(new Attachment(join(__dirname, '../../../assets/iwmelc.jpg')))
   }
 }
 
