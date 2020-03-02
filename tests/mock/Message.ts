@@ -7,7 +7,7 @@ export class Message extends Discord.Message {
   private static count = 0
 
   constructor(channel: TextChannel | DMChannel) {
-    super(channel, {
+    super(channel.client, {
       id: Message.count.toString(),
       type: MessageType.DEFAULT,
       content: '',
@@ -28,7 +28,7 @@ export class Message extends Discord.Message {
       mentions: [],
       mention_roles: [],
       mention_everyone: false
-    } as MessageData, channel.client)
+    } as MessageData, channel)
     Message.count++
   }
 }

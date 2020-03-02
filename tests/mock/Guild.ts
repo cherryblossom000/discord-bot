@@ -27,6 +27,6 @@ export class Guild extends Discord.Guild {
       system_channel_id: null
     } as GuildData)
     Guild.count++
-    this.client.guilds.set(this.id, this)
+    this.client.guilds.cache.set(this.id, this)
   }
 }

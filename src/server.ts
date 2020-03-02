@@ -29,7 +29,7 @@ const listener: Server = app.listen(process.env.PORT, () =>
 const client = new PinguClient()
 
 const sendMeError = async (error: Error, info: string): Promise<void> => {
-  (await client.fetchUser(me)!).send(`${info}
+  (await client.users.fetch(me)!).send(`${info}
 **Error at ${new Date().toLocaleString()}**
 ${error.stack}`)
 }
@@ -63,9 +63,9 @@ const cooldowns = new Collection<string, Collection<Snowflake, number>>()
 client.once('ready', () => {
   client.setActivity()
   console.log(`READY
-Users: ${client.users.size}
-Channels: ${client.channels.size}
-Guilds: ${client.guilds.size}`)
+Users: ${client.users.cache.size}
+Channels: ${client.channels.cache.size}
+Guilds: ${client.guilds.cache.size}`)
   logDate()
 })
 
@@ -89,7 +89,7 @@ client.on('resume', () => {
 // guild create
 client.on('guildCreate', guild => {
   console.log(`GUILD CREATE: ${guild.name} (id: ${guild.id})
-Channels: ${guild.channels.size}
+Channels: ${guild.channels.cache.size}
 Members:${guild.memberCount}`)
   client.setActivity()
 })
@@ -101,11 +101,11 @@ client.on('guildDelete', guild => {
 })
 
 // commands
-client.on('message', message => {
-  const {author, content, channel} = message
+client.on('message', (message: Message) => {
   const now = Date.now()
+  const {author, content, channel} = message
 
-  if (author.bot) return
+  if (author?.bot) return
 
   if (content.startsWith(prefix)) {
     // exits if there is no input

@@ -16,7 +16,7 @@ export class TextChannel extends Discord.TextChannel {
       type: ChannelType.GUILD_TEXT
     } as TextChannelData)
     TextChannel.count++
-    this.client.channels.set(this.id, this)
+    this.client.channels.cache.set(this.id, this)
   }
 }
 
@@ -33,6 +33,6 @@ export class DMChannel extends Discord.DMChannel {
       last_message_id: null
     } as DMChannelData)
     DMChannel.count++
-    this.client.channels.set(this.id, this)
+    this.client.channels.cache.set(this.id, this)
   }
 }

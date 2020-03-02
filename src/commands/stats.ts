@@ -7,9 +7,9 @@ const command: PinguCommand = {
   description: 'Gets my stats.',
   execute: (message: Message) => {
     const client = message.client
-    message.channel.send(`Users: ${client.users.size}
-Channels: ${client.channels.size}
-Guilds: ${client.guilds.size}`)
+    message.channel.send(`Users: ${client.users.cache.size}
+Channels: ${client.channels.cache.size}
+Guilds: ${client.guilds.cache.size}`)
   }
 }
 

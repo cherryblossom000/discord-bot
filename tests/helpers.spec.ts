@@ -24,14 +24,14 @@ describe('Helper functions', () => {
       const channel = new TextChannel(guild)
       const message = new Message(channel)
       reply(message, 'test content')
-      expect(channel.lastMessage.content).toBe('test content')
+      expect(channel.lastMessage?.content).toBe('test content')
     })
 
     it('works for a dm', () => {
       const channel = new DMChannel(client)
       const message = new Message(channel)
       reply(message, 'test content')
-      expect(channel.lastMessage.content).toBe('Test content')
+      expect(channel.lastMessage?.content).toBe('Test content')
     })
   })
 })

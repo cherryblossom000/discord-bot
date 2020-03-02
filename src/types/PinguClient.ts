@@ -8,6 +8,6 @@ export default class PinguClient extends Client {
 
   /** Set the activity. */
   setActivity(): void {
-    this.user.setActivity(`capitalist scum in ${this.guilds.size} servers`, {type: 'WATCHING'})
+    this.user!.setActivity(`capitalist scum in ${this.guilds.cache.size} servers`, {type: 'WATCHING'})
   }
 }

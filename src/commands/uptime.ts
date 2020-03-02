@@ -7,7 +7,7 @@ const command: PinguCommand = {
   aliases: ['u'],
   description: 'Gets my uptime.',
   execute: (message: Message) => {
-    message.channel.send(`Uptime: ${ms(message.client.uptime)}`)
+    message.channel.send(`Uptime: ${ms(message.client.uptime!)}`)
   }
 }
 
