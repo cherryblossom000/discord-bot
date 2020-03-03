@@ -13,7 +13,9 @@ install:
   - pnpm i
 jobs:
   - stage: release
-    script: pnpm run build:prod
+    script:
+      - pnpm run build
+      - pnpm run setup-repo
     deploy:
       provider: script
       skip_cleanup: true
