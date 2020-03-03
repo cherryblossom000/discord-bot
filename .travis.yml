@@ -13,7 +13,7 @@ install:
   - pnpm i
 jobs:
   - stage: release
-    script: pnpm run build:ci
+    script: pnpm run build:prod
     deploy:
       provider: script
       skip_cleanup: true

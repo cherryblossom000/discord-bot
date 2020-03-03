@@ -19,8 +19,9 @@
     "test": "eslint . && jest",
     "test:debug": "jest -c ./jest.config.dev.js",
     "build-deps": "pnpm i -P @types/express @types/jest @types/lodash.upperfirst @types/ms @types/node typescript",
-    "build:ci": "tsc -p ./tsconfig.build.json",
-    "build": "pnpm run build-deps && pnpm run build:ci",
+    "build:debug": "tsc -p ./tsconfig.build.json",
+    "build:prod": "tsc -p ./tsconfig.prod.json",
+    "build": "pnpm run build-deps && pnpm run build:prod",
     "watch": "tsc -watch -p ./tsconfig.build.json"
   },
   "dependencies": {
