@@ -10,20 +10,20 @@
     "type": "git",
     "url": "https://github.com/cherryblossom000/comrade-pingu.git"
   },
-  "main": "./dist/src/server.js",
+  "main": "src/server",
   "engines": {
     "node": ">=12.0.0"
   },
   "scripts": {
     "test": "eslint . && jest",
-    "build": "tsc -p ./tsconfig.prod.json",
+    "build": "tsc -p tsconfig.prod.json",
     "setup-repo": "(cd dist && echo '*.tsbuildinfo' > .gitignore && git init && git remote add origin \"https://$GLITCH_TOKEN@api.glitch.com/git/comrade-pingu\")",
-    "deploy": "(cd dist && git add . && git commit -m update && git push -f origin master)",
-    "start": "node src/server",
-    "test:dev": "jest -c ./jest.config.dev.js",
-    "build:dev": "tsc -p ./tsconfig.build.json",
-    "watch": "tsc -watch -p ./tsconfig.build.json",
-    "start:dev": "pnpm run build:dev && nodemon ."
+    "deploy": "cp package.json dist/package.json && (cd dist && git add . && git commit -m update && git push -f origin master)",
+    "start": "node .",
+    "test:dev": "jest -c jest.config.dev.js",
+    "build:dev": "tsc -p tsconfig.build.json",
+    "watch": "tsc -watch -p tsconfig.build.json",
+    "start:dev": "pnpm run build:dev && nodemon dist/src/server"
   },
   "dependencies": {
     "discord.js": "^12.0.1",
