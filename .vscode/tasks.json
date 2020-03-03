@@ -3,7 +3,7 @@
   "tasks": [
     {
       "type": "npm",
-      "script": "build:debug",
+      "script": "build:dev",
       "group": "build"
     },
     {
