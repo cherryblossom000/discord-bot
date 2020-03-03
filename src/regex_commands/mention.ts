@@ -17,7 +17,7 @@ const command: PinguRegexCommand = {
 
     if (nounsRegex.test(content)) {
       const joinAlternate = (...strings: string[]): string => `(${strings.join('|')})`
-      const joinInParens = (...strings: string[]): string => `(${strings.join('')}))`
+      const joinInParens = (...strings: string[]): string => `(${strings.join('')})`
       const replaceSpaces = (string: string): string => string.replace(/s+/g, '\\s*')
 
       const nouns = joinAlternate(...config.nouns)
