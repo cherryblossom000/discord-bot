@@ -20,3 +20,4 @@ jobs:
       - provider: script
         skip_cleanup: true
         script: pnpx semantic-release && pnpm run deploy
+        on: master
