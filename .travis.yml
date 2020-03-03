@@ -17,6 +17,6 @@ jobs:
       - pnpm run build
       - pnpm run setup-repo
     deploy:
-      provider: script
-      skip_cleanup: true
-      script: pnpx semantic-release
+      - provider: script
+        skip_cleanup: true
+        script: pnpx semantic-release && pnpm run deploy
