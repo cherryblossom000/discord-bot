@@ -1,7 +1,7 @@
 import type {Message} from 'discord.js'
 import type PinguCommand from '../types/PinguCommand'
 
-const command: PinguCommand = {
+export default {
   name: 'ping',
   aliases: ['p'],
   description: 'Gets my current latency.',
@@ -10,6 +10,4 @@ const command: PinguCommand = {
     message.channel.send(`Noot noot!
 My current latency is ${new Date().getTime() - message.createdTimestamp} ms.`)
   }
-}
-
-export default command
+} as PinguCommand

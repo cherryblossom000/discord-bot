@@ -3,7 +3,7 @@ import {reply} from '../helpers'
 import type PinguClient from '../types/PinguClient'
 import type PinguCommand from '../types/PinguCommand'
 
-const command: PinguCommand = {
+export default {
   name: 'help',
   aliases: ['commands', 'h'],
   description: 'Lists all my commands or gets info about a specific command,',
@@ -53,6 +53,4 @@ Do you have DMs disabled?`)
 
     message.channel.send(data, {split: true})
   }
-}
-
-export default command
+} as PinguCommand

@@ -3,7 +3,7 @@ import {MessageAttachment} from 'discord.js'
 import type {Message} from 'discord.js'
 import type PinguCommand from '../types/PinguCommand'
 
-const command: PinguCommand = {
+export default {
   name: 'iwmelc',
   aliases: ['iwillmurdereverylastcapitalist'],
   description: 'Gets the meme that shows that \u{201c}noot noot\u{201d} in Pingu means \u{201c}i will murder every last ' +
@@ -11,6 +11,4 @@ const command: PinguCommand = {
   execute: (message: Message) => {
     message.channel.send(new MessageAttachment(join(__dirname, '../../assets/iwmelc.jpg')))
   }
-}
-
-export default command
+} as PinguCommand

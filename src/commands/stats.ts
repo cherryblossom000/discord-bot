@@ -1,7 +1,7 @@
 import type {Message} from 'discord.js'
 import type PinguCommand from '../types/PinguCommand'
 
-const command: PinguCommand = {
+export default {
   name: 'stats',
   aliases: ['statistics'],
   description: 'Gets my stats.',
@@ -11,6 +11,4 @@ const command: PinguCommand = {
 Channels: ${client.channels.cache.size}
 Guilds: ${client.guilds.cache.size}`)
   }
-}
-
-export default command
+} as PinguCommand

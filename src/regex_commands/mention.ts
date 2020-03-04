@@ -10,7 +10,7 @@ const config = {
   good: ['good', 'amazing', 'great', 'lovely', 'fast']
 }
 
-const command: PinguRegexCommand = {
+export default {
   execute: (message: Message) => {
     const {content, channel} = message
     const nounsRegex = new RegExp(config.nouns.join('|').replace(/\s+/, '\\s*'), 'iu')
@@ -38,6 +38,4 @@ const command: PinguRegexCommand = {
       else if (/pingu/iu.test(content)) channel.send('Did someone mention me?')
     }
   }
-}
-
-export default command
+} as PinguRegexCommand
