@@ -1,3 +1,11 @@
+## [1.0.3](https://github.com/cherryblossom000/comrade-pingu/compare/v1.0.2...v1.0.3) (2020-03-04)
+
+
+### Bug Fixes
+
+* **iwmelc:** fix command failing ([f2afc36](https://github.com/cherryblossom000/comrade-pingu/commit/f2afc36beb5b722ff98a165b8d26619a81fbbc56))
+* **mention:** fix incorrect regex ([6adf043](https://github.com/cherryblossom000/comrade-pingu/commit/6adf043a12ef6a65778b05b9c4218e78c1b60c50))
+
 ## [1.0.2](https://github.com/cherryblossom000/comrade-pingu/compare/v1.0.1...v1.0.2) (2020-03-03)
 
 
