@@ -4,7 +4,8 @@
     {
       "type": "npm",
       "script": "build:dev",
-      "group": "build"
+      "group": "build",
+      "problemMatcher": "$tsc"
     },
     {
       "type": "npm",
@@ -16,7 +17,8 @@
       "group": {
         "kind": "build",
         "isDefault": true
-      }
+      },
+      "problemMatcher": "$tsc-watch"
     }
   ]
 }
