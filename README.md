@@ -16,17 +16,7 @@ To invite Comrade Pingu to your sever, you must have the Manage Server permissio
 Comrade Pingu’s prefix is `.`.
 
 ## Documentation
-NOTE: All the cooldowns for subcommands are the same as the parent command.
-
-Command | Aliases | Description | Usage | Cooldown (s)
---- | --- | --- | --- | ---
-`help` | `commands`, `h` | Lists all commands or gets info about a specific command. | `.help [command]`<br>`command` (optional): The command that you want to get info about. If no value is set, all the commands will be listed. | 5
-`info` | `i` | Gets info about this bot. | `.info` | 3
-`invite` | `add`, `inv`, `link` | Gets my invite link. | `.invite` | 3
-`iwmelc` | `iwillmurdereverylastcapitalist` | Gets the meme that shows that “noot noot” in Pingu means “i will murder every last capitalist” in English. | `.iwmelc` | 3
-`ping` | `p` | Gets my current latency. | `.ping` | 5
-`stats` | `s`, `statistics` | Gets my stats. | `.stats` | 3
-`uptime` | `u` | Gets this bot’s uptime. | `.uptime` | 3
+[content]
 
 ## Links
 ### Pingu

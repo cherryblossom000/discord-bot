@@ -15,6 +15,7 @@ jobs:
   - stage: release
     script:
       - pnpm run build
+      - pnpm run doc
       # Setup repo
       - cd dist
       - git init

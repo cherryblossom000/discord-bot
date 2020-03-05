@@ -20,7 +20,8 @@ dotenv.config()
 // routing
 const app = express()
 
-app.get('/', (_, res) => res.send('The bot is online!'))
+app.get('/', (_, res) => res.sendFile(join(__dirname, '../assets/index.html')))
+app.get('/pingu.jpg', (_, res) => res.sendFile(join(__dirname, '../assets/pingu.jpg')))
 
 const listener: Server = app.listen(process.env.PORT, () =>
   console.log(`http://localhost:${(listener.address() as AddressInfo).port}`))
