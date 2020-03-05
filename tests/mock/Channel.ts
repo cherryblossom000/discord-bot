@@ -5,34 +5,32 @@ import type {Client} from 'discord.js'
 import type {Guild} from './Guild'
 import type {DMChannelData, TextChannelData} from './data'
 
-export class TextChannel extends Discord.TextChannel {
-  private static count = 0
+let count = 0
 
+export class TextChannel extends Discord.TextChannel {
   send = send
 
-  constructor(guild: Guild) {
+  constructor(guild: Guild, ) {
     super(guild, {
-      id: TextChannel.count.toString(),
+      id: count.toString(),
       type: ChannelType.GUILD_TEXT
     } as TextChannelData)
-    TextChannel.count++
+    count++
     this.client.channels.cache.set(this.id, this)
   }
 }
 
 export class DMChannel extends Discord.DMChannel {
-  private static count = 0
-
   send = send
 
   constructor(client: Client) {
     super(client, {
-      id: DMChannel.count.toString(),
+      id: count.toString(),
       type: ChannelType.DM,
       recipients: [{id: '0'}],
       last_message_id: null
     } as DMChannelData)
-    DMChannel.count++
+    count++
     this.client.channels.cache.set(this.id, this)
   }
 }

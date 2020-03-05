@@ -1,10 +1,10 @@
 /* eslint-disable dot-notation */
 import {Message} from './Message'
 import type {DMChannel, TextChannel} from './Channel'
-import type {StringResolvable, TextBasedChannelFields, User} from 'discord.js'
+import type {MessageOptions, TextBasedChannelFields} from 'discord.js'
 
 // eslint-disable-next-line @typescript-eslint/require-await
-async function send(this: TextChannel | DMChannel, {content}: {content: StringResolvable; user: User}): Promise<Message> {
+async function send(this: TextChannel | DMChannel, {content}: MessageOptions): Promise<Message> {
   return (this.client['actions'] as any).MessageCreate.handle({
     id: '1',
     type: 0,
