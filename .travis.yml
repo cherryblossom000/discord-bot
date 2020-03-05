@@ -15,7 +15,11 @@ jobs:
   - stage: release
     script:
       - pnpm run build
+      - pnpm run test
+      # Generate documentation
       - pnpm run doc
+      - git add .
+      - "git commit -m 'chore: update docs [skip ci]'"
       # Setup repo
       - cd dist
       - git init
