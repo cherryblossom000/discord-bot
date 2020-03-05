@@ -1,4 +1,4 @@
-import type PinguRegexCommand from '../types/PinguRegexCommand'
+import type {PinguRegexCommand} from '../types'
 
 export default {
   regex:

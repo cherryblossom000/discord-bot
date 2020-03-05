@@ -1,5 +1,5 @@
 import type {Message} from 'discord.js'
-import type PinguCommand from '../types/PinguCommand'
+import type {PinguCommand} from '../types'
 
 export default {
   name: 'stats',

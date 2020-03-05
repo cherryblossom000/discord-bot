@@ -4,15 +4,14 @@ import {promisify} from 'util'
 import {Collection} from 'discord.js'
 import dotenv from 'dotenv'
 import express from 'express'
-import PinguClient from './types/PinguClient'
+import {PinguClient} from './types'
 import {logDate, reply} from './helpers'
 import {me, prefix} from './constants'
 
 import type {AddressInfo} from 'net'
 import type {Server} from 'http'
 import type {Message, Snowflake} from 'discord.js'
-import type PinguCommand from './types/PinguCommand'
-import type PinguRegexCommand from './types/PinguRegexCommand'
+import type {PinguCommand, PinguRegexCommand} from './types'
 
 const readdir = promisify(fs.readdir)
 

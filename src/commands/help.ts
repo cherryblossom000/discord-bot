@@ -1,7 +1,6 @@
 import {prefix} from '../constants'
 import {reply} from '../helpers'
-import type PinguClient from '../types/PinguClient'
-import type PinguCommand from '../types/PinguCommand'
+import type {PinguClient, PinguCommand} from '../types'
 
 export default {
   name: 'help',

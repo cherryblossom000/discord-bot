@@ -1,5 +1,5 @@
 import {permissions} from '../constants'
-import type PinguCommand from '../types/PinguCommand'
+import type {PinguCommand} from '../types'
 
 export default {
   name: 'invite',

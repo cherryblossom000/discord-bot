@@ -1,5 +1,5 @@
 import type {Message} from 'discord.js'
-import type PinguRegexCommand from '../types/PinguRegexCommand'
+import type {PinguRegexCommand} from '../types'
 
 const config = {
   nouns: ['bots?', 'pingu', 'communism', 'communists?'],

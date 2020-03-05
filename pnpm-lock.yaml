@@ -4,7 +4,6 @@ dependencies:
   express: 4.17.1
   lodash.upperfirst: 4.3.1
   ms: 2.1.2
-  typescript: 3.8.3
 devDependencies:
   '@semantic-release/changelog': 5.0.0_semantic-release@17.0.4
   '@semantic-release/git': 9.0.0_semantic-release@17.0.4
@@ -22,6 +21,7 @@ devDependencies:
   jest-mock-console: 1.0.0_jest@25.1.0
   semantic-release: 17.0.4_semantic-release@17.0.4
   ts-jest: 25.2.1_jest@25.1.0
+  typescript: 3.8.3
 lockfileVersion: 5.1
 packages:
   /@babel/code-frame/7.5.5:
@@ -6457,6 +6457,7 @@ packages:
     resolution:
       integrity: sha512-zdu8XMNEDepKKR+XYOXAVPtWui0ly0NtohUscw+UmaHiAWT8hrV1rr//H6V+0DvJ3OQ19S979M0laLfX8rm82Q==
   /typescript/3.8.3:
+    dev: true
     engines:
       node: '>=4.2.0'
     hasBin: true
