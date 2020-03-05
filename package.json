@@ -29,8 +29,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "lodash.upperfirst": "^4.3.1",
-    "ms": "^2.1.2",
-    "typescript": "^3.8.3"
+    "ms": "^2.1.2"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^5.0.0",
