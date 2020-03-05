@@ -16,14 +16,12 @@
   },
   "scripts": {
     "test": "eslint . && jest",
-    "build": "tsc -p tsconfig.prod.json",
-    "setup-repo": "(cd dist && echo '*.tsbuildinfo' > .gitignore && git init && git remote add origin \"https://$GLITCH_TOKEN@api.glitch.com/git/comrade-pingu\")",
-    "copy-assets": "cp package.json dist/package.json && cp -r assets dist/assets",
-    "deploy": "pnpm run copy-assets && (cd dist && git add . && git commit -m update && git push -f origin master)",
+    "build": "tsc -p tsconfig.build.json",
+    "deploy": "(cd dist && git add . && git commit -m update && git push -f origin master)",
     "start": "node .",
     "test:dev": "jest -c jest.config.dev.js",
-    "build:dev": "tsc -p tsconfig.build.json && cp -r assets dist/assets",
-    "watch": "tsc -watch -p tsconfig.build.json",
+    "build:dev": "tsc -p tsconfig.build.json --sourceMap --incremental && cp -r assets dist/assets",
+    "watch": "tsc -watch -p tsconfig.build.json --sourceMap --incremental",
     "start:dev": "pnpm run build:dev && nodemon dist/src/server"
   },
   "dependencies": {

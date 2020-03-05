@@ -15,7 +15,14 @@ jobs:
   - stage: release
     script:
       - pnpm run build
-      - pnpm run setup-repo
+      # Setup repo
+      - cd dist
+      - git init
+      - git remote add origin "https://$GLITCH_TOKEN@api.glitch.com/git/comrade-pingu"
+      # Copy assets
+      - cp ../package.json package.json
+      - cp -r ../assets assets
+      - cd ..
     deploy:
       - provider: script
         skip_cleanup: true

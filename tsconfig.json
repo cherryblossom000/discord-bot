@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "esModuleInterop": true,
-    "incremental": true,
     "lib": ["es2018"],
     "module": "commonjs",
     "noImplicitReturns": true,
@@ -10,7 +9,6 @@
     "outDir": "dist",
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "sourceMap": true,
     "strict": true,
     "target": "es2019"
   },
