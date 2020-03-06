@@ -10,7 +10,7 @@ let count = 0
 export class TextChannel extends Discord.TextChannel {
   send = send
 
-  constructor(guild: Guild, ) {
+  constructor(guild: Guild) {
     super(guild, {
       id: count.toString(),
       type: ChannelType.GUILD_TEXT
