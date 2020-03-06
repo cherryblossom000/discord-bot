@@ -30,13 +30,18 @@ const replaceInFile = async (path: string, content: Promise<Buffer>, pattern: Re
   const generatedDocs = [['Command', 'Aliases', 'Description', 'Usage', 'Cooldown (s)']]
     .concat(commands.map(
       ({name, aliases, description, syntax, usage, cooldown = 3}) => [
-            `\`${name}\``,
-            aliases?.map(a => `\`${a}\``).join(', ') ?? '-',
-            description,
-            `\`.${name}${syntax ? ` ${syntax}` : ''}\`${usage ? `<br>${usage.replace(/\n/g, '<br>')}` : ''}`,
-            cooldown.toString()
+          `\`${name}\``,
+          aliases?.map(a => `\`${a}\``).join(', ') ?? '-',
+          name === 'iwmelc' ? `${description}![i will murder every last capitalist](./assets/iwmelc.jpg)` : description,
+          `\`.${name}${syntax ? ` ${syntax}` : ''}\`${usage ? `<br>${usage.replace(/\n/g, '<br>')}` : ''}`,
+          cooldown.toString()
       ]
     ))
   const md = replaceInFile(readmePath, readme, /(?<=## Documentation\n)[\s\S]+(?=\n\n## Links)/, table(generatedDocs))
-  replaceInFile(htmlPath, html, /(?<=<body>)[\s\S]+(?=<\/body>)/, new MarkdownIt({html: true}).render(await md))
+  replaceInFile(
+    htmlPath,
+    html,
+    /(?<=<body class="markdown-body">)[\s\S]+(?=<\/body>)/,
+    new MarkdownIt({html: true}).render((await md).replace('./assets', ''))
+  )
 })()
