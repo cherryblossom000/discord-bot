@@ -20,6 +20,7 @@ jobs:
       - pnpm run doc
       - git add .
       - "git commit -m 'docs: update [skip ci]'"
+      - git push
       # Setup repo
       - cd dist
       - git init
