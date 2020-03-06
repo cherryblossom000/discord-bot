@@ -16,23 +16,22 @@ jobs:
       - pnpm run build
       - pnpm run test
       - pnpm run doc
-    after_success:
-      - >-
-        (cd dist &&
-        git init &&
-        git remote add origin "https://$GLITCH_TOKEN@api.glitch.com/git/comrade-pingu" &&
-        cp ../package.json package.json &&
-        cp -r ../assets assets)
-      - >-
-        git add . &&
-        git commit -m 'docs: update [skip ci]' &&
-        git push "https://$GH_TOKEN@github.com/cherryblossom000/comrade-pingu" HEAD:master
+    # Commit docs
+    after_success: >-
+      git add . &&
+      git commit -m 'docs: update [skip ci]' &&
+      git push "https://$GH_TOKEN@github.com/cherryblossom000/comrade-pingu" HEAD:master
     deploy:
       - provider: script
         skip_cleanup: true
         script: >-
           (cd dist &&
+          git init &&
+          git remote add origin "https://$GLITCH_TOKEN@api.glitch.com/git/comrade-pingu" &&
+          cp ../package.json package.json &&
+          cp -r ../assets assets &&
           git add . &&
           git commit -m update &&
-          git push -f origin master)
+          git push -f origin master) &&
+          pnpx semantic-release
         on: master
