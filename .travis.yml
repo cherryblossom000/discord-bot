@@ -19,7 +19,7 @@ jobs:
     # Commit docs
     after_success: >-
       git add . &&
-      git commit -m 'docs: update [skip ci]' &&
+      git commit -m "docs: update from travis build #$TRAVIS_BUILD_NUMBER [skip ci]" &&
       git push "https://$GH_TOKEN@github.com/cherryblossom000/comrade-pingu" HEAD:master
     deploy:
       - provider: script
@@ -31,7 +31,7 @@ jobs:
           cp ../package.json package.json &&
           cp -r ../assets assets &&
           git add . &&
-          git commit -m update &&
+          git commit -m "update from travis build #$TRAVIS_BUILD_NUMBER" &&
           git push -f origin master) &&
           pnpx semantic-release
         on: master
