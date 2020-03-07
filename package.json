@@ -2,9 +2,7 @@
   "name": "comrade-pingu",
   "version": "1.0.3",
   "private": true,
-  "publishConfig": {
-    "access": "restricted"
-  },
+  "publishConfig": {"access": "restricted"},
   "homepage": "https://comrade-pingu.glitch.me",
   "repository": {
     "type": "git",
