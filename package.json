@@ -40,7 +40,7 @@
     "@types/markdown-it": "^0.0.9",
     "@types/markdown-table": "^2.0.0",
     "@types/ms": "^0.7.31",
-    "@types/node": "^13.7.7",
+    "@types/node": "^13.9.0",
     "@typescript-eslint/eslint-plugin": "^2.22.0",
     "@typescript-eslint/parser": "^2.22.0",
     "commitizen": "^4.0.3",

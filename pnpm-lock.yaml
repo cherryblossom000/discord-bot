@@ -13,7 +13,7 @@ devDependencies:
   '@types/markdown-it': 0.0.9
   '@types/markdown-table': 2.0.0
   '@types/ms': 0.7.31
-  '@types/node': 13.7.7
+  '@types/node': 13.9.0
   '@typescript-eslint/eslint-plugin': 2.22.0_5fc37458f7af86d127d807b1f2a4d108
   '@typescript-eslint/parser': 2.22.0_eslint@6.8.0+typescript@3.8.3
   commitizen: 4.0.3
@@ -798,6 +798,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-Uo4chgKbnPNlxQwoFmYIwctkQVkMMmsAoGGU4JKwLuvBefF0pCq4FybNSnfkfRCpC7ZW7kttcC/TrRtAJsvGtg==
+  /@types/node/13.9.0:
+    dev: true
+    resolution:
+      integrity: sha512-0ARSQootUG1RljH2HncpsY2TJBfGQIKOOi7kxzUY6z54ePu/ZD+wJA8zI2Q6v8rol2qpG/rvqsReco8zNMPvhQ==
   /@types/normalize-package-data/2.4.0:
     dev: true
     resolution:
@@ -6889,7 +6893,7 @@ specifiers:
   '@types/markdown-it': ^0.0.9
   '@types/markdown-table': ^2.0.0
   '@types/ms': ^0.7.31
-  '@types/node': ^13.7.7
+  '@types/node': ^13.9.0
   '@typescript-eslint/eslint-plugin': ^2.22.0
   '@typescript-eslint/parser': ^2.22.0
   commitizen: ^4.0.3
