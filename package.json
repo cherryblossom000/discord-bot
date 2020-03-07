@@ -11,7 +11,7 @@
     "url": "https://github.com/cherryblossom000/comrade-pingu.git"
   },
   "main": "src/server",
-  "engines": {"node": ">=12.0.0"},
+  "engines": {"node": ">=12"},
   "scripts": {
     "test": "eslint . && jest --forceExit",
     "build": "tsc -p tsconfig.build.json",
