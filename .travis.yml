@@ -8,22 +8,9 @@ jobs:
       - pnpm run build
       - pnpm run test
       - pnpm run doc
-    # Commit docs
-    after_success: >-
-      git add . &&
-      git commit -m "docs: update from travis build #$TRAVIS_BUILD_NUMBER [skip ci]" &&
-      git push "https://$GH_TOKEN@github.com/cherryblossom000/comrade-pingu" HEAD:master
+    after_success: chmod +x scripts/push-docs.sh && scripts/push-docs.sh
     deploy:
       - provider: script
         skip_cleanup: true
-        script: >-
-          (cd dist &&
-          git init &&
-          git remote add origin "https://$GLITCH_TOKEN@api.glitch.com/git/comrade-pingu" &&
-          cp ../package.json package.json &&
-          cp -r ../assets assets &&
-          git add . &&
-          git commit -m "update from travis build #$TRAVIS_BUILD_NUMBER" &&
-          git push -f origin master) &&
-          pnpx semantic-release
+        script: chmod +x scripts/deploy.sh && scripts/deploy.sh
         on: master
