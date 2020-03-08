@@ -1,6 +1,4 @@
 set -e
-# Copy files
-pnpm run copy
 (
   cd dist
   # Init repo

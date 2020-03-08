@@ -12,11 +12,12 @@
   "engines": {"node": ">=12"},
   "scripts": {
     "test": "eslint . && jest --forceExit",
-    "build": "tsc -p tsconfig.build.json",
+    "copy": " (cd dist && cp ../package.json package.json && mkdir assets; cp -r ../assets/img assets/img)",
+    "build": "tsc -p tsconfig.build.json && pnpm run copy",
     "doc": "ts-node scripts/doc",
     "start": "node .",
     "test:dev": "jest -c jest.config.dev.js --forceExit",
-    "build:dev": "tsc -p tsconfig.build.json --sourceMap --incremental && cp -r assets dist",
+    "build:dev": "tsc -p tsconfig.build.json --sourceMap --incremental && pnpm run copy",
     "watch": "tsc -watch -p tsconfig.build.json --sourceMap --incremental",
     "start:dev": "nodemon dist/src/server.js"
   },
