@@ -47,3 +47,5 @@ Comrade Pingu’s prefix is `.`.
 
 ## License
 [MIT](LICENSE) © 2020 cherryblossom000
+
+## [Changelog](CHANGELOG.md)
