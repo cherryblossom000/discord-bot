@@ -1,5 +1,4 @@
 set -e
-
 (
   cd dist
   # Copy files
