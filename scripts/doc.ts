@@ -10,7 +10,9 @@ const readFile = promisify(fs.readFile)
 
 const commandsPath = join(__dirname, '../dist/src/commands')
 const readmePath = join(__dirname, '../README.md')
-const htmlPath = join(__dirname, '../assets/index.html')
+const indexHtmlPath = join(__dirname, '../assets/index.html')
+const licenseHtmlPath = join(__dirname, '../assets/license.html')
+const changelogHtmlPath = join(__dirname, '../assets/changelog.html')
 
 const replaceInFile = async (path: string, content: Promise<Buffer>, pattern: RegExp, text: string): Promise<string> => {
   const result = (await content).toString().replace(pattern, text)
@@ -20,7 +22,12 @@ const replaceInFile = async (path: string, content: Promise<Buffer>, pattern: Re
 
 ;(async (): Promise<void> => {
   const readme = readFile(readmePath)
-  const html = readFile(htmlPath)
+  const indexHtml = readFile(indexHtmlPath)
+  const licenseHtml = readFile(licenseHtmlPath)
+  const changelogHtml = readFile(changelogHtmlPath)
+  const license = readFile(join(__dirname, '../LICENSE'))
+  const changelog = readFile(join(__dirname, '../CHANGELOG.md'))
+
   const files = await readdir(commandsPath)
   const modules = await Promise.all(files
     .filter(f => !f.endsWith('.map'))
@@ -37,11 +44,35 @@ const replaceInFile = async (path: string, content: Promise<Buffer>, pattern: Re
           cooldown.toString()
       ]
     ))
-  const md = replaceInFile(readmePath, readme, /(?<=## Documentation\n)[\s\S]+(?=\n\n## Links)/, table(generatedDocs))
+
+  // update readme
+  const readmeMd = replaceInFile(readmePath, readme, /(?<=## Documentation\n)[\s\S]+(?=\n\n## Links)/, table(generatedDocs))
+
+  // update index.html
   replaceInFile(
-    htmlPath,
-    html,
+    indexHtmlPath,
+    indexHtml,
     /(?<=<body class="markdown-body">)[\s\S]+(?=<\/body>)/,
-    new MarkdownIt({html: true}).render((await md).replace('./assets', ''))
+    new MarkdownIt({html: true}).render((await readmeMd)
+      .replace('./assets', '')
+      .replace('LICENSE', 'license')
+      .replace('CHANGELOG.md', 'changelog')
+    )
+  )
+
+  // update license.html
+  replaceInFile(
+    licenseHtmlPath,
+    licenseHtml,
+    /(?<=<body class="markdown-body">)[\s\S]+(?=<\/body>)/,
+    new MarkdownIt({html: true}).render((await license).toString())
+  )
+
+  // update changelog.html
+  replaceInFile(
+    changelogHtmlPath,
+    changelogHtml,
+    /(?<=<body class="markdown-body">)[\s\S]+(?=<\/body>)/,
+    new MarkdownIt({html: true}).render((await changelog).toString())
   )
 })()

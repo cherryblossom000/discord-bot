@@ -21,6 +21,8 @@ dotenv.config()
 const app = express()
 
 app.get('/', (_, res) => res.sendFile(join(__dirname, '../assets/index.html')))
+app.get('/license', (_, res) => res.sendFile(join(__dirname, '../assets/license.html')))
+app.get('/changelog', (_, res) => res.sendFile(join(__dirname, '../assets/changelog.html')))
 app.use(express.static(join(__dirname, '../assets')))
 
 const listener: Server = app.listen(process.env.PORT, () =>
