@@ -18,7 +18,7 @@
     "test:dev": "jest -c jest.config.dev.js --forceExit",
     "build:dev": "tsc -p tsconfig.build.json --sourceMap --incremental && cp -r assets dist",
     "watch": "tsc -watch -p tsconfig.build.json --sourceMap --incremental",
-    "start:dev": "pnpm run build:dev && nodemon dist/src/server.js"
+    "start:dev": "nodemon dist/src/server.js"
   },
   "dependencies": {
     "discord.js": "^12.0.1",
