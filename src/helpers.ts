@@ -1,6 +1,10 @@
+import {join} from 'path'
 import upperFirst from 'lodash.upperfirst'
 import {me} from './constants'
 import type {Message, Client} from 'discord.js'
+
+/** Creates a function to easily resolve paths relative to the `__dirname`. */
+export const createResolve = (__dirname: string) => (p: string): string => join(__dirname, p)
 
 /** Logs the current date. */
 export const logDate = (): void => {

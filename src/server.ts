@@ -1,11 +1,10 @@
 import {join} from 'path'
-import fs from 'fs'
-import {promisify} from 'util'
+import {promises} from 'fs'
 import {Collection} from 'discord.js'
 import dotenv from 'dotenv'
 import express from 'express'
 import {PinguClient} from './types'
-import {handleError, logDate, reply, sendMeError} from './helpers'
+import {createResolve, handleError, logDate, reply, sendMeError} from './helpers'
 import {prefix} from './constants'
 
 import type {AddressInfo} from 'net'
@@ -13,18 +12,18 @@ import type {Server} from 'http'
 import type {Message, Snowflake} from 'discord.js'
 import type {PinguCommand, PinguRegexCommand} from './types'
 
-const readdir = promisify(fs.readdir)
+const {readdir} = promises
+const resolve = createResolve(__dirname)
 
 dotenv.config()
 
 // routing
 const app = express()
 
-app.get('/', (_, res) => res.sendFile(join(__dirname, '../assets/html/index.html')))
-app.get('/license', (_, res) => res.sendFile(join(__dirname, '../assets/html/license.html')))
-app.get('/changelog', (_, res) => res.sendFile(join(__dirname, '../assets/html/changelog.html')))
-app.use(express.static(join(__dirname, '../assets')))
-app.use(express.static(join(__dirname, '../assets/img')))
+app.get('/', (_, res) => res.sendFile(resolve('../assets/html/index.html')))
+app.get('/license', (_, res) => res.sendFile(resolve('../assets/html/license.html')))
+app.get('/changelog', (_, res) => res.sendFile(resolve('../assets/html/changelog.html')))
+app.use(express.static(resolve('../assets/img')))
 
 const listener: Server = app.listen(process.env.PORT, () =>
   process.env.NODE_ENV !== 'production' && console.log(`http://localhost:${(listener.address() as AddressInfo).port}`))
@@ -33,10 +32,10 @@ const client = new PinguClient()
 
 const importCommands = async <T>(path: string): Promise<T[]> => {
   try {
-    const files = await readdir(join(__dirname, path))
+    const files = await readdir(resolve(path))
     const modules = await Promise.all(files
       .filter(f => !f.endsWith('.map'))
-      .map(async f => import(join(__dirname, path, f)))
+      .map(async f => import(join(resolve(path), f)))
     )
     return modules.map<T>(m => m.default)
   } catch (error) {

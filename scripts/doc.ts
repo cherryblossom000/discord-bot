@@ -3,20 +3,21 @@ import {join} from 'path'
 import MarkdownIt from 'markdown-it'
 import table from 'markdown-table'
 import upperFirst from 'lodash.upperfirst'
+import {createResolve} from '../src/helpers'
 import type {PinguCommand} from '../src/types'
 
 const {mkdir, readFile, writeFile} = promises
-const path = (p: string): string => join(__dirname, p)
+const resolve = createResolve(__dirname)
 
-const commandsPath = path('../dist/src/commands')
-const readmePath = path('../README.md')
+const commandsPath = resolve('../dist/src/commands')
+const readmePath = resolve('../README.md')
 
 ;(async (): Promise<void> => {
   const readme = readFile(readmePath)
-  const mkdirPromise = mkdir(path('../dist/assets/html'), {recursive: true})
-  const templatePromise = readFile(path('template.html'))
-  const license = readFile(path('../LICENSE'))
-  const changelog = readFile(path('../CHANGELOG.md'))
+  const mkdirPromise = mkdir(resolve('../dist/assets/html'), {recursive: true})
+  const templatePromise = readFile(resolve('template.html'))
+  const license = readFile(resolve('../LICENSE'))
+  const changelog = readFile(resolve('../CHANGELOG.md'))
 
   // update readme
   const files = readdirSync(commandsPath)
@@ -41,7 +42,7 @@ const readmePath = path('../README.md')
   await mkdirPromise
   const template = (await templatePromise).toString()
   const writeHtml = async (p: string, title: string, description: string, md: string): Promise<void> =>
-    writeFile(path(`../dist/assets/html/${p}.html`), template
+    writeFile(resolve(`../dist/assets/html/${p}.html`), template
       .replace('[title]', title)
       .replace('[description]', description)
       .replace('[content]', new MarkdownIt({html: true}).render(md))
