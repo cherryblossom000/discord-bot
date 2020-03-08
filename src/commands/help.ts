@@ -19,7 +19,7 @@ The command that you want to get info about. If no value is set, all the command
     // all commands
     if (!args.length) {
       data.push('Here\u{2019}s a list of all my commands:')
-      data.push(commands.map(command => command.name).join(', '))
+      data.push(...commands.map(command => `\`${command.name}\`: ${command.description}`))
       data.push(`\nYou can send \`${prefix}help [command name]\` to get info on a specific command. Noot noot.`)
 
       return author.send(data, {split: true})
