@@ -1,5 +1,6 @@
 import upperFirst from 'lodash.upperfirst'
-import type {Message} from 'discord.js'
+import {me} from './constants'
+import type {Message, Client} from 'discord.js'
 
 /** Logs the current date. */
 export const logDate = (): void => {
@@ -13,4 +14,30 @@ export const logDate = (): void => {
  */
 export const reply = (message: Message, content: string): void => {
   message.reply(message.guild ? content : upperFirst(content))
+}
+
+/**
+ * DMs me an error.
+ * @param info Extra information to send.
+ */
+export const sendMeError = async (client: Client, error: Error, info: string): Promise<void> => {
+  (await client.users.fetch(me)!).send(`${info}
+**Error at ${new Date().toLocaleString()}**
+${error.stack}`)
+}
+
+/**
+ * Replies to a message causing an error and either logs it or DMs me it depending on `NODE_ENV1.
+ * @param info Extra information to send to the DM.
+ * @param response The response in the message reply.
+ */
+export const handleError = (
+  client: Client,
+  error: Error,
+  message: Message,
+  info: string,
+  response = 'unfortunately, there was an error trying to execute that command. Noot noot.'
+): void => {
+  reply(message, response)
+  process.env.NODE_ENV === 'production' ? sendMeError(client, error, info) : console.error(error)
 }

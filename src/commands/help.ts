@@ -12,9 +12,9 @@ The command that you want to get info about. If no value is set, all the command
   cooldown: 5,
   execute: (message, args) => {
     // constants
-    const {author, client} = message
+    const {author} = message
     const data = []
-    const {commands} = client as PinguClient
+    const {commands} = message.client as PinguClient
 
     // all commands
     if (!args.length) {

@@ -5,8 +5,8 @@ import {Collection} from 'discord.js'
 import dotenv from 'dotenv'
 import express from 'express'
 import {PinguClient} from './types'
-import {logDate, reply} from './helpers'
-import {me, prefix} from './constants'
+import {handleError, logDate, reply, sendMeError} from './helpers'
+import {prefix} from './constants'
 
 import type {AddressInfo} from 'net'
 import type {Server} from 'http'
@@ -28,17 +28,6 @@ const listener: Server = app.listen(process.env.PORT, () =>
 
 const client = new PinguClient()
 
-const sendMeError = async (error: Error, info: string): Promise<void> => {
-  (await client.users.fetch(me)!).send(`${info}
-**Error at ${new Date().toLocaleString()}**
-${error.stack}`)
-}
-
-const handleErrors = (error: Error, message: Message, info: string): void => {
-  reply(message, 'unfortunately, there was an error trying to execute that command. Noot noot.')
-  process.env.NODE_ENV === 'production' ? sendMeError(error, info) : console.error(error)
-}
-
 const importCommands = async <T>(path: string): Promise<T[]> => {
   try {
     const files = await readdir(join(__dirname, path))
@@ -48,7 +37,7 @@ const importCommands = async <T>(path: string): Promise<T[]> => {
     )
     return modules.map<T>(m => m.default)
   } catch (error) {
-    if (process.env.NODE_ENV !== 'production') sendMeError(error, `\`importCommands\` failed with path \`${path}\`.`)
+    if (process.env.NODE_ENV !== 'production') sendMeError(client, error, `\`importCommands\` failed with path \`${path}\`.`)
     throw error
   }
 }
@@ -152,7 +141,7 @@ The syntax is: \`${prefix}${command.name}${command.syntax ? ` ${command.syntax}`
     try {
       command.execute(message, args)
     } catch (error) {
-      handleErrors(error, message,
+      handleError(client, error, message,
         `Command \`${command.name}\` failed${args.length ? ` with args ${args.map(a => `\`${a}\``).join(', ')}` : ''}.`
       )
     }
@@ -165,7 +154,7 @@ The syntax is: \`${prefix}${command.name}${command.syntax ? ` ${command.syntax}`
             command.regexMessage ? channel.send(command.regexMessage) : command.execute!(message)
         } else command.execute!(message)
       } catch (error) {
-        handleErrors(error, message, `Regex command with regex \`${command.regex}\` failed.`)
+        handleError(client, error, message, `Regex command with regex \`${command.regex}\` failed.`)
       }
     }))
   }
