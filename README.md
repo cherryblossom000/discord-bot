@@ -1,5 +1,5 @@
 # Comrade Pingu
-[![Build Status](https://api.travis-ci.com/cherryblossom000/comrade-pingu.svg?token=HuQX1k5oVBvh691pweEv&branch=master)](https://travis-ci.com/cherryblossom000/comrade-pingu) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/48b593048b6a42f6a158bff81508108c)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=cherryblossom000/comrade-pingu&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://api.travis-ci.com/cherryblossom000/comrade-pingu.svg?token=HuQX1k5oVBvh691pweEv&branch=master)](https://travis-ci.com/cherryblossom000/comrade-pingu)
 
 A fun Discord bot created on the 3<sup>rd</sup> of March 2019 with [discord.js](https://discord.js.org). Kill all the capitalist scum!
 
