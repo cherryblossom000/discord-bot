@@ -5,7 +5,7 @@ import type {PinguClient, PinguCommand} from '../types'
 export default {
   name: 'help',
   aliases: ['commands', 'h'],
-  description: 'Lists all my commands or gets info about a specific command,',
+  description: 'Lists all my commands or gets info about a specific command.',
   syntax: '[command]',
   usage: `\`command\` (optional)
 The command that you want to get info about. If no value is set, all the commands will be listed.`,
