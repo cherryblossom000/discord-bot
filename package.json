@@ -2,14 +2,18 @@
   "name": "comrade-pingu",
   "version": "1.0.3",
   "private": true,
-  "publishConfig": {"access": "restricted"},
+  "publishConfig": {
+    "access": "restricted"
+  },
   "homepage": "https://comrade-pingu.glitch.me",
   "repository": {
     "type": "git",
     "url": "https://github.com/cherryblossom000/comrade-pingu.git"
   },
   "main": "src/server",
-  "engines": {"node": ">=12"},
+  "engines": {
+    "node": ">=12"
+  },
   "scripts": {
     "test": "eslint . && jest --forceExit",
     "copy": " (cd dist && cp ../package.json package.json && mkdir assets; cp -r ../assets/img assets/img)",
@@ -53,6 +57,8 @@
     "typescript": "^3.8.3"
   },
   "config": {
-    "commitizen": {"path": "cz-conventional-changelog"}
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
   }
 }
