@@ -1,78 +1,82 @@
-import fs, {writeFileSync} from 'fs'
+import fs, {readdirSync} from 'fs'
 import {join} from 'path'
 import {promisify} from 'util'
 import MarkdownIt from 'markdown-it'
 import table from 'markdown-table'
 import type {PinguCommand} from '../src/types'
 
-const readdir = promisify(fs.readdir)
+const path = (p: string): string => join(__dirname, p)
 const readFile = promisify(fs.readFile)
+const writeFile = promisify(fs.writeFile)
 
-const commandsPath = join(__dirname, '../dist/src/commands')
-const readmePath = join(__dirname, '../README.md')
-const indexHtmlPath = join(__dirname, '../assets/index.html')
-const licenseHtmlPath = join(__dirname, '../assets/license.html')
-const changelogHtmlPath = join(__dirname, '../assets/changelog.html')
+const template = (title: string, description: string, content: string): string => `<!DOCTYPE html>
+<html>
+  <head>
+    <title>${title}</title>
+    <meta name="description" content="${description}">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link id="favicon" rel="icon" href="/pingu.jpg" type="image/x-icon">
+    <style>body {padding: 1em}</style>
+    <link href="/github-markdown.css" rel="stylesheet">
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-137716576-3"></script>
+    <script>
+      window.dataLayer=window.dataLayer||[]
+      function gtag(){dataLayer.push(arguments)}
+      gtag('js',new Date)
+      gtag('config','UA-137716576-3')
+    </script>
+  </head>
+  <body class="markdown-body">${content}</body>
+</html>`
 
-const replaceInFile = async (path: string, content: Promise<Buffer>, pattern: RegExp, text: string): Promise<string> => {
-  const result = (await content).toString().replace(pattern, text)
-  writeFileSync(path, result)
-  return result
-}
+const commandsPath = path('../dist/src/commands')
+const readmePath = path('../README.md')
+
+const writeHtml = async (p: string, title: string, description: string, md: string): Promise<void> =>
+  writeFile(path(`../dist/assets/html/${p}.html`), template(title, description, new MarkdownIt({html: true}).render(md)))
 
 ;(async (): Promise<void> => {
   const readme = readFile(readmePath)
-  const indexHtml = readFile(indexHtmlPath)
-  const licenseHtml = readFile(licenseHtmlPath)
-  const changelogHtml = readFile(changelogHtmlPath)
-  const license = readFile(join(__dirname, '../LICENSE'))
-  const changelog = readFile(join(__dirname, '../CHANGELOG.md'))
+  const license = readFile(path('../LICENSE'))
+  const changelog = readFile(path('../CHANGELOG.md'))
 
-  const files = await readdir(commandsPath)
+  // update readme
+  const files = readdirSync(commandsPath)
   const modules = await Promise.all(files
     .filter(f => !f.endsWith('.map'))
     .map(async f => import(join(commandsPath, f)))
   )
   const commands = modules.map<PinguCommand>(m => m.default)
-  const generatedDocs = [['Command', 'Aliases', 'Description', 'Usage', 'Cooldown (s)']]
+  const docs = [['Command', 'Aliases', 'Description', 'Usage', 'Cooldown (s)']]
     .concat(commands.map(
       ({name, aliases, description, syntax, usage, cooldown = 3}) => [
           `\`${name}\``,
           aliases?.map(a => `\`${a}\``).join(', ') ?? '-',
-          name === 'iwmelc' ? `${description}![i will murder every last capitalist](./assets/iwmelc.jpg)` : description,
+          name === 'iwmelc' ? `${description}![i will murder every last capitalist](./assets/img/iwmelc.jpg)` : description,
           `\`.${name}${syntax ? ` ${syntax}` : ''}\`${usage ? `<br>${usage.replace(/\n/g, '<br>')}` : ''}`,
           cooldown.toString()
       ]
     ))
+  const newReadme = (await readme).toString().replace(/(?<=## Documentation\n)[\s\S]+(?=\n\n## Links)/, table(docs))
+  const promises = [
+    writeFile(readmePath, newReadme),
 
-  // update readme
-  const readmeMd = replaceInFile(readmePath, readme, /(?<=## Documentation\n)[\s\S]+(?=\n\n## Links)/, table(generatedDocs))
-
-  // update index.html
-  replaceInFile(
-    indexHtmlPath,
-    indexHtml,
-    /(?<=<body class="markdown-body">)[\s\S]+(?=<\/body>)/,
-    new MarkdownIt({html: true}).render((await readmeMd)
-      .replace('./assets', '')
+    // update index.html
+    writeHtml('index', 'Comrade Pingu', 'Kill all the capitalist scum!', newReadme
+      .replace('./assets/img', '')
       .replace('LICENSE', 'license')
       .replace('CHANGELOG.md', 'changelog')
-    )
-  )
+    ),
 
-  // update license.html
-  replaceInFile(
-    licenseHtmlPath,
-    licenseHtml,
-    /(?<=<body class="markdown-body">)[\s\S]+(?=<\/body>)/,
-    new MarkdownIt({html: true}).render((await license).toString())
-  )
+    // update license.html
+    writeHtml('license', 'License - Comrade Pingu', 'License for Comrade Pingu', (await license).toString()),
 
-  // update changelog.html
-  replaceInFile(
-    changelogHtmlPath,
-    changelogHtml,
-    /(?<=<body class="markdown-body">)[\s\S]+(?=<\/body>)/,
-    new MarkdownIt({html: true}).render((await changelog).toString())
-  )
+    // update changelog.html
+    writeHtml('changelog', 'Changelog - Comrade Pingu', 'Changelog for Comrade Pingu', (await changelog).toString())
+  ]
+
+  await Promise.all(promises)
 })()

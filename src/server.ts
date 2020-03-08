@@ -20,10 +20,11 @@ dotenv.config()
 // routing
 const app = express()
 
-app.get('/', (_, res) => res.sendFile(join(__dirname, '../assets/index.html')))
-app.get('/license', (_, res) => res.sendFile(join(__dirname, '../assets/license.html')))
-app.get('/changelog', (_, res) => res.sendFile(join(__dirname, '../assets/changelog.html')))
+app.get('/', (_, res) => res.sendFile(join(__dirname, '../assets/html/index.html')))
+app.get('/license', (_, res) => res.sendFile(join(__dirname, '../assets/html/license.html')))
+app.get('/changelog', (_, res) => res.sendFile(join(__dirname, '../assets/html/changelog.html')))
 app.use(express.static(join(__dirname, '../assets')))
+app.use(express.static(join(__dirname, '../assets/img')))
 
 const listener: Server = app.listen(process.env.PORT, () =>
   process.env.NODE_ENV !== 'production' && console.log(`http://localhost:${(listener.address() as AddressInfo).port}`))

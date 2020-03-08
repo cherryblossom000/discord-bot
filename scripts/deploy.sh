@@ -1,9 +1,8 @@
 set -e
+# Copy files
+pnpm run copy
 (
   cd dist
-  # Copy files
-  cp ../package.json package.json
-  cp -r ../assets assets
   # Init repo
   git init
   git remote add origin "https://$GLITCH_TOKEN@api.glitch.com/git/comrade-pingu"
