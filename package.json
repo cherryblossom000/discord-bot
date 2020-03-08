@@ -10,7 +10,7 @@
     "type": "git",
     "url": "https://github.com/cherryblossom000/comrade-pingu.git"
   },
-  "main": "src/server",
+  "main": "dist/src/server",
   "engines": {
     "node": ">=12"
   },
@@ -19,11 +19,11 @@
     "copy": " (cd dist && cp ../package.json package.json && mkdir assets; cp -r ../assets/img assets/img)",
     "build": "tsc -p tsconfig.build.json && pnpm run copy",
     "doc": "ts-node scripts/doc && mkdir dist/assets/css; purgecss -c purgecss.config.js -o dist/assets/css",
-    "start": "node .",
+    "start": "node src/server",
     "test:dev": "jest -c jest.config.dev.js --forceExit",
     "build:dev": "tsc -p tsconfig.build.json --sourceMap --incremental && pnpm run copy",
     "watch": "tsc -watch -p tsconfig.build.json --sourceMap --incremental",
-    "start:dev": "nodemon dist/src/server.js"
+    "start:dev": "nodemon ."
   },
   "dependencies": {
     "discord.js": "^12.0.1",
