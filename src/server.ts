@@ -26,7 +26,7 @@ app.get('/changelog', (_, res) => res.sendFile(join(__dirname, '../assets/change
 app.use(express.static(join(__dirname, '../assets')))
 
 const listener: Server = app.listen(process.env.PORT, () =>
-  console.log(`http://localhost:${(listener.address() as AddressInfo).port}`))
+  process.env.NODE_ENV !== 'production' && console.log(`http://localhost:${(listener.address() as AddressInfo).port}`))
 
 const client = new PinguClient()
 
