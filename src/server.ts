@@ -4,7 +4,7 @@ import {Collection} from 'discord.js'
 import dotenv from 'dotenv'
 import express from 'express'
 import {PinguClient} from './types'
-import {createResolve, handleError, logDate, reply, sendMeError} from './helpers'
+import {createResolve, handleError, reply, sendMeError} from './helpers'
 import {prefix} from './constants'
 
 import type {AddressInfo} from 'net'
@@ -26,8 +26,9 @@ app.get('/changelog', (_, res) => res.sendFile(resolve('../assets/html/changelog
 app.use(express.static(resolve('../assets/css')))
 app.use(express.static(resolve('../assets/img')))
 
-const listener: Server = app.listen(process.env.PORT, () =>
-  process.env.NODE_ENV !== 'production' && console.log(`http://localhost:${(listener.address() as AddressInfo).port}`))
+const listener: Server = app.listen(process.env.PORT, () => {
+  if (process.env.NODE_ENV !== 'production') console.log(`http://localhost:${(listener.address() as AddressInfo).port}`)
+})
 
 const client = new PinguClient()
 
@@ -40,7 +41,7 @@ const importCommands = async <T>(path: string): Promise<T[]> => {
     )
     return modules.map<T>(m => m.default)
   } catch (error) {
-    if (process.env.NODE_ENV !== 'production') sendMeError(client, error, `\`importCommands\` failed with path \`${path}\`.`)
+    sendMeError(client, error, `\`importCommands\` failed with path \`${path}\`.`)
     throw error
   }
 }
@@ -58,39 +59,18 @@ client.once('ready', () => {
 Users: ${client.users.cache.size}
 Channels: ${client.channels.cache.size}
 Guilds: ${client.guilds.cache.size}`)
-  logDate()
 })
 
 // errors
-client.on('error', console.error)
-client.on('disconnect', () => {
-  console.log('DISCONNECTED')
-  logDate()
-})
-client.on('reconnecting', () => {
-  client.setActivity()
-  console.log('RECONNECTING')
-  logDate()
-})
-client.on('resume', () => {
-  client.setActivity()
-  console.log('RESUMED')
-  logDate()
+client.on('error', error => {
+  sendMeError(client, error, 'The `error` event fired.')
 })
 
 // guild create
-client.on('guildCreate', guild => {
-  console.log(`GUILD CREATE: ${guild.name} (id: ${guild.id})
-Channels: ${guild.channels.cache.size}
-Members:${guild.memberCount}`)
-  client.setActivity()
-})
+client.on('guildCreate', () => client.setActivity())
 
 // guild delete
-client.on('guildDelete', guild => {
-  console.log(`GUILD DELETE: ${guild.name} (id: ${guild.id})`)
-  client.setActivity()
-})
+client.on('guildDelete', () => client.setActivity())
 
 // commands
 client.on('message', (message: Message) => {

@@ -6,11 +6,6 @@ import type {Message, Client} from 'discord.js'
 /** Creates a function to easily resolve paths relative to the `__dirname`. */
 export const createResolve = (__dirname: string) => (p: string): string => join(__dirname, p)
 
-/** Logs the current date. */
-export const logDate = (): void => {
-  console.log(new Date().toLocaleString())
-}
-
 /**
  * Replies to a message.
  * @param message The message to reply to.
@@ -25,13 +20,15 @@ export const reply = (message: Message, content: string): void => {
  * @param info Extra information to send.
  */
 export const sendMeError = async (client: Client, error: Error, info: string): Promise<void> => {
-  (await client.users.fetch(me)!).send(`${info}
+  if (process.env.NODE_ENV === 'production') {
+    (await client.users.fetch(me)!).send(`${info}
 **Error at ${new Date().toLocaleString()}**
 ${error.stack}`)
+  }
 }
 
 /**
- * Replies to a message causing an error and either logs it or DMs me it depending on `NODE_ENV1.
+ * Replies to a message causing an error and either logs it or DMs me it depending on `NODE_ENV`.
  * @param info Extra information to send to the DM.
  * @param response The response in the message reply.
  */

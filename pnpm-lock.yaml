@@ -20,7 +20,6 @@ devDependencies:
   cz-conventional-changelog: 3.1.0
   eslint: 6.8.0
   jest: 25.1.0
-  jest-mock-console: 1.0.0_jest@25.1.0
   markdown-it: 10.0.0
   markdown-table: 2.0.0
   purgecss: 2.1.0
@@ -3780,14 +3779,6 @@ packages:
       node: '>= 8.3'
     resolution:
       integrity: sha512-Nr/Iwar2COfN22aCqX0kCVbXgn8IBm9nWf4xwGr5Olv/KZh0CZ32RKgZWMVDXGdOahicM10/fgjdimGNX/ttCQ==
-  /jest-mock-console/1.0.0_jest@25.1.0:
-    dependencies:
-      jest: 25.1.0
-    dev: true
-    peerDependencies:
-      jest: '>= 22.4.2'
-    resolution:
-      integrity: sha512-bN9UjH+Jd/5Gs+p9Xt9Mai4SoUQRFd3f+ZOSCjlcbuVRUhNvl1y9jvys6L7BUx+1Uz+3jOoaq1O+C6j3sSu7SQ==
   /jest-mock/25.1.0:
     dependencies:
       '@jest/types': 25.1.0
@@ -6963,7 +6954,6 @@ specifiers:
   eslint: ^6.8.0
   express: ^4.17.1
   jest: ^25.1.0
-  jest-mock-console: ^1.0.0
   lodash.upperfirst: ^4.3.1
   markdown-it: ^10.0.0
   markdown-table: ^2.0.0

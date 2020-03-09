@@ -1,21 +1,8 @@
 import {Client} from 'discord.js'
-import mockConsole from 'jest-mock-console'
-import {logDate, reply} from '../src/helpers'
+import {reply} from '../src/helpers'
 import {DMChannel, Guild, Message, TextChannel} from './mock'
 
-declare const console: Console & {log: {mock: {calls: any[]}}}
-
 describe('Helper functions', () => {
-  describe('logDate', () => {
-    it('works', () => {
-      const date = new Date()
-      const restoreConsole = mockConsole('log')
-      logDate()
-      expect(console.log.mock.calls).toEqual([[date.toLocaleString()]])
-      restoreConsole()
-    })
-  })
-
   describe('reply', () => {
     const client = new Client()
     const guild = new Guild(client)
