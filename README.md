@@ -1,6 +1,8 @@
 # Comrade Pingu
 [![Build Status](https://api.travis-ci.com/cherryblossom000/comrade-pingu.svg?token=HuQX1k5oVBvh691pweEv&branch=master)](https://travis-ci.com/cherryblossom000/comrade-pingu)
 
+*You may be looking for the [website on the cult](http://comradepingu.glitch.me).*
+
 A fun Discord bot created on the 3<sup>rd</sup> of March 2019 with [discord.js](https://discord.js.org). Kill all the capitalist scum!
 
 ## [Status](https://stats.uptimerobot.com/49G6NHJB7W/782979270)
