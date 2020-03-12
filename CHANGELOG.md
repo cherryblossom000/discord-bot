@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/cherryblossom000/comrade-pingu/compare/v1.0.3...v1.1.0) (2020-03-12)
+
+
+### Features
+
+* add website command ([ce88e15](https://github.com/cherryblossom000/comrade-pingu/commit/ce88e1586703d8fd0db74dff5feba7a9b574fb51))
+
 ## [1.0.3](https://github.com/cherryblossom000/comrade-pingu/compare/v1.0.2...v1.0.3) (2020-03-04)
 
 
