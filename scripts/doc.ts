@@ -1,23 +1,21 @@
 import {promises, readdirSync} from 'fs'
-import {join} from 'path'
+import {join, resolve} from 'path'
 import MarkdownIt from 'markdown-it'
 import table from 'markdown-table'
 import upperFirst from 'lodash.upperfirst'
-import {createResolve} from '../src/helpers'
 import type {Command} from '../src/types'
 
 const {mkdir, readFile, writeFile} = promises
-const resolve = createResolve(__dirname)
 
-const commandsPath = resolve('../dist/src/commands')
-const readmePath = resolve('../README.md')
+const commandsPath = resolve('dist/src/commands')
+const readmePath = resolve('README.md')
 
 ;(async (): Promise<void> => {
   const readme = readFile(readmePath)
-  const mkdirPromise = mkdir(resolve('../dist/assets/html'), {recursive: true})
-  const templatePromise = readFile(resolve('template.html'))
-  const license = readFile(resolve('../LICENSE'))
-  const changelog = readFile(resolve('../CHANGELOG.md'))
+  const mkdirPromise = mkdir(resolve('dist/assets/html'), {recursive: true})
+  const templatePromise = readFile(resolve('scripts/template.html'))
+  const license = readFile(resolve('LICENSE'))
+  const changelog = readFile(resolve('CHANGELOG.md'))
 
   // update readme
   const files = readdirSync(commandsPath)
@@ -42,7 +40,7 @@ const readmePath = resolve('../README.md')
   await mkdirPromise
   const template = (await templatePromise).toString()
   const writeHtml = async (p: string, title: string, description: string, md: string): Promise<void> =>
-    writeFile(resolve(`../dist/assets/html/${p}.html`), template
+    writeFile(resolve(`dist/assets/html/${p}.html`), template
       .replace('[title]', title)
       .replace('[description]', description)
       .replace('[content]', new MarkdownIt({html: true}).render(md))
