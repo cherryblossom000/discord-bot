@@ -1,12 +1,11 @@
 import ms from 'ms'
-import type {Message} from 'discord.js'
-import type {PinguCommand} from '../types'
+import type {Command} from '../types'
 
 export default {
   name: 'uptime',
   aliases: ['u'],
   description: 'Gets my uptime.',
-  execute: (message: Message) => {
+  execute: message => {
     message.channel.send(`Uptime: ${ms(message.client.uptime!)}`)
   }
-} as PinguCommand
+} as Command

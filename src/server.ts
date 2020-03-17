@@ -10,7 +10,7 @@ import {prefix} from './constants'
 import type {AddressInfo} from 'net'
 import type {Server} from 'http'
 import type {Message, Snowflake} from 'discord.js'
-import type {PinguCommand, PinguRegexCommand} from './types'
+import type {Command, RegexCommand} from './types'
 
 const {readdir} = promises
 const resolve = createResolve(__dirname)
@@ -47,7 +47,7 @@ const importCommands = async <T>(path: string): Promise<T[]> => {
 }
 
 // initialise commands
-importCommands<PinguCommand>('./commands').then(commands => commands.forEach(c => client.commands.set(c.name, c)))
+importCommands<Command>('./commands').then(commands => commands.forEach(c => client.commands.set(c.name, c)))
 
 // initialise cooldowns
 const cooldowns = new Collection<string, Collection<Snowflake, number>>()
@@ -130,14 +130,11 @@ The syntax is: \`${prefix}${command.name}${command.syntax ? ` ${command.syntax}`
     }
   } else {
     // regex message commands
-    importCommands<PinguRegexCommand>('./regex_commands').then(commands => commands.forEach(command => {
-      try {
-        if (command.regex) {
-          if (command.regex.test(content))
-            command.regexMessage ? channel.send(command.regexMessage) : command.execute!(message)
-        } else command.execute!(message)
-      } catch (error) {
-        handleError(client, error, message, `Regex command with regex \`${command.regex}\` failed.`)
+    importCommands<RegexCommand>('./regex_commands').then(commands => commands.forEach(command => {
+      if (command.regex.test(content)) {
+        typeof command.regexMessage === 'string'
+          ? channel.send(command.regexMessage)
+          : channel.send(command.regexMessage(message))
       }
     }))
   }

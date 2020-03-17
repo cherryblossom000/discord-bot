@@ -1,11 +1,10 @@
-import type {Message} from 'discord.js'
-import type {PinguCommand} from '../types'
+import type {Command} from '../types'
 
 export default {
   name: 'website',
   aliases: ['site', 'w', 'web'],
   description: 'Sends my website.',
-  execute: (message: Message): void => {
+  execute: message => {
     message.channel.send('https://comrade-pingu.glitch.me')
   }
-} as PinguCommand
+} as Command

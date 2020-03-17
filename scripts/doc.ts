@@ -4,7 +4,7 @@ import MarkdownIt from 'markdown-it'
 import table from 'markdown-table'
 import upperFirst from 'lodash.upperfirst'
 import {createResolve} from '../src/helpers'
-import type {PinguCommand} from '../src/types'
+import type {Command} from '../src/types'
 
 const {mkdir, readFile, writeFile} = promises
 const resolve = createResolve(__dirname)
@@ -25,7 +25,7 @@ const readmePath = resolve('../README.md')
     .filter(f => !f.endsWith('.map'))
     .map(async f => import(join(commandsPath, f)))
   )
-  const commands = modules.map<PinguCommand>(m => m.default)
+  const commands = modules.map<Command>(m => m.default)
   const docs = [['Command', 'Aliases', 'Description', 'Usage', 'Cooldown (s)']]
     .concat(commands.map(
       ({name, aliases, description, syntax, usage, cooldown = 3}) => [

@@ -1,11 +1,11 @@
 import {permissions} from '../constants'
-import type {PinguCommand} from '../types'
+import type {Command} from '../types'
 
 export default {
   name: 'invite',
   aliases: ['add', 'inv', 'link'],
   description: 'Gets my invite link.',
-  execute: (message) => {
+  execute: message => {
     message.channel.send(message.client.generateInvite(permissions))
   }
-} as PinguCommand
+} as Command

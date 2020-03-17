@@ -2,7 +2,7 @@ import {Client, Collection} from 'discord.js'
 import type {Message} from 'discord.js'
 
 /** A command. */
-export interface PinguCommand {
+export interface Command {
   /** The name. */
   name: string
 
@@ -48,32 +48,18 @@ export interface PinguCommand {
 }
 
 /** A command that is triggered based on a regular expression. */
-export interface PinguRegexCommand {
-  /**
-   * The regex to test for.
-   * If present, either `regexMessage` or `execute` must be defined.
-   * If absent, `execute` must be defined.
-   */
-  regex?: RegExp
+export interface RegexCommand {
+  /** The regex to test for. */
+  regex: RegExp
 
-  /**
-   * The message to reply with.
-   * If present, `regex` must be defined.
-   * If absent, `execute` must be defined.
-   */
-  regexMessage?: string
-
-  /**
-   * The actual command. Will only run if `regexMessage` or `regex` is not present.
-   * If absent, `regex` and `regexMessage` must be defined.
-   */
-  execute?: (message: Message) => void
+  /** The message to reply with. Can be a function that returns the message.. */
+  regexMessage: string | ((message: Message) => string)
 }
 
 /** The Discord client for this bot. */
 export class PinguClient extends Client {
   /** The commands. */
-  commands = new Collection<string, PinguCommand>()
+  commands = new Collection<string, Command>()
 
   /** Set the activity. */
   setActivity(): void {

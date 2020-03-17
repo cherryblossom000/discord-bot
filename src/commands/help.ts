@@ -1,6 +1,6 @@
 import {prefix} from '../constants'
 import {reply} from '../helpers'
-import type {PinguClient, PinguCommand} from '../types'
+import type {Command, PinguClient} from '../types'
 
 export default {
   name: 'help',
@@ -52,4 +52,4 @@ Do you have DMs disabled?`)
 
     message.channel.send(data, {split: true})
   }
-} as PinguCommand
+} as Command
