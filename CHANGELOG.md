@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/cherryblossom000/comrade-pingu/compare/v1.1.0...v1.1.1) (2020-03-17)
+
+
+### Bug Fixes
+
+* **angry noot noot:** fix it not triggering sometimes ([2c2cace](https://github.com/cherryblossom000/comrade-pingu/commit/2c2cace75ebc31a8b9e9fcb11d9e60585495a520))
+
 # [1.1.0](https://github.com/cherryblossom000/comrade-pingu/compare/v1.0.3...v1.1.0) (2020-03-12)
 
 
