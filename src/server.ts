@@ -9,8 +9,8 @@ import {prefix} from './constants'
 
 import type {AddressInfo} from 'net'
 import type {Server} from 'http'
-import type {Message, Snowflake} from 'discord.js'
-import type {Command, RegexCommand} from './types'
+import type {Snowflake} from 'discord.js'
+import type {Command, PinguMessage, RegexCommand} from './types'
 
 const {readdir} = promises
 const resolve = createResolve(__dirname)
@@ -73,7 +73,7 @@ client.on('guildCreate', () => client.setActivity())
 client.on('guildDelete', () => client.setActivity())
 
 // commands
-client.on('message', (message: Message) => {
+client.on('message', (message: PinguMessage) => {
   const now = Date.now()
   const {author, content, channel} = message
 

@@ -44,7 +44,7 @@ export interface Command {
    * @param message The message.
    * @param args The arguments.
    */
-  execute(message: Message, args: string[]): void
+  execute(message: PinguMessage, args: string[]): void
 }
 
 /** A command that is triggered based on a regular expression. */
@@ -65,4 +65,9 @@ export class PinguClient extends Client {
   setActivity(): void {
     this.user!.setActivity(`capitalist scum in ${this.guilds.cache.size} servers`, {type: 'WATCHING'})
   }
+}
+
+/** A message from this client. */
+export interface PinguMessage extends Message {
+  client: PinguClient
 }

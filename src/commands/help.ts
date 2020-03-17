@@ -1,6 +1,6 @@
 import {prefix} from '../constants'
 import {reply} from '../helpers'
-import type {Command, PinguClient} from '../types'
+import type {Command} from '../types'
 
 export default {
   name: 'help',
@@ -12,15 +12,16 @@ The command that you want to get info about. If no value is set, all the command
   cooldown: 5,
   execute: (message, args) => {
     // constants
-    const {author} = message
-    const data = []
-    const {commands} = message.client as PinguClient
+    const {author, client: {commands}} = message, data = []
 
     // all commands
     if (!args.length) {
-      data.push('Here\u{2019}s a list of all my commands:')
-      data.push(...commands.map(command => `\`${command.name}\`: ${command.description}`))
-      data.push(`\nYou can send \`${prefix}help [command name]\` to get info on a specific command. Noot noot.`)
+      data.push(
+        'Here\u{2019}s a list of all my commands:',
+        ...commands.map(command => `\`${command.name}\`: ${command.description}`),
+        `
+You can send \`${prefix}help [command name]\` to get info on a specific command. Noot noot.`
+      )
 
       return author.send(data, {split: true})
         .then(() => {
@@ -35,20 +36,19 @@ Do you have DMs disabled?`)
     }
 
     // specific command
-    const commandName = args[0].toLowerCase()
-    const command = commands.get(commandName) ||
-      commands.find(command => !!command.aliases?.includes(commandName))
+    const commandName = args[0].toLowerCase(),
+      command = commands.get(commandName) || commands.find(command => !!command.aliases?.includes(commandName))
 
     // invalid command
     if (!command) return reply(message, 'that\u{2019}s not a valid command. Noot noot.')
 
     // gets info of command
-    data.push(`**Name:** ${command.name}`)
-    if (command.aliases) data.push(`**Aliases:** ${command.aliases.join(', ')}`)
-    if (command.description) data.push(`**Description:** ${command.description}`)
-    data.push('**Usage:** ' +
-      `\`${prefix}${command.name}${command.syntax}\`${command.usage ? `\n${command.usage}` : ''}`)
-    data.push(`**Cooldown:** ${command.cooldown ?? 3} second${command.cooldown === 1 ? '' : 's'}`)
+    const {name, aliases, description, syntax, usage, cooldown} = command
+    data.push(`**Name:** ${name}`)
+    if (aliases) data.push(`**Aliases:** ${aliases.join(', ')}`)
+    if (description) data.push(`**Description:** ${description}`)
+    data.push(`**Usage:** \`${prefix}${name}${syntax}\`${usage ? `\n${usage}` : ''}`)
+    data.push(`**Cooldown:** ${cooldown ?? 3} second${cooldown === 1 ? '' : 's'}`)
 
     message.channel.send(data, {split: true})
   }
