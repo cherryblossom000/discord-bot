@@ -1,5 +1,5 @@
 import {prefix} from '../constants'
-import {reply} from '../helpers'
+import {reply, sendMeError} from '../helpers'
 import type {Command} from '../types'
 
 export default {
@@ -12,7 +12,7 @@ The command that you want to get info about. If no value is set, all the command
   cooldown: 5,
   execute: (message, args) => {
     // constants
-    const {author, client: {commands}} = message, data = []
+    const {author, client, client: {commands}} = message, data = []
 
     // all commands
     if (!args.length) {
@@ -29,7 +29,7 @@ You can send \`${prefix}help [command name]\` to get info on a specific command.
           message.reply('I\u{2019}ve sent you a DM with all my commands. Noot noot.')
         })
         .catch(error => {
-          console.error(`Could not send help DM to ${author.tag}.`, error)
+          sendMeError(client, error, `Could not send help DM to ${author.tag}.`)
           reply(message, `it seems like I can\u{2019}t DM you. Noot noot.
 Do you have DMs disabled?`)
         })
