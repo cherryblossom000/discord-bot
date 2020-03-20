@@ -41,9 +41,9 @@
     "@types/markdown-it": "^0.0.9",
     "@types/markdown-table": "^2.0.0",
     "@types/ms": "^0.7.31",
-    "@types/node": "^13.9.0",
-    "@typescript-eslint/eslint-plugin": "^2.22.0",
-    "@typescript-eslint/parser": "^2.22.0",
+    "@types/node": "^13.9.2",
+    "@typescript-eslint/eslint-plugin": "^2.24.0",
+    "@typescript-eslint/parser": "^2.24.0",
     "commitizen": "^4.0.3",
     "cz-conventional-changelog": "^3.1.0",
     "eslint": "^6.8.0",
@@ -53,7 +53,7 @@
     "purgecss": "^2.1.0",
     "semantic-release": "^17.0.4",
     "ts-jest": "^25.2.1",
-    "ts-node": "^8.6.2",
+    "ts-node": "^8.7.0",
     "typescript": "^3.8.3"
   },
   "config": {
