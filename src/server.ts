@@ -130,7 +130,7 @@ The syntax is: \`${prefix}${command.name}${command.syntax ? ` ${command.syntax}`
     }
   } else {
     // regex message commands
-    importCommands<RegexCommand>('./regex_commands').then(commands => commands.forEach(command => {
+    importCommands<RegexCommand>('./regex-commands').then(commands => commands.forEach(command => {
       if (command.regex.test(content)) {
         typeof command.regexMessage === 'string'
           ? channel.send(command.regexMessage)
