@@ -34,3 +34,5 @@ export class DMChannel extends Discord.DMChannel {
     this.client.channels.cache.set(this.id, this)
   }
 }
+
+export type Channel = TextChannel | DMChannel

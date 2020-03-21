@@ -66,6 +66,7 @@ interface EmbedData {
 
 export interface MessageData {
   id: Snowflake
+  channel_id: Snowflake
   author: UserData
   content: string
   timestamp: Timestamp

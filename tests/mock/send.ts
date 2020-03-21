@@ -1,15 +1,16 @@
 /* eslint-disable dot-notation */
 import {Message} from './Message'
-import type {DMChannel, TextChannel} from './Channel'
 import type {MessageOptions, TextBasedChannelFields} from 'discord.js'
+import type ActionsManager from './ActionsManager'
+import type {DMChannel, TextChannel} from './Channel'
 
 // eslint-disable-next-line @typescript-eslint/require-await
 async function send(this: TextChannel | DMChannel, {content}: MessageOptions): Promise<Message> {
-  return (this.client['actions'] as any).MessageCreate.handle({
+  return (this.client['actions'] as ActionsManager).MessageCreate.handle({
     id: '1',
     type: 0,
     channel_id: this.id,
-    content,
+    content: content ?? '',
     author: {
       id: '554539674899841055',
       username: 'Comrade Pingu',
@@ -27,7 +28,7 @@ async function send(this: TextChannel | DMChannel, {content}: MessageOptions): P
     mentions: [],
     mention_roles: [],
     mention_everyone: false
-  })
+  }).message
 }
 
 export default send as TextBasedChannelFields['send']
