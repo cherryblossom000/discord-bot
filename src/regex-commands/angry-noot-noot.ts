@@ -9,7 +9,7 @@ const joinAlternate = (...strings: string[]): string => `(${strings.join('|')})`
     'is', 'are'
   ]),
   adverbs = joinAlternate(...[
-    'very', 'much', 'so', 'too'
+    'very', 'much', 'so', 'too', 'really'
   ]),
   adjectives = joinAlternate(...[
     'down', 'not working', 'offline', 'stupid', 'dumb', 'annoying', 'bad', 'frustrating', 'sucks?'

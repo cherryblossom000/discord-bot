@@ -11,7 +11,8 @@ describe('angry-noot-noot', () => {
       'bad pingu',
       'very bad pingu',
       'not good pingu',
-      'pingu sucks'
+      'pingu sucks',
+      'pingu  really  sucks'
     ].forEach(string => it(string, () => {
       expect(regex.test(string)).toBe(true)
     }))

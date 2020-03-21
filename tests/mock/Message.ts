@@ -10,6 +10,7 @@ export class Message extends Discord.Message {
     super(channel.client, {
       id: Message.count.toString(),
       type: MessageType.DEFAULT,
+      channel_id: channel.id,
       content: '',
       author: {
         id: '554539674899841055',
