@@ -14,6 +14,7 @@ devDependencies:
   '@types/markdown-table': 2.0.0
   '@types/ms': 0.7.31
   '@types/node': 13.9.2
+  '@types/rewire': 2.5.28
   '@typescript-eslint/eslint-plugin': 2.24.0_2aaafe2ee3cd4bf67c98ce9cdfd45777
   '@typescript-eslint/parser': 2.24.0_eslint@6.8.0+typescript@3.8.3
   commitizen: 4.0.3
@@ -23,6 +24,7 @@ devDependencies:
   markdown-it: 10.0.0
   markdown-table: 2.0.0
   purgecss: 2.1.0
+  rewire: 5.0.0
   semantic-release: 17.0.4_semantic-release@17.0.4
   ts-jest: 25.2.1_jest@25.1.0
   ts-node: 8.7.0_typescript@3.8.3
@@ -818,6 +820,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-wWKOClTTiizcZhXnPY4wikVAwmdYHp8q6DmC+EJUzAMsycb7HB32Kh9RN4+0gExjmPmZSAQjgURXIGATPegAvA==
+  /@types/rewire/2.5.28:
+    dev: true
+    resolution:
+      integrity: sha512-uD0j/AQOa5le7afuK+u+woi8jNKF1vf3DN0H7LCJhft/lNNibUr7VcAesdgtWfEKveZol3ZG1CJqwx2Bhrnl8w==
   /@types/serve-static/1.13.3:
     dependencies:
       '@types/express-serve-static-core': 4.17.2
@@ -5638,6 +5644,12 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw==
+  /rewire/5.0.0:
+    dependencies:
+      eslint: 6.8.0
+    dev: true
+    resolution:
+      integrity: sha512-1zfitNyp9RH5UDyGGLe9/1N0bMlPQ0WrX0Tmg11kMHBpqwPJI4gfPpP7YngFyLbFmhXh19SToAG0sKKEFcOIJA==
   /right-pad/1.0.1:
     dev: true
     engines:
@@ -6945,6 +6957,7 @@ specifiers:
   '@types/markdown-table': ^2.0.0
   '@types/ms': ^0.7.31
   '@types/node': ^13.9.2
+  '@types/rewire': ^2.5.28
   '@typescript-eslint/eslint-plugin': ^2.24.0
   '@typescript-eslint/parser': ^2.24.0
   commitizen: ^4.0.3
@@ -6959,6 +6972,7 @@ specifiers:
   markdown-table: ^2.0.0
   ms: ^2.1.2
   purgecss: ^2.1.0
+  rewire: ^5.0.0
   semantic-release: ^17.0.4
   ts-jest: ^25.2.1
   ts-node: ^8.7.0
