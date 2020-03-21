@@ -23,7 +23,7 @@ The command that you want to get info about. If no value is set, all the command
 You can send \`${prefix}help [command name]\` to get info on a specific command. Noot noot.`
       )
 
-      return author.send(data, {split: true})
+      author.send(data, {split: true})
         .then(() => {
           if (message.channel.type === 'dm') return
           message.reply('I\u{2019}ve sent you a DM with all my commands. Noot noot.')
@@ -33,6 +33,7 @@ You can send \`${prefix}help [command name]\` to get info on a specific command.
           reply(message, `it seems like I can\u{2019}t DM you. Noot noot.
 Do you have DMs disabled?`)
         })
+      return
     }
 
     // specific command
@@ -40,7 +41,10 @@ Do you have DMs disabled?`)
       command = commands.get(commandName) || commands.find(command => !!command.aliases?.includes(commandName))
 
     // invalid command
-    if (!command) return reply(message, 'that\u{2019}s not a valid command. Noot noot.')
+    if (!command) {
+      reply(message, 'that\u{2019}s not a valid command. Noot noot.')
+      return
+    }
 
     // gets info of command
     const {name, aliases, description, syntax, usage, cooldown} = command

@@ -93,13 +93,16 @@ client.on('message', (message: PinguMessage) => {
     if (!command) return
 
     // guild only
-    if (command.guildOnly && channel.type !== 'text')
-      return reply(message, 'sorry, I can\u{2019}t execute that command inside DMs. Noot noot.')
+    if (command.guildOnly && channel.type !== 'text') {
+      reply(message, 'sorry, I can\u{2019}t execute that command inside DMs. Noot noot.')
+      return
+    }
 
     // if no args
     if (command.args && !args.length) {
-      return reply(message, `you didn\u{2019}t provide any arguments. Noot noot.
+      reply(message, `you didn\u{2019}t provide any arguments. Noot noot.
 The syntax is: \`${prefix}${command.name}${command.syntax ? ` ${command.syntax}` : ''}\`. Noot noot.`)
+      return
     }
 
     // cooldowns
@@ -111,10 +114,11 @@ The syntax is: \`${prefix}${command.name}${command.syntax ? ` ${command.syntax}`
       const expirationTime = timestamps.get(author.id)! + cooldownAmount
       if (now < expirationTime) {
         const timeLeft = ((expirationTime - now) / 1000).toFixed(1)
-        return reply(message,
-          `please wait ${timeLeft} more second${timeLeft === '1.0' ? '' : 's'} before using the \`${command.name}\` ` +
-          'command. Noot noot.'
+        reply(message,
+          `please wait ${timeLeft} more second${
+            timeLeft === '1.0' ? '' : 's'} before using the \`${command.name}\` command. Noot noot.`
         )
+        return
       }
     }
     timestamps.set(author.id, now)

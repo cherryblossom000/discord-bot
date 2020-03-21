@@ -7,18 +7,16 @@ describe('Helper functions', () => {
     const client = new Client()
     const guild = new Guild(client)
 
-    it('works for a guild channel', () => {
+    it('works for a guild channel', async () => {
       const channel = new TextChannel(guild)
       const message = new Message(channel)
-      reply(message, 'test content')
-      expect(channel.lastMessage?.content).toBe('test content')
+      expect((await reply(message, 'test content')).content).toBe('test content')
     })
 
-    it('works for a dm', () => {
+    it('works for a dm', async () => {
       const channel = new DMChannel(client)
       const message = new Message(channel)
-      reply(message, 'test content')
-      expect(channel.lastMessage?.content).toBe('Test content')
+      expect((await reply(message, 'test content')).content).toBe('Test content')
     })
   })
 })

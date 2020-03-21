@@ -11,9 +11,8 @@ export const createResolve = (__dirname: string) => (p: string): string => join(
  * @param message The message to reply to.
  * @param content The content of the message.
  */
-export const reply = (message: Message, content: string): void => {
+export const reply = async (message: Message, content: string): Promise<Message> =>
   message.reply(message.guild ? content : upperFirst(content))
-}
 
 /**
  * DMs me an error.
