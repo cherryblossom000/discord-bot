@@ -1,8 +1,9 @@
-import {Client, Collection} from 'discord.js'
+import {Client, Collection, Guild} from 'discord.js'
 import type {Message} from 'discord.js'
+import type Keyv from 'keyv'
 
-/** A command. */
-export interface Command {
+/** @template T The type of the message in `execute`. */
+interface CommandBase<T extends PinguMessage> {
   /** The name. */
   name: string
 
@@ -19,7 +20,7 @@ export interface Command {
    * Whether or not the command is only available in a server.
    * @default false
    */
-  guildOnly?: boolean
+  guildOnly?: false
 
   /**
    * Whether or nor the command requires arguments.
@@ -44,8 +45,16 @@ export interface Command {
    * @param message The message.
    * @param args The arguments.
    */
-  execute(message: PinguMessage, args: string[]): void
+  execute(message: T, args: string[], prefixes: Keyv<string>): Promise<void>
 }
+
+/**
+ * A command.
+ * @template T Whether the command is guild only or not.
+ */
+export type Command<T extends boolean = false> = T extends true
+  ? CommandBase<PinguMessage & {guild: Guild}> & {guildOnly: true}
+  : CommandBase<PinguMessage>
 
 /** A command that is triggered based on a regular expression. */
 export interface RegexCommand {

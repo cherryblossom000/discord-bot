@@ -1,7 +1,7 @@
 import type {PermissionString} from 'discord.js'
 
 /** The prefix for the bot. */
-export const prefix = '.'
+export const defaultPrefix = '.'
 
 /** The permissions integer. */
 export const permissions: PermissionString[] = [

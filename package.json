@@ -26,8 +26,11 @@
     "start:dev": "nodemon ."
   },
   "dependencies": {
+    "@keyv/sqlite": "^2.0.2",
     "discord.js": "^12.0.2",
+    "escape-string-regexp": "^2.0.0",
     "express": "^4.17.1",
+    "keyv": "^4.0.0",
     "lodash.upperfirst": "^4.3.1",
     "ms": "^2.1.2"
   },
@@ -36,6 +39,7 @@
     "@semantic-release/git": "^9.0.0",
     "@types/express": "^4.17.3",
     "@types/jest": "^25.1.4",
+    "@types/keyv": "^3.1.1",
     "@types/lodash.upperfirst": "^4.3.6",
     "@types/markdown-it": "^0.0.9",
     "@types/markdown-table": "^2.0.0",

@@ -39,5 +39,6 @@ export const handleError = (
   response = 'unfortunately, there was an error trying to execute that command. Noot noot.'
 ): void => {
   reply(message, response)
-  process.env.NODE_ENV === 'production' ? sendMeError(client, error, info) : console.error(error)
+  if (process.env.NODE_ENV === 'production') sendMeError(client, error, info)
+  else throw error
 }

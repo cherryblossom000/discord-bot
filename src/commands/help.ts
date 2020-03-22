@@ -1,4 +1,4 @@
-import {prefix} from '../constants'
+import {defaultPrefix} from '../constants'
 import {reply, sendMeError} from '../helpers'
 import type {Command} from '../types'
 
@@ -8,9 +8,9 @@ export default {
   description: 'Lists all my commands or gets info about a specific command.',
   syntax: '[command]',
   usage: `\`command\` (optional)
-The command that you want to get info about. If no value is set, all the commands will be listed.`,
+The command that you want to get info about. If omitted, all the commands will be listed.`,
   cooldown: 5,
-  execute: (message, args) => {
+  execute: async (message, args) => {
     // constants
     const {author, client, client: {commands}} = message, data = []
 
@@ -20,20 +20,19 @@ The command that you want to get info about. If no value is set, all the command
         'Here\u{2019}s a list of all my commands:',
         ...commands.map(command => `\`${command.name}\`: ${command.description}`),
         `
-You can send \`${prefix}help [command name]\` to get info on a specific command. Noot noot.`
+You can send \`${defaultPrefix}help [command name]\` to get info on a specific command. Noot noot.`
       )
 
-      author.send(data, {split: true})
-        .then(() => {
-          if (message.channel.type === 'dm') return
-          message.reply('I\u{2019}ve sent you a DM with all my commands. Noot noot.')
-        })
-        .catch(error => {
-          sendMeError(client, error, `Could not send help DM to ${author.tag}.`)
-          reply(message, `it seems like I can\u{2019}t DM you. Noot noot.
+      try {
+        await author.send(data, {split: true})
+        if (message.channel.type === 'dm') return
+        await message.reply('I\u{2019}ve sent you a DM with all my commands. Noot noot.')
+        return
+      } catch (error) {
+        sendMeError(client, error, `Could not send help DM to ${author.tag}.`)
+        await reply(message, `it seems like I can\u{2019}t DM you. Noot noot.
 Do you have DMs disabled?`)
-        })
-      return
+      }
     }
 
     // specific command
@@ -51,7 +50,7 @@ Do you have DMs disabled?`)
     data.push(`**Name:** ${name}`)
     if (aliases) data.push(`**Aliases:** ${aliases.join(', ')}`)
     if (description) data.push(`**Description:** ${description}`)
-    data.push(`**Usage:** \`${prefix}${name}${syntax}\`${usage ? `\n${usage}` : ''}`)
+    data.push(`**Usage:** \`${defaultPrefix}${name}${syntax}\`${usage ? `\n${usage}` : ''}`)
     data.push(`**Cooldown:** ${cooldown ?? 3} second${cooldown === 1 ? '' : 's'}`)
 
     message.channel.send(data, {split: true})

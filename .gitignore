@@ -1,6 +1,7 @@
-.DS_Store
-.env
+.data/
 dist/
 node_modules/
-pnpm-debug.log*
 tests/coverage
+.DS_Store
+.env
+pnpm-debug.log*

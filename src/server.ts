@@ -1,10 +1,12 @@
 import {join} from 'path'
 import {promises} from 'fs'
 import {Collection} from 'discord.js'
+import escapeRegex from 'escape-string-regexp'
 import express from 'express'
+import Keyv from 'keyv'
 import {PinguClient} from './types'
 import {createResolve, handleError, reply, sendMeError} from './helpers'
-import {prefix} from './constants'
+import {defaultPrefix} from './constants'
 
 import type {AddressInfo} from 'net'
 import type {Server} from 'http'
@@ -22,6 +24,10 @@ app.get('/license', (_, res) => res.sendFile(resolve('../assets/html/license.htm
 app.get('/changelog', (_, res) => res.sendFile(resolve('../assets/html/changelog.html')))
 app.use(express.static(resolve('../assets/css')))
 app.use(express.static(resolve('../assets/img')))
+
+// set up keyv
+const prefixes = new Keyv<string>('sqlite://.data/database.sqlite')
+prefixes.on('error', err => console.error('Keyv connection error:', err))
 
 const client = new PinguClient()
 
@@ -46,6 +52,23 @@ importCommands<RegexCommand>('./regex-commands', c => client.regexCommands.set(c
 // initialise cooldowns
 const cooldowns = new Collection<string, Collection<Snowflake, number>>()
 
+const executeRegexCommands = (message: PinguMessage): void => {
+  // regex message commands
+  client.regexCommands.forEach(async (regexMessage, regex) => {
+    if (regex.test(message.content)) {
+      try {
+        await (typeof regexMessage === 'string'
+          ? message.channel.send(regexMessage)
+          : message.channel.send(regexMessage(message)))
+      } catch (error) {
+        handleError(client, error, message,
+          `Regex command with regex \`${regex}\` failed with message content \`${message.content}\`.`
+        )
+      }
+    }
+  })
+}
+
 // ready
 client.once('ready', () => {
   client.setActivity()
@@ -67,16 +90,17 @@ client.on('guildCreate', () => client.setActivity())
 client.on('guildDelete', () => client.setActivity())
 
 // commands
-client.on('message', (message: PinguMessage) => {
+client.on('message', async (message: PinguMessage) => {
   const now = Date.now()
   const {author, content, channel} = message
 
   if (author?.bot) return
 
-  const matchedPrefix = new RegExp(String.raw`^<@!?${client.user!.id}>|${prefix}`).exec(content)?.[0]
-  if (matchedPrefix) {
+  const prefix = message.guild ? await prefixes.get(message.guild.id) ?? defaultPrefix : defaultPrefix
+  const matchedPrefix = new RegExp(`^<@!?${client.user!.id}>|${escapeRegex(prefix)}`).exec(content)?.[0]
+  if (matchedPrefix || !message.guild) {
     // exits if there is no input
-    const input = content.slice(matchedPrefix.length).trim()
+    const input = content.slice(matchedPrefix?.length ?? 0).trim()
     if (!input.length && matchedPrefix !== prefix) {
       channel.send(`Hi, I am Comrade Pingu. Noot noot.
 My prefix is \`${prefix}\`. Run \`${prefix} help\` for a list of commands.`)
@@ -89,7 +113,10 @@ My prefix is \`${prefix}\`. Run \`${prefix} help\` for a list of commands.`)
 
     // if command doesn't exist exit
     const command = client.commands.get(commandName) || client.commands.find(cmd => !!cmd.aliases?.includes(commandName))
-    if (!command) return
+    if (!command) {
+      if (message.guild) return
+      else return executeRegexCommands(message)
+    }
 
     // guild only
     if (command.guildOnly && channel.type !== 'text') {
@@ -125,22 +152,13 @@ The syntax is: \`${prefix}${command.name}${command.syntax ? ` ${command.syntax}`
 
     // execute command
     try {
-      command.execute(message, args)
+      await command.execute(message, args, prefixes)
     } catch (error) {
       handleError(client, error, message,
         `Command \`${command.name}\` failed${args.length ? ` with args ${args.map(a => `\`${a}\``).join(', ')}` : ''}.`
       )
     }
-  } else {
-    // regex message commands
-    client.regexCommands.forEach((regexMessage, regex) => {
-      if (regex.test(content)) {
-        typeof regexMessage === 'string'
-          ? channel.send(regexMessage)
-          : channel.send(regexMessage(message))
-      }
-    })
-  }
+  } else executeRegexCommands(message)
 })
 
 // start server and login to Discord

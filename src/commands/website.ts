@@ -4,7 +4,7 @@ export default {
   name: 'website',
   aliases: ['site', 'w', 'web'],
   description: 'Sends my website.',
-  execute: message => {
-    message.channel.send('https://comrade-pingu.glitch.me')
+  execute: async message => {
+    await message.channel.send('https://comrade-pingu.glitch.me')
   }
 } as Command

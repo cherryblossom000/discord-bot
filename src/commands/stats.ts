@@ -4,9 +4,9 @@ export default {
   name: 'stats',
   aliases: ['statistics'],
   description: 'Gets my stats.',
-  execute: message => {
+  execute: async message => {
     const client = message.client
-    message.channel.send(`Users: ${client.users.cache.size}
+    await message.channel.send(`Users: ${client.users.cache.size}
 Channels: ${client.channels.cache.size}
 Guilds: ${client.guilds.cache.size}`)
   }
