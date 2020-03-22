@@ -1,22 +1,18 @@
 import {promises, readdirSync} from 'fs'
 import {join, resolve} from 'path'
 import MarkdownIt from 'markdown-it'
+import {Permissions} from 'discord.js'
 import table from 'markdown-table'
 import upperFirst from 'lodash.upperfirst'
+import {permissions} from '../src/constants'
 import type {Command} from '../src/types'
 
 const {mkdir, readFile, writeFile} = promises
 
 const commandsPath = resolve('dist/src/commands')
-const readmePath = resolve('README.md')
+const readme = resolve('README.md')
 
 ;(async (): Promise<void> => {
-  const readme = readFile(readmePath)
-  const mkdirPromise = mkdir(resolve('dist/assets/html'), {recursive: true})
-  const templatePromise = readFile(resolve('scripts/template.html'))
-  const license = readFile(resolve('LICENSE'))
-  const changelog = readFile(resolve('CHANGELOG.md'))
-
   // update readme
   const files = readdirSync(commandsPath)
   const modules = await Promise.all(files
@@ -34,36 +30,39 @@ const readmePath = resolve('README.md')
           cooldown.toString()
       ]
     ))
-  const newReadme = (await readme).toString().replace(/(?<=## Documentation\n)[\s\S]+(?=\n\n## Links)/, table(docs))
-  const promises = [writeFile(readmePath, newReadme)]
 
-  await mkdirPromise
-  const template = (await templatePromise).toString()
+  const newReadme = (await readFile(readme)).toString()
+    .replace(/(?<=## Documentation\n)[\s\S]+(?=\n\n## Links)/, table(docs))
+    .replace(/(?<=permissions=)\d+/, new Permissions(permissions).bitfield.toString())
+
+  await mkdir(resolve('dist/assets/html'), {recursive: true})
+  const template = (await readFile(resolve('scripts/template.html'))).toString()
+
   const writeHtml = async (p: string, title: string, description: string, md: string): Promise<void> =>
     writeFile(resolve(`dist/assets/html/${p}.html`), template
       .replace('[title]', title)
       .replace('[description]', description)
       .replace('[content]', new MarkdownIt({html: true}).render(md))
     )
-  const writeOtherPage = async (p: string, md: Promise<Buffer>): Promise<void> => {
-    const P = upperFirst(p)
-    return writeHtml(p, `${P} - Comrade Pingu`, `${P} for Comrade Pingu`, `${(await md).toString()}
-#### [\u2190 back](/)`)
+
+  const writeOtherPage = async (htmlPath: string, mdPath: string): Promise<void> => {
+    const P = upperFirst(htmlPath)
+    return writeHtml(
+      htmlPath,
+      `${P} - Comrade Pingu`, `${P} for Comrade Pingu`,
+    `${(await readFile(resolve(mdPath))).toString()}
+#### [\u2190 back](/)`
+    )
   }
 
-  promises.push(...[
-    // update index.html
-    writeHtml('index', 'Comrade Pingu', 'Kill all the capitalist scum!', newReadme
-      .replace('./assets/img', '')
-      .replace('LICENSE', 'license')
-      .replace('CHANGELOG.md', 'changelog')
-    ),
-
-    // update license.html and changelog.html
-    writeOtherPage('license', license),
-    // update changelog.html
-    writeOtherPage('changelog', changelog)
-  ])
-
-  await Promise.all(promises)
+  await writeFile(readme, newReadme)
+  // update index.html
+  await writeHtml('index', 'Comrade Pingu', 'Kill all the capitalist scum!', newReadme
+    .replace('./assets/img', '')
+    .replace('LICENSE', 'license')
+    .replace('CHANGELOG.md', 'changelog')
+  )
+  // update license.html and changelog.html
+  await writeOtherPage('license', 'LICENSE')
+  await writeOtherPage('changelog', 'CHANGELOG.md')
 })()
