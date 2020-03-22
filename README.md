@@ -13,7 +13,7 @@ Current | 24 Hours | 7 Days | 30 Days | Response
 ## Getting Started
 
 ### Inviting
-To invite Comrade Pingu to your sever, you must have the Manage Server permission and then use [this link](https://discordapp.com/oauth2/authorize?client_id=554539674899841055&scope=bot&permissions=536905856).
+To invite Comrade Pingu to your sever, you must have the Manage Server permission and then use [this link](https://discordapp.com/oauth2/authorize?client_id=554539674899841055&scope=bot&permissions=34816).
 ### Prefix
 Comrade Pingu’s prefix is `.`.
 
