@@ -29,16 +29,17 @@ ${error.stack}`)
 /**
  * Replies to a message causing an error and either logs it or DMs me it depending on `NODE_ENV`.
  * @param info Extra information to send to the DM.
+ * @param message The message to reply to, if applicable.
  * @param response The response in the message reply.
  */
 export const handleError = (
   client: Client,
   error: Error,
-  message: Message,
   info: string,
+  message?: Message,
   response = 'unfortunately, there was an error trying to execute that command. Noot noot.'
 ): void => {
-  reply(message, response)
+  if (message) reply(message, response)
   if (process.env.NODE_ENV === 'production') sendMeError(client, error, info)
   else throw error
 }

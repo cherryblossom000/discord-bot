@@ -27,11 +27,11 @@ app.get('/changelog', (_, res) => res.sendFile(resolve('../assets/html/changelog
 app.use(express.static(resolve('../assets/css')))
 app.use(express.static(resolve('../assets/img')))
 
+const client = new PinguClient()
+
 // set up keyv
 const prefixes = new Keyv<string>('sqlite://.data/database.sqlite')
-prefixes.on('error', err => console.error('Keyv connection error:', err))
-
-const client = new PinguClient()
+prefixes.on('error', error => handleError(client, error, 'Keyv connection error:'))
 
 const importCommands = async <T>(path: string, callback: (command: T) => void): Promise<void> => {
   try {
@@ -63,8 +63,8 @@ const executeRegexCommands = (message: PinguMessage): void => {
           ? message.channel.send(regexMessage)
           : message.channel.send(regexMessage(message)))
       } catch (error) {
-        handleError(client, error, message,
-          `Regex command with regex \`${regex}\` failed with message content \`${message.content}\`.`
+        handleError(client, error,
+          `Regex command with regex \`${regex}\` failed with message content \`${message.content}\`.`, message
         )
       }
     }
@@ -156,8 +156,9 @@ The syntax is: \`${prefix}${command.name}${command.syntax ? ` ${command.syntax}`
     try {
       await command.execute(message, args, prefixes)
     } catch (error) {
-      handleError(client, error, message,
-        `Command \`${command.name}\` failed${args.length ? ` with args ${args.map(a => `\`${a}\``).join(', ')}` : ''}.`
+      handleError(client, error,
+        `Command \`${command.name}\` failed${args.length ? ` with args ${args.map(a => `\`${a}\``).join(', ')}` : ''}.`,
+        message
       )
     }
   } else executeRegexCommands(message)
