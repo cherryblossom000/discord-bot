@@ -16,6 +16,8 @@ import type {Command, PinguMessage, RegexCommand} from './types'
 const {readdir} = promises
 const resolve = createResolve(__dirname)
 
+const dev = process.env.NODE_ENV !== 'production'
+
 // routing
 const app = express()
 
@@ -163,12 +165,12 @@ The syntax is: \`${prefix}${command.name}${command.syntax ? ` ${command.syntax}`
 
 // start server and login to Discord
 ;(async (): Promise<void> => {
-  if (process.env.NODE_ENV !== 'production') {
+  if (dev) {
     const dotenv = await import('dotenv')
     dotenv.config()
   }
   const listener: Server = app.listen(process.env.PORT, () => {
-    if (process.env.NODE_ENV !== 'production') console.log(`http://localhost:${(listener.address() as AddressInfo).port}`)
+    if (dev) console.log(`http://localhost:${(listener.address() as AddressInfo).port}`)
   })
   client.login(process.env.TOKEN)
 })()
