@@ -25,14 +25,14 @@ app.use(express.static(resolve('../assets/img')))
 
 const client = new PinguClient()
 
-const importCommands = async <T>(path: string): Promise<T[]> => {
+const importCommands = async <T>(path: string, callback: (command: T) => void): Promise<void> => {
   try {
     const files = await readdir(resolve(path))
     const modules = await Promise.all(files
       .filter(f => !f.endsWith('.map'))
       .map(async f => import(join(resolve(path), f)))
     )
-    return modules.map<T>(m => m.default)
+    modules.map<T>(m => m.default).forEach(callback)
   } catch (error) {
     sendMeError(client, error, `\`importCommands\` failed with path \`${path}\`.`)
     throw error
@@ -40,7 +40,8 @@ const importCommands = async <T>(path: string): Promise<T[]> => {
 }
 
 // initialise commands
-importCommands<Command>('./commands').then(commands => commands.forEach(c => client.commands.set(c.name, c)))
+importCommands<Command>('./commands', c => client.commands.set(c.name, c))
+importCommands<RegexCommand>('./regex-commands', c => client.regexCommands.set(c.regex, c.regexMessage))
 
 // initialise cooldowns
 const cooldowns = new Collection<string, Collection<Snowflake, number>>()
@@ -127,13 +128,13 @@ The syntax is: \`${prefix}${command.name}${command.syntax ? ` ${command.syntax}`
     }
   } else {
     // regex message commands
-    importCommands<RegexCommand>('./regex-commands').then(commands => commands.forEach(command => {
-      if (command.regex.test(content)) {
-        typeof command.regexMessage === 'string'
-          ? channel.send(command.regexMessage)
-          : channel.send(command.regexMessage(message))
+    client.regexCommands.forEach((regexMessage, regex) => {
+      if (regex.test(content)) {
+        typeof regexMessage === 'string'
+          ? channel.send(regexMessage)
+          : channel.send(regexMessage(message))
       }
-    }))
+    })
   }
 })
 

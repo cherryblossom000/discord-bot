@@ -61,6 +61,9 @@ export class PinguClient extends Client {
   /** The commands. */
   commands = new Collection<string, Command>()
 
+  /** The regex commands. */
+  regexCommands = new Collection<RegExp, RegexCommand['regexMessage']>()
+
   /** Set the activity. */
   setActivity(): void {
     this.user!.setActivity(`capitalist scum in ${this.guilds.cache.size} servers`, {type: 'WATCHING'})
