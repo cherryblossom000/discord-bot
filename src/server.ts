@@ -1,7 +1,6 @@
 import {join} from 'path'
 import {promises} from 'fs'
 import {Collection} from 'discord.js'
-import dotenv from 'dotenv'
 import express from 'express'
 import {PinguClient} from './types'
 import {createResolve, handleError, reply, sendMeError} from './helpers'
@@ -15,8 +14,6 @@ import type {Command, PinguMessage, RegexCommand} from './types'
 const {readdir} = promises
 const resolve = createResolve(__dirname)
 
-dotenv.config()
-
 // routing
 const app = express()
 
@@ -25,10 +22,6 @@ app.get('/license', (_, res) => res.sendFile(resolve('../assets/html/license.htm
 app.get('/changelog', (_, res) => res.sendFile(resolve('../assets/html/changelog.html')))
 app.use(express.static(resolve('../assets/css')))
 app.use(express.static(resolve('../assets/img')))
-
-const listener: Server = app.listen(process.env.PORT, () => {
-  if (process.env.NODE_ENV !== 'production') console.log(`http://localhost:${(listener.address() as AddressInfo).port}`)
-})
 
 const client = new PinguClient()
 
@@ -116,7 +109,7 @@ The syntax is: \`${prefix}${command.name}${command.syntax ? ` ${command.syntax}`
         const timeLeft = ((expirationTime - now) / 1000).toFixed(1)
         reply(message,
           `please wait ${timeLeft} more second${
-            timeLeft === '1.0' ? '' : 's'} before using the \`${command.name}\` command. Noot noot.`
+          timeLeft === '1.0' ? '' : 's'} before using the \`${command.name}\` command. Noot noot.`
         )
         return
       }
@@ -144,5 +137,14 @@ The syntax is: \`${prefix}${command.name}${command.syntax ? ` ${command.syntax}`
   }
 })
 
-// login to Discord
-client.login(process.env.TOKEN)
+// start server and login to Discord
+;(async (): Promise<void> => {
+  if (process.env.NODE_ENV !== 'production') {
+    const dotenv = await import('dotenv')
+    dotenv.config()
+  }
+  const listener: Server = app.listen(process.env.PORT, () => {
+    if (process.env.NODE_ENV !== 'production') console.log(`http://localhost:${(listener.address() as AddressInfo).port}`)
+  })
+  client.login(process.env.TOKEN)
+})()

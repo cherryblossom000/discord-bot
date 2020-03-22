@@ -1,6 +1,5 @@
 dependencies:
   discord.js: 12.0.2
-  dotenv: 8.2.0
   express: 4.17.1
   lodash.upperfirst: 4.3.1
   ms: 2.1.2
@@ -19,6 +18,7 @@ devDependencies:
   '@typescript-eslint/parser': 2.24.0_eslint@6.8.0+typescript@3.8.3
   commitizen: 4.0.3
   cz-conventional-changelog: 3.1.0
+  dotenv: 8.2.0
   eslint: 6.8.0
   jest: 25.1.0
   markdown-it: 10.0.0
@@ -2092,7 +2092,7 @@ packages:
     resolution:
       integrity: sha1-G3CK8JSknJoOfbyteQq6U52sEXc=
   /dotenv/8.2.0:
-    dev: false
+    dev: true
     engines:
       node: '>=8'
     resolution:
