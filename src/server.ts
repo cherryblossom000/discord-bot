@@ -130,13 +130,13 @@ My prefix is \`${prefix}\`. Run \`${prefix} help\` for a list of commands.`)
 
     // guild only
     if (command.guildOnly && channel.type !== 'text') {
-      reply(message, 'sorry, I can\u{2019}t execute that command inside DMs. Noot noot.')
+      reply(message, 'sorry, I can\u2019t execute that command inside DMs. Noot noot.')
       return
     }
 
     // if no args
     if (command.args && !args.length) {
-      reply(message, `you didn\u{2019}t provide any arguments. Noot noot.
+      reply(message, `you didn\u2019t provide any arguments. Noot noot.
 The syntax is: \`${prefix}${command.name}${command.syntax ? ` ${command.syntax}` : ''}\`. Noot noot.`)
       return
     }
