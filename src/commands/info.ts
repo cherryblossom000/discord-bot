@@ -8,8 +8,7 @@ export default {
   execute: async message => {
     await message.channel.send(`Version: \`${version}\`
 I am comrade Pingu. Noot noot.
-Kill all the capitalist scum! For those who don\u2019t know, that includes Michael Sun because he killed Steffi\u2019s` +
-` ant friends.
+Kill all the capitalist scum!.
 I was created by cherryblossom#2661.`)
   }
 } as Command
