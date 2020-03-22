@@ -29,6 +29,14 @@ app.use(express.static(resolve('../assets/img')))
 
 const client = new PinguClient()
 
+// handle promise rejections and uncaught exceptions
+if (!dev) {
+  process.on('unhandledRejection', reason =>
+    handleError(client, reason instanceof Error ? reason : new Error(`${reason}`), 'Uncaught promise rejection:')
+  )
+  process.on('uncaughtException', error => handleError(client, error, 'Uncaught exception:'))
+}
+
 // set up keyv
 const prefixes = new Keyv<string>('sqlite://.data/database.sqlite')
 prefixes.on('error', error => handleError(client, error, 'Keyv connection error:'))
