@@ -1,9 +1,8 @@
-import {Client, Collection, Guild} from 'discord.js'
-import type {Message} from 'discord.js'
+import Discord, {Collection} from 'discord.js'
 import type Keyv from 'keyv'
 
 /** @template T The type of the message in `execute`. */
-interface CommandBase<T extends PinguMessage> {
+interface CommandBase<T extends Message> {
   /** The name. */
   name: string
 
@@ -53,8 +52,8 @@ interface CommandBase<T extends PinguMessage> {
  * @template T Whether the command is guild only or not.
  */
 export type Command<T extends boolean = false> = T extends true
-  ? CommandBase<PinguMessage & {guild: Guild}> & {guildOnly: true}
-  : CommandBase<PinguMessage>
+  ? CommandBase<GuildMessage> & {guildOnly: true}
+  : CommandBase<Message>
 
 /** A command that is triggered based on a regular expression. */
 export interface RegexCommand {
@@ -66,7 +65,7 @@ export interface RegexCommand {
 }
 
 /** The Discord client for this bot. */
-export class PinguClient extends Client {
+export class Client extends Discord.Client {
   /** The commands. */
   commands = new Collection<string, Command>()
 
@@ -80,6 +79,10 @@ export class PinguClient extends Client {
 }
 
 /** A message from this client. */
-export interface PinguMessage extends Message {
-  client: PinguClient
-}
+export interface Message extends Discord.Message {client: Client}
+
+/** A message from a guild. */
+interface GuildMessage extends Message {guild: Guild}
+
+/** A guild from this client. */
+export interface Guild extends Discord.Guild {client: Client}

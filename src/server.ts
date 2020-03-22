@@ -4,14 +4,14 @@ import {Collection} from 'discord.js'
 import escapeRegex from 'escape-string-regexp'
 import express from 'express'
 import Keyv from 'keyv'
-import {PinguClient} from './types'
+import {Client} from './types'
 import {createResolve, handleError, reply, sendMeError} from './helpers'
 import {defaultPrefix} from './constants'
 
 import type {AddressInfo} from 'net'
 import type {Server} from 'http'
 import type {Snowflake} from 'discord.js'
-import type {Command, PinguMessage, RegexCommand} from './types'
+import type {Command, Message, RegexCommand} from './types'
 
 const {readdir} = promises
 const resolve = createResolve(__dirname)
@@ -27,7 +27,7 @@ app.get('/changelog', (_, res) => res.sendFile(resolve('../assets/html/changelog
 app.use(express.static(resolve('../assets/css')))
 app.use(express.static(resolve('../assets/img')))
 
-const client = new PinguClient()
+const client = new Client()
 
 // handle promise rejections and uncaught exceptions
 if (!dev) {
@@ -62,7 +62,7 @@ importCommands<RegexCommand>('./regex-commands', c => client.regexCommands.set(c
 // initialise cooldowns
 const cooldowns = new Collection<string, Collection<Snowflake, number>>()
 
-const executeRegexCommands = (message: PinguMessage): void => {
+const executeRegexCommands = (message: Message): void => {
   // regex message commands
   client.regexCommands.forEach(async (regexMessage, regex) => {
     if (regex.test(message.content)) {
@@ -100,7 +100,7 @@ client.on('guildCreate', () => client.setActivity())
 client.on('guildDelete', () => client.setActivity())
 
 // commands
-client.on('message', async (message: PinguMessage) => {
+client.on('message', async (message: Message) => {
   const now = Date.now()
   const {author, content, channel} = message
 
