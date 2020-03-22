@@ -73,10 +73,15 @@ client.on('message', (message: PinguMessage) => {
 
   if (author?.bot) return
 
-  if (content.startsWith(prefix)) {
+  const matchedPrefix = new RegExp(String.raw`^<@!?${client.user!.id}>|${prefix}`).exec(content)?.[0]
+  if (matchedPrefix) {
     // exits if there is no input
-    const input = content.slice(prefix.length).trim()
-    if (!input.length) return
+    const input = content.slice(matchedPrefix.length).trim()
+    if (!input.length && matchedPrefix !== prefix) {
+      channel.send(`Hi, I am Comrade Pingu. Noot noot.
+My prefix is \`${prefix}\`. Run \`${prefix} help\` for a list of commands.`)
+      return
+    }
 
     // get args
     const args = input.split(/\s+/)
