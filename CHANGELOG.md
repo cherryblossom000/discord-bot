@@ -1,3 +1,20 @@
+# [1.2.0](https://github.com/cherryblossom000/comrade-pingu/compare/v1.1.1...v1.2.0) (2020-03-22)
+
+
+### Bug Fixes
+
+* **invite:** fix command not working ([f51e2f2](https://github.com/cherryblossom000/comrade-pingu/commit/f51e2f29c8372e17431609641e6bf0a79ccf36a8))
+
+
+### Features
+
+* add prefix command ([7e628db](https://github.com/cherryblossom000/comrade-pingu/commit/7e628db9e013efab79db92d0239cf60896d2964a))
+
+
+### Performance Improvements
+
+* stop loading dotenv on prod ([226b216](https://github.com/cherryblossom000/comrade-pingu/commit/226b2160275678ef3975dcd144c9574b50a93bef))
+
 ## [1.1.1](https://github.com/cherryblossom000/comrade-pingu/compare/v1.1.0...v1.1.1) (2020-03-17)
 
 
