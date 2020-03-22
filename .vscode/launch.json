@@ -6,7 +6,6 @@
       "request": "launch",
       "name": "Launch",
       "program": "${workspaceRoot}/src/server.ts",
-      "preLaunchTask": "npm: build:dev",
       "outFiles": ["${workspaceFolder}/dist/**/*.js"],
       "skipFiles": ["<node_internals>/**"]
     },
@@ -16,7 +15,6 @@
       "name": "Launch (watch)",
       "runtimeExecutable": "nodemon",
       "program": "${workspaceFolder}/src/server.ts",
-      "preLaunchTask": "npm: build:dev",
       "outFiles": ["${workspaceFolder}/dist/**/*.js"],
       "restart": true,
       "skipFiles": ["<node_internals>/**"]
