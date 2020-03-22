@@ -63,6 +63,7 @@
         "@typescript-eslint/member-ordering": 2,
         "@typescript-eslint/no-explicit-any": 0,
         "@typescript-eslint/no-extra-parens": [2, "all", {"conditionalAssign": false}],
+        "@typescript-eslint/no-misused-promises": [2, {"checksVoidReturn": false}],
         "@typescript-eslint/no-non-null-assertion": 0,
         "@typescript-eslint/no-require-imports": 2,
         "@typescript-eslint/no-unnecessary-qualifier": 2,
