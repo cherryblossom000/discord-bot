@@ -6,6 +6,6 @@ export default {
   aliases: ['add', 'inv', 'link'],
   description: 'Gets my invite link.',
   execute: async message => {
-    await message.channel.send(message.client.generateInvite(permissions))
+    await message.channel.send(await message.client.generateInvite(permissions))
   }
 } as Command
