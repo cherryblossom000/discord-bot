@@ -23,7 +23,7 @@ Comrade Pingu’s prefix is `.`.
 | `help` | `commands`, `h` | Lists all my commands or gets info about a specific command. | `.help [command]`<br>`command` (optional)<br>The command that you want to get info about. If omitted, all the commands will be listed. | 5 |
 | `info` | `in` | Gets info about me. | `.info` | 3 |
 | `invite` | `add`, `inv`, `link` | Gets my invite link. | `.invite` | 3 |
-| `iwmelc` | `iwillmurdereverylastcapitalist` | Gets the meme that shows that “noot noot” in Pingu means “i will murder every last capitalist” in English.<br>![i will murder every last capitalist](./assets/img/iwmelc.jpg) | `.iwmelc` | 3 |
+| `iwmelc` | `iwillmurdereverylastcapitalist` | Gets the meme that shows that ‘noot noot’ in Pingu means ‘i will murder every last capitalist’ in English.<br>![i will murder every last capitalist](./assets/img/iwmelc.jpg) | `.iwmelc` | 3 |
 | `ping` | `p` | Gets my current latency. | `.ping` | 5 |
 | `prefix` | `pr` | Gets or sets the prefix. | `.prefix [new prefix]`<br>`new prefix` (optional)<br>The text that you want to set the prefix to. If omitted, displays the current prefix. | 3 |
 | `stats` | `statistics` | Gets my stats. | `.stats` | 3 |
