@@ -34,7 +34,7 @@ const readme = resolve('README.md')
     ))
 
   const newReadme = (await readFile(readme)).toString()
-    .replace(/(?<=## Documentation\n)[\s\S]+(?=\n\n## Links)/, table(docs))
+    .replace(/(?<=## Documentation\n)[\s\S]+(?=\n\n## Links)/, table(docs, {alignDelimiters: false}))
     .replace(/(?<=permissions=)\d+/, new Permissions(permissions).bitfield.toString())
 
   await mkdir(resolve('dist/assets/html'), {recursive: true})
