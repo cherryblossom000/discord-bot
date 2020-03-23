@@ -1,10 +1,16 @@
 import Discord from 'discord.js'
 import {MessageType} from './data'
-import type {DMChannel, TextChannel} from './Channel'
+import type {APIMessage, MessageAdditions, MessageOptions, StringResolvable} from 'discord.js'
 import type {MessageData} from './data'
+import type * as Pingu from '../../src/types'
+import type {OptionsNoSplit, OptionsWithSplit} from '../../src/types'
+import type {DMChannel, TextChannel} from './Channel'
+import type {Guild} from './Guild'
 
-export class Message extends Discord.Message {
+export class Message extends Discord.Message implements Pingu.Message {
   private static count = 0
+  declare client: Pingu.Client
+  declare guild: Guild | null
 
   constructor(channel: TextChannel | DMChannel) {
     super(channel.client, {
@@ -31,5 +37,20 @@ export class Message extends Discord.Message {
       mention_everyone: false
     } as MessageData, channel)
     Message.count++
+  }
+
+  async reply(
+    content?: StringResolvable,
+    options?: MessageAdditions | MessageOptions | OptionsNoSplit,
+  ): Promise<this>
+
+  async reply(content?: StringResolvable, options?: MessageAdditions | OptionsWithSplit): Promise<this[]>
+  async reply(options?: APIMessage | MessageAdditions | MessageOptions | OptionsNoSplit): Promise<this>
+  async reply(options?: APIMessage | MessageAdditions | OptionsWithSplit): Promise<this[]>
+  async reply(
+    content?: StringResolvable | APIMessage | MessageAdditions | MessageOptions,
+    options?: MessageAdditions | MessageOptions
+  ): Promise<this | this[]> {
+    return super.reply(content, options) as Promise<this | this[]>
   }
 }

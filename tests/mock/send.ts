@@ -5,7 +5,7 @@ import type ActionsManager from './ActionsManager'
 import type {DMChannel, TextChannel} from './Channel'
 
 // eslint-disable-next-line @typescript-eslint/require-await
-async function send(this: TextChannel | DMChannel, {content}: MessageOptions): Promise<Message> {
+async function send(this: TextChannel | DMChannel, {content}: MessageOptions): Promise<Message | Message[]> {
   return (this.client['actions'] as ActionsManager).MessageCreate.handle({
     id: '1',
     type: 0,

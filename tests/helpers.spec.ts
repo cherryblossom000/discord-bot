@@ -1,4 +1,4 @@
-import {Client} from 'discord.js'
+import {Client} from '../src/types'
 import {reply} from '../src/helpers'
 import {DMChannel, Guild, Message, TextChannel} from './mock'
 

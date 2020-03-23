@@ -2,9 +2,11 @@ import Discord from 'discord.js'
 import {DefaultMessageNotificationLevel, ExplicitContentFilterLevel, MFALevel, VerificationLevel} from './data'
 import type {Client} from 'discord.js'
 import type {GuildData} from './data'
+import * as Pingu from '../../src/types'
 
-export class Guild extends Discord.Guild {
+export class Guild extends Discord.Guild implements Pingu.Guild {
   private static count = 0
+  declare client: Pingu.Client
 
   constructor(client: Client) {
     super(client, {
