@@ -25,7 +25,9 @@ const readme = resolve('README.md')
       ({name, aliases, description, syntax, usage, cooldown = 3}) => [
           `\`${name}\``,
           aliases?.map(a => `\`${a}\``).join(', ') ?? '-',
-          name === 'iwmelc' ? `${description}![i will murder every last capitalist](./assets/img/iwmelc.jpg)` : description,
+          name === 'iwmelc'
+            ? `${description}<br>![i will murder every last capitalist](./assets/img/iwmelc.jpg)`
+            : description,
           `\`.${name}${syntax ? ` ${syntax}` : ''}\`${usage ? `<br>${usage.replace(/\n/g, '<br>')}` : ''}`,
           cooldown.toString()
       ]
