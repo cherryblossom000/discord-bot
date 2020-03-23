@@ -1,4 +1,8 @@
 import Discord, {Collection} from 'discord.js'
+import type {
+  APIMessage, GuildMember, MessageAdditions, MessageOptions,
+  SplitOptions, StringResolvable, TextChannel
+} from 'discord.js'
 import type Keyv from 'keyv'
 
 /** @template T The type of the message in `execute`. */
@@ -78,11 +82,28 @@ export class Client extends Discord.Client {
   }
 }
 
+type OptionsNoSplit = MessageOptions & {split?: false}
+type OptionsWithSplit = MessageOptions & {split: true | SplitOptions}
+
 /** A message from this client. */
-export interface Message extends Discord.Message {client: Client}
+export interface Message extends Discord.Message {
+  client: Client
+  guild: Guild | null
+  reply(
+    content?: StringResolvable,
+    options?: MessageAdditions | MessageOptions | OptionsNoSplit,
+  ): Promise<this>
+  reply(content?: StringResolvable, options?: MessageAdditions | OptionsWithSplit): Promise<this[]>
+  reply(options?: APIMessage | MessageOptions | MessageAdditions | OptionsNoSplit): Promise<this>
+  reply(options?: APIMessage | MessageAdditions | OptionsWithSplit): Promise<this[]>
+}
 
 /** A message from a guild. */
-interface GuildMessage extends Message {guild: Guild}
+export interface GuildMessage extends Message {
+  channel: TextChannel
+  guild: Guild
+  member: GuildMember
+}
 
 /** A guild from this client. */
 export interface Guild extends Discord.Guild {client: Client}

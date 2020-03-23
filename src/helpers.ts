@@ -1,7 +1,8 @@
 import {join} from 'path'
 import upperFirst from 'lodash.upperfirst'
 import {me} from './constants'
-import type {Message, Client} from 'discord.js'
+import type {PermissionString} from 'discord.js'
+import type {Client, Message, GuildMessage} from './types'
 
 /** Creates a function to easily resolve paths relative to the `__dirname`. */
 export const createResolve = (__dirname: string) => (p: string): string => join(__dirname, p)
@@ -42,4 +43,26 @@ export const handleError = (
   if (message) reply(message, response)
   if (process.env.NODE_ENV === 'production') sendMeError(client, error, info)
   else throw error
+}
+
+/**
+ * Check if the bot has permissions.
+ * @param text I don't have permissions to...
+ */
+export const checkPermissions = (
+  message: GuildMessage,
+  permissions: PermissionString | PermissionString[],
+  text: string
+): boolean => {
+  const {channel, client, guild} = message
+  const channelPermissions = channel.permissionsFor(client.user!)
+  if (!channelPermissions?.has(permissions)) {
+    const plural = Array.isArray(permissions) ? permissions.length !== 1 : false
+    reply(message, `I don\u2019 have permissions to ${text}!
+To fix this, ask an admin or the owner of the server to add th${plural ? 'ose' : 'is'} permission${plural ? 's' : ''} to ${
+      guild.member(client.user!)!.roles.cache.find(role => role.managed)
+    }.`)
+    return false
+  }
+  return true
 }
