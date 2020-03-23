@@ -82,8 +82,8 @@ export class Client extends Discord.Client {
   }
 }
 
-type OptionsNoSplit = MessageOptions & {split?: false}
-type OptionsWithSplit = MessageOptions & {split: true | SplitOptions}
+export type OptionsNoSplit = MessageOptions & {split?: false}
+export type OptionsWithSplit = MessageOptions & {split: true | SplitOptions}
 
 /** A message from this client. */
 export interface Message extends Discord.Message {
@@ -94,7 +94,7 @@ export interface Message extends Discord.Message {
     options?: MessageAdditions | MessageOptions | OptionsNoSplit,
   ): Promise<this>
   reply(content?: StringResolvable, options?: MessageAdditions | OptionsWithSplit): Promise<this[]>
-  reply(options?: APIMessage | MessageOptions | MessageAdditions | OptionsNoSplit): Promise<this>
+  reply(options?: APIMessage | MessageAdditions | MessageOptions | OptionsNoSplit): Promise<this>
   reply(options?: APIMessage | MessageAdditions | OptionsWithSplit): Promise<this[]>
 }
 
