@@ -1,3 +1,11 @@
+## [1.2.1](https://github.com/cherryblossom000/comrade-pingu/compare/v1.2.0...v1.2.1) (2020-03-23)
+
+
+### Bug Fixes
+
+* **help:** fix help for a single command including undefined in the usage ([c3ca7e2](https://github.com/cherryblossom000/comrade-pingu/commit/c3ca7e262e535105e208771f9c93cbb8db02aa27))
+* **iwmelc:** fix command not working ([5391e3f](https://github.com/cherryblossom000/comrade-pingu/commit/5391e3f164c36133c0b3a66191772256d9c54ad4))
+
 # [1.2.0](https://github.com/cherryblossom000/comrade-pingu/compare/v1.1.1...v1.2.0) (2020-03-22)
 
 
