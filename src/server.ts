@@ -39,7 +39,10 @@ if (!dev) {
 
 // set up keyv
 const prefixes = new Keyv<string>('sqlite://.data/database.sqlite')
-prefixes.on('error', error => handleError(client, error, 'Keyv connection error:'))
+prefixes.on('error', error => {
+  console.error(error)
+  handleError(client, error, 'Keyv connection error:')
+})
 
 const importCommands = async <T>(path: string, callback: (command: T) => void): Promise<void> => {
   try {
