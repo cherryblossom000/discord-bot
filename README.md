@@ -6,9 +6,9 @@
 A fun Discord bot created on the 3<sup>rd</sup> of March 2019 with [discord.js](https://discord.js.org). Kill all the capitalist scum!
 
 ## [Status](https://stats.uptimerobot.com/49G6NHJB7W/782979270)
-Current | 24 Hours | 7 Days | 30 Days | Response
---- | --- | --- | --- | ---
-![Uptime Robot status](https://badgen.net/uptime-robot/status/m782979270-c92208f628b86c2ace8b8017) | ![Uptime Robot ratio (7 days)](https://badgen.net/uptime-robot/day/m782979270-c92208f628b86c2ace8b8017) | ![Uptime Robot ratio (7 days)](https://badgen.net/uptime-robot/week/m782979270-c92208f628b86c2ace8b8017) | ![Uptime Robot ratio (30 days)](https://badgen.net/uptime-robot/month/m782979270-c92208f628b86c2ace8b8017) | ![Uptime Robot Response time](https://badgen.net/uptime-robot/response/m782979270-c92208f628b86c2ace8b8017)
+| Current | 24 Hours | 7 Days | 30 Days | Response |
+| - | - | - | - | - |
+| ![Uptime Robot status](https://badgen.net/uptime-robot/status/m782979270-c92208f628b86c2ace8b8017) | ![Uptime Robot ratio (7 days)](https://badgen.net/uptime-robot/day/m782979270-c92208f628b86c2ace8b8017) | ![Uptime Robot ratio (7 days)](https://badgen.net/uptime-robot/week/m782979270-c92208f628b86c2ace8b8017) | ![Uptime Robot ratio (30 days)](https://badgen.net/uptime-robot/month/m782979270-c92208f628b86c2ace8b8017) | ![Uptime Robot Response time](https://badgen.net/uptime-robot/response/m782979270-c92208f628b86c2ace8b8017) |
 
 ## Getting Started
 
