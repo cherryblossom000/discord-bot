@@ -11,7 +11,7 @@ A fun Discord bot created on the 3<sup>rd</sup> of March 2019 with [discord.js](
 | ![Uptime Robot status](https://badgen.net/uptime-robot/status/m782979270-c92208f628b86c2ace8b8017) | ![Uptime Robot ratio (7 days)](https://badgen.net/uptime-robot/day/m782979270-c92208f628b86c2ace8b8017) | ![Uptime Robot ratio (7 days)](https://badgen.net/uptime-robot/week/m782979270-c92208f628b86c2ace8b8017) | ![Uptime Robot ratio (30 days)](https://badgen.net/uptime-robot/month/m782979270-c92208f628b86c2ace8b8017) | ![Uptime Robot Response time](https://badgen.net/uptime-robot/response/m782979270-c92208f628b86c2ace8b8017) |
 
 ## Inviting
-To invite Comrade Pingu to your sever, you must have the Manage Server permission and then use [this link](https://discordapp.com/oauth2/authorize?client_id=554539674899841055&scope=bot&permissions=35840).
+To invite Comrade Pingu to your sever, you must have the Manage Server permission and then use [this link](https://discordapp.com/oauth2/authorize?client_id=554539674899841055&scope=bot&permissions=3263552).
 
 ## Prefix
 Comrade Pingu’s default prefix is `.`.
@@ -23,10 +23,17 @@ Comrade Pingu’s default prefix is `.`.
 | `info` | `in` | Gets info about me. | `.info` | 3 |
 | `invite` | `add`, `inv`, `link` | Gets my invite link. | `.invite` | 3 |
 | `iwmelc` | `iwillmurdereverylastcapitalist` | Gets the meme that shows that ‘noot noot’ in Pingu means ‘i will murder every last capitalist’ in English.<br>![i will murder every last capitalist](./assets/img/iwmelc.jpg) | `.iwmelc` | 3 |
+| `pause` | `pa` | Pauses the song currently playing. | `.pause` | 3 |
 | `ping` | `p` | Gets my current latency. | `.ping` | 5 |
-| `prefix` | `pr` | Gets or sets the prefix. | `.prefix [new prefix]`<br>`new prefix` (optional)<br>The text that you want to set the prefix to. If omitted, displays the current prefix.<br>The default prefix is `.`. | 3 |
+| `play` | `pl` | Plays a song from YouTube. | `.play [song]|search [query]`<br>`[song]`<br>`song` (optional)<br>The video that you want to play. If it’s:<br>* a YouTube link or ID: plays the YouTube video<br>* anything else: searches YouTube and plays the first result<br>* omitted: resumes the music (if it’s paused) (the same as `resume`).<br><br>`search [query]`<br>`query`<br>The query to search on YouTube for. | 3 |
+| `prefix` | `pr` | Gets or sets the prefix. | `.prefix [new prefix]`<br>`new prefix` (optional)<br>The text that you want to set the prefix to. If omitted, displays the current prefix. | 3 |
+| `queue` | `q` | Views the music queue. | `.queue` | 3 |
+| `resume` | `r`, `unpause` | Resumes the song currently playing. | `.resume` | 3 |
+| `skip` | `sk` | Skips the current song. | `.skip` | 3 |
 | `stats` | `statistics` | Gets my stats. | `.stats` | 3 |
+| `stop` | `s` | Stops playing music. | `.stop` | 3 |
 | `uptime` | `u` | Gets my uptime. | `.uptime` | 3 |
+| `volume` | `v` | Changes or gets the volume of the music playing. | `.volume [volume]`<br>`volume` (optional)<br>The new volume as a percentage to set it to. If omitted, the current volume will be shown. Can be one of the following:<br>* `<number>[%]` Sets the current volume.<br>* `<+|-><number>[%]` Increments/decrements the volume.<br>* `reset` (or anything starting with `r`) Resets the volume to 100%. | 3 |
 | `website` | `site`, `w`, `web` | Sends my website. | `.website` | 3 |
 
 ## Links

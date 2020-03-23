@@ -28,7 +28,15 @@ const readme = resolve('README.md')
           name === 'iwmelc'
             ? `${description}<br>![i will murder every last capitalist](./assets/img/iwmelc.jpg)`
             : description,
-          `\`.${name}${syntax ? ` ${syntax}` : ''}\`${usage ? `<br>${usage.replace(/\n/g, '<br>')}` : ''}`,
+          `\`.${name}${syntax ? ` ${syntax}` : ''}\`${usage
+              ? `<br>${(name === 'play'
+                ? usage.replace(/\n+(\* .+\n)+/g, match =>
+                    `<ul>${[...match.matchAll(/\* (.+)\n/g)].map(m => `<li>${m[1]}</li>`)}</ul>`
+                  )
+                : usage
+              ).replace(/\n/g, '<br>')}`
+              : ''
+          }`,
           cooldown.toString()
       ]
     ))
@@ -48,10 +56,10 @@ const readme = resolve('README.md')
     )
 
   const writeOtherPage = async (htmlPath: string, mdPath: string): Promise<void> => {
-    const P = upperFirst(htmlPath)
+    const title = upperFirst(htmlPath)
     return writeHtml(
       htmlPath,
-      `${P} - Comrade Pingu`, `${P} for Comrade Pingu`,
+      `${title} - Comrade Pingu`, `${title} for Comrade Pingu`,
     `${(await readFile(resolve(mdPath))).toString()}
 #### [\u2190 back](/)`
     )

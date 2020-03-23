@@ -26,8 +26,7 @@ You can send \`${defaultPrefix}help [command name]\` to get info on a specific c
       try {
         await author.send(data, {split: true})
         if (message.channel.type === 'dm') return
-        await message.reply('I\u2019ve sent you a DM with all my commands. Noot noot.')
-        return
+        return message.reply('I\u2019ve sent you a DM with all my commands. Noot noot.')
       } catch (error) {
         sendMeError(client, error, `Could not send help DM to ${author.tag}.`)
         await reply(message, `it seems like I can\u2019t DM you. Noot noot.
@@ -40,10 +39,7 @@ Do you have DMs disabled?`)
       command = commands.get(commandName) || commands.find(command => !!command.aliases?.includes(commandName))
 
     // invalid command
-    if (!command) {
-      reply(message, 'that\u2019s not a valid command. Noot noot.')
-      return
-    }
+    if (!command) return reply(message, 'that\u2019s not a valid command. Noot noot.')
 
     // gets info of command
     const {name, aliases, description, syntax, usage, cooldown} = command
@@ -53,6 +49,6 @@ Do you have DMs disabled?`)
     data.push(`**Usage:** \`${await getPrefix(database, guild)}${name} ${syntax ?? ''}\`${usage ? `\n${usage}` : ''}`)
     data.push(`**Cooldown:** ${cooldown ?? 3} second${cooldown === 1 ? '' : 's'}`)
 
-    message.channel.send(data, {split: true})
+    await message.channel.send(data, {split: true})
   }
 } as Command

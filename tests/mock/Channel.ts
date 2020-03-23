@@ -1,14 +1,14 @@
 import Discord from 'discord.js'
 import send from './send'
 import {ChannelType} from './data'
-import type {Client} from 'discord.js'
+import type {Client, TextBasedChannelFields} from 'discord.js'
 import type {Guild} from './Guild'
 import type {DMChannelData, TextChannelData} from './data'
 
 let count = 0
 
 export class TextChannel extends Discord.TextChannel {
-  send = send
+  send: TextBasedChannelFields['send'] = send
 
   constructor(guild: Guild) {
     super(guild, {

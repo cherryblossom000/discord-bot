@@ -5,7 +5,7 @@ export default {
   name: 'uptime',
   aliases: ['u'],
   description: 'Gets my uptime.',
-  execute: async message => {
-    await message.channel.send(`Uptime: ${ms(message.client.uptime!)}`)
+  execute: async ({channel, client}) => {
+    await channel.send(`Uptime: ${ms(client.uptime!)}`)
   }
 } as Command

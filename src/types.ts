@@ -1,7 +1,7 @@
 import Discord, {Collection} from 'discord.js'
 import type {
-  APIMessage, GuildMember, MessageAdditions, MessageOptions,
-  SplitOptions, StringResolvable, TextChannel
+  APIMessage, DMChannel, GuildMember, MessageAdditions, MessageOptions, Snowflake,
+  SplitOptions, StringResolvable, TextChannel, VoiceChannel, VoiceConnection
 } from 'discord.js'
 import type Keyv from 'keyv'
 
@@ -9,6 +9,9 @@ import type Keyv from 'keyv'
 export interface DatabaseGuild {
   /** A custom prefix. */
   prefix?: string
+
+  /** The volume for playing music. */
+  volume?: number
 }
 
 /** @template T The type of the message in `execute`. */
@@ -54,7 +57,7 @@ interface CommandBase<T extends Message> {
    * @param message The message.
    * @param args The arguments.
    */
-  execute(message: T, args: string[], database: Keyv<DatabaseGuild>): Promise<void>
+  execute(message: T, args: string[], database: Keyv<DatabaseGuild>): void | Promise<void>
 }
 
 /**
@@ -63,7 +66,7 @@ interface CommandBase<T extends Message> {
  */
 export type Command<T extends boolean = false> = T extends true
   ? CommandBase<GuildMessage> & {guildOnly: true}
-  : CommandBase<Message>
+  : CommandBase<GuildMessage | DMMessage>
 
 /** A command that is triggered based on a regular expression. */
 export interface RegexCommand {
@@ -74,6 +77,20 @@ export interface RegexCommand {
   regexMessage: string | ((message: Message) => string)
 }
 
+export interface Video {
+  title: string
+  id: string
+  author: string
+}
+
+/** A music queue, */
+export interface Queue {
+  textChannel: TextChannel
+  voiceChannel: VoiceChannel
+  connection: VoiceConnection
+  songs: Video[]
+}
+
 /** The Discord client for this bot. */
 export class Client extends Discord.Client {
   /** The commands. */
@@ -81,6 +98,9 @@ export class Client extends Discord.Client {
 
   /** The regex commands. */
   regexCommands = new Collection<RegExp, RegexCommand['regexMessage']>()
+
+  /** The music queue for each guild. */
+  queues = new Collection<Snowflake, Queue>()
 
   /** Set the activity. */
   setActivity(): void {
@@ -92,7 +112,7 @@ export type OptionsNoSplit = MessageOptions & {split?: false}
 export type OptionsWithSplit = MessageOptions & {split: true | SplitOptions}
 
 /** A message from this client. */
-export interface Message extends Discord.Message {
+interface BaseMessage extends Discord.Message {
   client: Client
   guild: Guild | null
   reply(
@@ -100,16 +120,26 @@ export interface Message extends Discord.Message {
     options?: MessageAdditions | MessageOptions | OptionsNoSplit,
   ): Promise<this>
   reply(content?: StringResolvable, options?: MessageAdditions | OptionsWithSplit): Promise<this[]>
-  reply(options?: APIMessage | MessageAdditions | MessageOptions | OptionsNoSplit): Promise<this>
+  reply(options?: APIMessage | MessageOptions | MessageAdditions | OptionsNoSplit): Promise<this>
   reply(options?: APIMessage | MessageAdditions | OptionsWithSplit): Promise<this[]>
 }
 
 /** A message from a guild. */
-export interface GuildMessage extends Message {
+export interface GuildMessage extends BaseMessage {
   channel: TextChannel
   guild: Guild
   member: GuildMember
 }
+
+/** A message from a DM. */
+export interface DMMessage extends BaseMessage {
+  channel: DMChannel
+  guild: null
+  member: null
+}
+
+/** A message from this client. */
+export type Message = GuildMessage | DMMessage
 
 /** A guild from this client. */
 export interface Guild extends Discord.Guild {client: Client}

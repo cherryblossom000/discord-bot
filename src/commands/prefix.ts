@@ -17,9 +17,12 @@ The default prefix is \`.\`.`,
       return
     }
 
-    if (newPrefix) {
-      await set(database, guild, 'prefix', newPrefix)
-      await channel.send(`Successfully set the prefix to \`${newPrefix}\`. Noot noot.`)
-    } else await channel.send(`The prefix is \`${await getPrefix(database, guild)}\`. Noot noot.`)
+    if (!newPrefix) {
+      await channel.send(`The prefix is \`${await getPrefix(database, guild)}\`. Noot noot.`)
+      return
+    }
+
+    await set(database, guild, 'prefix', newPrefix)
+    await channel.send(`Successfully set the prefix to \`${newPrefix}\`. Noot noot.`)
   }
 } as Command<true>

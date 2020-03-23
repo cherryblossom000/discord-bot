@@ -12,8 +12,7 @@ import type {Server} from 'http'
 import type {Snowflake} from 'discord.js'
 import type {Command, DatabaseGuild, Message, RegexCommand} from './types'
 
-const {readdir} = promises
-const resolve = createResolve(__dirname)
+const {readdir} = promises, resolve = createResolve(__dirname)
 
 const dev = process.env.NODE_ENV !== 'production'
 
@@ -49,11 +48,11 @@ database.on('error', error => {
 
 const importCommands = async <T>(path: string, callback: (command: T) => void): Promise<void> => {
   try {
-    const files = await readdir(resolve(path))
-    const modules = await Promise.all(files
-      .filter(f => !f.endsWith('.map'))
-      .map(async f => import(join(resolve(path), f)))
-    )
+    const files = await readdir(resolve(path)),
+      modules = await Promise.all(files
+        .filter(f => !f.endsWith('.map'))
+        .map(async f => import(join(resolve(path), f)))
+      )
     modules.map<T>(m => m.default).forEach(callback)
   } catch (error) {
     sendMeError(client, error, `\`importCommands\` failed with path \`${path}\`.`)
@@ -95,9 +94,7 @@ Guilds: ${client.guilds.cache.size}`)
 })
 
 // errors
-client.on('error', error => {
-  sendMeError(client, error, 'The `error` event fired.')
-})
+client.on('error', async error => sendMeError(client, error, 'The `error` event fired.'))
 
 // guild create
 client.on('guildCreate', () => client.setActivity())
@@ -107,25 +104,22 @@ client.on('guildDelete', () => client.setActivity())
 
 // commands
 client.on('message', async (message: Message) => {
-  const now = Date.now()
-  const {author, content, channel, guild} = message
+  const now = Date.now(), {author, content, channel, guild} = message
 
   if (author?.bot) return
 
-  const prefix = await getPrefix(database, guild)
-  const matchedPrefix = new RegExp(`^<@!?${client.user!.id}>|${escapeRegex(prefix)}`).exec(content)?.[0]
+  const prefix = await getPrefix(database, guild),
+    matchedPrefix = new RegExp(`^<@!?${client.user!.id}>|${escapeRegex(prefix)}`).exec(content)?.[0]
   if (matchedPrefix || !guild) {
     // exits if there is no input
     const input = content.slice(matchedPrefix?.length ?? 0).trim()
     if (!input.length && matchedPrefix !== prefix) {
-      channel.send(`Hi, I am Comrade Pingu. Noot noot.
+      return channel.send(`Hi, I am Comrade Pingu. Noot noot.
 My prefix is \`${prefix}\`. Run \`${prefix} help\` for a list of commands.`)
-      return
     }
 
     // get args
-    const args = input.split(/\s+/)
-    const commandName = args.shift()!.toLowerCase()
+    const args = input.split(/\s+/), commandName = args.shift()!.toLowerCase()
 
     // if command doesn't exist exit
     const command = client.commands.get(commandName) || client.commands.find(cmd => !!cmd.aliases?.includes(commandName))
@@ -135,32 +129,27 @@ My prefix is \`${prefix}\`. Run \`${prefix} help\` for a list of commands.`)
     }
 
     // guild only
-    if (command.guildOnly && channel.type !== 'text') {
-      reply(message, 'sorry, I can\u2019t execute that command inside DMs. Noot noot.')
-      return
-    }
+    if (command.guildOnly && channel.type !== 'text')
+      return reply(message, 'sorry, I can\u2019t execute that command inside DMs. Noot noot.')
 
     // if no args
     if (command.args && !args.length) {
-      reply(message, `you didn\u2019t provide any arguments. Noot noot.
+      return reply(message, `you didn\u2019t provide any arguments. Noot noot.
 The syntax is: \`${prefix}${command.name}${command.syntax ? ` ${command.syntax}` : ''}\`. Noot noot.`)
-      return
     }
 
     // cooldowns
     if (!cooldowns.has(command.name)) cooldowns.set(command.name, new Collection())
 
-    const timestamps = cooldowns.get(command.name)!
-    const cooldownAmount = command.cooldown ?? 3 * 1000
+    const timestamps = cooldowns.get(command.name)!, cooldownAmount = command.cooldown ?? 3 * 1000
     if (timestamps.has(author.id)) {
       const expirationTime = timestamps.get(author.id)! + cooldownAmount
       if (now < expirationTime) {
         const timeLeft = ((expirationTime - now) / 1000).toFixed(1)
-        reply(message,
+        return reply(message,
           `please wait ${timeLeft} more second${
           timeLeft === '1.0' ? '' : 's'} before using the \`${command.name}\` command. Noot noot.`
         )
-        return
       }
     }
     timestamps.set(author.id, now)
