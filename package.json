@@ -16,7 +16,7 @@
   },
   "scripts": {
     "test": "eslint . && jest --forceExit",
-    "copy": " (cd dist && cp ../package.json package.json && mkdir assets; cp -r ../assets/img assets/img)",
+    "copy": " (cd dist && cp ../package.json package.json && mkdir assets .data; cp -r ../assets/img assets/img)",
     "build": "tsc -p tsconfig.build.json && pnpm run copy",
     "doc": "ts-node scripts/doc && mkdir dist/assets/css; purgecss -c purgecss.config.js -o dist/assets/css",
     "start": "node src/server",
