@@ -5,6 +5,7 @@ export const defaultPrefix = '.'
 
 /** The permissions integer. */
 export const permissions: PermissionString[] = [
+  'VIEW_CHANNEL',
   'SEND_MESSAGES',
   'ATTACH_FILES'
 ]
