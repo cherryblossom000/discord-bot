@@ -59,14 +59,17 @@ export const checkPermissions = (
   const {channel, client, guild} = message
   const channelPermissions = channel.permissionsFor(client.user!)
   if (!channelPermissions?.has(permissions)) {
-    if (!Array.isArray(permissions)) permissions = [permissions]
-    const plural = permissions.length !== 1
-    const thesePermissions = `th${plural ? 'ose' : 'is'} permission${plural ? 's' : ''}`
+    const neededPermissions = Array.isArray(permissions)
+      ? permissions.filter(p => !channelPermissions?.has(p))
+      : [permissions]
+
+    const plural = neededPermissions.length !== 1
+    const permissionsString = ` permission${plural ? 's' : ''}`
 
     reply(message, [
-      `I don\u2019t have ${thesePermissions}!`,
-      permissions.map(p => `* ${p}`).join('\n'),
-      `To fix this, ask an admin or the owner of the server to add ${thesePermissions} to ${
+      `I don\u2019t have th${plural ? 'ese' : 'is'}${permissionsString}!`,
+      neededPermissions.map(p => `* ${p}`).join('\n'),
+      `To fix this, ask an admin or the owner of the server to add th${plural ? 'ose' : 'at'}${permissionsString} to ${
         guild.member(client.user!)!.roles.cache.find(role => role.managed)
       }.`
     ])
