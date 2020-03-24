@@ -48,10 +48,7 @@ export const handleError = (
   else throw error
 }
 
-/**
- * Check if the bot has permissions.
- * @param text I don't have permissions to...
- */
+/** Check if the bot has permissions. */
 export const checkPermissions = (
   message: GuildMessage,
   permissions: PermissionString | PermissionString[]
