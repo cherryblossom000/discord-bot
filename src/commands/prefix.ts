@@ -8,7 +8,8 @@ export default {
   guildOnly: true,
   syntax: '[new prefix]',
   usage: `\`new prefix\` (optional)
-The text that you want to set the prefix to. If omitted, displays the current prefix.`,
+The text that you want to set the prefix to. If omitted, displays the current prefix.
+The default prefix is \`.\`.`,
   execute: async (message, [newPrefix], database) => {
     const {channel, member, guild} = message
     if (!member.hasPermission('ADMINISTRATOR')) {
