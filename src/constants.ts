@@ -3,13 +3,14 @@ import type {PermissionString} from 'discord.js'
 /** The prefix for the bot. */
 export const defaultPrefix = '.'
 
-/** The permissions integer. */
+/** The permissions needed for the bot to work fully. */
 export const permissions: PermissionString[] = [
   'VIEW_CHANNEL',
   'SEND_MESSAGES',
+  'MANAGE_MESSAGES', // to remove other users' reactions
   'EMBED_LINKS',
   'ATTACH_FILES',
-  'READ_MESSAGE_HISTORY',
+  'READ_MESSAGE_HISTORY', // to react on a message
   'ADD_REACTIONS',
   'CONNECT',
   'SPEAK'

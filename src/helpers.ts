@@ -4,7 +4,7 @@ import upperFirst from 'lodash.upperfirst'
 import yts from 'yt-search'
 import {defaultPrefix, emojis, me} from './constants'
 import type Keyv from 'keyv'
-import type {PermissionString} from 'discord.js'
+import type {PermissionResolvable, PermissionString} from 'discord.js'
 import type {Client, DatabaseGuild, Guild, GuildMessage, Message, Queue, Video} from './types'
 
 /** Creates a function to easily resolve paths relative to the `__dirname`. */
@@ -53,6 +53,10 @@ export const handleError = (
 }
 
 /** Check if the bot has permissions. */
+export const hasPermissions = ({channel, client}: GuildMessage, permissions: PermissionResolvable): boolean =>
+  channel.permissionsFor(client.user!)?.has(permissions) ?? false
+
+/** Check if the bot has permissions and sends a message if it doesn't. */
 export const checkPermissions = (
   message: GuildMessage,
   permissions: PermissionString | PermissionString[]

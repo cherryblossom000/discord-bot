@@ -1,6 +1,5 @@
 import {emojis} from '../constants'
-import {getQueue} from '../helpers'
-import {hasPermissions} from '../helpers'
+import {getQueue, hasPermissions} from '../helpers'
 import type {Command} from '../types'
 
 export default {
