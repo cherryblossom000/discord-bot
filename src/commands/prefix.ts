@@ -1,5 +1,5 @@
 import type {Command} from '../types'
-import {reply, getPrefix} from '../helpers'
+import {getPrefix, reply, set} from '../helpers'
 
 export default {
   name: 'prefix',
@@ -17,7 +17,7 @@ The text that you want to set the prefix to. If omitted, displays the current pr
     }
 
     if (newPrefix) {
-      await database.set(guild.id, {...await database.get(guild.id), prefix: newPrefix})
+      await set(database, guild, 'prefix', newPrefix)
       await channel.send(`Successfully set the prefix to \`${newPrefix}\`. Noot noot.`)
     } else await channel.send(`The prefix is \`${await getPrefix(database, guild)}\`. Noot noot.`)
   }

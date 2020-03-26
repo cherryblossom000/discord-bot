@@ -76,6 +76,14 @@ export const checkPermissions = (
   return true
 }
 
+/** Sets a value for a guild in a database. */
+export const set = async <T extends keyof DatabaseGuild>(
+  database: Keyv<DatabaseGuild>,
+  guild: Guild,
+  key: T,
+  value: DatabaseGuild[T]
+): Promise<true> => database.set(guild.id, {...await database.get(guild.id), [key]: value})
+
 /** Gets the prefix for a guild. */
 export const getPrefix = async (database: Keyv<DatabaseGuild>, guild: Guild | null): Promise<string> =>
   guild ? (await database.get(guild.id))?.prefix ?? defaultPrefix : defaultPrefix
