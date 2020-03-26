@@ -5,13 +5,12 @@ import escapeRegex from 'escape-string-regexp'
 import express from 'express'
 import Keyv from 'keyv'
 import {Client} from './types'
-import {createResolve, handleError, reply, sendMeError} from './helpers'
-import {defaultPrefix} from './constants'
+import {createResolve, getPrefix, handleError, reply, sendMeError} from './helpers'
 
 import type {AddressInfo} from 'net'
 import type {Server} from 'http'
 import type {Snowflake} from 'discord.js'
-import type {Command, Message, RegexCommand} from './types'
+import type {Command, DatabaseGuild, Message, RegexCommand} from './types'
 
 const {readdir} = promises
 const resolve = createResolve(__dirname)
@@ -38,8 +37,8 @@ if (!dev) {
 }
 
 // set up keyv
-const prefixes = new Keyv<string>('sqlite://.data/database.sqlite')
-prefixes.on('error', error => {
+const database = new Keyv<DatabaseGuild>('sqlite://.data/database.sqlite')
+database.on('error', error => {
   console.error(error)
   handleError(client, error, 'Keyv connection error:')
 })
@@ -105,13 +104,13 @@ client.on('guildDelete', () => client.setActivity())
 // commands
 client.on('message', async (message: Message) => {
   const now = Date.now()
-  const {author, content, channel} = message
+  const {author, content, channel, guild} = message
 
   if (author?.bot) return
 
-  const prefix = message.guild ? await prefixes.get(message.guild.id) ?? defaultPrefix : defaultPrefix
+  const prefix = await getPrefix(database, guild)
   const matchedPrefix = new RegExp(`^<@!?${client.user!.id}>|${escapeRegex(prefix)}`).exec(content)?.[0]
-  if (matchedPrefix || !message.guild) {
+  if (matchedPrefix || !guild) {
     // exits if there is no input
     const input = content.slice(matchedPrefix?.length ?? 0).trim()
     if (!input.length && matchedPrefix !== prefix) {
@@ -165,7 +164,7 @@ The syntax is: \`${prefix}${command.name}${command.syntax ? ` ${command.syntax}`
 
     // execute command
     try {
-      await command.execute(message, args, prefixes)
+      await command.execute(message, args, database)
     } catch (error) {
       handleError(client, error,
         `Command \`${command.name}\` failed${args.length ? ` with args ${args.map(a => `\`${a}\``).join(', ')}` : ''}.`,

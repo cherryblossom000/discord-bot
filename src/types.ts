@@ -5,6 +5,12 @@ import type {
 } from 'discord.js'
 import type Keyv from 'keyv'
 
+/** A guild's entry in the database. */
+export interface DatabaseGuild {
+  /** A custom prefix. */
+  prefix?: string
+}
+
 /** @template T The type of the message in `execute`. */
 interface CommandBase<T extends Message> {
   /** The name. */
@@ -48,7 +54,7 @@ interface CommandBase<T extends Message> {
    * @param message The message.
    * @param args The arguments.
    */
-  execute(message: T, args: string[], prefixes: Keyv<string>): Promise<void>
+  execute(message: T, args: string[], database: Keyv<DatabaseGuild>): Promise<void>
 }
 
 /**

@@ -1,8 +1,9 @@
 import {join} from 'path'
 import upperFirst from 'lodash.upperfirst'
-import {me} from './constants'
+import {defaultPrefix, me} from './constants'
+import type Keyv from 'keyv'
 import type {PermissionString} from 'discord.js'
-import type {Client, Message, GuildMessage} from './types'
+import type {Client, DatabaseGuild, Guild, GuildMessage, Message} from './types'
 
 /** Creates a function to easily resolve paths relative to the `__dirname`. */
 export const createResolve = (__dirname: string) => (p: string): string => join(__dirname, p)
@@ -74,3 +75,7 @@ export const checkPermissions = (
   }
   return true
 }
+
+/** Gets the prefix for a guild. */
+export const getPrefix = async (database: Keyv<DatabaseGuild>, guild: Guild | null): Promise<string> =>
+  guild ? (await database.get(guild.id))?.prefix ?? defaultPrefix : defaultPrefix

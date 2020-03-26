@@ -1,5 +1,5 @@
 import {defaultPrefix} from '../constants'
-import {reply, sendMeError} from '../helpers'
+import {reply, sendMeError, getPrefix} from '../helpers'
 import type {Command} from '../types'
 
 export default {
@@ -10,9 +10,9 @@ export default {
   usage: `\`command\` (optional)
 The command that you want to get info about. If omitted, all the commands will be listed.`,
   cooldown: 5,
-  execute: async (message, args) => {
+  execute: async (message, args, database) => {
     // constants
-    const {author, client, client: {commands}} = message, data = []
+    const {author, client, client: {commands}, guild} = message, data = []
 
     // all commands
     if (!args.length) {
@@ -50,7 +50,7 @@ Do you have DMs disabled?`)
     data.push(`**Name:** ${name}`)
     if (aliases) data.push(`**Aliases:** ${aliases.join(', ')}`)
     if (description) data.push(`**Description:** ${description}`)
-    data.push(`**Usage:** \`${defaultPrefix}${name} ${syntax ?? ''}\`${usage ? `\n${usage}` : ''}`)
+    data.push(`**Usage:** \`${await getPrefix(database, guild)}${name} ${syntax ?? ''}\`${usage ? `\n${usage}` : ''}`)
     data.push(`**Cooldown:** ${cooldown ?? 3} second${cooldown === 1 ? '' : 's'}`)
 
     message.channel.send(data, {split: true})
