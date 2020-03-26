@@ -10,12 +10,11 @@ A fun Discord bot created on the 3<sup>rd</sup> of March 2019 with [discord.js](
 | - | - | - | - | - |
 | ![Uptime Robot status](https://badgen.net/uptime-robot/status/m782979270-c92208f628b86c2ace8b8017) | ![Uptime Robot ratio (7 days)](https://badgen.net/uptime-robot/day/m782979270-c92208f628b86c2ace8b8017) | ![Uptime Robot ratio (7 days)](https://badgen.net/uptime-robot/week/m782979270-c92208f628b86c2ace8b8017) | ![Uptime Robot ratio (30 days)](https://badgen.net/uptime-robot/month/m782979270-c92208f628b86c2ace8b8017) | ![Uptime Robot Response time](https://badgen.net/uptime-robot/response/m782979270-c92208f628b86c2ace8b8017) |
 
-## Getting Started
-
-### Inviting
+## Inviting
 To invite Comrade Pingu to your sever, you must have the Manage Server permission and then use [this link](https://discordapp.com/oauth2/authorize?client_id=554539674899841055&scope=bot&permissions=35840).
-### Prefix
-Comrade Pingu’s prefix is `.`.
+
+## Prefix
+Comrade Pingu’s default prefix is `.`.
 
 ## Documentation
 | Command | Aliases | Description | Usage | Cooldown (s) |
