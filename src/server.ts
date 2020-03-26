@@ -29,7 +29,11 @@ app.use(express.static(resolve('../assets/img')))
 const client = new Client()
 
 // handle promise rejections and uncaught exceptions
-if (!dev) {
+if (dev) {
+  process.on('unhandledRejection', reason => {
+    throw reason instanceof Error ? reason : new Error(`${reason}`)
+  })
+} else {
   process.on('unhandledRejection', reason =>
     handleError(client, reason instanceof Error ? reason : new Error(`${reason}`), 'Uncaught promise rejection:')
   )
