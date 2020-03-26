@@ -24,7 +24,7 @@ Comrade Pingu’s default prefix is `.`.
 | `invite` | `add`, `inv`, `link` | Gets my invite link. | `.invite` | 3 |
 | `iwmelc` | `iwillmurdereverylastcapitalist` | Gets the meme that shows that ‘noot noot’ in Pingu means ‘i will murder every last capitalist’ in English.<br>![i will murder every last capitalist](./assets/img/iwmelc.jpg) | `.iwmelc` | 3 |
 | `ping` | `p` | Gets my current latency. | `.ping` | 5 |
-| `prefix` | `pr` | Gets or sets the prefix. | `.prefix [new prefix]`<br>`new prefix` (optional)<br>The text that you want to set the prefix to. If omitted, displays the current prefix. | 3 |
+| `prefix` | `pr` | Gets or sets the prefix. | `.prefix [new prefix]`<br>`new prefix` (optional)<br>The text that you want to set the prefix to. If omitted, displays the current prefix.<br>The default prefix is `.`. | 3 |
 | `stats` | `statistics` | Gets my stats. | `.stats` | 3 |
 | `uptime` | `u` | Gets my uptime. | `.uptime` | 3 |
 | `website` | `site`, `w`, `web` | Sends my website. | `.website` | 3 |
