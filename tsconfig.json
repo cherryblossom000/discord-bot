@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "esModuleInterop": true,
-    "lib": ["es2018"],
+    "lib": ["esnext"],
     "module": "commonjs",
     "noImplicitReturns": true,
     "noUnusedLocals": true,
