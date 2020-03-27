@@ -31,6 +31,7 @@ const readme = resolve('README.md')
           `\`.${name}${syntax ? ` ${syntax}` : ''}\`${usage
               ? `<br>${(name === 'play'
                 ? usage.replace(/\n+(\* .+\n)+/g, match =>
+                    // TODO: something is adding commas
                     `<ul>${[...match.matchAll(/\* (.+)\n/g)].map(m => `<li>${m[1]}</li>`)}</ul>`
                   )
                 : usage
