@@ -1,3 +1,15 @@
+# [1.3.0](https://github.com/cherryblossom000/comrade-pingu/compare/v1.2.1...v1.3.0) (2020-03-28)
+
+
+### Bug Fixes
+
+* fix a bunch of permissions issues ([8951096](https://github.com/cherryblossom000/comrade-pingu/commit/8951096f3745eef0aa36431420368175c3273ba4))
+
+
+### Features
+
+* add music support ([247d3b3](https://github.com/cherryblossom000/comrade-pingu/commit/247d3b34874fd5ca95c0f9ddacf4a71ede6e1755))
+
 ## [1.2.1](https://github.com/cherryblossom000/comrade-pingu/compare/v1.2.0...v1.2.1) (2020-03-23)
 
 
