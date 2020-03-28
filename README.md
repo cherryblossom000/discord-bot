@@ -26,7 +26,7 @@ Comrade Pingu’s default prefix is `.`.
 | `nowplaying` | `np` | Gets the song currently playing. | `.nowplaying` | 3 |
 | `pause` | `pa` | Pauses the song currently playing. | `.pause` | 3 |
 | `ping` | `p` | Gets my current latency. | `.ping` | 5 |
-| `play` | `pl` | Plays a song from YouTube. | `.play [song]|search [query]`<br>`[song]`<br>`song` (optional)<br>The video that you want to play. If it’s:<ul><li>a YouTube link or ID: plays the YouTube video</li>,<li>anything else: searches YouTube and plays the first result</li>,<li>omitted: resumes the music (if it’s paused) (the same as `resume`)</li></ul><br>`search [query]`<br>`query`<br>The query to search on YouTube for. | 3 |
+| `play` | `pl` | Plays a song from YouTube. | `.play [song]\|search [query]`<br>`[song]`<br>`song` (optional)<br>The video that you want to play. If it’s:<ul><li>a YouTube link or ID: plays the YouTube video</li><li>anything else: searches YouTube and plays the first result</li><li>omitted: resumes the music (if it’s paused) (the same as `resume`)</li></ul>`search [query]`<br>`query`<br>The query to search on YouTube for. | 3 |
 | `prefix` | `pr` | Gets or sets the prefix. | `.prefix [new prefix]`<br>`new prefix` (optional)<br>The text that you want to set the prefix to. If omitted, displays the current prefix.<br>The default prefix is `.`. | 3 |
 | `queue` | `q` | Views the music queue. | `.queue` | 3 |
 | `resume` | `r`, `unpause` | Resumes the song currently playing. | `.resume` | 3 |
@@ -34,7 +34,7 @@ Comrade Pingu’s default prefix is `.`.
 | `stats` | `statistics` | Gets my stats. | `.stats` | 3 |
 | `stop` | `s` | Stops playing music. | `.stop` | 3 |
 | `uptime` | `u` | Gets my uptime. | `.uptime` | 3 |
-| `volume` | `v` | Changes or gets the volume of the music playing. | `.volume [volume]`<br>`volume` (optional)<br>The new volume as a percentage to set it to. If omitted, the current volume will be shown. Can be one of the following:<br>* `<number>[%]` Sets the current volume.<br>* `<+|-><number>[%]` Increments/decrements the volume.<br>* `reset` (or anything starting with `r`) Resets the volume to 100%. | 3 |
+| `volume` | `v` | Changes or gets the volume of the music playing. | `.volume [volume]`<br>`volume` (optional)<br>The new volume as a percentage to set it to. If omitted, the current volume will be shown. Can be one of the following:<ul><li>`<number>[%]` Sets the current volume.</li><li>`<+\|-><number>[%]` Increments/decrements the volume.</li><li>`reset` (or anything starting with `r`) Resets the volume to 100%.</li></ul> | 3 |
 | `website` | `site`, `w`, `web` | Sends my website. | `.website` | 3 |
 
 ## Links
