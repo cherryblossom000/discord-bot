@@ -7,7 +7,7 @@ import type {Command, Video} from '../types'
 /** Converts a `yts.VideoSearchResult` into a `Video`. */
 const searchToVideo = ({title, videoId: id, author: {name}}: yts.VideoSearchResult): Video => ({title, id, author: name})
 
-export default {
+const command: Command<true> = {
   name: 'play',
   aliases: ['pl'],
   description: 'Plays a song from YouTube.',
@@ -28,10 +28,7 @@ The query to search on YouTube for.`,
     if (!checkPermissions(message, ['CONNECT', 'SPEAK'])) return
 
     const voiceChannel = member?.voice.channel
-    if (!voiceChannel) {
-      await reply(message, 'you must join a voice channel first! Noot noot.')
-      return
-    }
+    if (!voiceChannel) return void reply(message, 'you must join a voice channel first! Noot noot.')
 
     const [url] = args
     let queue = client.queues.get(guild.id)
@@ -103,12 +100,13 @@ I can react on your message instead if you enable the READ_MESSAGE_HISTORY permi
     // play url
     if (validateURL(url)) {
       const {title, video_id: id, author: {name}} = await getBasicInfo(url)
-      return play({title, id, author: name})
+      return void play({title, id, author: name})
     }
 
     // search and play first result
     const query = args.join(' '), {videos} = await yts(query)
-    if (!videos.length) return channel.send(`No results were found for ${query}. Try using a YouTube link instead.`)
+    if (!videos.length) return void channel.send(`No results were found for ${query}. Try using a YouTube link instead.`)
     play(searchToVideo(videos[0]))
   }
-} as Command<true>
+}
+export default command

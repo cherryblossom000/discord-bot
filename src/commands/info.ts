@@ -1,7 +1,7 @@
 import {version} from '../../package.json'
 import type {Command} from '../types'
 
-export default {
+const command: Command = {
   name: 'info',
   aliases: ['in'],
   description: 'Gets info about me.',
@@ -11,4 +11,5 @@ I am comrade Pingu. Noot noot.
 Kill all the capitalist scum!.
 I was created by cherryblossom#2661.`)
   }
-} as Command
+}
+export default command

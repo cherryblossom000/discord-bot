@@ -2,7 +2,7 @@ import {defaultPrefix} from '../constants'
 import {reply, sendMeError, getPrefix} from '../helpers'
 import type {Command} from '../types'
 
-export default {
+const command: Command = {
   name: 'help',
   aliases: ['commands', 'h'],
   description: 'Lists all my commands or gets info about a specific command.',
@@ -26,7 +26,7 @@ You can send \`${defaultPrefix}help [command name]\` to get info on a specific c
       try {
         await author.send(data, {split: true})
         if (message.channel.type === 'dm') return
-        return message.reply('I\u2019ve sent you a DM with all my commands. Noot noot.')
+        return void message.reply('I\u2019ve sent you a DM with all my commands. Noot noot.')
       } catch (error) {
         sendMeError(client, error, `Could not send help DM to ${author.tag}.`)
         await reply(message, `it seems like I can\u2019t DM you. Noot noot.
@@ -39,7 +39,7 @@ Do you have DMs disabled?`)
       command = commands.get(commandName) || commands.find(command => !!command.aliases?.includes(commandName))
 
     // invalid command
-    if (!command) return reply(message, 'that\u2019s not a valid command. Noot noot.')
+    if (!command) return void reply(message, 'that\u2019s not a valid command. Noot noot.')
 
     // gets info of command
     const {name, aliases, description, syntax, usage, cooldown} = command
@@ -51,4 +51,5 @@ Do you have DMs disabled?`)
 
     await message.channel.send(data, {split: true})
   }
-} as Command
+}
+export default command

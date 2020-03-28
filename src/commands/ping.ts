@@ -1,6 +1,6 @@
 import type {Command} from '../types'
 
-export default {
+const command: Command = {
   name: 'ping',
   aliases: ['p'],
   description: 'Gets my current latency.',
@@ -9,4 +9,5 @@ export default {
     await message.channel.send(`Noot noot!
 My current latency is ${new Date().getTime() - message.createdTimestamp} ms.`)
   }
-} as Command
+}
+export default command

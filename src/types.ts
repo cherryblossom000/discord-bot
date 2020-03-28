@@ -28,11 +28,8 @@ interface CommandBase<T extends Message> {
   /** A description. */
   description: string
 
-  /**
-   * Whether or not the command is only available in a server.
-   * @default false
-   */
-  guildOnly?: false
+  /** Whether or not the command is only available in a server. */
+  guildOnly?: boolean
 
   /**
    * Whether or nor the command requires arguments.
@@ -66,7 +63,7 @@ interface CommandBase<T extends Message> {
  */
 export type Command<T extends boolean = false> = T extends true
   ? CommandBase<GuildMessage> & {guildOnly: true}
-  : CommandBase<GuildMessage | DMMessage>
+  : CommandBase<GuildMessage | DMMessage> & {guildOnly?: false}
 
 /** A command that is triggered based on a regular expression. */
 export interface RegexCommand {

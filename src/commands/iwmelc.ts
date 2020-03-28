@@ -3,7 +3,7 @@ import {MessageAttachment} from 'discord.js'
 import {checkPermissions} from '../helpers'
 import type {Command} from '../types'
 
-export default {
+const command: Command = {
   name: 'iwmelc',
   aliases: ['iwillmurdereverylastcapitalist'],
   description: 'Gets the meme that shows that \u2018noot noot\u2019 in Pingu means \u2018i will murder every last ' +
@@ -12,4 +12,5 @@ export default {
     if (message.guild && !checkPermissions(message, 'ATTACH_FILES')) return
     await message.channel.send(new MessageAttachment(join(__dirname, '../../assets/img/iwmelc.jpg')))
   }
-} as Command
+}
+export default command

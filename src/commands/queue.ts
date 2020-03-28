@@ -1,7 +1,7 @@
 import {getQueue} from '../helpers'
 import type {Command} from '../types'
 
-export default {
+const command: Command<true> = {
   name: 'queue',
   aliases: ['q'],
   description: 'Views the music queue.',
@@ -15,4 +15,5 @@ export default {
       {split: true}
     )
   }
-} as Command<true>
+}
+export default command

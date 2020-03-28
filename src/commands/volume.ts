@@ -1,7 +1,7 @@
 import {getQueue, set} from '../helpers'
 import type {Command} from '../types'
 
-export default {
+const command: Command <true> = {
   name: 'volume',
   aliases: ['v'],
   description: 'Changes or gets the volume of the music playing.',
@@ -33,4 +33,5 @@ The new volume as a percentage to set it to. If omitted, the current volume will
       await set(database, guild, 'volume', newVolume)
     }
   }
-} as Command<true>
+}
+export default command
