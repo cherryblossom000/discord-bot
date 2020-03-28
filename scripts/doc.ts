@@ -20,27 +20,28 @@ const readme = resolve('README.md')
     .map(async f => import(join(commandsPath, f)))
   )
   const commands = modules.map<Command>(m => m.default)
-  const docs = [['Command', 'Aliases', 'Description', 'Usage', 'Cooldown (s)']]
-    .concat(commands.map(
+  const usageMarkdownIt = new MarkdownIt({html: true, breaks: true})
+  const docs = [['Command', 'Aliases', 'Description', 'Usage', 'Cooldown (s)'],
+    ...commands.map(
       ({name, aliases, description, syntax, usage, cooldown = 3}) => [
           `\`${name}\``,
           aliases?.map(a => `\`${a}\``).join(', ') ?? '-',
           name === 'iwmelc'
             ? `${description}<br>![i will murder every last capitalist](./assets/img/iwmelc.jpg)`
             : description,
-          `\`.${name}${syntax ? ` ${syntax}` : ''}\`${usage
-              ? `<br>${(name === 'play'
-                ? usage.replace(/\n+(\* .+\n)+/g, match =>
-                    // TODO: something is adding commas
-                    `<ul>${[...match.matchAll(/\* (.+)\n/g)].map(m => `<li>${m[1]}</li>`)}</ul>`
-                  )
+          `\`.${name}${syntax ? ` ${syntax.replace(/\|/g, '\\|')}` : ''}\`${usage
+              ? `<br>${(name === 'play' || name === 'volume'
+                ? usageMarkdownIt.render(usage)
+                  .replace(/\|/g, '\\|')
+                  .replace(/\n/g, '')
+                  .replace(/<\/?p>/g, '')
                 : usage
               ).replace(/\n/g, '<br>')}`
               : ''
           }`,
           cooldown.toString()
       ]
-    ))
+    )]
 
   const newReadme = (await readFile(readme)).toString()
     .replace(/(?<=## Documentation\n)[\s\S]+(?=\n\n## Links)/, table(docs, {alignDelimiters: false}))
@@ -49,11 +50,12 @@ const readme = resolve('README.md')
   await mkdir(resolve('dist/assets/html'), {recursive: true})
   const template = (await readFile(resolve('scripts/template.html'))).toString()
 
+  const htmlMarkdownIt = new MarkdownIt({html: true})
   const writeHtml = async (p: string, title: string, description: string, md: string): Promise<void> =>
     writeFile(resolve(`dist/assets/html/${p}.html`), template
       .replace('[title]', title)
       .replace('[description]', description)
-      .replace('[content]', new MarkdownIt({html: true}).render(md))
+      .replace('[content]', htmlMarkdownIt.render(md))
     )
 
   const writeOtherPage = async (htmlPath: string, mdPath: string): Promise<void> => {
@@ -66,9 +68,10 @@ const readme = resolve('README.md')
     )
   }
 
-  await writeFile(readme, newReadme)
   // update index.html
   await writeHtml('index', 'Comrade Pingu', 'Kill all the capitalist scum!', newReadme
+    // replace the escaped pipe in play but not in volume
+    .replace('\\|', '|')
     .replace('./assets/img', '')
     .replace('LICENSE', 'license')
     .replace('CHANGELOG.md', 'changelog')
