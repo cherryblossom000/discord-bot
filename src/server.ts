@@ -20,8 +20,7 @@ const dev = process.env.NODE_ENV !== 'production'
 const app = express()
 
 app.get('/', (_, res) => res.sendFile(resolve('../assets/html/index.html')))
-app.get('/license', (_, res) => res.sendFile(resolve('../assets/html/license.html')))
-app.get('/changelog', (_, res) => res.sendFile(resolve('../assets/html/changelog.html')))
+app.use(express.static(resolve('../assets/html'), {extensions: ['html']}))
 app.use(express.static(resolve('../assets/css')))
 app.use(express.static(resolve('../assets/img')))
 
