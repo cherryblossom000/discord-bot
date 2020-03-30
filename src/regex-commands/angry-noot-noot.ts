@@ -28,7 +28,8 @@ const joinAlternate = (...strings: string[]): string => `(${strings.join('|')})`
   adjFirst = `${bad} ${nouns}`,
   regex = new RegExp(`(${adjLast})|(${adjFirst})`.replace(/\s+/g, '\\s*'), 'i')
 
-export default {
+const command: RegexCommand = {
   regex,
   regexMessage: 'Noot noot!'
-} as RegexCommand
+}
+export default command

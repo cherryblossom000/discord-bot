@@ -1,6 +1,7 @@
 import type {RegexCommand} from '../types'
 
-export default {
+const command: RegexCommand = {
   regex: /noot\s*noot/i,
   regexMessage: message => `Noot noot, comrade ${message.guild ? message.member.displayName : message.author.username}.`
-} as RegexCommand
+}
+export default command
