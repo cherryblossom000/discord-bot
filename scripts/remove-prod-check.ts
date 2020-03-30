@@ -3,7 +3,8 @@ import {promises, statSync} from 'fs'
 import {ancestor} from 'acorn-walk'
 import {parse} from 'acorn'
 import type {
-  BinaryExpression, Expression, Identifier, IfStatement, Statement, VariableDeclarator, VariableDeclaration
+  BinaryExpression, ConditionalExpression, Expression, Identifier,
+  IfStatement, Statement, VariableDeclarator, VariableDeclaration
 } from 'estree'
 
 const {readdir, readFile, writeFile} = promises
@@ -44,19 +45,21 @@ const removeProdCheck = (source: string): string => {
   const replace = (original: WithRange, replacement: WithRange): void =>
     replaceText(original, newSource.slice(...replacement.range.map(p => p + offset)))
 
-  ancestor(parse(source, {ranges: true, locations: true}), {
-    IfStatement(n) {
-      const node = n as unknown as WithRange<IfStatement>
-      let isTestProd: boolean | undefined
-      if (node.test.type === 'BinaryExpression' && isCheckingIfProd(node.test)) isTestProd = isProd(node.test)
-      else if (node.test.type === 'Identifier') isTestProd = isProdVars[node.test.name]
+  const parseConditional = (n: acorn.Node): void => {
+    const node = n as unknown as WithRange<IfStatement | ConditionalExpression>
+    let isTestProd: boolean | undefined
+    if (node.test.type === 'BinaryExpression' && isCheckingIfProd(node.test)) isTestProd = isProd(node.test)
+    else if (node.test.type === 'Identifier') isTestProd = isProdVars[node.test.name]
 
-      if (typeof isTestProd !== 'undefined') {
-        const statement = (isTestProd ? node.consequent : node.alternate) as WithRange<Statement>
-        if (statement) replace(node, statement)
-        else remove(node)
-      }
-    },
+    if (typeof isTestProd !== 'undefined') {
+      const statement = (isTestProd ? node.consequent : node.alternate) as WithRange<Statement | Expression>
+      if (statement) replace(node, statement)
+    }
+  }
+
+  ancestor(parse(source, {ranges: true, locations: true}), {
+    ConditionalExpression: parseConditional,
+    IfStatement: parseConditional,
     VariableDeclarator(n, a) {
       const node = n as unknown as WithRange<VariableDeclarator>,
         ancestors = a as WithRange<acorn.Node>[],
@@ -71,10 +74,12 @@ const removeProdCheck = (source: string): string => {
         else {
           const i = declarations.indexOf(node)
           const next = declarations[i + 1]
-          remove({range: [
-            i === declarations.length - 1 ? declarations[i - 1].range[1] : node.range[0],
-            next ? next.range[0] : node.range[1]
-          ]})
+          remove({
+            range: [
+              i === declarations.length - 1 ? declarations[i - 1].range[1] : node.range[0],
+              next ? next.range[0] : node.range[1]
+            ]
+          })
         }
       }
     }
@@ -85,7 +90,7 @@ const removeProdCheck = (source: string): string => {
 
 const walk = async (path: string): Promise<string[]> => {
   const files = (await readdir(path)).map(file => join(path, file))
-  ;(await Promise.all(files
+    ;(await Promise.all(files
     .filter(file => statSync(file).isDirectory())
     .map(async file => walk(file)))
   ).forEach(subFiles => files.push(...subFiles))
