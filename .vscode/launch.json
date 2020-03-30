@@ -12,6 +12,14 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "Launch Current File (ts)",
+      "program": "${workspaceRoot}/node_modules/ts-node/dist/bin.js",
+      "args": ["--log-error", "${file}"],
+      "skipFiles": ["<node_internals>/**", "node_modules/**"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "Launch (watch)",
       "runtimeExecutable": "nodemon",
       "program": "${workspaceFolder}/src/server.ts",
