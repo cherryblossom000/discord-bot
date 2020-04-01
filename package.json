@@ -15,14 +15,14 @@
     "node": ">=12"
   },
   "scripts": {
-    "test": "eslint . && jest --forceExit",
+    "test": "eslint . && jest",
     "copy": " (cd dist && mkdir assets; cp -r ../assets/img assets/img)",
     "build": "tsc -p tsconfig.build.json && ts-node scripts/remove-prod-check && pnpm run copy",
     "doc": "ts-node scripts/doc && mkdir dist/assets/css; purgecss -c purgecss.config.js -o dist/assets/css",
     "start": "node src/server",
-    "test:dev": "jest -c jest.config.dev.js --forceExit",
+    "test:dev": "jest -c jest.config.dev.js",
     "build:dev": "tsc -p tsconfig.build.json --sourceMap --incremental && pnpm run copy",
-    "watch": "tsc -watch -p tsconfig.build.json --sourceMap --incremental",
+    "watch": "pnpm run build:dev -- -w",
     "start:dev": "nodemon ."
   },
   "dependencies": {
