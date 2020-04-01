@@ -102,7 +102,7 @@ client.on('guildCreate', () => client.setActivity())
 client.on('guildDelete', () => client.setActivity())
 
 // commands
-client.on('message', async (message: Message) => {
+client.on('message', (async (message: Message) => {
   const now = Date.now(), {author, content, channel, guild} = message
 
   if (author?.bot) return
@@ -164,7 +164,7 @@ The syntax is: \`${prefix}${command.name}${command.syntax ? ` ${command.syntax}`
       )
     }
   } else executeRegexCommands(message)
-})
+}))
 
 // start server and login to Discord
 ;(async (): Promise<void> => {

@@ -1,7 +1,7 @@
 import Discord, {Collection} from 'discord.js'
 import type {
-  APIMessage, DMChannel, GuildMember, MessageAdditions, MessageOptions, Snowflake,
-  SplitOptions, StringResolvable, TextChannel, VoiceChannel, VoiceConnection
+  APIMessage, ClientEvents, DMChannel, GuildMember, MessageAdditions, MessageOptions,
+  Snowflake, SplitOptions, StringResolvable, TextChannel, VoiceChannel, VoiceConnection
 } from 'discord.js'
 import type Keyv from 'keyv'
 
@@ -103,6 +103,8 @@ export class Client extends Discord.Client {
   setActivity(): void {
     this.user!.setActivity(`capitalist scum in ${this.guilds.cache.size} servers`, {type: 'WATCHING'})
   }
+
+  declare on: <K extends keyof ClientEvents>(event: K, listener: (...args: (ClientEvents & {message: [Message]})[K]) => void) => this
 }
 
 export type OptionsNoSplit = MessageOptions & {split?: false}
