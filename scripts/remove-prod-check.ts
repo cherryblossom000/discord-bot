@@ -54,6 +54,7 @@ const removeProdCheck = (source: string): string => {
     if (typeof isTestProd !== 'undefined') {
       const statement = (isTestProd ? node.consequent : node.alternate) as WithRange<Statement | Expression>
       if (statement) replace(node, statement)
+      else remove(node)
     }
   }
 
@@ -74,12 +75,10 @@ const removeProdCheck = (source: string): string => {
         else {
           const i = declarations.indexOf(node)
           const next = declarations[i + 1]
-          remove({
-            range: [
-              i === declarations.length - 1 ? declarations[i - 1].range[1] : node.range[0],
-              next ? next.range[0] : node.range[1]
-            ]
-          })
+          remove({range: [
+            i === declarations.length - 1 ? declarations[i - 1].range[1] : node.range[0],
+            next ? next.range[0] : node.range[1]
+          ]})
         }
       }
     }
@@ -90,7 +89,7 @@ const removeProdCheck = (source: string): string => {
 
 const walk = async (path: string): Promise<string[]> => {
   const files = (await readdir(path)).map(file => join(path, file))
-    ;(await Promise.all(files
+  ;(await Promise.all(files
     .filter(file => statSync(file).isDirectory())
     .map(async file => walk(file)))
   ).forEach(subFiles => files.push(...subFiles))
