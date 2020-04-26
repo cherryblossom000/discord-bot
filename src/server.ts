@@ -24,7 +24,9 @@ app.use(express.static(resolve('../assets/html'), {extensions: ['html']}))
 app.use(express.static(resolve('../assets/css')))
 app.use(express.static(resolve('../assets/img')))
 
-const client = new Client()
+const client = new Client({ws: {intents: [
+  'GUILDS', 'GUILD_MESSAGES', 'GUILD_EMOJIS', 'GUILD_VOICE_STATES', 'GUILD_PRESENCES', 'DIRECT_MESSAGES'
+]}})
 
 // handle promise rejections and uncaught exceptions
 if (dev) {
