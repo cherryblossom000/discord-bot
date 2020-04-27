@@ -7625,7 +7625,7 @@ packages:
     resolution:
       integrity: sha512-rg1h6enMeBzShy4ZMam8k28VQfpSdxwZprCy3t38VvHn9DHzYqVk5Lvevy4QGkASScoYr1sIKGkNo0hh7NGRnA==
 specifiers:
-  '@discordjs/opus': ^0.1.0
+  '@discordjs/opus': 0.1.0
   '@keyv/sqlite': ^2.0.2
   '@semantic-release/changelog': ^5.0.1
   '@semantic-release/git': ^9.0.0
