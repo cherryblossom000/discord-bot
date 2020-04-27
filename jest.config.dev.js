@@ -1,4 +1,7 @@
+'use strict'
+
 const jest = require('./jest.config')
+
 module.exports = {
   ...jest,
   collectCoverage: true,

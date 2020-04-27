@@ -1,3 +1,5 @@
+'use strict'
+
 module.exports = {
   forceExit: true,
   globals: {'ts-jest': {packageJson: './package.json'}},
