@@ -24,9 +24,10 @@ const readme = resolve('README.md')
   const commands = modules.map<Command>(m => m.default)
   const usageMarkdownIt = new MarkdownIt({html: true, breaks: true})
   const docs = [['Command', 'Aliases', 'Description', 'Usage', 'Cooldown (s)'],
-    ...commands.map(
-      ({name, aliases, description, syntax, usage, cooldown = 3}) => [
-        `\`${name}\``,
+    ...commands
+      .map(
+        ({name, aliases, description, syntax, usage, cooldown = 3}) => [
+          `\`${name}\``,
           aliases?.map(a => `\`${a}\``).join(', ') ?? '-',
           name === 'iwmelc'
             ? `${description}<br>![i will murder every last capitalist](./assets/img/iwmelc.jpg)`
@@ -42,12 +43,14 @@ const readme = resolve('README.md')
             : ''
           }`,
           cooldown.toString()
-      ]
-    )]
+        ]
+      )]
 
   const newReadme = (await readFile(readme)).toString()
     .replace(/(?<=## Documentation\n)[\s\S]+(?=\n\n## Links)/u, table(docs, {alignDelimiters: false}))
     .replace(/(?<=permissions=)\d+/u, new Permissions(permissions).bitfield.toString())
+
+  await writeFile(readme, newReadme)
 
   await mkdir(resolve('dist/assets/html'), {recursive: true})
   const template = (await readFile(resolve('scripts/template.html'))).toString()
