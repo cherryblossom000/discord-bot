@@ -6,17 +6,17 @@ import express from 'express'
 import Keyv from 'keyv'
 import {Client} from './types'
 import {createResolve, getPrefix, handleError, reply, sendMeError} from './helpers'
-
 import type {AddressInfo} from 'net'
 import type {Server} from 'http'
 import type {Snowflake} from 'discord.js'
-import type {Command, DatabaseGuild, Message, RegexCommand} from './types'
+import type {Command, DatabaseGuild, GuildMessage, Message, RegexCommand} from './types'
 
-const {readdir} = promises, resolve = createResolve(__dirname)
+const {readdir} = promises,
+  resolve = createResolve(__dirname)
 
 const dev = process.env.NODE_ENV !== 'production'
 
-// routing
+// Routing
 const app = express()
 
 app.get('/', (_, res) => res.sendFile(resolve('../assets/html/index.html')))
@@ -28,19 +28,18 @@ const client = new Client({ws: {intents: [
   'GUILDS', 'GUILD_MESSAGES', 'GUILD_EMOJIS', 'GUILD_VOICE_STATES', 'GUILD_PRESENCES', 'DIRECT_MESSAGES'
 ]}})
 
-// handle promise rejections and uncaught exceptions
+// Handle promise rejections and uncaught exceptions
 if (dev) {
   process.on('unhandledRejection', reason => {
     throw reason instanceof Error ? reason : new Error(`${reason}`)
   })
 } else {
   process.on('unhandledRejection', reason =>
-    handleError(client, reason instanceof Error ? reason : new Error(`${reason}`), 'Uncaught promise rejection:')
-  )
+    handleError(client, reason instanceof Error ? reason : new Error(`${reason}`), 'Uncaught promise rejection:'))
   process.on('uncaughtException', error => handleError(client, error, 'Uncaught exception:'))
 }
 
-// set up keyv
+// Set up keyv
 const database = new Keyv<DatabaseGuild>('sqlite://.data/database.sqlite')
 database.on('error', error => {
   console.error(error)
@@ -52,8 +51,7 @@ const importCommands = async <T>(path: string, callback: (command: T) => void): 
     const files = await readdir(resolve(path)),
       modules = await Promise.all(files
         .filter(f => !f.endsWith('.map'))
-        .map(async f => import(join(resolve(path), f)))
-      )
+        .map(async f => import(join(resolve(path), f))))
     modules.map<T>(m => m.default).forEach(callback)
   } catch (error) {
     sendMeError(client, error, `\`importCommands\` failed with path \`${path}\`.`)
@@ -61,15 +59,21 @@ const importCommands = async <T>(path: string, callback: (command: T) => void): 
   }
 }
 
-// initialise commands
+// Initialise commands
 importCommands<Command>('./commands', c => client.commands.set(c.name, c))
 importCommands<RegexCommand>('./regex-commands', c => client.regexCommands.set(c.regex, c.regexMessage))
 
-// initialise cooldowns
+// Initialise cooldowns
 const cooldowns = new Collection<string, Collection<Snowflake, number>>()
 
+declare global {
+  interface RegExp {
+    toString(): string
+  }
+}
+
 const executeRegexCommands = (message: Message): void => {
-  // regex message commands
+  // Regex message commands
   client.regexCommands.forEach(async (regexMessage, regex) => {
     if (regex.test(message.content)) {
       try {
@@ -77,15 +81,18 @@ const executeRegexCommands = (message: Message): void => {
           ? message.channel.send(regexMessage)
           : message.channel.send(regexMessage(message)))
       } catch (error) {
-        handleError(client, error,
-          `Regex command with regex \`${regex}\` failed with message content \`${message.content}\`.`, message
+        handleError(
+          client,
+          error,
+          `Regex command with regex \`${regex}\` failed with message content \`${message.content}\`.`,
+          message
         )
       }
     }
   })
 }
 
-// ready
+// Ready
 client.once('ready', () => {
   client.setActivity()
   console.log(`READY
@@ -94,73 +101,90 @@ Channels: ${client.channels.cache.size}
 Guilds: ${client.guilds.cache.size}`)
 })
 
-// errors
+// Errors
 client.on('error', async error => sendMeError(client, error, 'The `error` event fired.'))
 
-// guild create
+// Guild create
 client.on('guildCreate', () => client.setActivity())
 
-// guild delete
+// Guild delete
 client.on('guildDelete', () => client.setActivity())
 
-// commands
+// Commands
 client.on('message', async message => {
-  const now = Date.now(), {author, content, channel, guild} = message
+  const now = Date.now(),
+    {author, content, channel, guild} = message
 
-  if (author?.bot) return
+  if (author.bot) return
 
   const prefix = await getPrefix(database, guild),
-    matchedPrefix = new RegExp(`^<@!?${client.user!.id}>|${escapeRegex(prefix)}`).exec(content)?.[0]
+    matchedPrefix = new RegExp(`^<@!?${client.user!.id}>|${escapeRegex(prefix)}`, 'u').exec(content)?.[0]
   if (matchedPrefix || !guild) {
-    // exits if there is no input
     const input = content.slice(matchedPrefix?.length ?? 0).trim()
+
+    // Exits if there is no input and the bot was mentioned
     if (!input.length && matchedPrefix !== prefix) {
       return channel.send(`Hi, I am Comrade Pingu. Noot noot.
 My prefix is \`${prefix}\`. Run \`${prefix} help\` for a list of commands.`)
     }
 
-    // get args
-    const args = input.split(/\s+/), commandName = args.shift()!.toLowerCase()
+    // Get args and command
+    const args = input.split(/\s+/u),
+      commandName = args.shift()!.toLowerCase()
 
-    // if command doesn't exist exit
-    const command = client.commands.get(commandName) || client.commands.find(cmd => !!cmd.aliases?.includes(commandName))
-    if (!command) {
-      if (message.guild) return
-      else return executeRegexCommands(message)
-    }
-
-    // guild only
-    if (command.guildOnly && channel.type !== 'text')
-      return reply(message, 'sorry, I can\u2019t execute that command inside DMs. Noot noot.')
-
-    // if no args
-    if (command.args && !args.length) {
-      return reply(message, `you didn\u2019t provide any arguments. Noot noot.
-The syntax is: \`${prefix}${command.name}${command.syntax ? ` ${command.syntax}` : ''}\`. Noot noot.`)
-    }
-
-    // cooldowns
-    if (!cooldowns.has(command.name)) cooldowns.set(command.name, new Collection())
-
-    const timestamps = cooldowns.get(command.name)!, cooldownAmount = command.cooldown ?? 3 * 1000
-    if (timestamps.has(author.id)) {
-      const expirationTime = timestamps.get(author.id)! + cooldownAmount
-      if (now < expirationTime) {
-        const timeLeft = ((expirationTime - now) / 1000).toFixed(1)
-        return reply(message,
-          `please wait ${timeLeft} more second${
-          timeLeft === '1.0' ? '' : 's'} before using the \`${command.name}\` command. Noot noot.`
-        )
+    const checkCommand = (command?: Command<boolean>): command is Command<boolean> => {
+      // If command doesn't exist exit or execute regex commands
+      if (!command) {
+        if (!message.guild) executeRegexCommands(message)
+        return false
       }
-    }
-    timestamps.set(author.id, now)
-    setTimeout(() => timestamps.delete(author.id), cooldownAmount)
 
-    // execute command
+      // Guild only
+      if (command.guildOnly && channel.type !== 'text') {
+        reply(message, 'sorry, I can\u2019t execute that command inside DMs. Noot noot.')
+        return false
+      }
+
+      // If no args
+      if (command.args && !args.length) {
+        reply(message, `you didn\u2019t provide any arguments. Noot noot.
+The syntax is: \`${prefix}${command.name}${command.syntax ? ` ${command.syntax}` : ''}\`. Noot noot.`)
+        return false
+      }
+      return true
+    }
+    const command = client.commands.get(commandName) ?? client.commands.find(cmd => !!cmd.aliases?.includes(commandName))
+    if (!checkCommand(command)) return
+
+    const checkCooldowns = (): boolean => {
+      if (!cooldowns.has(command.name)) cooldowns.set(command.name, new Collection())
+
+      const timestamps = cooldowns.get(command.name)!,
+        cooldownAmount = command.cooldown ?? 3 * 1000
+      if (timestamps.has(author.id)) {
+        const expirationTime = timestamps.get(author.id)! + cooldownAmount
+        if (now < expirationTime) {
+          const timeLeft = ((expirationTime - now) / 1000).toFixed(1)
+          reply(
+            message,
+            `please wait ${timeLeft} more second${timeLeft === '1.0' ? '' : 's'} before using the \`${command.name}\` command. Noot noot.`
+          )
+          return false
+        }
+      }
+      timestamps.set(author.id, now)
+      setTimeout(() => timestamps.delete(author.id), cooldownAmount)
+      return true
+    }
+    if (!checkCooldowns()) return
+
+    // Execute command
     try {
-      await command.execute(message, args, database)
+      await command.execute(message as GuildMessage, args, database)
     } catch (error) {
-      handleError(client, error,
+      handleError(
+        client,
+        error,
         `Command \`${command.name}\` failed${args.length ? ` with args ${args.map(a => `\`${a}\``).join(', ')}` : ''}.`,
         message
       )
@@ -168,7 +192,7 @@ The syntax is: \`${prefix}${command.name}${command.syntax ? ` ${command.syntax}`
   } else executeRegexCommands(message)
 })
 
-// start server and login to Discord
+// Start server and login to Discord
 ;(async (): Promise<void> => {
   if (dev) {
     const dotenv = await import('dotenv')

@@ -1,13 +1,13 @@
 import type {Command} from '../types'
 
-const command: Command = {
+const _: Command = {
   name: 'ping',
   aliases: ['p'],
   description: 'Gets my current latency.',
   cooldown: 5,
-  execute: async message => {
-    await message.channel.send(`Noot noot!
-My current latency is ${new Date().getTime() - message.createdTimestamp} ms.`)
+  async execute({channel, createdTimestamp}) {
+    await channel.send(`Noot noot!
+My current latency is ${Date.now() - createdTimestamp} ms.`)
   }
 }
-export default command
+export default _

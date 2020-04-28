@@ -1,15 +1,15 @@
 import {version} from '../../package.json'
 import type {Command} from '../types'
 
-const command: Command = {
+const _: Command = {
   name: 'info',
   aliases: ['in'],
   description: 'Gets info about me.',
-  execute: async message => {
-    await message.channel.send(`Version: \`${version}\`
+  async execute({channel}) {
+    await channel.send(`Version: \`${version}\`
 I am comrade Pingu. Noot noot.
 Kill all the capitalist scum!.
 I was created by cherryblossom#2661.`)
   }
 }
-export default command
+export default _

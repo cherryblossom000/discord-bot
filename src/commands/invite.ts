@@ -1,12 +1,12 @@
 import {permissions} from '../constants'
 import type {Command} from '../types'
 
-const command: Command = {
+const _: Command = {
   name: 'invite',
   aliases: ['add', 'inv', 'link'],
   description: 'Gets my invite link.',
-  execute: async message => {
-    await message.channel.send(await message.client.generateInvite(permissions))
+  async execute({client, channel}) {
+    await channel.send(await client.generateInvite(permissions))
   }
 }
-export default command
+export default _

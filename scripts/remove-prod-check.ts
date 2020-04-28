@@ -2,12 +2,15 @@ import {join} from 'path'
 import {promises, statSync} from 'fs'
 import {ancestor} from 'acorn-walk'
 import {parse} from 'acorn'
+import exitOnError from './exitOnError'
 import type {
   BinaryExpression, ConditionalExpression, Expression, Identifier,
   IfStatement, Statement, VariableDeclarator, VariableDeclaration
 } from 'estree'
 
 const {readdir, readFile, writeFile} = promises
+
+exitOnError()
 
 const removeProdCheck = (source: string): string => {
   const isNodeEnv = (node: Expression): boolean => node.type === 'MemberExpression' && !node.computed &&
@@ -52,16 +55,18 @@ const removeProdCheck = (source: string): string => {
     else if (node.test.type === 'Identifier') isTestProd = isProdVars[node.test.name]
 
     if (typeof isTestProd !== 'undefined') {
-      const statement = (isTestProd ? node.consequent : node.alternate) as WithRange<Statement | Expression>
+      const statement = (isTestProd ? node.consequent : node.alternate) as WithRange<Statement | Expression> | undefined
       if (statement) replace(node, statement)
       else remove(node)
     }
   }
 
   ancestor(parse(source, {ranges: true, locations: true}), {
+    /* eslint-disable @typescript-eslint/naming-convention */
     ConditionalExpression: parseConditional,
     IfStatement: parseConditional,
     VariableDeclarator(n, a) {
+      /* eslint-enable @typescript-eslint/naming-convention */
       const node = n as unknown as WithRange<VariableDeclarator>,
         ancestors = a as WithRange<acorn.Node>[],
         declaration = ancestors[ancestors.length - 2] as unknown as WithRange<VariableDeclaration> & {
@@ -74,7 +79,7 @@ const removeProdCheck = (source: string): string => {
         if (declarations.length === 1) remove(declaration)
         else {
           const i = declarations.indexOf(node)
-          const next = declarations[i + 1]
+          const next = declarations[i + 1] as WithRange<VariableDeclarator> | undefined
           remove({range: [
             i === declarations.length - 1 ? declarations[i - 1].range[1] : node.range[0],
             next ? next.range[0] : node.range[1]
@@ -102,6 +107,5 @@ walk(join(__dirname, '../dist/src')).then(async files => {
     .map(async file => {
       const source = await readFile(file)
       writeFile(file, removeProdCheck(source.toString()))
-    })
-  )
+    }))
 })

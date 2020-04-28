@@ -90,8 +90,12 @@ export interface Queue {
 
 /** The Discord client for this bot. */
 export class Client extends Discord.Client {
+  declare on: <K extends keyof ClientEvents>(
+    event: K, listener: (...args: (ClientEvents & {message: [Message]})[K]) => void
+  ) => this
+
   /** The commands. */
-  commands = new Collection<string, Command>()
+  commands = new Collection<string, Command<boolean>>()
 
   /** The regex commands. */
   regexCommands = new Collection<RegExp, RegexCommand['regexMessage']>()
@@ -103,8 +107,6 @@ export class Client extends Discord.Client {
   setActivity(): void {
     this.user!.setActivity(`capitalist scum in ${this.guilds.cache.size} servers`, {type: 'WATCHING'})
   }
-
-  declare on: <K extends keyof ClientEvents>(event: K, listener: (...args: (ClientEvents & {message: [Message]})[K]) => void) => this
 }
 
 export type OptionsNoSplit = MessageOptions & {split?: false}
@@ -141,4 +143,6 @@ export interface DMMessage extends BaseMessage {
 export type Message = GuildMessage | DMMessage
 
 /** A guild from this client. */
-export interface Guild extends Discord.Guild {client: Client}
+export interface Guild extends Discord.Guild {
+  client: Client
+}

@@ -27,7 +27,9 @@ interface _DMChannelData extends _TextChannelData {
   type: typeof ChannelType['DM' | 'GROUP_DM']
   recipients: UserData[]
 }
-export interface DMChannelData extends _DMChannelData {type: ChannelType.DM}
+export interface DMChannelData extends _DMChannelData {
+  type: ChannelType.DM
+}
 
 interface GroupDMChannelData extends _DMChannelData {
   type: ChannelType.GROUP_DM
@@ -63,8 +65,12 @@ interface VoiceChannelData extends GuildChannelData {
   user_limit?: number
 }
 
-interface CategoryChannelData extends GuildChannelData {type: ChannelType.GUILD_CATEGORY}
-interface NewsChannelData extends GuildChannelData {type: ChannelType.GUILD_NEWS}
+interface CategoryChannelData extends GuildChannelData {
+  type: ChannelType.GUILD_CATEGORY
+}
+interface NewsChannelData extends GuildChannelData {
+  type: ChannelType.GUILD_NEWS
+}
 
 interface StoreChannelData extends GuildChannelData {
   type: ChannelType.GUILD_STORE

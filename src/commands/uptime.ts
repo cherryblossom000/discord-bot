@@ -1,12 +1,12 @@
 import ms from 'ms'
 import type {Command} from '../types'
 
-const command: Command = {
+const _: Command = {
   name: 'uptime',
   aliases: ['u'],
   description: 'Gets my uptime.',
-  execute: async ({channel, client}) => {
+  async execute({client, channel}) {
     await channel.send(`Uptime: ${ms(client.uptime!)}`)
   }
 }
-export default command
+export default _

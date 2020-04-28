@@ -7,10 +7,12 @@ export const defaultPrefix = '.'
 export const permissions: PermissionString[] = [
   'VIEW_CHANNEL',
   'SEND_MESSAGES',
-  'MANAGE_MESSAGES', // to remove other users' reactions
+  // To remove other users' reactions
+  'MANAGE_MESSAGES',
   'EMBED_LINKS',
   'ATTACH_FILES',
-  'READ_MESSAGE_HISTORY', // to react on a message
+  // To react on a message
+  'READ_MESSAGE_HISTORY',
   'ADD_REACTIONS',
   'CONNECT',
   'SPEAK'

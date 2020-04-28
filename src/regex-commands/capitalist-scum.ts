@@ -1,8 +1,8 @@
 import type {RegexCommand} from '../types'
 
-const command: RegexCommand = {
+const _: RegexCommand = {
   regex:
-    /capitalism|capitalist|scum/i,
+    /capitalism|capitalist|scum/ui,
   regexMessage: 'Kill all the capitalist scum!'
 }
-export default command
+export default _

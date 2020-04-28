@@ -1,7 +1,7 @@
 import {getQueue, set} from '../helpers'
 import type {Command} from '../types'
 
-const command: Command <true> = {
+const _: Command <true> = {
   name: 'volume',
   aliases: ['v'],
   description: 'Changes or gets the volume of the music playing.',
@@ -12,11 +12,12 @@ The new volume as a percentage to set it to. If omitted, the current volume will
 * \`<+|-><number>[%]\` Increments/decrements the volume.
 * \`reset\` (or anything starting with \`r\`) Resets the volume to 100%.`,
   guildOnly: true,
-  execute: async (message, args, database) => {
-    const queue = getQueue(message)
+  async execute(message, args, database) {
+    const queue = await getQueue(message)
     if (!queue) return
 
-    const {channel, guild} = message, {connection: {dispatcher}} = queue
+    const {channel, guild} = message,
+      {connection: {dispatcher}} = queue
     if (args[0]?.toLowerCase().startsWith('r')) {
       dispatcher.setVolume(1)
       await channel.send('Reset the volume to 100%.')
@@ -24,14 +25,15 @@ The new volume as a percentage to set it to. If omitted, the current volume will
       return
     }
 
-    const input = args[0]?.replace(/%/g, '')
+    const input = args[0]?.replace(/%/ug, '')
     if (isNaN(input as any)) await channel.send(`The current volume is ${dispatcher.volume * 100}%.`)
     else {
-      const n = Number(input) / 100, newVolume = input.startsWith('+') || input.startsWith('-') ? dispatcher.volume + n : n
+      const n = Number(input) / 100,
+        newVolume = input.startsWith('+') || input.startsWith('-') ? dispatcher.volume + n : n
       dispatcher.setVolume(newVolume)
       await channel.send(`Set the volume to ${newVolume * 100}%.`)
       await set(database, guild, 'volume', newVolume)
     }
   }
 }
-export default command
+export default _

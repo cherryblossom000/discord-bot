@@ -15,7 +15,8 @@
     "node": ">=12"
   },
   "scripts": {
-    "test": "eslint . && jest",
+    "lint": "eslint '**/*.@(j|t)s'",
+    "test": "jest",
     "copy": " (cd dist && mkdir assets; cp -r ../assets/img assets/img)",
     "build": "tsc -p tsconfig.build.json && ts-node scripts/remove-prod-check && pnpm run copy",
     "doc": "ts-node scripts/doc && mkdir dist/assets/css; purgecss -c purgecss.config.js -o dist/assets/css",
@@ -51,8 +52,8 @@
     "@types/node": "^13.13.4",
     "@types/rewire": "^2.5.28",
     "@types/yt-search": "^1.1.0",
-    "@typescript-eslint/eslint-plugin": "^2.29.0",
-    "@typescript-eslint/parser": "^2.29.0",
+    "@typescript-eslint/eslint-plugin": "^2.30.0",
+    "@typescript-eslint/parser": "^2.30.0",
     "acorn": "^7.1.1",
     "acorn-walk": "^7.1.1",
     "commitizen": "^4.0.4",

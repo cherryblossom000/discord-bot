@@ -8,7 +8,7 @@ import type {PermissionResolvable, PermissionString} from 'discord.js'
 import type {Client, DatabaseGuild, Guild, GuildMessage, Message, Queue, Video} from './types'
 
 /** Creates a function to easily resolve paths relative to the `__dirname`. */
-export const createResolve = (__dirname: string) => (p: string): string => join(__dirname, p)
+export const createResolve = (dirname: string) => (p: string): string => join(dirname, p)
 
 /**
  * Replies to a message.
@@ -18,8 +18,7 @@ export const createResolve = (__dirname: string) => (p: string): string => join(
 export const reply = async (message: Message, content: string | string[]): Promise<Message> =>
   message.reply(message.guild
     ? content
-    : Array.isArray(content) ? (content[0] = upperFirst(content[0]), content) : upperFirst(content)
-  )
+    : Array.isArray(content) ? (content[0] = upperFirst(content[0]), content) : upperFirst(content))
 
 /**
  * DMs me an error.
@@ -61,19 +60,21 @@ export const checkPermissions = (
   message: GuildMessage,
   permissions: PermissionString | PermissionString[]
 ): boolean => {
-  const {channel, client, guild} = message, channelPermissions = channel.permissionsFor(client.user!)
+  const {channel, client, guild} = message,
+    channelPermissions = channel.permissionsFor(client.user!)
   if (!channelPermissions?.has(permissions)) {
     const neededPermissions = Array.isArray(permissions)
       ? permissions.filter(p => !channelPermissions?.has(p))
       : [permissions]
 
-    const plural = neededPermissions.length !== 1, permissionsString = ` permission${plural ? 's' : ''}`
+    const plural = neededPermissions.length !== 1,
+      permissionsString = ` permission${plural ? 's' : ''}`
 
     reply(message, [
       `I don\u2019t have th${plural ? 'ese' : 'is'}${permissionsString}!`,
       neededPermissions.map(p => `* ${p}`).join('\n'),
       `To fix this, ask an admin or the owner of the server to add th${plural ? 'ose' : 'at'}${permissionsString} to ${
-      guild.member(client.user!)!.roles.cache.find(role => role.managed)
+        guild.member(client.user!)!.roles.cache.find(role => role.managed)
       }.`
     ])
     return false
@@ -82,9 +83,10 @@ export const checkPermissions = (
 }
 
 /** Gets the queue and sends a message no music is playing. */
-export const getQueue = ({channel, client: {queues}, guild}: GuildMessage): Queue | void => {
+export const getQueue = async ({channel, client: {queues}, guild}: GuildMessage): Promise<Queue | void> => {
   const queue = queues.get(guild.id)
-  return queue ?? void channel.send('No music is playing!')
+  if (queue) return queue
+  await channel.send('No music is playing!')
 }
 
 /** Sets a value for a guild in a database. */
@@ -109,11 +111,15 @@ export const searchYoutube = async (
   query: string
 ): Promise<yts.VideoSearchResult | void> => {
   if (message.guild && !checkPermissions(message, [
-    'MANAGE_MESSAGES', 'EMBED_LINKS', 'READ_MESSAGE_HISTORY', 'ADD_REACTIONS'])) return
+    'MANAGE_MESSAGES', 'EMBED_LINKS', 'READ_MESSAGE_HISTORY', 'ADD_REACTIONS'
+  ])) return
   const {author, channel} = message
 
   const {videos} = await yts(query)
-  if (!videos.length) return void channel.send(`No results were found for ${query}. Try using a YouTube link instead.`)
+  if (!videos.length) {
+    await channel.send(`No results were found for ${query}. Try using a YouTube link instead.`)
+    return
+  }
 
   let current: yts.VideoSearchResult[]
 
@@ -136,6 +142,7 @@ export const searchYoutube = async (
   const embedMessage = await channel.send(...generateEmbed(0))
 
   const reactNumbers = async (): Promise<void> => {
+    // eslint-disable-next-line no-await-in-loop
     for (let i = 1; i <= current.length; i++) await embedMessage.react(emojis.numbers[i])
   }
 
@@ -153,13 +160,13 @@ export const searchYoutube = async (
   return new Promise(resolve => {
     collector.on('collect', async ({emoji: {name}}) => {
       const n = emojis.numbers.indexOf(name)
-      // if the emoji is greater than the number of videos shown exit
+      // If the emoji is greater than the number of videos shown exit
       if (n > current.length) return
 
-      // if the reaction is a number
+      // If the reaction is a number return the video
       if (n > -1) return resolve(current[n - 1])
 
-      // if the reaction is an arrow
+      // If the reaction is an arrow change the page
       await embedMessage.reactions.removeAll()
       name === emojis.left ? currentIndex -= 10 : currentIndex += 10
       embedMessage.edit(...generateEmbed(currentIndex))

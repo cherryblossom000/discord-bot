@@ -26,10 +26,10 @@ const joinAlternate = (...strings: string[]): string => `(${strings.join('|')})`
 
   adjLast = `${nouns} ${verbs}? ${adverbs}? ${bad}`,
   adjFirst = `${bad} ${nouns}`,
-  regex = new RegExp(`(${adjLast})|(${adjFirst})`.replace(/\s+/g, '\\s*'), 'i')
+  regex = new RegExp(`(${adjLast})|(${adjFirst})`.replace(/\s+/ug, '\\s*'), 'ui')
 
-const command: RegexCommand = {
+const _: RegexCommand = {
   regex,
   regexMessage: 'Noot noot!'
 }
-export default command
+export default _

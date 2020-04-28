@@ -6,7 +6,8 @@ import type {DMChannel, TextChannel} from './Channel'
 
 async function send(this: TextChannel, {content}: MessageOptions): Promise<GuildMessage | GuildMessage[]>
 async function send(this: DMChannel, {content}: MessageOptions): Promise<DMMessage | DMMessage[]>
-// eslint-disable-next-line @typescript-eslint/require-await
+/** @this */
+// eslint-disable-next-line func-style
 async function send(this: TextChannel | DMChannel, {content}: MessageOptions): Promise<Message | Message[]> {
   return (this.client['actions'] as ActionsManager).MessageCreate.handle({
     id: '1',

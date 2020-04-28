@@ -2,13 +2,13 @@ import {emojis} from '../constants'
 import {getQueue, hasPermissions} from '../helpers'
 import type {Command} from '../types'
 
-const command: Command<true> = {
+const _: Command<true> = {
   name: 'stop',
   aliases: ['s'],
   description: 'Stops playing music.',
   guildOnly: true,
-  execute: async message => {
-    const queue = getQueue(message)
+  async execute(message) {
+    const queue = await getQueue(message)
     if (!queue) return
 
     queue.voiceChannel.leave()
@@ -20,5 +20,5 @@ I can react on your message instead if you enable the READ_MESSAGE_HISTORY permi
     }
   }
 }
-export default command
+export default _
 

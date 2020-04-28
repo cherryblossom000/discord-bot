@@ -6,6 +6,7 @@ install:
 jobs:
     script:
       - pnpm run build
+      - pnpm run lint
       - pnpm run test
       - pnpm run doc
     after_success: chmod +x scripts/push-docs.sh && scripts/push-docs.sh

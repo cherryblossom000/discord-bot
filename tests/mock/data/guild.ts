@@ -12,7 +12,9 @@ export const enum VerificationLevel {
   VERY_HIGH
 }
 
-export const enum DefaultMessageNotificationLevel {ALL_MESSAGES, ONLY_MENTIONS}
+export const enum DefaultMessageNotificationLevel {
+  ALL_MESSAGES, ONLY_MENTIONS
+}
 
 export const enum ExplicitContentFilterLevel {
   DISABLED,
@@ -20,7 +22,9 @@ export const enum ExplicitContentFilterLevel {
   ALL_MEMBERS
 }
 
-export const enum MFALevel {NONE, ELEVATED}
+export const enum MFALevel {
+  NONE, ELEVATED
+}
 
 export interface GuildData {
   id: Snowflake

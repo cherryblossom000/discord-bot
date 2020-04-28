@@ -1,11 +1,11 @@
 import type {Command} from '../types'
 
-const command: Command = {
+const _: Command = {
   name: 'website',
   aliases: ['site', 'w', 'web'],
   description: 'Sends my website.',
-  execute: async ({channel}) => {
+  async execute({channel}) {
     await channel.send('https://comrade-pingu.glitch.me')
   }
 }
-export default command
+export default _

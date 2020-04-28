@@ -20,7 +20,7 @@ const rules = {
   'accessor-pairs': [1, {enforceForClassMembers: true}],
   'array-callback-return': 2,
   'class-methods-use-this': 2,
-  complexity: 2,
+  complexity: 1,
   'consistent-return': 2,
   curly: [1, 'multi-or-nest'],
   'default-param-last': 2,
@@ -63,6 +63,7 @@ const rules = {
   'no-useless-call': 2,
   'no-useless-concat': 2,
   'no-useless-return': 1,
+  'no-void': 2,
   'prefer-promise-reject-errors': 2,
   'prefer-regex-literals': 2,
   radix: [1, 'as-needed'],
@@ -190,7 +191,17 @@ const rules = {
   'rest-spread-spacing': 1,
   'symbol-description': 2,
   'template-curly-spacing': 1,
-  'yield-star-spacing': 1
+  'yield-star-spacing': 1,
+
+  // Node.js and CommonJS
+  'callback-return': 2,
+  'global-require': 2,
+  'handle-callback-err': [2, '^err(or)?'],
+  'no-buffer-constructor': 2,
+  'no-mixed-requires': [2, {allowCall: true}],
+  'no-new-require': 2,
+  'no-path-concat': 2,
+  'no-process-exit': 2
 }
 
 module.exports = {
@@ -205,6 +216,12 @@ module.exports = {
     {
       files: ['tests/**/*.test.ts'],
       env: {'jest': true}
+    },
+    {
+      files: ['scripts/**/*'],
+      rules: {
+        'no-process-exit': 0
+      }
     },
     {
       files: ['**/*.ts'],
@@ -275,7 +292,7 @@ module.exports = {
         '@typescript-eslint/no-explicit-any': 0,
         '@typescript-eslint/no-extra-non-null-assertion': 2,
         '@typescript-eslint/no-extraneous-class': 2,
-        '@typescript-eslint/no-floating-promises': 2,
+        '@typescript-eslint/no-floating-promises': [2, {ignoreIIFE: true}],
         'no-implied-eval': 0,
         '@typescript-eslint/no-implied-eval': 2,
         '@typescript-eslint/no-inferrable-types': 2,
@@ -349,9 +366,17 @@ module.exports = {
       }
     },
     {
+      files: ['@(scripts|src)/**/*.ts'],
+      rules: {
+        // Everything is handled anyway
+        '@typescript-eslint/no-floating-promises': 0
+      }
+    },
+    {
       files: ['tests/mock/**/*.ts'],
       rules: {
-        '@typescript-eslint/camelcase': 0
+        '@typescript-eslint/naming-convention': 0,
+        '@typescript-eslint/require-await': 0
       }
     }
   ],
