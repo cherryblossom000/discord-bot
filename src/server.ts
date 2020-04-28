@@ -118,7 +118,7 @@ client.on('message', async message => {
   if (author.bot) return
 
   const prefix = await getPrefix(database, guild),
-    matchedPrefix = new RegExp(`^<@!?${client.user!.id}>|${escapeRegex(prefix)}`, 'u').exec(content)?.[0]
+    matchedPrefix = new RegExp(`^(<@!?${client.user!.id}>|${escapeRegex(prefix)})`, 'u').exec(content)?.[0]
   if (matchedPrefix || !guild) {
     const input = content.slice(matchedPrefix?.length ?? 0).trim()
 
