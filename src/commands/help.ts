@@ -11,11 +11,10 @@ const _: Command = {
 The command that you want to get info about. If omitted, all the commands will be listed.`,
   cooldown: 5,
   async execute(message, args, database) {
-    // constants
     const {author, client, client: {commands}, guild} = message,
       data = []
 
-    // all commands
+    // All commands
     if (!args.length) {
       data.push(
         'Here\u2019s a list of all my commands:',
@@ -35,17 +34,17 @@ Do you have DMs disabled?`)
       }
     }
 
-    // specific command
+    // Specific command
     const commandName = args[0].toLowerCase(),
       command = commands.get(commandName) ?? commands.find(c => !!c.aliases?.includes(commandName))
 
-    // invalid command
+    // Invalid command
     if (!command) {
       await reply(message, 'that\u2019s not a valid command. Noot noot.')
       return
     }
 
-    // gets info of command
+    // Gets info of command
     const {name, aliases, description, syntax, usage, cooldown} = command
     data.push(`**Name:** ${name}`)
     if (aliases) data.push(`**Aliases:** ${aliases.join(', ')}`)

@@ -15,7 +15,7 @@
     "node": ">=12"
   },
   "scripts": {
-    "lint": "eslint '**/*.@(j|t)s'",
+    "lint": "eslint '**/*.@(j|t)s' --max-warnings 0",
     "test": "jest",
     "copy": " (cd dist && mkdir assets; cp -r ../assets/img assets/img)",
     "build": "tsc -p tsconfig.build.json && ts-node scripts/remove-prod-check && pnpm run copy",
