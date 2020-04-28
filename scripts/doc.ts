@@ -25,6 +25,7 @@ const readme = resolve('README.md')
   const usageMarkdownIt = new MarkdownIt({html: true, breaks: true})
   const docs = [['Command', 'Aliases', 'Description', 'Usage', 'Cooldown (s)'],
     ...commands
+      .filter(command => !command.hidden)
       .map(
         ({name, aliases, description, syntax, usage, cooldown = 3}) => [
           `\`${name}\``,

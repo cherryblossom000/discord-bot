@@ -31,6 +31,9 @@ interface CommandBase<T extends Message> {
   /** Whether or not the command is only available in a server. */
   guildOnly?: boolean
 
+  /** Whether or not the command is not shown in the help list of commands. */
+  hidden?: boolean
+
   /**
    * Whether or nor the command requires arguments.
    * @default false

@@ -18,7 +18,7 @@ The command that you want to get info about. If omitted, all the commands will b
     if (!args.length) {
       data.push(
         'Here\u2019s a list of all my commands:',
-        ...commands.map(command => `\`${command.name}\`: ${command.description}`),
+        ...commands.filter(command => !command.hidden).map(command => `\`${command.name}\`: ${command.description}`),
         `
 You can send \`${defaultPrefix}help [command name]\` to get info on a specific command. Noot noot.`
       )
