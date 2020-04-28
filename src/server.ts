@@ -125,7 +125,7 @@ client.on('message', async message => {
     // Exits if there is no input and the bot was mentioned
     if (!input.length && matchedPrefix !== prefix) {
       return channel.send(`Hi, I am Comrade Pingu. Noot noot.
-My prefix is \`${prefix}\`. Run \`${prefix} help\` for a list of commands.`)
+My prefix is \`${prefix}\`. Run \`${prefix}help\` for a list of commands.`)
     }
 
     // Get args and command
