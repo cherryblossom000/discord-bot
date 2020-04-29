@@ -180,7 +180,7 @@ The syntax is: \`${prefix}${command.name}${command.syntax ? ` ${command.syntax}`
 
     // Execute command
     try {
-      await command.execute(message as GuildMessage, args, database)
+      await command.execute(message as GuildMessage, {args, input: input.replace(new RegExp(`^${commandName}\\s+`, 'u'), '')}, database)
     } catch (error) {
       handleError(
         client,

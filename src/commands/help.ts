@@ -10,7 +10,8 @@ const _: Command = {
   usage: `\`command\` (optional)
 The command that you want to get info about. If omitted, all the commands will be listed.`,
   cooldown: 5,
-  async execute(message, args, database) {
+  async execute(message, {args}, database) {
+    // constants
     const {author, client, client: {commands}, guild} = message,
       data = []
 

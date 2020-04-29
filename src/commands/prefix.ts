@@ -10,7 +10,7 @@ const _: Command<true> = {
   usage: `\`new prefix\` (optional)
 The text that you want to set the prefix to. If omitted, displays the current prefix.
 The default prefix is \`.\`.`,
-  async execute(message, [newPrefix], database) {
+  async execute(message, {args: [newPrefix]}, database) {
     const {channel, member, guild} = message
     if (!member.hasPermission('ADMINISTRATOR')) {
       await reply(message, 'you must be an admin to run this command. Noot noot.')

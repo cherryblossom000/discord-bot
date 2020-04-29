@@ -26,7 +26,7 @@ The query to search on YouTube for.`,
   // TODO: Use information of the video when downloading instead of making a request twice
   // I don't know how else to shorten this function
   // eslint-disable-next-line max-statements
-  async execute(message, args, database) {
+  async execute(message, {args}, database) {
     const {channel, client, guild: {id}, member} = message
     if (!checkPermissions(message, ['CONNECT', 'SPEAK'])) return
 

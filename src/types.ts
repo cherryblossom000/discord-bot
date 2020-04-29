@@ -52,12 +52,8 @@ interface CommandBase<T extends Message> {
    */
   cooldown?: number
 
-  /**
-   * The actual command.
-   * @param message The message.
-   * @param args The arguments.
-   */
-  execute(message: T, args: string[], database: Keyv<DatabaseGuild>): void | Promise<void>
+  /** The actual command. */
+  execute(message: T, input: {args: string[], input: string}, database: Keyv<DatabaseGuild>): void | Promise<void>
 }
 
 /**

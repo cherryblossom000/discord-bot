@@ -12,7 +12,7 @@ The new volume as a percentage to set it to. If omitted, the current volume will
 * \`<+|-><number>[%]\` Increments/decrements the volume.
 * \`reset\` (or anything starting with \`r\`) Resets the volume to 100%.`,
   guildOnly: true,
-  async execute(message, args, database) {
+  async execute(message, {args}, database) {
     const queue = await getQueue(message)
     if (!queue) return
 
