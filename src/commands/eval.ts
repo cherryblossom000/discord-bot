@@ -3,6 +3,8 @@ import escapeRegex from 'escape-string-regexp'
 import {me} from '../constants'
 import type {Command} from '../types'
 
+const kDiscardResult = Symbol('discard result')
+
 const _: Command = {
   name: 'eval',
   aliases: ['e'],
@@ -19,15 +21,17 @@ const _: Command = {
     let result
     try {
       // eslint-disable-next-line @typescript-eslint/no-implied-eval
-      result = await Function(`return async (message, input) => (${input.input})`)()(message, input)
+      result = await Function(`return async (message, input, _) => (${input.input})`)()(message, input, kDiscardResult)
     } catch (error) {
       await channel.send(`${error}`, {code: true})
       return
     }
 
-    await channel.send(
-      inspect(result).replace(new RegExp(escapeRegex(process.env.TOKEN!), 'ug'), '<token>'), {code: 'js', split: true}
-    )
+    if (result !== kDiscardResult) {
+      await channel.send(
+        inspect(result).replace(new RegExp(escapeRegex(process.env.TOKEN!), 'ug'), '<token>'), {code: 'js', split: true}
+      )
+    }
   }
 }
 export default _
