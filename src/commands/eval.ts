@@ -1,4 +1,5 @@
 import {inspect} from 'util'
+import Discord from 'discord.js'
 import escapeRegex from 'escape-string-regexp'
 import {me} from '../constants'
 import type {Command} from '../types'
@@ -21,7 +22,9 @@ const _: Command = {
     let result
     try {
       // eslint-disable-next-line @typescript-eslint/no-implied-eval
-      result = await Function(`return async (message, input, _) => (${input.input})`)()(message, input, kDiscardResult)
+      result = await Function(`return async (message, input, Discord, _) => (${input.input})`)()(
+        message, input, Discord, kDiscardResult
+      )
     } catch (error) {
       await channel.send(`${error}`, {code: true})
       return
