@@ -3,7 +3,7 @@ import {getPrefix, reply, set} from '../helpers'
 
 const _: Command<true> = {
   name: 'prefix',
-  aliases: ['pr'],
+  aliases: ['pre'],
   description: 'Gets or sets the prefix.',
   guildOnly: true,
   syntax: '[new prefix]',
@@ -12,10 +12,7 @@ The text that you want to set the prefix to. If omitted, displays the current pr
 The default prefix is \`.\`.`,
   async execute(message, {args: [newPrefix]}, database) {
     const {channel, member, guild} = message
-    if (!member.hasPermission('ADMINISTRATOR')) {
-      await reply(message, 'you must be an admin to run this command. Noot noot.')
-      return
-    }
+    if (!member.hasPermission('ADMINISTRATOR')) return reply(message, 'you must be an admin to run this command. Noot noot.')
 
     if (!newPrefix) {
       await channel.send(`The prefix is \`${await getPrefix(database, guild)}\`. Noot noot.`)

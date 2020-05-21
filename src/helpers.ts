@@ -15,10 +15,11 @@ export const createResolve = (dirname: string) => (p: string): string => join(di
  * @param message The message to reply to.
  * @param content The content of the message.
  */
-export const reply = async (message: Message, content: string | string[]): Promise<Message> =>
-  message.reply(message.guild
+export const reply = async (message: Message, content: string | string[]): Promise<void> => {
+  await message.reply(message.guild
     ? content
     : Array.isArray(content) ? (content[0] = upperFirst(content[0]), content) : upperFirst(content))
+}
 
 /**
  * DMs me an error.

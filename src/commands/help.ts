@@ -30,7 +30,7 @@ You can send \`${defaultPrefix}help [command name]\` to get info on a specific c
         return
       } catch (error) {
         sendMeError(client, error, `Could not send help DM to ${author.tag}.`)
-        await reply(message, `it seems like I can\u2019t DM you. Noot noot.
+        return reply(message, `it seems like I can\u2019t DM you. Noot noot.
 Do you have DMs disabled?`)
       }
     }
@@ -40,10 +40,7 @@ Do you have DMs disabled?`)
       command = commands.get(commandName) ?? commands.find(c => !!c.aliases?.includes(commandName))
 
     // Invalid command
-    if (!command) {
-      await reply(message, 'that\u2019s not a valid command. Noot noot.')
-      return
-    }
+    if (!command) return reply(message, 'that\u2019s not a valid command. Noot noot.')
 
     // Gets info of command
     const {name, aliases, description, syntax, usage, cooldown} = command

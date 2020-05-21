@@ -44,10 +44,7 @@ The query to search on YouTube for.`,
     }
 
     const voiceChannel = member.voice.channel
-    if (!voiceChannel) {
-      await reply(message, 'you must join a voice channel first! Noot noot.')
-      return
-    }
+    if (!voiceChannel) return reply(message, 'you must join a voice channel first! Noot noot.')
 
     const play = async (song: Video): Promise<void> => {
       const playSong = async (_song?: Video): Promise<void> => {

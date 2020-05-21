@@ -1,6 +1,7 @@
 import {Client} from '../src/types'
 import {reply} from '../src/helpers'
 import {DMChannel, DMMessage, Guild, GuildMessage, TextChannel} from './mock'
+import type {Message} from '../src/types'
 
 describe('Helper functions', () => {
   describe('reply', () => {
@@ -10,13 +11,15 @@ describe('Helper functions', () => {
     it('works for a guild channel', async () => {
       const channel = new TextChannel(guild)
       const message = new GuildMessage(channel)
-      expect((await reply(message, 'test content')).content).toBe('test content')
+      await reply(message as Message, 'test content')
+      expect(channel.lastMessage?.content).toBe('test content')
     })
 
     it('works for a dm', async () => {
       const channel = new DMChannel(client)
       const message = new DMMessage(channel)
-      expect((await reply(message, 'test content')).content).toBe('Test content')
+      await reply(message, 'test content')
+      expect(channel.lastMessage?.content).toBe('Test content')
     })
   })
 })
