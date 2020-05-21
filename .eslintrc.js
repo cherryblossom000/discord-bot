@@ -40,7 +40,6 @@ const rules = {
   'no-fallthrough': 0,
   'no-implicit-globals': 2,
   'no-implied-eval': 2,
-  'no-invalid-this': 2,
   'no-iterator': 2,
   'no-labels': [2, {allowLoop: true, allowSwitch: true}],
   'no-lone-blocks': 2,
@@ -106,10 +105,8 @@ const rules = {
   'func-names': [1, 'as-needed'],
   'func-style': 1,
   'function-call-argument-newline': [1, 'consistent'],
-  'function-paren-newline': [1, 'consistent'],
   'id-length': [1, {min: 1, max: 30}],
   indent: [1, 2, {SwitchCase: 1, flatTernaryExpressions: true}],
-  'jsx-quotes': [1, 'prefer-single'],
   'key-spacing': 1,
   'keyword-spacing': 1,
   'line-comment-position': [1, {position: 'above', applyDefaultIgnorePatterns: false}],
@@ -247,7 +244,6 @@ module.exports = {
         '@typescript-eslint/consistent-type-definitions': [1, 'interface'],
         '@typescript-eslint/explicit-function-return-type': 2,
         '@typescript-eslint/explicit-member-accessibility': [1, {accessibility: 'no-public'}],
-        '@typescript-eslint/explicit-module-boundary-types': 2,
         '@typescript-eslint/member-delimiter-style': [1, {
           singleline: {delimiter: 'comma'},
           multiline: {delimiter: 'none'}
