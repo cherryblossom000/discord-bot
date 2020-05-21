@@ -1,18 +1,16 @@
-/* eslint-disable dot-notation */
-import {DMMessage, GuildMessage, Message} from './Message'
+import {Message} from './Message'
 import type {MessageOptions, TextBasedChannelFields} from 'discord.js'
 import type ActionsManager from './ActionsManager'
 import type {DMChannel, TextChannel} from './Channel'
 
-async function send(this: TextChannel, {content}: MessageOptions): Promise<GuildMessage | GuildMessage[]>
-async function send(this: DMChannel, {content}: MessageOptions): Promise<DMMessage | DMMessage[]>
-/** @this */
-// eslint-disable-next-line func-style
-async function send(this: TextChannel | DMChannel, {content}: MessageOptions): Promise<Message | Message[]> {
-  return (this.client['actions'] as ActionsManager).MessageCreate.handle({
+export default (
+  this_: TextChannel | DMChannel
+): TextBasedChannelFields['send'] => (async ({content}: MessageOptions): Promise<Message | Message[]> =>
+  // eslint-disable-next-line dot-notation
+  (this_.client['actions'] as ActionsManager).MessageCreate.handle({
     id: '1',
     type: 0,
-    channel_id: this.id,
+    channel_id: this_.id,
     content: content ?? '',
     author: {
       id: '554539674899841055',
@@ -32,6 +30,4 @@ async function send(this: TextChannel | DMChannel, {content}: MessageOptions): P
     mention_roles: [],
     mention_everyone: false
   }).message
-}
-
-export default send as TextBasedChannelFields['send']
+) as TextBasedChannelFields['send']
