@@ -1,9 +1,12 @@
 import Discord, {Collection} from 'discord.js'
 import type {
-  APIMessage, ClientEvents, DMChannel, GuildMember, MessageAdditions, MessageOptions,
-  Snowflake, SplitOptions, StringResolvable, TextChannel, VoiceChannel, VoiceConnection
+  APIMessage, ClientEvents, DMChannel, GuildMember, MessageAdditions, MessageMentions, MessageOptions,
+  NewsChannel, Snowflake, SplitOptions, StringResolvable, TextChannel, VoiceChannel, VoiceConnection
 } from 'discord.js'
 import type Keyv from 'keyv'
+
+/** Any text-based guild channel. */
+type TextBasedGuildChannel = TextChannel | NewsChannel
 
 /** A guild's entry in the database. */
 export interface DatabaseGuild {
@@ -81,7 +84,7 @@ export interface Video {
 
 /** A music queue, */
 export interface Queue {
-  textChannel: TextChannel
+  textChannel: TextBasedGuildChannel
   voiceChannel: VoiceChannel
   connection: VoiceConnection
   songs: Video[]
@@ -126,9 +129,10 @@ interface BaseMessage extends Discord.Message {
 
 /** A message from a guild. */
 export interface GuildMessage extends BaseMessage {
-  channel: TextChannel
+  channel: TextBasedGuildChannel
   guild: Guild
   member: GuildMember
+  mentions: MessageMentions & {readonly members: Collection<Snowflake, GuildMember>}
 }
 
 /** A message from a DM. */

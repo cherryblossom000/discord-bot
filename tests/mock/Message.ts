@@ -14,6 +14,7 @@ export class GuildMessage extends Discord.Message implements Pingu.GuildMessage 
   declare channel: TextChannel
   declare guild: Guild
   declare member: GuildMember
+  declare mentions: Pingu.GuildMessage['mentions']
 
   constructor(channel: TextChannel) {
     super(channel.client, {

@@ -24,9 +24,12 @@ app.use(express.static(resolve('../assets/html'), {extensions: ['html']}))
 app.use(express.static(resolve('../assets/css')))
 app.use(express.static(resolve('../assets/img')))
 
-const client = new Client({ws: {intents: [
-  'GUILDS', 'GUILD_MESSAGES', 'GUILD_EMOJIS', 'GUILD_VOICE_STATES', 'GUILD_PRESENCES', 'DIRECT_MESSAGES'
-]}})
+const client = new Client({
+  disableMentions: 'everyone',
+  ws: {intents: [
+    'GUILDS', 'GUILD_MESSAGES', 'GUILD_EMOJIS', 'GUILD_VOICE_STATES', 'GUILD_PRESENCES', 'DIRECT_MESSAGES'
+  ]}
+})
 
 // Handle promise rejections and uncaught exceptions
 if (dev) {
@@ -156,31 +159,33 @@ The syntax is: \`${prefix}${command.name}${command.syntax ? ` ${command.syntax}`
     const command = client.commands.get(commandName) ?? client.commands.find(cmd => !!cmd.aliases?.includes(commandName))
     if (!checkCommand(command)) return
 
-    const checkCooldowns = (): boolean => {
-      if (!cooldowns.has(command.name)) cooldowns.set(command.name, new Collection())
+    if (!dev) {
+      const checkCooldowns = (): boolean => {
+        if (!cooldowns.has(command.name)) cooldowns.set(command.name, new Collection())
 
-      const timestamps = cooldowns.get(command.name)!,
-        cooldownAmount = command.cooldown ?? 3 * 1000
-      if (timestamps.has(author.id)) {
-        const expirationTime = timestamps.get(author.id)! + cooldownAmount
-        if (now < expirationTime) {
-          const timeLeft = ((expirationTime - now) / 1000).toFixed(1)
-          reply(
-            message,
-            `please wait ${timeLeft} more second${timeLeft === '1.0' ? '' : 's'} before using the \`${command.name}\` command. Noot noot.`
-          )
-          return false
+        const timestamps = cooldowns.get(command.name)!,
+          cooldownAmount = command.cooldown ?? 3 * 1000
+        if (timestamps.has(author.id)) {
+          const expirationTime = timestamps.get(author.id)! + cooldownAmount
+          if (now < expirationTime) {
+            const timeLeft = ((expirationTime - now) / 1000).toFixed(1)
+            reply(
+              message,
+              `please wait ${timeLeft} more second${timeLeft === '1.0' ? '' : 's'} before using the \`${command.name}\` command. Noot noot.`
+            )
+            return false
+          }
         }
+        timestamps.set(author.id, now)
+        setTimeout(() => timestamps.delete(author.id), cooldownAmount)
+        return true
       }
-      timestamps.set(author.id, now)
-      setTimeout(() => timestamps.delete(author.id), cooldownAmount)
-      return true
+      if (!checkCooldowns()) return
     }
-    if (!checkCooldowns()) return
 
     // Execute command
     try {
-      await command.execute(message as GuildMessage, {args, input: input.replace(new RegExp(`^${commandName}\\s+`, 'u'), '')}, database)
+      await command.execute(message as GuildMessage, {args, input: input.replace(new RegExp(`^${commandName}\\s*`, 'u'), '')}, database)
     } catch (error) {
       handleError(
         client,
