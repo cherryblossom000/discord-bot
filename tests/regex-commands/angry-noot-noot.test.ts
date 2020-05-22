@@ -15,10 +15,10 @@ describe('angry-noot-noot', () => {
       'not good pingu',
       'pingu sucks',
       'pingu  really  sucks'
-    ].forEach(string => it(string, () => {
+    ].forEach(string => test(string, () => {
       expect(regex.test(string)).toBe(true)
     }))
-    ;['good pingu', 'pingu', 'pingu is good', 'pingu is very good'].forEach(string => it(string, () => {
+    ;['good pingu', 'pingu', 'pingu is good', 'pingu is very good'].forEach(string => test(string, () => {
       expect(regex.test(string)).toBe(false)
     }))
   })
