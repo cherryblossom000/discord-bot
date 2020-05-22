@@ -7,15 +7,17 @@
       "name": "Launch",
       "program": "${workspaceFolder}/src/server.ts",
       "outFiles": ["${workspaceFolder}/dist/src/**/*.js"],
-      "skipFiles": ["<node_internals>/**", "node_modules/**"]
+      "skipFiles": ["<node_internals>/**"],
+      "presentation": {"group": "0 launch"}
     },
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Current File (ts)",
-      "program": "${workspaceFolder}/node_modules/ts-node/dist/bin.js",
-      "args": ["--log-error", "${file}"],
-      "skipFiles": ["<node_internals>/**", "node_modules/**"]
+      "name": "Launch ignoring node_modules",
+      "program": "${workspaceFolder}/src/server.ts",
+      "outFiles": ["${workspaceFolder}/dist/src/**/*.js"],
+      "skipFiles": ["<node_internals>/**", "node_modules/**"],
+      "presentation": {"group": "0 launch"}
     },
     {
       "type": "node",
@@ -25,6 +27,34 @@
       "program": "${workspaceFolder}/src/server.ts",
       "outFiles": ["${workspaceFolder}/dist/src/**/*.js"],
       "restart": true,
+      "skipFiles": ["<node_internals>/**"],
+      "presentation": {"group": "1 watch"}
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch (watch) ignoring node_modules",
+      "runtimeExecutable": "nodemon",
+      "program": "${workspaceFolder}/src/server.ts",
+      "outFiles": ["${workspaceFolder}/dist/src/**/*.js"],
+      "restart": true,
+      "skipFiles": ["<node_internals>/**", "node_modules/**"],
+      "presentation": {"group": "1 watch"}
+    },
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Attach",
+      "processId": "${command:PickProcess}",
+      "outFiles": ["${workspaceFolder}/dist/src/**/*.js"],
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Current File",
+      "program": "${workspaceFolder}/node_modules/ts-node/dist/bin.js",
+      "args": ["--log-error", "${file}"],
       "skipFiles": ["<node_internals>/**", "node_modules/**"]
     },
     {
@@ -33,7 +63,8 @@
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/jest/bin/jest",
       "args": ["-c", "jest.config.dev.js", "-i", "--forceExit"],
-      "skipFiles": ["<node_internals>/**"]
+      "skipFiles": ["<node_internals>/**"],
+      "presentation": {"group": "test"}
     },
     {
       "type": "node",
@@ -41,7 +72,8 @@
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/jest/bin/jest",
       "args": ["-c", "jest.config.dev.js", "-i", "--forceExit", "^${file}$"],
-      "skipFiles": ["<node_internals>/**"]
+      "skipFiles": ["<node_internals>/**"],
+      "presentation": {"group": "test"}
     }
   ]
 }
