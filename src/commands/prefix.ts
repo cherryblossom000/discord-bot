@@ -1,5 +1,5 @@
 import type {Command} from '../types'
-import {getPrefix, reply, set} from '../helpers'
+import {getPrefix, set} from '../helpers'
 
 const _: Command<true> = {
   name: 'prefix',
@@ -12,7 +12,10 @@ The text that you want to set the prefix to. If omitted, displays the current pr
 The default prefix is \`.\`.`,
   async execute(message, {args: [newPrefix]}, database) {
     const {channel, member, guild} = message
-    if (!member.hasPermission('ADMINISTRATOR')) return reply(message, 'you must be an admin to run this command. Noot noot.')
+    if (!member.hasPermission('ADMINISTRATOR')) {
+      await message.reply('you must be an admin to run this command. Noot noot.')
+      return
+    }
 
     if (!newPrefix) {
       await channel.send(`The prefix is \`${await getPrefix(database, guild)}\`. Noot noot.`)

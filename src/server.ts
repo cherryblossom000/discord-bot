@@ -5,7 +5,7 @@ import escapeRegex from 'escape-string-regexp'
 import express from 'express'
 import Keyv from 'keyv'
 import {Client} from './types'
-import {createResolve, getPrefix, handleError, reply, sendMeError} from './helpers'
+import {createResolve, getPrefix, handleError, sendMeError} from './helpers'
 import type {AddressInfo} from 'net'
 import type {Server} from 'http'
 import type {Snowflake} from 'discord.js'
@@ -144,13 +144,13 @@ My prefix is \`${prefix}\`. Run \`${prefix}help\` for a list of commands.`)
 
       // Guild only
       if (command.guildOnly && channel.type !== 'text') {
-        reply(message, 'sorry, I can\u2019t execute that command inside DMs. Noot noot.')
+        message.reply('sorry, I can\u2019t execute that command inside DMs. Noot noot.')
         return false
       }
 
       // If no args
       if (command.args && !args.length) {
-        reply(message, `you didn\u2019t provide any arguments. Noot noot.
+        message.reply(`you didn\u2019t provide any arguments. Noot noot.
 The syntax is: \`${prefix}${command.name}${command.syntax ? ` ${command.syntax}` : ''}\`. Noot noot.`)
         return false
       }
@@ -169,9 +169,9 @@ The syntax is: \`${prefix}${command.name}${command.syntax ? ` ${command.syntax}`
           const expirationTime = timestamps.get(author.id)! + cooldownAmount
           if (now < expirationTime) {
             const timeLeft = ((expirationTime - now) / 1000).toFixed(1)
-            reply(
-              message,
-              `please wait ${timeLeft} more second${timeLeft === '1.0' ? '' : 's'} before using the \`${command.name}\` command. Noot noot.`
+            message.reply(
+              `please wait ${timeLeft} more second${timeLeft === '1.0' ? '' : 's'
+              } before using the \`${command.name}\` command. Noot noot.`
             )
             return false
           }

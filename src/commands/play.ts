@@ -1,6 +1,6 @@
 import ytdl, {getBasicInfo, validateURL} from 'ytdl-core'
 import yts from 'yt-search'
-import {checkPermissions, reply, searchYoutube, sendMeError} from '../helpers'
+import {checkPermissions, searchYoutube, sendMeError} from '../helpers'
 import {resume} from './resume'
 import type {Command, Video} from '../types'
 
@@ -39,12 +39,15 @@ The query to search on YouTube for.`,
         const {connection: {dispatcher}} = queue
         if (dispatcher.paused) resume(dispatcher, message)
         else await channel.send('The music is already playing!')
-      } else await reply(message, 'you must specify a valid YouTube URL to play! Noot noot.')
+      } else await message.reply('you must specify a valid YouTube URL to play! Noot noot.')
       return
     }
 
     const voiceChannel = member.voice.channel
-    if (!voiceChannel) return reply(message, 'you must join a voice channel first! Noot noot.')
+    if (!voiceChannel) {
+      await message.reply('you must join a voice channel first! Noot noot.')
+      return
+    }
 
     const play = async (song: Video): Promise<void> => {
       const playSong = async (_song?: Video): Promise<void> => {

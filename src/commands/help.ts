@@ -1,5 +1,5 @@
 import {defaultPrefix} from '../constants'
-import {reply, sendMeError, getPrefix} from '../helpers'
+import {sendMeError, getPrefix} from '../helpers'
 import type {Command} from '../types'
 
 const _: Command = {
@@ -30,8 +30,9 @@ You can send \`${defaultPrefix}help [command name]\` to get info on a specific c
         return
       } catch (error) {
         sendMeError(client, error, `Could not send help DM to ${author.tag}.`)
-        return reply(message, `it seems like I can\u2019t DM you. Noot noot.
+        await message.reply(`it seems like I can\u2019t DM you. Noot noot.
 Do you have DMs disabled?`)
+        return
       }
     }
 
@@ -40,7 +41,10 @@ Do you have DMs disabled?`)
       command = commands.get(commandName) ?? commands.find(c => !!c.aliases?.includes(commandName))
 
     // Invalid command
-    if (!command) return reply(message, 'that\u2019s not a valid command. Noot noot.')
+    if (!command) {
+      await message.reply('that\u2019s not a valid command. Noot noot.')
+      return
+    }
 
     // Gets info of command
     const {name, aliases, description, syntax, usage, cooldown} = command

@@ -1,7 +1,6 @@
 import {MessageEmbed} from 'discord.js'
 import startCase from 'lodash.startcase'
 import upperFirst from 'lodash.upperfirst'
-import {reply} from '../helpers'
 import type {GuildMember, PresenceStatus, User} from 'discord.js'
 import type {Command} from '../types'
 
@@ -108,17 +107,24 @@ const _: Command = {
   usage: `\`user\` (optional)
 The user to display information about. If omitted, defaults to you.
 You can mention the user or use their tag (for example \`Username#1234\`).`,
-  execute(message, {input}) {
+  async execute(message, {input}) {
     const {author, client, channel, guild, mentions} = message
 
     let user = mentions.users.first()
     if (!user && input) {
-      if (!/^.{2,}#\d{4}$/u.test(input)) return reply(message, `\u2018${input}\u2019 is not a valid user!`)
-      if (!guild && input !== author.tag && input !== client.user!.tag)
-        return reply(message, 'you can only get information about you or I in a DM!')
+      if (!/^.{2,}#\d{4}$/u.test(input)) {
+        await message.reply(`\u2018${input}\u2019 is not a valid user!`)
+        return
+      }
+      if (!guild && input !== author.tag && input !== client.user!.tag) {
+        await message.reply('you can only get information about you or I in a DM!')
+        return
+      }
       user = client.users.cache.find(u => u.tag === input)
-      if (!user || !guild!.member(user))
-        return reply(message, `\u2018${input}\u2019 is not a valid user or is not a member of this guild!`)
+      if (!user || !guild!.member(user)) {
+        await message.reply(`\u2018${input}\u2019 is not a valid user or is not a member of this guild!`)
+        return
+      }
     } else user = user ?? author
 
     const embed = getUserInfo(user)

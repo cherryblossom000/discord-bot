@@ -1,4 +1,5 @@
-import Discord, {Collection} from 'discord.js'
+import Discord, {Collection, Structures} from 'discord.js'
+import upperFirst from 'lodash.upperfirst'
 import type {
   APIMessage, ClientEvents, DMChannel, GuildMember, MessageAdditions, MessageMentions, MessageOptions,
   NewsChannel, Snowflake, SplitOptions, StringResolvable, TextChannel, VoiceChannel, VoiceConnection
@@ -97,13 +98,37 @@ export class Client extends Discord.Client {
   ) => this
 
   /** The commands. */
-  commands = new Collection<string, Command<boolean>>()
+  readonly commands: Collection<string, Command<boolean>>
 
   /** The regex commands. */
-  regexCommands = new Collection<RegExp, RegexCommand['regexMessage']>()
+  readonly regexCommands: Collection<RegExp, RegexCommand['regexMessage']>
 
   /** The music queue for each guild. */
-  queues = new Collection<Snowflake, Queue>()
+  readonly queues: Collection<Snowflake, Queue>
+
+  constructor(...args: ConstructorParameters<typeof Discord.Client>) {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    Structures.extend('Message', Message => class extends Message {
+      // TODO: Fix Discord.js' types of reply and send (1st overload) because it sues MessageAdditions twice in options param
+      async reply(content?: StringResolvable, options?: MessageOptions | MessageAdditions | OptionsNoSplit): Promise<this>
+      async reply(content?: StringResolvable, options?: MessageAdditions | OptionsWithSplit): Promise<this[]>
+      async reply(options?: APIMessage | MessageOptions | MessageAdditions | OptionsNoSplit): Promise<this>
+      async reply(options?: APIMessage | MessageAdditions | OptionsWithSplit): Promise<this[]>
+      async reply(content?: StringResolvable, options?: MessageOptions | MessageAdditions): Promise<this | this[]> {
+        return super.reply(
+          this.guild
+            ? content
+            : Array.isArray(content) ? (content[0] = upperFirst(content[0]), content) : upperFirst(content),
+          options
+        ) as Promise<this | this[]>
+      }
+    })
+    super(...args)
+    // These can't be stored properties otherwise I can't extend structures before calling super
+    this.commands = new Collection<string, Command<boolean>>()
+    this.regexCommands = new Collection<RegExp, RegexCommand['regexMessage']>()
+    this.queues = new Collection<Snowflake, Queue>()
+  }
 
   /** Set the activity. */
   setActivity(): void {

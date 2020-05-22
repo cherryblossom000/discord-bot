@@ -1,6 +1,5 @@
 import {join} from 'path'
 import {MessageEmbed} from 'discord.js'
-import upperFirst from 'lodash.upperfirst'
 import yts from 'yt-search'
 import {defaultPrefix, emojis, me} from './constants'
 import type Keyv from 'keyv'
@@ -9,17 +8,6 @@ import type {Client, DatabaseGuild, Guild, GuildMessage, Message, Queue, Video} 
 
 /** Creates a function to easily resolve paths relative to the `__dirname`. */
 export const createResolve = (dirname: string) => (p: string): string => join(dirname, p)
-
-/**
- * Replies to a message.
- * @param message The message to reply to.
- * @param content The content of the message.
- */
-export const reply = async (message: Message, content: string | string[]): Promise<void> => {
-  await message.reply(message.guild
-    ? content
-    : Array.isArray(content) ? (content[0] = upperFirst(content[0]), content) : upperFirst(content))
-}
 
 /**
  * DMs me an error.
@@ -47,7 +35,7 @@ export const handleError = (
   message?: Message,
   response = 'unfortunately, there was an error trying to execute that command. Noot noot.'
 ): void => {
-  if (message) reply(message, response)
+  if (message) message.reply(response)
   if (process.env.NODE_ENV === 'production') sendMeError(client, error, info)
   else throw error
 }
@@ -71,7 +59,7 @@ export const checkPermissions = (
     const plural = neededPermissions.length !== 1,
       permissionsString = ` permission${plural ? 's' : ''}`
 
-    reply(message, [
+    message.reply([
       `I don\u2019t have th${plural ? 'ese' : 'is'}${permissionsString}!`,
       neededPermissions.map(p => `* ${p}`).join('\n'),
       `To fix this, ask an admin or the owner of the server to add th${plural ? 'ose' : 'at'}${permissionsString} to ${
