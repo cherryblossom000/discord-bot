@@ -154,7 +154,10 @@ export const searchYoutube = async (
       if (n > current.length) return
 
       // If the reaction is a number return the video
-      if (n > -1) return resolve(current[n - 1])
+      if (n > -1) {
+        collector.stop()
+        return resolve(current[n - 1])
+      }
 
       // If the reaction is an arrow change the page
       await embedMessage.reactions.removeAll()
