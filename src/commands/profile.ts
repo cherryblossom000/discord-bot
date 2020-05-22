@@ -102,7 +102,7 @@ Streaming: ${formatBoolean(voice.streaming)}`)
 
 const _: Command = {
   name: 'profile',
-  aliases: ['pr', 'pro', 'user'],
+  aliases: ['pr', 'pro', 'u', 'user'],
   description: 'Gets information on a user.',
   syntax: '[user]',
   usage: `\`user\` (optional)
