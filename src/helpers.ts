@@ -161,7 +161,7 @@ export const searchYoutube = async (
 
       // If the reaction is an arrow change the page
       await embedMessage.reactions.removeAll()
-      name === emojis.left ? currentIndex -= 10 : currentIndex += 10
+      currentIndex += name === emojis.left ? -10 : 10
       embedMessage.edit(...generateEmbed(currentIndex))
       if (currentIndex !== 0) await embedMessage.react(emojis.left)
       if (currentIndex + 10 < videos.length) await embedMessage.react(emojis.right)
