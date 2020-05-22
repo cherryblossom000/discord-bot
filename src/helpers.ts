@@ -4,6 +4,7 @@ import yts from 'yt-search'
 import {defaultPrefix, emojis, me} from './constants'
 import type Keyv from 'keyv'
 import type {PermissionResolvable, PermissionString} from 'discord.js'
+import type {VideoSearchResult} from 'yt-search'
 import type {Client, DatabaseGuild, Guild, GuildMessage, Message, Queue, Video} from './types'
 
 /** Creates a function to easily resolve paths relative to the `__dirname`. */
@@ -91,14 +92,14 @@ export const getPrefix = async (database: Keyv<DatabaseGuild>, guild: Guild | nu
   guild ? (await database.get(guild.id))?.prefix ?? defaultPrefix : defaultPrefix
 
 /** Converts a `yts.VideoSearchResult` into a `Video`. */
-export const searchToVideo = ({title, videoId: id, author: {name}}: yts.VideoSearchResult): Video =>
+export const searchToVideo = ({title, videoId: id, author: {name}}: VideoSearchResult): Video =>
   ({title, id, author: name})
 
 /** Searches YouTube for a video. */
 export const searchYoutube = async (
   message: Message,
   query: string
-): Promise<yts.VideoSearchResult | void> => {
+): Promise<VideoSearchResult | void> => {
   if (message.guild && !checkPermissions(message, [
     'MANAGE_MESSAGES', 'EMBED_LINKS', 'READ_MESSAGE_HISTORY', 'ADD_REACTIONS'
   ])) return
@@ -110,7 +111,7 @@ export const searchYoutube = async (
     return
   }
 
-  let current: yts.VideoSearchResult[]
+  let current: VideoSearchResult[]
 
   /**
    * Generates the embed with videos and message content.
