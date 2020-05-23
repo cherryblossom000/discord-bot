@@ -1,7 +1,7 @@
 dependencies:
-  '@discordjs/opus': 0.1.0
+  '@discordjs/opus': 0.3.2
   '@keyv/sqlite': 2.0.2
-  discord.js: 12.2.0_@discordjs+opus@0.1.0
+  discord.js: 12.2.0_@discordjs+opus@0.3.2
   escape-string-regexp: 4.0.0
   express: 4.17.1
   keyv: 4.0.1
@@ -9,24 +9,24 @@ dependencies:
   lodash.upperfirst: 4.3.1
   ms: 2.1.2
   yt-search: 1.1.2
-  ytdl-core: 2.1.2
+  ytdl-core: 2.1.4
 devDependencies:
   '@semantic-release/changelog': 5.0.1_semantic-release@17.0.7
   '@semantic-release/git': 9.0.0_semantic-release@17.0.7
   '@types/estree': 0.0.44
   '@types/express': 4.17.6
-  '@types/jest': 25.2.2
+  '@types/jest': 25.2.3
   '@types/keyv': 3.1.1
   '@types/lodash.startcase': 4.4.6
   '@types/lodash.upperfirst': 4.3.6
   '@types/markdown-it': 10.0.1
   '@types/markdown-table': 2.0.0
   '@types/ms': 0.7.31
-  '@types/node': 12.12.39
+  '@types/node': 12.12.42
   '@types/rewire': 2.5.28
   '@types/yt-search': 1.1.0
-  '@typescript-eslint/eslint-plugin': 2.33.0_c3dd21737469c47eb2fd5891602ea537
-  '@typescript-eslint/parser': 2.33.0_eslint@6.8.0+typescript@3.9.2
+  '@typescript-eslint/eslint-plugin': 2.33.0_2430e4c66c561ebd86706d8a07c7c3bc
+  '@typescript-eslint/parser': 2.33.0_eslint@6.8.0+typescript@3.9.3
   acorn: 7.2.0
   acorn-walk: 7.1.1
   commitizen: 4.1.2
@@ -34,14 +34,14 @@ devDependencies:
   dotenv: 8.2.0
   eslint: 6.8.0
   jest: 26.0.1
-  markdown-it: 10.0.0
+  markdown-it: 11.0.0
   markdown-table: 2.0.0
   purgecss: 2.2.1
   rewire: 5.0.0
   semantic-release: 17.0.7_semantic-release@17.0.7
-  ts-jest: 26.0.0_jest@26.0.1+typescript@3.9.2
-  ts-node: 8.10.1_typescript@3.9.2
-  typescript: 3.9.2
+  ts-jest: 26.0.0_jest@26.0.1+typescript@3.9.3
+  ts-node: 8.10.1_typescript@3.9.3
+  typescript: 3.9.3
 lockfileVersion: 5.1
 packages:
   /@babel/code-frame/7.8.3:
@@ -367,14 +367,30 @@ packages:
       node: '>= 6'
     resolution:
       integrity: sha512-ZfFsbgEXW71Rw/6EtBdrP5VxBJy4dthyC0tpQKGKmYFImlmmrykO14Za+BiIVduwjte0jXEBlhSKf0MWbFp9Eg==
-  /@discordjs/opus/0.1.0:
+  /@discordjs/node-pre-gyp/0.1.0:
     dependencies:
+      detect-libc: 1.0.3
+      mkdirp: 0.5.5
+      needle: 2.4.1
+      nopt: 4.0.3
+      npm-packlist: 1.4.8
+      npmlog: 4.1.2
+      rc: 1.2.8
+      rimraf: 3.0.2
+      semver: 7.3.2
+      tar: 6.0.2
+    dev: false
+    hasBin: true
+    resolution:
+      integrity: sha512-6u3EbK2x+j9bM3iK9/pE7BWLxOXZ1PvcsbDo3ZBdPocu95qPHj8zCVsBBk3Cao7V6o8QpwxUyJl6oVJ6T3ZgAg==
+  /@discordjs/opus/0.3.2:
+    dependencies:
+      '@discordjs/node-pre-gyp': 0.1.0
       node-addon-api: 2.0.0
-      node-pre-gyp: 0.14.0
     dev: false
     requiresBuild: true
     resolution:
-      integrity: sha512-VWsrsgqSktxOEHx9SFcnOWJhYQOsyzaW3JVN73LDSzKrycEjtRIS+axlm4qeMGx60u6RH1SY15b3pl5G4+Y+gA==
+      integrity: sha512-T/ubykd4Xi19vDfw7/Oe+iTQBJ28yMI2PQAzK+Zue0PB9OpEYaeIXU7k5255061RwL+rHX9w7P/P2of+x2Vu2A==
   /@istanbuljs/load-nyc-config/1.0.0:
     dependencies:
       camelcase: 5.3.1
@@ -937,13 +953,13 @@ packages:
     dev: true
     resolution:
       integrity: sha512-UpYjBi8xefVChsCoBpKShdxTllC9pwISirfoZsUa2AAdQg/Jd2KQGtSbw+ya7GPo7x/wAPlH6JBhKhAsXUEZNA==
-  /@types/jest/25.2.2:
+  /@types/jest/25.2.3:
     dependencies:
       jest-diff: 25.4.0
       pretty-format: 25.4.0
     dev: true
     resolution:
-      integrity: sha512-aRctFbG8Pb7DSLzUt/fEtL3q/GKb9mretFuYhRub2J0q6NhzBYbx9HTQzHrWgBNIxYOlxGNVe6Z54cpbUt+Few==
+      integrity: sha512-JXc1nK/tXHiDhV55dvfzqtmP4S3sy3T3ouV2tkViZgxY/zeUkcpQcQPGRlgF4KmWzWW5oiWYSZwtCB+2RsE4Fw==
   /@types/json-schema/7.0.4:
     dev: true
     resolution:
@@ -1001,10 +1017,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==
-  /@types/node/12.12.39:
+  /@types/node/12.12.42:
     dev: true
     resolution:
-      integrity: sha512-pADGfwnDkr6zagDwEiCVE4yQrv7XDkoeVa4OfA9Ju/zRTk6YNDLGtQbkdL4/56mCQQCs4AhNrBIag6jrp7ZuOg==
+      integrity: sha512-R/9QdYFLL9dE9l5cWWzWIZByVGFd7lk7JVOJ7KD+E1SJ4gni7XJRLz9QTjyYQiHIqEAgku9VgxdLjMlhhUaAFg==
   /@types/node/13.13.4:
     dev: true
     resolution:
@@ -1062,15 +1078,15 @@ packages:
     dev: true
     resolution:
       integrity: sha512-qkqQZh6MNiafi36mIyrRhaG7tPsuFQAyKDZeO0gSWSYZfdaRCwMlPByfigxMwT2Bl/xyHhH/gACYU9TATAewPA==
-  /@typescript-eslint/eslint-plugin/2.33.0_c3dd21737469c47eb2fd5891602ea537:
+  /@typescript-eslint/eslint-plugin/2.33.0_2430e4c66c561ebd86706d8a07c7c3bc:
     dependencies:
-      '@typescript-eslint/experimental-utils': 2.33.0_eslint@6.8.0+typescript@3.9.2
-      '@typescript-eslint/parser': 2.33.0_eslint@6.8.0+typescript@3.9.2
+      '@typescript-eslint/experimental-utils': 2.33.0_eslint@6.8.0+typescript@3.9.3
+      '@typescript-eslint/parser': 2.33.0_eslint@6.8.0+typescript@3.9.3
       eslint: 6.8.0
       functional-red-black-tree: 1.0.1
       regexpp: 3.1.0
-      tsutils: 3.17.1_typescript@3.9.2
-      typescript: 3.9.2
+      tsutils: 3.17.1_typescript@3.9.3
+      typescript: 3.9.3
     dev: true
     engines:
       node: ^8.10.0 || ^10.13.0 || >=11.10.1
@@ -1083,10 +1099,10 @@ packages:
         optional: true
     resolution:
       integrity: sha512-QV6P32Btu1sCI/kTqjTNI/8OpCYyvlGjW5vD8MpTIg+HGE5S88HtT1G+880M4bXlvXj/NjsJJG0aGcVh0DdbeQ==
-  /@typescript-eslint/experimental-utils/2.33.0_eslint@6.8.0+typescript@3.9.2:
+  /@typescript-eslint/experimental-utils/2.33.0_eslint@6.8.0+typescript@3.9.3:
     dependencies:
       '@types/json-schema': 7.0.4
-      '@typescript-eslint/typescript-estree': 2.33.0_typescript@3.9.2
+      '@typescript-eslint/typescript-estree': 2.33.0_typescript@3.9.3
       eslint: 6.8.0
       eslint-scope: 5.0.0
       eslint-utils: 2.0.0
@@ -1098,14 +1114,14 @@ packages:
       typescript: '*'
     resolution:
       integrity: sha512-qzPM2AuxtMrRq78LwyZa8Qn6gcY8obkIrBs1ehqmQADwkYzTE1Pb4y2W+U3rE/iFkSWcWHG2LS6MJfj6SmHApg==
-  /@typescript-eslint/parser/2.33.0_eslint@6.8.0+typescript@3.9.2:
+  /@typescript-eslint/parser/2.33.0_eslint@6.8.0+typescript@3.9.3:
     dependencies:
       '@types/eslint-visitor-keys': 1.0.0
-      '@typescript-eslint/experimental-utils': 2.33.0_eslint@6.8.0+typescript@3.9.2
-      '@typescript-eslint/typescript-estree': 2.33.0_typescript@3.9.2
+      '@typescript-eslint/experimental-utils': 2.33.0_eslint@6.8.0+typescript@3.9.3
+      '@typescript-eslint/typescript-estree': 2.33.0_typescript@3.9.3
       eslint: 6.8.0
       eslint-visitor-keys: 1.1.0
-      typescript: 3.9.2
+      typescript: 3.9.3
     dev: true
     engines:
       node: ^8.10.0 || ^10.13.0 || >=11.10.1
@@ -1117,7 +1133,7 @@ packages:
         optional: true
     resolution:
       integrity: sha512-AUtmwUUhJoH6yrtxZMHbRUEMsC2G6z5NSxg9KsROOGqNXasM71I8P2NihtumlWTUCRld70vqIZ6Pm4E5PAziEA==
-  /@typescript-eslint/typescript-estree/2.33.0_typescript@3.9.2:
+  /@typescript-eslint/typescript-estree/2.33.0_typescript@3.9.3:
     dependencies:
       debug: 4.1.1
       eslint-visitor-keys: 1.1.0
@@ -1125,8 +1141,8 @@ packages:
       is-glob: 4.0.1
       lodash: 4.17.15
       semver: 7.3.2
-      tsutils: 3.17.1_typescript@3.9.2
-      typescript: 3.9.2
+      tsutils: 3.17.1_typescript@3.9.3
+      typescript: 3.9.3
     dev: true
     engines:
       node: ^8.10.0 || ^10.13.0 || >=11.10.1
@@ -1844,6 +1860,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-jJ0bqzaylmJtVnNgzTeSOs8DPavpbYgEr/b0YL8/2GO3xJEhInFmhKMUnEJQjZumK7KXGFhUy89PrsJWlakBVg==
+  /chownr/2.0.0:
+    dev: false
+    engines:
+      node: '>=10'
+    resolution:
+      integrity: sha512-bIomtDF5KGpdogkLd9VspvFzk9KfpyyGlS8YFVZl7TGPBHL5snIOnxeshwVgPteQ9b4Eydl+pVbIyE1DcvCWgQ==
   /ci-info/2.0.0:
     dev: true
     resolution:
@@ -2429,13 +2451,13 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==
-  /discord.js/12.2.0_@discordjs+opus@0.1.0:
+  /discord.js/12.2.0_@discordjs+opus@0.3.2:
     dependencies:
       '@discordjs/collection': 0.1.5
       '@discordjs/form-data': 3.0.1
       abort-controller: 3.0.0
       node-fetch: 2.6.0
-      prism-media: 1.2.1_@discordjs+opus@0.1.0
+      prism-media: 1.2.1_@discordjs+opus@0.3.2
       setimmediate: 1.0.5
       tweetnacl: 1.0.3
       ws: 7.2.5
@@ -3209,6 +3231,14 @@ packages:
     dev: false
     resolution:
       integrity: sha512-GWSSJGFy4e9GUeCcbIkED+bgAoFyj7XF1mV8rma3QW4NIqX9Kyx79N/PF61H5udOV3aY1IaMLs6pGbH71nlCTA==
+  /fs-minipass/2.1.0:
+    dependencies:
+      minipass: 3.1.3
+    dev: false
+    engines:
+      node: '>= 8'
+    resolution:
+      integrity: sha512-V/JgOLFCS+R6Vcq0slCuaeWEdNC3ouDlJMNIsacH2VtALiu9mV4LPrHc5cDl8k5aw6J8jwgWWpiTo5RYhmIzvg==
   /fs.realpath/1.0.0:
     resolution:
       integrity: sha1-FQStJSMVjKpA20onh8sBQRmU6k8=
@@ -4666,12 +4696,12 @@ packages:
     dev: true
     resolution:
       integrity: sha1-HADHQ7QzzQpOgHWPe2SldEDZ/wA=
-  /linkify-it/2.2.0:
+  /linkify-it/3.0.2:
     dependencies:
       uc.micro: 1.0.6
     dev: true
     resolution:
-      integrity: sha512-GnAl/knGn+i1U/wjBz3akz2stz+HrHLsxMwHQGofCDfPvlf+gDKN58UtfmUquTY4/MXeE2x7k19KQmeoZi94Iw==
+      integrity: sha512-gDBO4aHNZS6coiZCKVhSNh43F9ioIL4JwRjLZPkoLIY4yZFwg264Y5lu2x6rb1Js42Gh6Yqm2f6L2AJcnkzinQ==
   /load-json-file/4.0.0:
     dependencies:
       graceful-fs: 4.2.3
@@ -4826,15 +4856,15 @@ packages:
     dev: false
     resolution:
       integrity: sha1-Jzi9nw089PhEkMVzbEhpmsYyzaM=
-  /m3u8stream/0.6.5:
+  /m3u8stream/0.7.1:
     dependencies:
       miniget: 1.7.0
       sax: 1.2.4
     dev: false
     engines:
-      node: '>=6'
+      node: '>=10'
     resolution:
-      integrity: sha512-QZCzhcfUliZfsOboi68QkNcMejPKTEhxE+s1TApvHubDeR8ythm4ViWuYFqgUwZeoHe8q0nsPxOvA3lQvdSzyg==
+      integrity: sha512-z6ldnAdhbuWOL6LmMkwptSZGzj+qbRytMKLTbNicwF/bJMjf9U9lqD57RNQUFecvWadEkzy6PDjcNJFFgi19uQ==
   /macos-release/2.3.0:
     dev: true
     engines:
@@ -4885,17 +4915,17 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-7Nyo8TFE5mDxtb1B8S80edmN+48=
-  /markdown-it/10.0.0:
+  /markdown-it/11.0.0:
     dependencies:
       argparse: 1.0.10
       entities: 2.0.0
-      linkify-it: 2.2.0
+      linkify-it: 3.0.2
       mdurl: 1.0.1
       uc.micro: 1.0.6
     dev: true
     hasBin: true
     resolution:
-      integrity: sha512-YWOP1j7UbDNz+TumYP1kpwnP0aEa711cJjrAQrzd0UXlbJfc5aAq0F/PZHjiioqDC1NKgvIMX+o+9Bk7yuM2dg==
+      integrity: sha512-+CvOnmbSubmQFSA9dKz1BRiaSMV7rhexl3sngKqFyXSagoA3fBdJQ8oZWtRy2knXdpDXaBw44euz37DeJQ9asg==
   /markdown-table/2.0.0:
     dependencies:
       repeat-string: 1.6.1
@@ -5083,12 +5113,29 @@ packages:
     dev: false
     resolution:
       integrity: sha512-wxfUjg9WebH+CUDX/CdbRlh5SmfZiy/hpkxaRI16Y9W56Pa75sWgd/rvFilSgrauD9NyFymP/+JFV3KwzIsJeg==
+  /minipass/3.1.3:
+    dependencies:
+      yallist: 4.0.0
+    dev: false
+    engines:
+      node: '>=8'
+    resolution:
+      integrity: sha512-Mgd2GdMVzY+x3IJ+oHnVM+KG3lA5c8tnabyJKmHSaG2kAGpudxuOf8ToDkhumF7UzME7DecbQE9uOZhNm7PuJg==
   /minizlib/1.3.3:
     dependencies:
       minipass: 2.9.0
     dev: false
     resolution:
       integrity: sha512-6ZYMOEnmVsdCeTJVE0W9ZD+pVnE8h9Hma/iOwwRDsdQoePpoX56/8B6z3P9VNwppJuBKNRuFDRNRqRWexT9G9Q==
+  /minizlib/2.1.0:
+    dependencies:
+      minipass: 3.1.3
+      yallist: 4.0.0
+    dev: false
+    engines:
+      node: '>= 8'
+    resolution:
+      integrity: sha512-EzTZN/fjSvifSX0SlqUERCN39o6T40AMarPbv0MrarSFtIITCBh7bi+dU8nxGFHuqs9jdIAeoYoKuQAAASsPPA==
   /mixin-deep/1.3.2:
     dependencies:
       for-in: 1.0.2
@@ -5105,7 +5152,6 @@ packages:
     resolution:
       integrity: sha512-NKmAlESf6jMGym1++R0Ra7wvhV+wFW63FaSOFPwRahvea0gMUcGUhVeAg/0BC0wiv9ih5NYPB1Wn1UEI1/L+xQ==
   /mkdirp/1.0.4:
-    dev: true
     engines:
       node: '>=10'
     hasBin: true
@@ -5263,22 +5309,6 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-TwWAOZb0j7e9eGaf9esRx3ZcLaE5tQ2lvYy1pb5IAaG1a2e2Kv5Lms1Y4hpj+ciXJRofIxxlt5haeQ/2ANeE0Q==
-  /node-pre-gyp/0.14.0:
-    dependencies:
-      detect-libc: 1.0.3
-      mkdirp: 0.5.5
-      needle: 2.4.1
-      nopt: 4.0.3
-      npm-packlist: 1.4.8
-      npmlog: 4.1.2
-      rc: 1.2.8
-      rimraf: 2.7.1
-      semver: 5.7.1
-      tar: 4.4.13
-    dev: false
-    hasBin: true
-    resolution:
-      integrity: sha512-+CvDC7ZttU/sSt9rFjix/P05iS43qHCOOGzcr3Ry99bXG7VX953+vFyEuph/tfqoYu8dttBkE86JSKBO2OzcxA==
   /nopt/4.0.3:
     dependencies:
       abbrev: 1.1.1
@@ -5897,9 +5927,9 @@ packages:
       node: '>= 10.14.2'
     resolution:
       integrity: sha512-SWxz6MbupT3ZSlL0Po4WF/KujhQaVehijR2blyRDCzk9e45EaYMVhMBn49fnRuHxtkSpXTes1GxNpVmH86Bxfw==
-  /prism-media/1.2.1_@discordjs+opus@0.1.0:
+  /prism-media/1.2.1_@discordjs+opus@0.3.2:
     dependencies:
-      '@discordjs/opus': 0.1.0
+      '@discordjs/opus': 0.3.2
     dev: false
     peerDependencies:
       '@discordjs/opus': ^0.1.0
@@ -6339,7 +6369,6 @@ packages:
   /rimraf/3.0.2:
     dependencies:
       glob: 7.1.6
-    dev: true
     hasBin: true
     resolution:
       integrity: sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==
@@ -6473,7 +6502,6 @@ packages:
     resolution:
       integrity: sha512-b39TBaTSfV6yBrapU89p5fKekE2m/NwnDocOVruQFS1/veMgdzuPcnOM34M6CwxW8jH/lxEa5rBoDeUwu5HHTw==
   /semver/7.3.2:
-    dev: true
     engines:
       node: '>=10'
     hasBin: true
@@ -6995,6 +7023,19 @@ packages:
       node: '>=4.5'
     resolution:
       integrity: sha512-w2VwSrBoHa5BsSyH+KxEqeQBAllHhccyMFVHtGtdMpF4W7IRWfZjFiQceJPChOeTsSDVUpER2T8FA93pr0L+QA==
+  /tar/6.0.2:
+    dependencies:
+      chownr: 2.0.0
+      fs-minipass: 2.1.0
+      minipass: 3.1.3
+      minizlib: 2.1.0
+      mkdirp: 1.0.4
+      yallist: 4.0.0
+    dev: false
+    engines:
+      node: '>= 10'
+    resolution:
+      integrity: sha512-Glo3jkRtPcvpDlAs/0+hozav78yoXKFr+c4wgw62NNMO3oo4AaJdCo21Uu7lcwr55h39W2XD1LMERc64wtbItg==
   /temp-dir/2.0.0:
     dev: true
     engines:
@@ -7172,7 +7213,7 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-n5up2e+odkw4dpi8v+sshI8RrbM=
-  /ts-jest/26.0.0_jest@26.0.1+typescript@3.9.2:
+  /ts-jest/26.0.0_jest@26.0.1+typescript@3.9.3:
     dependencies:
       bs-logger: 0.2.6
       buffer-from: 1.1.1
@@ -7184,7 +7225,7 @@ packages:
       micromatch: 4.0.2
       mkdirp: 1.0.4
       semver: 7.3.2
-      typescript: 3.9.2
+      typescript: 3.9.3
       yargs-parser: 18.1.3
     dev: true
     engines:
@@ -7195,13 +7236,13 @@ packages:
       typescript: '>=3.8 <4.0'
     resolution:
       integrity: sha512-eBpWH65mGgzobuw7UZy+uPP9lwu+tPp60o324ASRX4Ijg8UC5dl2zcge4kkmqr2Zeuk9FwIjvCTOPuNMEyGWWw==
-  /ts-node/8.10.1_typescript@3.9.2:
+  /ts-node/8.10.1_typescript@3.9.3:
     dependencies:
       arg: 4.1.3
       diff: 4.0.2
       make-error: 1.3.6
       source-map-support: 0.5.19
-      typescript: 3.9.2
+      typescript: 3.9.3
       yn: 3.1.1
     dev: true
     engines:
@@ -7215,10 +7256,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-aZW88SY8kQbU7gpV19lN24LtXh/yD4ZZg6qieAJDDg+YBsJcSmLGK9QpnUjAKVG/xefmvJGd1WUmfpT/g6AJGA==
-  /tsutils/3.17.1_typescript@3.9.2:
+  /tsutils/3.17.1_typescript@3.9.3:
     dependencies:
       tslib: 1.11.1
-      typescript: 3.9.2
+      typescript: 3.9.3
     dev: true
     engines:
       node: '>= 6'
@@ -7307,13 +7348,13 @@ packages:
     dev: true
     resolution:
       integrity: sha512-zdu8XMNEDepKKR+XYOXAVPtWui0ly0NtohUscw+UmaHiAWT8hrV1rr//H6V+0DvJ3OQ19S979M0laLfX8rm82Q==
-  /typescript/3.9.2:
+  /typescript/3.9.3:
     dev: true
     engines:
       node: '>=4.2.0'
     hasBin: true
     resolution:
-      integrity: sha512-q2ktq4n/uLuNNShyayit+DTobV2ApPEo/6so68JaD5ojvc/6GClBipedB9zNWYxRSAlZXAe405Rlijzl6qDiSw==
+      integrity: sha512-D/wqnB2xzNFIcoBG9FG8cXRDjiqSTbG2wd8DMZeQyJlP1vfTkIxH4GKveWaEBYySKIg+USu+E+EDIR47SqnaMQ==
   /uc.micro/1.0.6:
     dev: true
     resolution:
@@ -7628,6 +7669,10 @@ packages:
   /yallist/3.1.1:
     resolution:
       integrity: sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==
+  /yallist/4.0.0:
+    dev: false
+    resolution:
+      integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==
   /yaml/1.9.2:
     dependencies:
       '@babel/runtime': 7.9.2
@@ -7687,32 +7732,32 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-RqqKPHzyo/O4t5dWMIQKqsWIUZsiUUGvYDpIuLnIHuN9g6zAAxJA/5yMZS1DCWarNn7Loo1o47g9DDcVH5Bq7A==
-  /ytdl-core/2.1.2:
+  /ytdl-core/2.1.4:
     dependencies:
       html-entities: 1.3.1
-      m3u8stream: 0.6.5
+      m3u8stream: 0.7.1
       miniget: 1.7.0
       sax: 1.2.4
     dev: false
     engines:
       node: '>=10'
     resolution:
-      integrity: sha512-/tOT9Pka6nX+LuvzNLBU8AbVHe8XELn3aZ69mvCxzvwO/ty9k8cRvF6jXqti7l5M+0hf+UPpP9jYPSAFAuoBUA==
+      integrity: sha512-jjxOAfOsUE4tXLrjZeLnvhvMeuE31TpvhP/SHmERNH+s5aDK5oseons8iplRrfxrkh+Gj4QKGzXf06gLMdBvIA==
 specifiers:
-  '@discordjs/opus': 0.1.0
+  '@discordjs/opus': 0.3.2
   '@keyv/sqlite': ^2.0.2
   '@semantic-release/changelog': ^5.0.1
   '@semantic-release/git': ^9.0.0
   '@types/estree': ^0.0.44
   '@types/express': ^4.17.6
-  '@types/jest': ^25.2.2
+  '@types/jest': ^25.2.3
   '@types/keyv': ^3.1.1
   '@types/lodash.startcase': ^4.4.6
   '@types/lodash.upperfirst': ^4.3.6
   '@types/markdown-it': ^10.0.1
   '@types/markdown-table': ^2.0.0
   '@types/ms': ^0.7.31
-  '@types/node': ^12.12.39
+  '@types/node': ^12.12.42
   '@types/rewire': ^2.5.28
   '@types/yt-search': ^1.1.0
   '@typescript-eslint/eslint-plugin': ^2.33.0
@@ -7730,7 +7775,7 @@ specifiers:
   keyv: ^4.0.1
   lodash.startcase: ^4.4.0
   lodash.upperfirst: ^4.3.1
-  markdown-it: ^10.0.0
+  markdown-it: ^11.0.0
   markdown-table: ^2.0.0
   ms: ^2.1.2
   purgecss: ^2.2.1
@@ -7738,6 +7783,6 @@ specifiers:
   semantic-release: ^17.0.7
   ts-jest: ^26.0.0
   ts-node: ^8.10.1
-  typescript: ^3.9.2
+  typescript: ^3.9.3
   yt-search: ^1.1.2
-  ytdl-core: ^2.1.2
+  ytdl-core: ^2.1.4
