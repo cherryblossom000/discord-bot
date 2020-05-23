@@ -7,7 +7,6 @@ import Keyv from 'keyv'
 import {Client} from './types'
 import {createResolve, getPrefix, handleError, sendMeError} from './helpers'
 import type {AddressInfo} from 'net'
-import type {Server} from 'http'
 import type {Snowflake} from 'discord.js'
 import type {Command, DatabaseGuild, GuildMessage, Message, RegexCommand} from './types'
 
@@ -203,7 +202,7 @@ The syntax is: \`${prefix}${command.name}${command.syntax ? ` ${command.syntax}`
     const dotenv = await import('dotenv')
     dotenv.config()
   }
-  const listener: Server = app.listen(process.env.PORT, () => {
+  const listener = app.listen(process.env.PORT, () => {
     if (dev) console.log(`http://localhost:${(listener.address() as AddressInfo).port}`)
   })
   client.login(process.env.TOKEN)
