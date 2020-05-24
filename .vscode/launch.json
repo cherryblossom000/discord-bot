@@ -53,8 +53,9 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Current File",
-      "program": "${workspaceFolder}/node_modules/ts-node/dist/bin.js",
-      "args": ["--log-error", "${file}"],
+      "runtimeArgs": ["-r", "ts-node/register"],
+      "args": ["${file}"],
+      "env": {"TS_NODE_LOG_ERROR": "true"},
       "skipFiles": ["<node_internals>/**", "node_modules/**"]
     },
     {
