@@ -69,7 +69,7 @@ The query to search on YouTube for.`,
               `(link: https://youtub.be/${_song.id}). Noot noot.`)
           })
         const storedVolume = (await database.get(id))?.volume
-        if (storedVolume && dispatcher.volume !== storedVolume) dispatcher.setVolume(storedVolume)
+        if (storedVolume !== undefined && dispatcher.volume !== storedVolume) dispatcher.setVolume(storedVolume)
         queue!.textChannel.send(`Playing \u2018${_song.title}\u2019 by ${_song.author}.`)
       }
 

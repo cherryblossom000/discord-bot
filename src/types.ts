@@ -83,7 +83,7 @@ export interface Video {
   author: string
 }
 
-/** A music queue, */
+/** A music queue. */
 export interface Queue {
   textChannel: TextBasedGuildChannel
   voiceChannel: VoiceChannel

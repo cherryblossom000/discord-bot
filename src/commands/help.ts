@@ -51,7 +51,7 @@ Do you have DMs disabled?`)
     data.push(`**Name:** ${name}`)
     if (aliases) data.push(`**Aliases:** ${aliases.join(', ')}`)
     if (description) data.push(`**Description:** ${description}`)
-    data.push(`**Usage:** \`${await getPrefix(database, guild)}${name} ${syntax ?? ''}\`${usage ? `\n${usage}` : ''}`)
+    data.push(`**Usage:** \`${await getPrefix(database, guild)}${name} ${syntax ?? ''}\`${usage === undefined ? '' : `\n${usage}`}`)
     data.push(`**Cooldown:** ${cooldown ?? 3} second${cooldown === 1 ? '' : 's'}`)
 
     await message.channel.send(data, {split: true})

@@ -31,6 +31,7 @@ const removeProdCheck = (source: string): string => {
     [variable: string]: boolean
   } = {}
 
+  // eslint-disable-next-line @typescript-eslint/ban-types
   type WithRange<T = {}> = T & {range: [number, number]}
 
   let newSource = source

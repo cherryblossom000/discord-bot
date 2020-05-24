@@ -1,18 +1,20 @@
+/* eslint-disable array-bracket-newline */
+'use strict'
+
 const rules = {
   // Possible Errors
   'no-await-in-loop': 2,
   'no-extra-parens': 1,
   'no-cond-assign': 0,
   'no-constant-condition': [2, {checkLoops: false}],
-  'no-dupe-else-if': 2,
   'no-empty': [1, {allowEmptyCatch: true}],
   'no-extra-semi': 1,
-  'no-import-assign': 2,
   'no-inner-declarations': [2, 'both'],
   'no-irregular-whitespace': [2, {skipComments: false}],
-  'no-setter-return': 2,
+  'no-loss-of-precision': 2,
   'no-template-curly-in-string': 1,
   'no-unsafe-negation': [2, {enforceForOrderingRelations: true}],
+  'no-useless-backreference': 2,
   'require-atomic-updates': 2,
   'use-isnan': [2, {enforceForSwitchCase: true, enforceForIndexOf: true}],
 
@@ -23,6 +25,7 @@ const rules = {
   complexity: 1,
   'consistent-return': 2,
   curly: [1, 'multi-or-nest'],
+  'default-case-last': 2,
   'default-param-last': 2,
   'dot-location': [1, 'property'],
   'dot-notation': 1,
@@ -40,6 +43,7 @@ const rules = {
   'no-fallthrough': 0,
   'no-implicit-globals': 2,
   'no-implied-eval': 2,
+  'no-invalid-this': 2,
   'no-iterator': 2,
   'no-labels': [2, {allowLoop: true, allowSwitch: true}],
   'no-lone-blocks': 2,
@@ -107,8 +111,10 @@ const rules = {
   'function-call-argument-newline': [1, 'consistent'],
   'id-length': [1, {min: 1, max: 30}],
   indent: [1, 2, {SwitchCase: 1, flatTernaryExpressions: true}],
+  'jsx-quotes': [1, 'prefer-single'],
   'key-spacing': 1,
   'keyword-spacing': 1,
+  'lines-between-class-members': [1, 'always', {exceptAfterSingleLine: true}],
   'line-comment-position': [1, {position: 'above', applyDefaultIgnorePatterns: false}],
   'linebreak-style': 1,
   'max-depth': 1,
@@ -127,7 +133,7 @@ const rules = {
   'no-inline-comments': 1,
   'no-lonely-if': 1,
   'no-multi-assign': 2,
-  'no-multiple-empty-lines': [1, {max: 1, maxBOF: 0}],
+  'no-multiple-empty-lines': [1, {max: 1, maxBOF: 0, maxEOF: 0}],
   'no-negated-condition': 1,
   'no-new-object': 1,
   'no-tabs': 1,
@@ -173,7 +179,7 @@ const rules = {
   'arrow-spacing': 1,
   'generator-star-spacing': [1, {before: false, after: true, method: 'before'}],
   'no-duplicate-imports': 1,
-  'no-useless-computed-key': 1 /* [1, {enforceForClassMembers: true}] */,
+  'no-useless-computed-key': [1, {enforceForClassMembers: true}],
   'no-useless-constructor': 1,
   'no-useless-rename': 1,
   'no-var': 2,
@@ -190,15 +196,49 @@ const rules = {
   'template-curly-spacing': 1,
   'yield-star-spacing': 1,
 
-  // Node.js and CommonJS
-  'callback-return': 2,
-  'global-require': 2,
-  'handle-callback-err': [2, '^err(or)?'],
-  'no-buffer-constructor': 2,
-  'no-mixed-requires': [2, {allowCall: true}],
-  'no-new-require': 2,
-  'no-path-concat': 2,
-  'no-process-exit': 2
+  // JSDoc
+  'jsdoc/check-examples': 1,
+  'jsdoc/check-indentation': 1,
+  'jsdoc/check-syntax': 1,
+  'jsdoc/match-description': 1,
+  'jsdoc/require-description': 1,
+  'jsdoc/require-description-complete-sentence': 1,
+  'jsdoc/require-hyphen-before-param-description': [1, 'never'],
+  // Not needed
+  'jsdoc/check-param-names': 0,
+  'jsdoc/newline-after-description': 0,
+  'jsdoc/require-param': 0,
+  'jsdoc/require-returns': 0,
+
+  // Node
+  // Possible Errors
+  'node/handle-callback-err': 2,
+  'node/no-callback-literal': 2,
+  'node/no-path-concat': 2,
+  'node/no-process-exit': 2,
+  'node/process-exit-as-throw': 2,
+
+  // Stylistic Issues
+  'node/callback-return': 2,
+  'node/exports-style': 1,
+  'node/file-extension-in-import': [1, 'never', {'.json': 'always'}],
+  'node/no-sync': 2,
+  'node/prefer-global/buffer': 1,
+  'node/prefer-global/console': 1,
+  'node/prefer-global/process': 1,
+  'node/prefer-global/text-decoder': 1,
+  'node/prefer-global/text-encoder': 1,
+  'node/prefer-global/url-search-params': 1,
+  'node/prefer-global/url': 1,
+  'node/prefer-promises/dns': 2,
+  'node/prefer-promises/fs': 2,
+
+  // Deprecated
+  'no-process-exit': 0,
+
+  // Not Applicable
+  'node/no-unpublished-require': 0,
+  'node/no-unpublished-import': 0
 }
 
 module.exports = {
@@ -206,52 +246,52 @@ module.exports = {
     es2017: true,
     node: true
   },
-  extends: ['eslint:recommended'],
-  parserOptions: {'ecmaVersion': 10},
+  extends: [
+    'eslint:recommended',
+    'plugin:jsdoc/recommended',
+    'plugin:node/recommended'
+  ],
+  plugins: [
+    'jsdoc',
+    'node'
+  ],
+  parserOptions: {ecmaVersion: 10},
+  settings: {jsdoc: {mode: 'typescript'}},
   ignorePatterns: ['dist/', 'doc/'],
   overrides: [
     {
       files: ['tests/**/*.test.ts'],
-      env: {'jest': true}
+      env: {jest: true}
     },
     {
       files: ['scripts/**/*'],
       rules: {
-        'no-process-exit': 0
+        'node/no-process-exit': 0
       }
     },
     {
       files: ['**/*.ts'],
       extends: [
-        'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended',
         'plugin:@typescript-eslint/recommended-requiring-type-checking'
       ],
-      env: {es2020: true},
       parser: '@typescript-eslint/parser',
       parserOptions: {project: './tsconfig.json'},
       rules: {
         '@typescript-eslint/adjacent-overload-signatures': 1,
         '@typescript-eslint/array-type': 1,
-        '@typescript-eslint/ban-ts-comment': 2,
-        '@typescript-eslint/ban-ts-ignore': 0,
-        '@typescript-eslint/ban-types': [2, {types: {Function: {
-          message: 'Use (...args: any[]) => any instead.',
-          fixWith: '(...args: any[]) => any'
-        }}}],
+        '@typescript-eslint/ban-types': 2,
         '@typescript-eslint/class-literal-property-style': 2,
         '@typescript-eslint/consistent-type-assertions': 2,
         '@typescript-eslint/consistent-type-definitions': [1, 'interface'],
         '@typescript-eslint/explicit-function-return-type': 2,
+        '@typescript-eslint/explicit-module-boundary-types': 0,
         '@typescript-eslint/explicit-member-accessibility': [1, {accessibility: 'no-public'}],
         '@typescript-eslint/member-delimiter-style': [1, {
           singleline: {delimiter: 'comma'},
           multiline: {delimiter: 'none'}
         }],
         '@typescript-eslint/member-ordering': 1,
-        '@typescript-eslint/camelcase': 0,
-        '@typescript-eslint/class-name-casing': 0,
-        '@typescript-eslint/interface-name-prefix': 0,
         '@typescript-eslint/naming-convention': [1,
           {
             selector: 'default',
@@ -282,34 +322,35 @@ module.exports = {
             format: ['UPPER_CASE'],
             leadingUnderscore: 'allow',
             trailingUnderscore: 'allow'
-          }],
+          }
+        ],
         '@typescript-eslint/no-base-to-string': 2,
+        '@typescript-eslint/restrict-template-expressions': 0,
         '@typescript-eslint/no-dynamic-delete': 2,
         '@typescript-eslint/no-explicit-any': 0,
-        '@typescript-eslint/no-extra-non-null-assertion': 2,
         '@typescript-eslint/no-extraneous-class': 2,
-        '@typescript-eslint/no-floating-promises': [2, {ignoreIIFE: true}],
         'no-implied-eval': 0,
-        '@typescript-eslint/no-implied-eval': 2,
         '@typescript-eslint/no-inferrable-types': 2,
         '@typescript-eslint/no-misused-promises': [2, {checksVoidReturn: false}],
-        '@typescript-eslint/no-non-null-asserted-optional-chain': 2,
         '@typescript-eslint/no-non-null-assertion': 0,
         '@typescript-eslint/no-require-imports': 2,
         '@typescript-eslint/no-this-alias': 2,
         'no-throw-literal': 0,
         '@typescript-eslint/no-throw-literal': 2,
         '@typescript-eslint/no-unnecessary-boolean-literal-compare': 2,
-        '@typescript-eslint/no-unnecessary-condition': [2, {allowConstantLoopConditions: true, checkArrayPredicates: true}],
+        '@typescript-eslint/no-unnecessary-condition': [2, {allowConstantLoopConditions: true}],
         '@typescript-eslint/no-unnecessary-qualifier': 2,
         '@typescript-eslint/no-unnecessary-type-arguments': 1,
         '@typescript-eslint/prefer-as-const': 2,
         '@typescript-eslint/prefer-for-of': 2,
         '@typescript-eslint/prefer-function-type': 2,
+        '@typescript-eslint/prefer-includes': 1,
         '@typescript-eslint/prefer-nullish-coalescing': 2,
         '@typescript-eslint/prefer-optional-chain': 2,
         '@typescript-eslint/prefer-readonly': 2,
+        '@typescript-eslint/prefer-string-starts-ends-with': 1,
         '@typescript-eslint/promise-function-async': 2,
+        '@typescript-eslint/strict-boolean-expressions': [2, {allowNullableBoolean: true}],
         '@typescript-eslint/type-annotation-spacing': 1,
         '@typescript-eslint/unbound-method': [2, {ignoreStatic: true}],
         '@typescript-eslint/unified-signatures': 2,
@@ -353,12 +394,21 @@ module.exports = {
         // Already checked by TS
         'array-callback-return': 0,
         'consistent-return': 0,
-        'constructor-super': 0,
+        'jsdoc/no-types': 1,
+        'jsdoc/require-param-type': 0,
+        'jsdoc/require-returns-type': 0,
+        'node/no-missing-import': 0,
+        'node/process-exit-as-throw': 0,
         '@typescript-eslint/no-unused-vars': 0,
-        '@typescript-eslint/no-use-before-define': 0,
+
+        // Compiled by TS
+        'node/no-unsupported-features/es-syntax': 0,
 
         // Doesn't work with import type
-        'no-duplicate-imports': 0
+        'no-duplicate-imports': 0,
+
+        // Doesn't work for class fields
+        'no-invalid-this': 0
       }
     },
     {

@@ -2,7 +2,7 @@ import {inspect} from 'util'
 import Discord from 'discord.js'
 import escapeRegex from 'escape-string-regexp'
 import {me} from '../constants'
-import type {Command} from '../types'
+import type {Command, Message} from '../types'
 
 const kDiscardResult = Symbol('discard result')
 
@@ -21,11 +21,17 @@ const _: Command = {
 
     let result
     try {
-      // eslint-disable-next-line @typescript-eslint/no-implied-eval
-      result = await Function(`return async (message, input, Discord, _) => (${input.input})`)()(
-        message, input, Discord, kDiscardResult
-      )
+      // eslint-disable-next-line @typescript-eslint/no-implied-eval, @typescript-eslint/no-unsafe-assignment
+      result = await (Function(`return async (message, input, Discord, _) => (${input.input})`) as () =>
+      (
+        message: Message,
+        input: {args: string[], input: string},
+        Discord: typeof import('discord.js'),
+        _: typeof kDiscardResult
+      ) => Promise<any>
+      )()(message, input, Discord, kDiscardResult)
     } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       await channel.send(`${error}`, {code: true})
       return
     }
@@ -38,4 +44,3 @@ const _: Command = {
   }
 }
 export default _
-

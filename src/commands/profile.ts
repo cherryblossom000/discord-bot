@@ -36,12 +36,13 @@ const getUserInfo = (user: User): MessageEmbed => {
       {
         name: 'Status',
         value: `**${formatStatus(presence.status)}**${
+            // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
             clientStatuses?.length
               ? `\n${clientStatuses.map(([k, v]) => `${upperFirst(k)}: ${formatStatus(v)}`).join('\n')}`
               : ''}`
       },
       {name: 'Joined Discord', value: formatDate(createdAt)},
-      {name: `Avatar${user.avatar ? '' : ' (Default)'}`, value: `[Link](${avatar})`}
+      {name: `Avatar${user.avatar == null ? ' (Default)' : ''}`, value: `[Link](${avatar})`}
       // TODO: Fix Discord.js: it has user#locale as string not as an optional string
     )
 
@@ -62,17 +63,17 @@ const getUserInfo = (user: User): MessageEmbed => {
       activities.map(a => ({
         name: startCase(a.type.toLowerCase()) + (a.type === 'LISTENING' ? ' to' : ''),
         value: a.type === 'CUSTOM_STATUS'
-          ? (a.emoji ? `${a.emoji.id ? `:${a.emoji.name}:` : a.emoji.name} ` : '') + a.state
-          : `${a.name}${a.state ? `
-State: ${a.state}` : ''}${a.details ? `
-Details: ${a.details}` : ''}${a.url ? `
-[URL](${a.url})` : ''}${Number.isNaN(a.createdAt.getTime()) ? '' : `
+          ? (a.emoji ? `${a.emoji.id == null ? a.emoji.name : `:${a.emoji.name}:`} ` : '') + a.state!
+          : `${a.name}${a.state == null ? '' : `
+State: ${a.state}`}${a.details == null ? '' : `
+Details: ${a.details}`}${a.url == null ? '' : `
+[URL](${a.url})`}${Number.isNaN(a.createdAt.getTime()) ? '' : `
 Start: ${formatDate(a.createdAt)}`}${a.timestamps?.end ? `
-End: ${formatDate(a.timestamps.end)}` : ''}${a.assets?.largeText ? `
-Large Text: ${a.assets.largeText}` : ''}${a.assets?.largeImage ? `
-[Large Image URL](${a.assets.largeImageURL()})` : ''}${a.assets?.smallText ? `
-Small Text: ${a.assets.smallText}` : ''}${a.assets?.smallImage ? `
-[Small Image URL](${a.assets.smallImageURL()})` : ''}`
+End: ${formatDate(a.timestamps.end)}` : ''}${a.assets?.largeText == null ? '' : `
+Large Text: ${a.assets.largeText}`}${a.assets?.largeImage == null ? '' : `
+[Large Image URL](${a.assets.largeImageURL()!})`}${a.assets?.smallText == null ? '' : `
+Small Text: ${a.assets.smallText}`}${a.assets?.smallImage == null ? '' : `
+[Small Image URL](${a.assets.smallImageURL()!})`}`
       }))
     )
   }
@@ -86,7 +87,7 @@ const addMemberInfo = (
 ): void => {
   if (joinedAt) embed.addField('Joined this Server', formatDate(joinedAt))
   if (premiumSince) embed.addField('Boosting this server since', premiumSince)
-  if (nickname) embed.addField('Nickname', nickname)
+  if (nickname != null) embed.addField('Nickname', nickname)
   if (roles.cache.size > 1) {
     embed.addField('Roles', roles.cache.filter(r => r.name !== '@everyone').map(r => r.name).join('\n'))
     if (displayColor) embed.addField('Colour', displayHexColor)

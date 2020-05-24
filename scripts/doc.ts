@@ -21,7 +21,7 @@ const readme = resolve('README.md')
   const modules = await Promise.all(files
     .filter(f => !f.endsWith('.map'))
     .map(async f => import(join(commandsPath, f))))
-  const commands = modules.map<Command>(m => m.default)
+  const commands = modules.map(m => (m as {default: Command<boolean>}).default)
   const usageMarkdownIt = new MarkdownIt({html: true, breaks: true})
   const docs = [['Command', 'Aliases', 'Description', 'Usage', 'Cooldown (s)'],
     ...commands
@@ -33,15 +33,15 @@ const readme = resolve('README.md')
           name === 'iwmelc'
             ? `${description}<br>![i will murder every last capitalist](./assets/img/iwmelc.jpg)`
             : description,
-          `\`.${name}${syntax ? ` ${syntax.replace(/\|/ug, '\\|')}` : ''}\`${usage
-            ? `<br>${(name === 'play' || name === 'volume'
+          `\`.${name}${syntax === undefined ? '' : ` ${syntax.replace(/\|/ug, '\\|')}`}\`${usage === undefined
+            ? ''
+            : `<br>${(name === 'play' || name === 'volume'
               ? usageMarkdownIt.render(usage)
                 .replace(/\|/ug, '\\|')
                 .replace(/\n/ug, '')
                 .replace(/<\/?p>/ug, '')
               : usage
             ).replace(/\n/ug, '<br>')}`
-            : ''
           }`,
           cooldown.toString()
         ]

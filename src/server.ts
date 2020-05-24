@@ -54,7 +54,7 @@ const importCommands = async <T>(path: string, callback: (command: T) => void): 
       modules = await Promise.all(files
         .filter(f => !f.endsWith('.map'))
         .map(async f => import(join(resolve(path), f))))
-    modules.map<T>(m => m.default).forEach(callback)
+    modules.map(m => (m as {default: T}).default).forEach(callback)
   } catch (error) {
     sendMeError(client, error, `\`importCommands\` failed with path \`${path}\`.`)
     throw error
@@ -121,7 +121,7 @@ client.on('message', async message => {
 
   const prefix = await getPrefix(database, guild),
     matchedPrefix = new RegExp(`^(<@!?${client.user!.id}>|${escapeRegex(prefix)})`, 'u').exec(content)?.[0]
-  if (matchedPrefix || !guild) {
+  if (matchedPrefix !== undefined || !guild) {
     const input = content.slice(matchedPrefix?.length ?? 0).trim()
 
     // Exits if there is no input and the bot was mentioned
@@ -150,7 +150,7 @@ My prefix is \`${prefix}\`. Run \`${prefix}help\` for a list of commands.`)
       // If no args
       if (command.args && !args.length) {
         message.reply(`you didn\u2019t provide any arguments. Noot noot.
-The syntax is: \`${prefix}${command.name}${command.syntax ? ` ${command.syntax}` : ''}\`. Noot noot.`)
+The syntax is: \`${prefix}${command.name}${command.syntax === undefined ? '' : ` ${command.syntax}`}\`. Noot noot.`)
         return false
       }
       return true

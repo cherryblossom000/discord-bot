@@ -1,10 +1,9 @@
-import rewire from 'rewire'
-
-const regex = rewire('../../dist/src/regex-commands/angry-noot-noot').__get__<RegExp>('regex')
+import AngryNootNoot from '../../src/regex-commands/angry-noot-noot'
 
 describe('angry-noot-noot', () => {
   describe('regex', () => {
-    [
+    const {regex} = AngryNootNoot
+    ;[
       'pingu is bad',
       'pingu bad',
       'pingu is very bad',

@@ -18,8 +18,8 @@ export const sendMeError = async (client: Client, error: Error, info: string): P
   if (process.env.NODE_ENV === 'production') {
     // TODO: provide more information if it's a DiscordAPIError (e.g. path)
     (await client.users.fetch(me)!).send(`${info}
-**Error at ${new Date().toLocaleString()}**
-${error.stack}`)
+**Error at ${new Date().toLocaleString()}**${error.stack === undefined ? '' : `
+${error.stack}`}`)
   }
 }
 
@@ -64,7 +64,7 @@ export const checkPermissions = (
       `I don\u2019t have th${plural ? 'ese' : 'is'}${permissionsString}!`,
       neededPermissions.map(p => `* ${p}`).join('\n'),
       `To fix this, ask an admin or the owner of the server to add th${plural ? 'ose' : 'at'}${permissionsString} to ${
-        guild.member(client.user!)!.roles.cache.find(role => role.managed)
+        guild.member(client.user!)!.roles.cache.find(role => role.managed)!
       }.`
     ])
     return false
@@ -115,7 +115,7 @@ export const searchYoutube = async (
 
   /**
    * Generates the embed with videos and message content.
-   * @param {number} start The index to start from.
+   * @param start The index to start from.
    */
   const generateEmbed = (start: number): [string, MessageEmbed] => {
     current = videos.slice(start, start + 10)
@@ -144,6 +144,7 @@ export const searchYoutube = async (
 
   const collector = embedMessage.createReactionCollector(
     ({emoji: {name}}, {id}) => [emojis.left, emojis.right, ...emojis.numbers].includes(name) && id === author.id,
+    // eslint-disable-next-line no-loss-of-precision
     {idle: 60_000}
   )
 

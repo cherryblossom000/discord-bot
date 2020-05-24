@@ -21,4 +21,3 @@ I can react on your message instead if you enable the READ_MESSAGE_HISTORY permi
   }
 }
 export default _
-
