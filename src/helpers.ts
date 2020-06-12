@@ -17,7 +17,7 @@ export const createResolve = (dirname: string) => (p: string): string => join(di
 export const sendMeError = async (client: Client, error: Error, info: string): Promise<void> => {
   if (process.env.NODE_ENV === 'production') {
     // TODO: provide more information if it's a DiscordAPIError (e.g. path)
-    (await client.users.fetch(me)!).send(`${info}
+    await (await client.users.fetch(me)!).send(`${info}
 **Error at ${new Date().toLocaleString()}**${error.stack === undefined ? '' : `
 ${error.stack}`}`)
   }
@@ -29,16 +29,20 @@ ${error.stack}`}`)
  * @param message The message to reply to, if applicable.
  * @param response The response in the message reply.
  */
-export const handleError = (
+export const handleError = async (
   client: Client,
   error: Error,
   info: string,
   message?: Message,
   response = 'unfortunately, there was an error trying to execute that command. Noot noot.'
-): void => {
-  if (message) message.reply(response)
-  if (process.env.NODE_ENV === 'production') sendMeError(client, error, info)
-  else throw error
+): Promise<void> => {
+  try {
+    if (message) await message.reply(response)
+    if (process.env.NODE_ENV === 'production') await sendMeError(client, error, info)
+    else throw error
+  } catch (e) {
+    console.error('The error', e, 'occurred when trying to handle the error', error)
+  }
 }
 
 /** Check if the bot has permissions. */
@@ -46,21 +50,23 @@ export const hasPermissions = ({channel, client}: GuildMessage, permissions: Per
   channel.permissionsFor(client.user!)?.has(permissions) ?? false
 
 /** Check if the bot has permissions and sends a message if it doesn't. */
-export const checkPermissions = (
+export const checkPermissions = async (
   message: GuildMessage,
   permissions: PermissionString | PermissionString[]
-): boolean => {
-  const {channel, client, guild} = message,
-    channelPermissions = channel.permissionsFor(client.user!)
+): Promise<boolean> => {
+  const {channel, client, guild} = message
+  const channelPermissions = channel.permissionsFor(client.user!)
+  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions -- optional chaining
   if (!channelPermissions?.has(permissions)) {
     const neededPermissions = Array.isArray(permissions)
+      // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions -- optional chaining
       ? permissions.filter(p => !channelPermissions?.has(p))
       : [permissions]
 
-    const plural = neededPermissions.length !== 1,
-      permissionsString = ` permission${plural ? 's' : ''}`
+    const plural = neededPermissions.length !== 1
+    const permissionsString = ` permission${plural ? 's' : ''}`
 
-    message.reply([
+    await message.reply([
       `I don\u2019t have th${plural ? 'ese' : 'is'}${permissionsString}!`,
       neededPermissions.map(p => `* ${p}`).join('\n'),
       `To fix this, ask an admin or the owner of the server to add th${plural ? 'ose' : 'at'}${permissionsString} to ${
@@ -100,7 +106,7 @@ export const searchYoutube = async (
   message: Message,
   query: string
 ): Promise<VideoSearchResult | void> => {
-  if (message.guild && !checkPermissions(message, [
+  if (message.guild && !await checkPermissions(message, [
     'MANAGE_MESSAGES', 'EMBED_LINKS', 'READ_MESSAGE_HISTORY', 'ADD_REACTIONS'
   ])) return
   const {author, channel} = message
@@ -132,19 +138,18 @@ export const searchYoutube = async (
   const embedMessage = await channel.send(...generateEmbed(0))
 
   const reactNumbers = async (): Promise<void> => {
-    // eslint-disable-next-line no-await-in-loop
+    // eslint-disable-next-line no-await-in-loop -- loop is necessary for the numbers to be in order
     for (let i = 1; i <= current.length; i++) await embedMessage.react(emojis.numbers[i])
   }
 
   if (videos.length <= 10) return
   await embedMessage.react(emojis.right)
-  reactNumbers()
+  await reactNumbers()
 
   let currentIndex = 0
 
   const collector = embedMessage.createReactionCollector(
     ({emoji: {name}}, {id}) => [emojis.left, emojis.right, ...emojis.numbers].includes(name) && id === author.id,
-    // eslint-disable-next-line no-loss-of-precision
     {idle: 60_000}
   )
 
@@ -163,10 +168,10 @@ export const searchYoutube = async (
       // If the reaction is an arrow change the page
       await embedMessage.reactions.removeAll()
       currentIndex += name === emojis.left ? -10 : 10
-      embedMessage.edit(...generateEmbed(currentIndex))
+      await embedMessage.edit(...generateEmbed(currentIndex))
       if (currentIndex !== 0) await embedMessage.react(emojis.left)
       if (currentIndex + 10 < videos.length) await embedMessage.react(emojis.right)
-      reactNumbers()
+      await reactNumbers()
     })
   })
 }

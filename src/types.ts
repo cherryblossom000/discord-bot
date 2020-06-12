@@ -107,7 +107,7 @@ export class Client extends Discord.Client {
   readonly queues: Collection<Snowflake, Queue>
 
   constructor(...args: ConstructorParameters<typeof Discord.Client>) {
-    // eslint-disable-next-line @typescript-eslint/naming-convention
+    // eslint-disable-next-line @typescript-eslint/naming-convention -- Message is a class
     Structures.extend('Message', Message => class extends Message {
       // TODO: Fix Discord.js' types of reply and send (1st overload) because it sues MessageAdditions twice in options param
       async reply(content?: StringResolvable, options?: MessageOptions | MessageAdditions | OptionsNoSplit): Promise<this>
@@ -131,8 +131,8 @@ export class Client extends Discord.Client {
   }
 
   /** Set the activity. */
-  setActivity(): void {
-    this.user!.setActivity(`capitalist scum in ${this.guilds.cache.size} servers`, {type: 'WATCHING'})
+  async setActivity(): Promise<void> {
+    await this.user!.setActivity(`capitalist scum in ${this.guilds.cache.size} servers`, {type: 'WATCHING'})
   }
 }
 

@@ -9,7 +9,7 @@ declare global {
     entries<K extends keyof any, V>(o: Partial<Record<K, V>>): [K, V][]
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-namespace
+  // eslint-disable-next-line @typescript-eslint/no-namespace -- needed to augment DateTimeFormatOptions
   namespace Intl {
     interface DateTimeFormatOptions {
       dateStyle?: 'full' | 'long' | 'medium' | 'short'
@@ -18,15 +18,15 @@ declare global {
   }
 }
 
-const formatBoolean = (boolean?: boolean): string => boolean ? 'Yes' : 'No'
+const formatBoolean = (boolean = false): string => boolean ? 'Yes' : 'No'
 const formatStatus = (status: PresenceStatus): string => status === 'dnd' ? 'Do Not Disturb' : upperFirst(status)
 const formatDate = (date: Date): string => date.toLocaleString('en-AU', {dateStyle: 'short', timeStyle: 'short'})
 
 /** Creates an embed with information about a user. */
 const getUserInfo = (user: User): MessageEmbed => {
-  const avatar = user.displayAvatarURL(),
-    {bot, createdAt, id, presence, tag} = user,
-    clientStatuses = presence.clientStatus ? Object.entries(presence.clientStatus) : null
+  const avatar = user.displayAvatarURL()
+  const {bot, createdAt, id, presence, tag} = user
+  const clientStatuses = presence.clientStatus ? Object.entries(presence.clientStatus) : null
 
   const embed = new MessageEmbed()
     .setTitle(tag + (bot ? ' (Bot)' : ''))
@@ -36,7 +36,8 @@ const getUserInfo = (user: User): MessageEmbed => {
       {
         name: 'Status',
         value: `**${formatStatus(presence.status)}**${
-            // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+            // if I explicitly use clientStatuses && clientStatuses.length @typescript-eslint/prefer-optional-chain
+            // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions -- triggers
             clientStatuses?.length
               ? `\n${clientStatuses.map(([k, v]) => `${upperFirst(k)}: ${formatStatus(v)}`).join('\n')}`
               : ''}`
@@ -83,7 +84,16 @@ Small Text: ${a.assets.smallText}`}${a.assets?.smallImage == null ? '' : `
 
 /** Updates an embed with information about a guild member. */
 const addMemberInfo = (
-  embed: MessageEmbed, {displayColor, displayHexColor, joinedAt, nickname, premiumSince, roles, voice}: GuildMember
+  embed: MessageEmbed,
+  {
+    displayColor,
+    displayHexColor,
+    joinedAt,
+    nickname,
+    premiumSince,
+    roles,
+    voice: {channel, deaf, mute, serverDeaf = false, serverMute = false, streaming}
+  }: GuildMember
 ): void => {
   if (joinedAt) embed.addField('Joined this Server', formatDate(joinedAt))
   if (premiumSince) embed.addField('Boosting this server since', premiumSince)
@@ -92,11 +102,11 @@ const addMemberInfo = (
     embed.addField('Roles', roles.cache.filter(r => r.name !== '@everyone').map(r => r.name).join('\n'))
     if (displayColor) embed.addField('Colour', displayHexColor)
   }
-  if (voice.channel) {
-    embed.addField('Voice', `Channel: ${voice.channel.name}
-Muted: ${formatBoolean(voice.mute)}${voice.serverMute ? ' (server)' : ''}
-Deafened: ${formatBoolean(voice.deaf)}${voice.serverDeaf ? ' (server)' : ''}
-Streaming: ${formatBoolean(voice.streaming)}`)
+  if (channel) {
+    embed.addField('Voice', `Channel: ${channel.name}
+Muted: ${formatBoolean(mute)}${serverMute ? ' (server)' : ''}
+Deafened: ${formatBoolean(deaf)}${serverDeaf ? ' (server)' : ''}
+Streaming: ${formatBoolean(streaming)}`)
   }
 }
 
@@ -135,7 +145,7 @@ You can mention the user or use their tag (for example \`Username#1234\`).`,
     const member = guild?.member(user)
     if (member) addMemberInfo(embed, member)
 
-    channel.send(embed)
+    await channel.send(embed)
   }
 }
 export default _

@@ -25,7 +25,7 @@ const readme = resolve('README.md')
   const usageMarkdownIt = new MarkdownIt({html: true, breaks: true})
   const docs = [['Command', 'Aliases', 'Description', 'Usage', 'Cooldown (s)'],
     ...commands
-      .filter(command => !command.hidden)
+      .filter(({hidden = false}) => !hidden)
       .map(
         ({name, aliases, description, syntax, usage, cooldown = 3}) => [
           `\`${name}\``,
@@ -84,4 +84,7 @@ const readme = resolve('README.md')
   // Update license.html and changelog.html
   await writeOtherPage('license', 'LICENSE')
   await writeOtherPage('changelog', 'CHANGELOG.md')
-})()
+})().catch(e => {
+  console.error(e)
+  process.exit(1)
+})

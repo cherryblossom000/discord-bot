@@ -21,7 +21,8 @@ const _: Command = {
 
     let result
     try {
-      // eslint-disable-next-line @typescript-eslint/no-implied-eval, @typescript-eslint/no-unsafe-assignment
+      // Have to use implied eval: that's the point of this command. The result of the eval is also any, which can't
+      // eslint-disable-next-line @typescript-eslint/no-implied-eval, @typescript-eslint/no-unsafe-assignment -- be avoided.
       result = await (Function(`return async (message, input, Discord, _) => (${input.input})`) as () =>
       (
         message: Message,
@@ -31,7 +32,6 @@ const _: Command = {
       ) => Promise<any>
       )()(message, input, Discord, kDiscardResult)
     } catch (error) {
-      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       await channel.send(`${error}`, {code: true})
       return
     }

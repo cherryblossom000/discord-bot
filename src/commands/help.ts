@@ -1,6 +1,6 @@
 import {defaultPrefix} from '../constants'
 import {sendMeError, getPrefix} from '../helpers'
-import type {Command} from '../types'
+import type {Command, DMMessage, GuildMessage} from '../types'
 
 const _: Command = {
   name: 'help',
@@ -12,14 +12,14 @@ The command that you want to get info about. If omitted, all the commands will b
   cooldown: 5,
   async execute(message, {args}, database) {
     // constants
-    const {author, client, client: {commands}, guild} = message,
-      data = []
+    const {author, client, client: {commands}, guild} = message
+    const data = []
 
     // All commands
     if (!args.length) {
       data.push(
         'Here\u2019s a list of all my commands:',
-        ...commands.filter(command => !command.hidden).map(command => `\`${command.name}\`: ${command.description}`),
+        ...commands.filter(({hidden = false}) => !hidden).map(command => `\`${command.name}\`: ${command.description}`),
         `
 You can send \`${defaultPrefix}help [command name]\` to get info on a specific command. Noot noot.`
       )
@@ -29,16 +29,18 @@ You can send \`${defaultPrefix}help [command name]\` to get info on a specific c
         if (message.channel.type !== 'dm') await message.reply('I\u2019ve sent you a DM with all my commands. Noot noot.')
         return
       } catch (error) {
-        sendMeError(client, error, `Could not send help DM to ${author.tag}.`)
-        await message.reply(`it seems like I can\u2019t DM you. Noot noot.
+        await Promise.all<void, GuildMessage | DMMessage>([
+          sendMeError(client, error, `Could not send help DM to ${author.tag}.`),
+          message.reply(`it seems like I can\u2019t DM you. Noot noot.
 Do you have DMs disabled?`)
+        ])
         return
       }
     }
 
     // Specific command
-    const commandName = args[0].toLowerCase(),
-      command = commands.get(commandName) ?? commands.find(c => !!c.aliases?.includes(commandName))
+    const commandName = args[0].toLowerCase()
+    const command = commands.get(commandName) ?? commands.find(({aliases = []}) => aliases.includes(commandName))
 
     // Invalid command
     if (!command) {

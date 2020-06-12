@@ -20,7 +20,7 @@ const _: Command<true> = {
   async execute(message) {
     const queue = await getQueue(message)
     if (!queue) return
-    resume(queue.connection.dispatcher, message)
+    await resume(queue.connection.dispatcher, message)
   }
 }
 export default _

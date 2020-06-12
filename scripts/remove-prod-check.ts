@@ -31,7 +31,7 @@ const removeProdCheck = (source: string): string => {
     [variable: string]: boolean
   } = {}
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
+  // eslint-disable-next-line @typescript-eslint/ban-types -- {} is needed for an empty object
   type WithRange<T = {}> = T & {range: [number, number]}
 
   let newSource = source
@@ -63,17 +63,17 @@ const removeProdCheck = (source: string): string => {
   }
 
   ancestor(parse(source, {ranges: true, locations: true}), {
-    /* eslint-disable @typescript-eslint/naming-convention */
+    /* eslint-disable @typescript-eslint/naming-convention -- these names are needed */
     ConditionalExpression: parseConditional,
     IfStatement: parseConditional,
     VariableDeclarator(n, a) {
-      /* eslint-enable @typescript-eslint/naming-convention */
-      const node = n as unknown as WithRange<VariableDeclarator>,
-        ancestors = a as WithRange<acorn.Node>[],
-        declaration = ancestors[ancestors.length - 2] as unknown as WithRange<VariableDeclaration> & {
-          declarations: WithRange<VariableDeclarator>[]
-        },
-        {declarations} = declaration
+      /* eslint-enable @typescript-eslint/naming-convention -- see above */
+      const node = n as unknown as WithRange<VariableDeclarator>
+      const ancestors = a as WithRange<acorn.Node>[]
+      const declaration = ancestors[ancestors.length - 2] as unknown as WithRange<VariableDeclaration> & {
+        declarations: WithRange<VariableDeclarator>[]
+      }
+      const {declarations} = declaration
 
       if (node.init?.type === 'BinaryExpression' && isCheckingIfProd(node.init) && node.id.type === 'Identifier') {
         isProdVars[node.id.name] = isProd(node.init)
@@ -102,11 +102,16 @@ const walk = async (path: string): Promise<string[]> => {
   return files
 }
 
-walk(join(__dirname, '../dist/src')).then(async files => {
-  await Promise.all(files
-    .filter(file => file.endsWith('.js'))
-    .map(async file => {
-      const source = await readFile(file)
-      writeFile(file, removeProdCheck(source.toString()))
-    }))
-})
+walk(join(__dirname, '../dist/src'))
+  .then(async files => {
+    await Promise.all(files
+      .filter(file => file.endsWith('.js'))
+      .map(async file => {
+        const source = await readFile(file)
+        await writeFile(file, removeProdCheck(source.toString()))
+      }))
+  })
+  .catch(e => {
+    console.error(e)
+    process.exit(1)
+  })
