@@ -1,3 +1,22 @@
+# [2.0.0](https://github.com/cherryblossom000/comrade-pingu/compare/v1.3.0...v2.0.0) (2020-06-12)
+
+
+### Features
+
+* add pin command ([48e7b27](https://github.com/cherryblossom000/comrade-pingu/commit/48e7b275f77c6dbe98e9e4d93d89ea3d64c1c9ea))
+* add profile command ([b56bf96](https://github.com/cherryblossom000/comrade-pingu/commit/b56bf968ec2b061ba073a03569c9fdd1e9da27e4))
+
+
+### improvement
+
+* use 'u' for the profile command and change `uptime`'s alias to 'up' ([9e2e7a3](https://github.com/cherryblossom000/comrade-pingu/commit/9e2e7a3e9acf3edf63ad7e10b6792b5d52566f08))
+
+
+### BREAKING CHANGES
+
+* u' can no longer be used for the `uptime` command; it is now an alias for
+`profile`.
+
 # [1.3.0](https://github.com/cherryblossom000/comrade-pingu/compare/v1.2.1...v1.3.0) (2020-03-28)
 
 
