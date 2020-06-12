@@ -7,7 +7,7 @@ import type {
 import type Keyv from 'keyv'
 
 /** Any text-based guild channel. */
-type TextBasedGuildChannel = TextChannel | NewsChannel
+export type TextBasedGuildChannel = TextChannel | NewsChannel
 
 /** A guild's entry in the database. */
 export interface DatabaseGuild {
