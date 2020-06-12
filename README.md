@@ -25,15 +25,17 @@ Comrade Pingu’s default prefix is `.`.
 | `iwmelc` | `iwillmurdereverylastcapitalist` | Gets the meme that shows that ‘noot noot’ in Pingu means ‘i will murder every last capitalist’ in English.<br>![i will murder every last capitalist](./assets/img/iwmelc.jpg) | `.iwmelc` | 3 |
 | `nowplaying` | `np` | Gets the song currently playing. | `.nowplaying` | 3 |
 | `pause` | `pa` | Pauses the song currently playing. | `.pause` | 3 |
+| `pin` | - | Pins a message. | `.pin [message]`<br>`message` (optional)<br>The ID of the message to pin. Defaults to the last message (excluding the one to execute this command) you sent in this server. | 3 |
 | `ping` | `p` | Gets my current latency. | `.ping` | 5 |
 | `play` | `pl` | Plays a song from YouTube. | `.play [song]\|search [query]`<br><code>[song]</code><br><code>song</code> (optional)<br>The video that you want to play. If it’s:<ul><li>a YouTube link or ID: plays the YouTube video</li><li>anything else: searches YouTube and plays the first result</li><li>omitted: resumes the music (if it’s paused) (the same as <code>resume</code>)</li></ul><code>search [query]</code><br><code>query</code><br>The query to search on YouTube for. | 3 |
-| `prefix` | `pr` | Gets or sets the prefix. | `.prefix [new prefix]`<br>`new prefix` (optional)<br>The text that you want to set the prefix to. If omitted, displays the current prefix.<br>The default prefix is `.`. | 3 |
+| `prefix` | `pre` | Gets or sets the prefix. | `.prefix [new prefix]`<br>`new prefix` (optional)<br>The text that you want to set the prefix to. If omitted, displays the current prefix.<br>The default prefix is `.`. | 3 |
+| `profile` | `pr`, `pro`, `u`, `user` | Gets information on a user. | `.profile [user]`<br>`user` (optional)<br>The user to display information about. If omitted, defaults to you.<br>You can mention the user or use their tag (for example `Username#1234`). | 3 |
 | `queue` | `q` | Views the music queue. | `.queue` | 3 |
 | `resume` | `r`, `unpause` | Resumes the song currently playing. | `.resume` | 3 |
 | `skip` | `sk` | Skips the current song. | `.skip` | 3 |
 | `stats` | `statistics` | Gets my stats. | `.stats` | 3 |
 | `stop` | `s` | Stops playing music. | `.stop` | 3 |
-| `uptime` | `u` | Gets my uptime. | `.uptime` | 3 |
+| `uptime` | `up` | Gets my uptime. | `.uptime` | 3 |
 | `volume` | `v` | Changes or gets the volume of the music playing. | `.volume [volume]`<br><code>volume</code> (optional)<br>The new volume as a percentage to set it to. If omitted, the current volume will be shown. Can be one of the following:<ul><li><code>&lt;number&gt;[%]</code> Sets the current volume.</li><li><code>&lt;+\|-&gt;&lt;number&gt;[%]</code> Increments/decrements the volume.</li><li><code>reset</code> (or anything starting with <code>r</code>) Resets the volume to 100%.</li></ul> | 3 |
 | `website` | `site`, `w`, `web` | Sends my website. | `.website` | 3 |
 
