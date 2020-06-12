@@ -8,7 +8,7 @@ pnpx semantic-release
   # Init repo
   git init
   git remote add origin "https://$GLITCH_TOKEN@api.glitch.com/git/comrade-pingu"
-  # Copy package.json because that may have changed due tom semantic-release
+  # Copy package.json because that may have changed due to semantic-release
   cp ../package.json package.json
   # Push to glitch
   git add .
