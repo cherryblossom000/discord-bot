@@ -10,7 +10,7 @@ const _: Command = {
   usage: `\`message\` (optional)
 The ID of the message to pin. Defaults to the last message (excluding the one to execute this command) you sent in this server.`,
   async execute(message, {args}) {
-    if (message.guild ? message.guild.ownerID !== message.author.id : message.author.id !== me) {
+    if ((message.guild ? message.guild.ownerID !== message.author.id : true) && message.author.id !== me) {
       await message.reply('This command can only be used by the guild or bot owner!')
       return
     }
