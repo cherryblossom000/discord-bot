@@ -26,7 +26,13 @@ app.use(express.static(resolve('../assets/img')))
 const client = new Client({
   disableMentions: 'everyone',
   ws: {intents: [
-    'GUILDS', 'GUILD_MESSAGES', 'GUILD_EMOJIS', 'GUILD_VOICE_STATES', 'GUILD_PRESENCES', 'DIRECT_MESSAGES'
+    'GUILDS',
+    'GUILD_MESSAGES',
+    'GUILD_MESSAGE_REACTIONS',
+    'GUILD_EMOJIS',
+    'GUILD_VOICE_STATES',
+    'GUILD_PRESENCES',
+    'DIRECT_MESSAGES'
   ]}
 })
 
