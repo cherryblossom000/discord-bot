@@ -1,6 +1,10 @@
 import removeProdCheck from './removeProdCheck'
 
 describe('removeProdCheck', () => {
+  const e = (source: string, expected: string): void => {
+    expect(removeProdCheck(source)).toBe(expected)
+  }
+
   const prod = "process.env.NODE_ENV === 'production'"
   const dev = "process.env.NODE_ENV !== 'production'"
   ;[
@@ -13,7 +17,9 @@ describe('removeProdCheck', () => {
 else ${d}`],
       ['conditional', (check: string, p: string, d: string): string => `${check} ? ${p} : ${d}`]
     ] as const
-    test.each(tests)(`${name} %s prod`, (_, f) => expect(removeProdCheck(prepend + f(_prod, 'p', 'd'))).toBe(`${prepExpected}p`))
-    test.each(tests)(`${name} %s dev`, (_, f, _p = '') => expect(removeProdCheck(prepend + f(_dev, 'd', 'p'))).toBe(`${prepExpected}p`))
+    test.each(tests)(`${name} %s prod`, (_, f) => e(prepend + f(_prod, 'p', 'd'), `${prepExpected}p`))
+    test.each(tests)(`${name} %s dev`, (_, f, _p = '') => e(prepend + f(_dev, 'd', 'p'), `${prepExpected}p`))
   })
+
+  test('non-checking variable', () => e('if (!x) a', 'if (!x) a'))
 })

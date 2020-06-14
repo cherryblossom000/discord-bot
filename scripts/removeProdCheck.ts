@@ -73,7 +73,10 @@ export default (source: string): string => {
     let isTestProd: boolean | undefined
     if (isCheckingProd(node.test)) isTestProd = isProd(node.test)
     else if (node.test.type === 'Identifier') isTestProd = isProdVars[node.test.name]
-    else if (isNeg(node.test) && node.test.argument.type === 'Identifier') isTestProd = !isProdVars[node.test.argument.name]
+    else if (isNeg(node.test) && node.test.argument.type === 'Identifier') {
+      const _isTestProd = isProdVars[node.test.argument.name] as boolean | undefined
+      isTestProd = _isTestProd === undefined ? undefined : !_isTestProd
+    }
 
     if (typeof isTestProd !== 'undefined') {
       const statement = (isTestProd ? node.consequent : node.alternate) as WithRange<Statement | Expression> | undefined
