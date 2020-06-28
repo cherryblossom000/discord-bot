@@ -3,12 +3,15 @@
   "typescript.tsc.autoDetect": "off",
   "typescript.tsdk": "node_modules/typescript/lib",
   "search.exclude": {
-    "dist": true,
-    "node_modules": true,
+    ".data/": true,
+    ".history/": true,
+    "dist/": true,
+    "node_modules/": true,
     "pnpm-lock.yaml": true,
-    "tests/coverage": true
+    "tests/coverage/": true
   },
   "cSpell.words": [
+    "Deletable",
     "Noot",
     "Pingu",
     "Pingu’s",
