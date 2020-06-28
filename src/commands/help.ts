@@ -1,6 +1,7 @@
+import {Constants} from 'discord.js'
 import {defaultPrefix} from '../constants'
 import {sendMeError, getPrefix} from '../helpers'
-import type {Command, DMMessage, GuildMessage} from '../types'
+import type {Command} from '../types'
 
 const _: Command = {
   name: 'help',
@@ -29,15 +30,18 @@ You can send \`${defaultPrefix}help [command name]\` to get info on a specific c
         if (message.channel.type !== 'dm') await message.reply('I\u2019ve sent you a DM with all my commands. Noot noot.')
         return
       } catch (error) {
-        await Promise.all<void>([
-          sendMeError(client, error, `Could not send help DM to ${author.tag}.`),
-          message.sendDeletableMessage({
-            reply: true,
-            content: `it seems like I can\u2019t DM you. Noot noot.
+        if ((error as {code?: number}).code === Constants.APIErrors.CANNOT_MESSAGE_USER) {
+          await Promise.all<void>([
+            sendMeError(client, error, `Could not send help DM to ${author.tag}.`),
+            message.sendDeletableMessage({
+              reply: true,
+              content: `it seems like I can\u2019t DM you. Noot noot.
 Do you have DMs disabled?`
-          })
-        ])
-        return
+            })
+          ])
+          return
+        }
+        throw error
       }
     }
 
