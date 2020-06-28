@@ -11,6 +11,14 @@ const _: Command = {
   aliases: ['e'],
   cooldown: 0,
   description: 'Evaluates some JS.',
+  args: true,
+  syntax: '<javascript>',
+  usage: `\`javascript\`
+The code to execute. The following variables are available:
+- \`message: Discord.Message\`: The message you sent.
+- \`input: {args: string[], input: string}\`: \`input.input\` is the sanitised input given to the command and \`input.args\` is the split \`input.input\` (the arguments).
+- \`Discord: Discord\` The discord.js module.
+- \`_: symbol\` Return this (for example using the comma operator) to make me not send the result.`,
   hidden: true,
   async execute(message, input) {
     const {author, channel} = message
@@ -32,14 +40,15 @@ const _: Command = {
       ) => Promise<any>
       )()(message, input, Discord, kDiscardResult)
     } catch (error) {
-      await channel.send(`${error}`, {code: true})
+      await message.sendDeletableMessage({content: [`${error}`, {code: true}]})
       return
     }
 
     if (result !== kDiscardResult) {
-      await channel.send(
-        inspect(result).replace(new RegExp(escapeRegex(process.env.TOKEN!), 'ug'), '<token>'), {code: 'js', split: true}
-      )
+      await message.sendDeletableMessage({content: [
+        inspect(result).replace(new RegExp(escapeRegex(process.env.TOKEN!), 'ug'), '<token>'),
+        {code: 'js', split: true}
+      ]})
     }
   }
 }

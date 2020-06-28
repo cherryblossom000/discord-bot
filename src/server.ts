@@ -1,6 +1,6 @@
 import {join} from 'path'
 import {promises} from 'fs'
-import {Collection} from 'discord.js'
+import {Collection, Constants} from 'discord.js'
 import escapeRegex from 'escape-string-regexp'
 import express from 'express'
 import Keyv from 'keyv'
@@ -140,14 +140,19 @@ My prefix is \`${prefix}\`. Run \`${prefix}help\` for a list of commands.`)
       const {args: commandArgs = false, guildOnly = false} = command
       // Guild only
       if (guildOnly && channel.type !== 'text') {
-        await message.reply('sorry, I can\u2019t execute that command inside DMs. Noot noot.')
+        await message.sendDeletableMessage({
+          reply: true, content: 'sorry, I can\u2019t execute that command inside DMs. Noot noot.'
+        })
         return false
       }
 
       // If no args
       if (commandArgs && !args.length) {
-        await message.reply(`you didn\u2019t provide any arguments. Noot noot.
-The syntax is: \`${prefix}${command.name}${command.syntax === undefined ? '' : ` ${command.syntax}`}\`. Noot noot.`)
+        await message.sendDeletableMessage({
+          reply: true,
+          content: `you didn\u2019t provide any arguments. Noot noot.
+The syntax is: \`${prefix}${command.name}${command.syntax === undefined ? '' : ` ${command.syntax}`}\`. Noot noot.`
+        })
         return false
       }
       return true
@@ -166,10 +171,15 @@ The syntax is: \`${prefix}${command.name}${command.syntax === undefined ? '' : `
           const expirationTime = timestamps.get(author.id)! + cooldownAmount
           if (now < expirationTime) {
             const timeLeft = ((expirationTime - now) / 1000).toFixed(1)
-            await message.reply(
-              `please wait ${timeLeft} more second${timeLeft === '1.0' ? '' : 's'
-              } before using the \`${command!.name}\` command. Noot noot.`
-            )
+            const msg = await message.reply(`please wait ${timeLeft} more second${timeLeft === '1.0' ? '' : 's'
+            } before using the \`${command!.name}\` command. Noot noot.`)
+            // Can't use delete with timeout because I need to return false before waiting 10 seconds
+            client.setTimeout(async () => {
+              await msg.delete()
+              await message.delete().catch(e => {
+                if ((e as {code?: number}).code !== Constants.APIErrors.MISSING_PERMISSIONS) throw e
+              })
+            }, 5_000)
             return false
           }
         }

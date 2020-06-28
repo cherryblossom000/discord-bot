@@ -1,8 +1,10 @@
 import Discord, {Collection, Structures} from 'discord.js'
 import upperFirst from 'lodash.upperfirst'
+import {emojis} from './constants'
+import {checkPermissions} from './helpers'
 import type {
-  APIMessage, ClientEvents, DMChannel, GuildMember, MessageAdditions, MessageMentions, MessageOptions,
-  NewsChannel, Snowflake, SplitOptions, StringResolvable, TextChannel, VoiceChannel, VoiceConnection
+  APIMessage, ClientEvents, DMChannel, GuildMember, MessageAdditions, MessageMentions, MessageOptions, MessageReaction,
+  NewsChannel, Snowflake, SplitOptions, StringResolvable, TextChannel, User, VoiceChannel, VoiceConnection
 } from 'discord.js'
 import type Keyv from 'keyv'
 
@@ -122,6 +124,27 @@ export class Client extends Discord.Client {
           options
         ) as Promise<this | this[]>
       }
+
+      async sendDeletableMessage(
+        {reply = false, content}: {
+          reply?: boolean
+          content: MessageOptions | MessageAdditions | any | [any, (MessageOptions | MessageAdditions)?]
+        }
+      ): Promise<void> {
+        if (this.guild &&
+          !await checkPermissions(this as unknown as GuildMessage, ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY']))
+          return
+        const _content = (Array.isArray(content) ? content : [content]) as [any, (MessageOptions | MessageAdditions)?]
+        const msg = await (reply ? this.reply(..._content) : this.channel.send(..._content)) as Message | Message[]
+        await Promise.all((Array.isArray(msg) ? msg : [msg]).map(async m => {
+          await m.react(emojis.delete)
+          await m.awaitReactions(
+            ({emoji}: MessageReaction, {id}: User) => emoji.name === emojis.delete && id === this.author.id,
+            {max: 1}
+          )
+          await m.delete()
+        }))
+      }
     })
     super(...args)
     // These can't be stored properties otherwise I can't extend structures before calling super
@@ -150,6 +173,12 @@ interface BaseMessage extends Discord.Message {
   reply(content?: StringResolvable, options?: MessageAdditions | OptionsWithSplit): Promise<this[]>
   reply(options?: APIMessage | MessageOptions | MessageAdditions | OptionsNoSplit): Promise<this>
   reply(options?: APIMessage | MessageAdditions | OptionsWithSplit): Promise<this[]>
+  sendDeletableMessage(
+    {reply, content}: {
+      reply?: boolean
+      content: MessageOptions | MessageAdditions | any | [any, (MessageOptions | MessageAdditions)?]
+    }
+  ): Promise<void>
 }
 
 /** A message from a guild. */

@@ -29,10 +29,13 @@ You can send \`${defaultPrefix}help [command name]\` to get info on a specific c
         if (message.channel.type !== 'dm') await message.reply('I\u2019ve sent you a DM with all my commands. Noot noot.')
         return
       } catch (error) {
-        await Promise.all<void, GuildMessage | DMMessage>([
+        await Promise.all<void>([
           sendMeError(client, error, `Could not send help DM to ${author.tag}.`),
-          message.reply(`it seems like I can\u2019t DM you. Noot noot.
-Do you have DMs disabled?`)
+          message.sendDeletableMessage({
+            reply: true,
+            content: `it seems like I can\u2019t DM you. Noot noot.
+Do you have DMs disabled?`
+          })
         ])
         return
       }

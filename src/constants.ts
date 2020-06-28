@@ -32,5 +32,6 @@ export const emojis = {
   pause: '\u23f8',
   resume: '\u25b6',
   stop: '\u{1f6d1}',
-  numbers
+  numbers,
+  delete: '\u{1f5d1}'
 } as const

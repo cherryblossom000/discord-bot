@@ -41,7 +41,8 @@ export const handleError = async (
     if (process.env.NODE_ENV === 'production') await sendMeError(client, error, info)
     else throw error
   } catch (e) {
-    console.error('The error', e, 'occurred when trying to handle the error', error)
+    if (process.env.NODE_ENV === 'production') console.error('The error', e, 'occurred when trying to handle the error', error)
+    else throw e
   }
 }
 
