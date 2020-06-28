@@ -68,7 +68,7 @@ export const checkPermissions = async (
 
     await message.reply([
       `I don\u2019t have th${plural ? 'ese' : 'is'}${permissionsString}!`,
-      neededPermissions.map(p => `* ${p}`).join('\n'),
+      neededPermissions.map(p => `- ${p}`).join('\n'),
       `To fix this, ask an admin or the owner of the server to add th${plural ? 'ose' : 'at'}${permissionsString} to ${
         guild.me!.roles.cache.find(role => role.managed)!
       }.`
