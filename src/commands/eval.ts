@@ -2,9 +2,27 @@ import {inspect} from 'util'
 import Discord from 'discord.js'
 import escapeRegex from 'escape-string-regexp'
 import {me} from '../constants'
-import type {Command, Message} from '../types'
+import type {Command} from '../types'
 
 const kDiscardResult = Symbol('discard result')
+
+declare global {
+  interface AsyncFunction extends Function {
+    readonly constructor: AsyncFunctionConstructor
+    readonly [Symbol.toStringTag]: string
+    (...args: unknown[]): Promise<unknown>
+  }
+
+  interface AsyncFunctionConstructor extends FunctionConstructor {
+    readonly prototype: AsyncFunction
+    new (...args: string[]): AsyncFunction
+    (...args: string[]): AsyncFunction
+  }
+}
+
+// class, using it to get AsyncFunction
+// eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/no-empty-function -- AsyncFunction
+const AsyncFunction = (async (): Promise<void> => {}).constructor as AsyncFunctionConstructor
 
 const _: Command = {
   name: 'eval',
@@ -29,16 +47,11 @@ The code to execute. The following variables are available:
 
     let result
     try {
-      // Have to use implied eval: that's the point of this command. The result of the eval is also any, which can't
-      // eslint-disable-next-line @typescript-eslint/no-implied-eval, @typescript-eslint/no-unsafe-assignment -- be avoided.
-      result = await (Function(`return async (message, input, Discord, _) => (${input.input})`) as () =>
-      (
-        message: Message,
-        input: {args: string[], input: string},
-        Discord: typeof import('discord.js'),
-        _: typeof kDiscardResult
-      ) => Promise<any>
-      )()(message, input, Discord, kDiscardResult)
+      result = await AsyncFunction(
+        'message', 'input', 'Discord', '_', `return (${input.input})`
+      )(
+        message, input, Discord, kDiscardResult
+      )
     } catch (error) {
       await message.sendDeletableMessage({content: [`${error}`, {code: true}]})
       return
