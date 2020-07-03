@@ -32,7 +32,7 @@ const readme = resolve('README.md')
           aliases?.map(a => `\`${a}\``).join(', ') ?? '-',
           name === 'iwmelc'
             ? `${description}<br>![i will murder every last capitalist](./assets/img/iwmelc.jpg)`
-            : description,
+            : name === 'htkb' ? `${description}<br>![how to kiss boy](./assets/img/htkb.png)` : description,
           `\`.${name}${syntax === undefined ? '' : ` ${syntax.replace(/\|/ug, '\\|')}`}\`${usage === undefined
             ? ''
             : `<br>${(name === 'play' || name === 'volume'
