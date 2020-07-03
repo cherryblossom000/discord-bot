@@ -1,3 +1,17 @@
+# [2.1.0](https://github.com/cherryblossom000/comrade-pingu/compare/v2.0.0...v2.1.0) (2020-07-03)
+
+
+### Bug Fixes
+
+* **help:** make sure that error sending DM is because of error 50007 ([460b47a](https://github.com/cherryblossom000/comrade-pingu/commit/460b47ab8e2b83d38ef330f0379aed7d6f42bf53))
+* fix cooldowns ([39a348b](https://github.com/cherryblossom000/comrade-pingu/commit/39a348b794e3fe63ad5ca49032530505efd807f8))
+
+
+### Features
+
+* add deletable messages ([ed7090e](https://github.com/cherryblossom000/comrade-pingu/commit/ed7090ee34d7e10218e98109751f1dba3150bc1a))
+* add htkb command ([8a64b95](https://github.com/cherryblossom000/comrade-pingu/commit/8a64b954eee00827e88782738f7aee4caf242a96))
+
 # [2.0.0](https://github.com/cherryblossom000/comrade-pingu/compare/v1.3.0...v2.0.0) (2020-06-12)
 
 
