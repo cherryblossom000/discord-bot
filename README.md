@@ -20,7 +20,7 @@ Comrade Pingu’s default prefix is `.`.
 | Command | Aliases | Description | Usage | Cooldown (s) |
 | - | - | - | - | - |
 | `help` | `commands`, `h` | Lists all my commands or gets info about a specific command. | `.help [command]`<br>`command` (optional)<br>The command that you want to get info about. If omitted, all the commands will be listed. | 5 |
-| `htkb` | `howtokissboy` | Gets the image that shows how to kiss a boy. | `.htkb` | 3 |
+| `htkb` | `howtokissboy` | Gets the image that shows how to kiss a boy.<br>![how to kiss boy](./assets/img/htkb.png) | `.htkb` | 3 |
 | `info` | `in` | Gets info about me. | `.info` | 3 |
 | `invite` | `add`, `inv`, `link` | Gets my invite link. | `.invite` | 3 |
 | `iwmelc` | `iwillmurdereverylastcapitalist` | Gets the meme that shows that ‘noot noot’ in Pingu means ‘i will murder every last capitalist’ in English.<br>![i will murder every last capitalist](./assets/img/iwmelc.jpg) | `.iwmelc` | 3 |
