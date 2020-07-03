@@ -9,6 +9,7 @@ import type {
 import type Keyv from 'keyv'
 
 /** Any text-based guild channel. */
+// eslint-disable-next-line import/no-unused-modules -- it is used
 export type TextBasedGuildChannel = TextChannel | NewsChannel
 
 /** A guild's entry in the database. */
@@ -159,8 +160,8 @@ export class Client extends Discord.Client {
   }
 }
 
-export type OptionsNoSplit = MessageOptions & {split?: false}
-export type OptionsWithSplit = MessageOptions & {split: true | SplitOptions}
+type OptionsNoSplit = MessageOptions & {split?: false}
+type OptionsWithSplit = MessageOptions & {split: true | SplitOptions}
 
 /** A message from this client. */
 interface BaseMessage extends Discord.Message {
@@ -190,7 +191,7 @@ export interface GuildMessage extends BaseMessage {
 }
 
 /** A message from a DM. */
-export interface DMMessage extends BaseMessage {
+interface DMMessage extends BaseMessage {
   channel: DMChannel
   guild: null
   member: null
