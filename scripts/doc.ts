@@ -78,7 +78,7 @@ const readme = resolve('README.md')
   await writeHtml('index', 'Comrade Pingu', 'Kill all the capitalist scum!', newReadme
     // Replace the escaped pipe in play but not in volume
     .replace('\\|', '|')
-    .replace('./assets/img', '')
+    .replace(/\.\/assets\/img/ug, '')
     .replace('LICENSE', 'license')
     .replace('CHANGELOG.md', 'changelog'))
   // Update license.html and changelog.html
