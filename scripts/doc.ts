@@ -48,7 +48,7 @@ const readme = resolve('README.md')
       )]
 
   const newReadme = (await readFile(readme)).toString()
-    .replace(/(?<=## Documentation\n)[\s\S]+(?=\n\n## Links)/u, table(docs, {alignDelimiters: false}))
+    .replace(/(?<=## Documentation\n\n)[\s\S]+(?=\n\n## Links)/u, table(docs, {alignDelimiters: false}))
     .replace(/(?<=permissions=)\d+/u, new Permissions(permissions).bitfield.toString())
 
   await writeFile(readme, newReadme)

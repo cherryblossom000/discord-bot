@@ -5,7 +5,7 @@ const _: Command = {
   aliases: ['site', 'w', 'web'],
   description: 'Sends my website.',
   async execute({channel}) {
-    await channel.send('https://comrade-pingu.glitch.me')
+    await channel.send('https://comrade-pingu--cherryblossom00.repl.co')
   }
 }
 export default _
