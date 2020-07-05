@@ -1,5 +1,6 @@
+import {defaultPrefix} from '../constants'
+import {getPrefix, setGuildValue} from '../database'
 import type {Command} from '../types'
-import {getPrefix, set} from '../helpers'
 
 const _: Command<true> = {
   name: 'prefix',
@@ -9,7 +10,7 @@ const _: Command<true> = {
   syntax: '[new prefix]',
   usage: `\`new prefix\` (optional)
 The text that you want to set the prefix to. If omitted, displays the current prefix.
-The default prefix is \`.\`.`,
+The default prefix is \`${defaultPrefix}\`.`,
   async execute(message, {args: [newPrefix]}, database) {
     const {channel, member, guild} = message
     if (!member.hasPermission('ADMINISTRATOR')) {
@@ -22,7 +23,7 @@ The default prefix is \`.\`.`,
       return
     }
 
-    await set(database, guild, 'prefix', newPrefix)
+    await setGuildValue(database, guild, 'prefix', newPrefix)
     await channel.send(`Successfully set the prefix to \`${newPrefix}\`. Noot noot.`)
   }
 }

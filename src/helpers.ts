@@ -1,11 +1,11 @@
 import {join} from 'path'
 import {MessageEmbed} from 'discord.js'
 import yts from 'yt-search'
-import {defaultPrefix, emojis, me} from './constants'
-import type Keyv from 'keyv'
+import {emojis, me} from './constants'
 import type {PermissionResolvable, PermissionString} from 'discord.js'
 import type {VideoSearchResult} from 'yt-search'
-import type {Client, DatabaseGuild, Guild, GuildMessage, Message, Queue, Video} from './types'
+import type Client from './Client'
+import type {GuildMessage, Message, Queue, Video} from './types'
 
 /** Creates a function to easily resolve paths relative to the `__dirname`. */
 export const createResolve = (dirname: string) => (p: string): string => join(dirname, p)
@@ -85,18 +85,6 @@ export const getQueue = async ({channel, client: {queues}, guild}: GuildMessage)
   if (queue) return queue
   await channel.send('No music is playing!')
 }
-
-/** Sets a value for a guild in a database. */
-export const set = async <T extends keyof DatabaseGuild>(
-  database: Keyv<DatabaseGuild>,
-  guild: Guild,
-  key: T,
-  value: DatabaseGuild[T]
-): Promise<true> => database.set(guild.id, {...await database.get(guild.id), [key]: value})
-
-/** Gets the prefix for a guild. */
-export const getPrefix = async (database: Keyv<DatabaseGuild>, guild: Guild | null): Promise<string> =>
-  guild ? (await database.get(guild.id))?.prefix ?? defaultPrefix : defaultPrefix
 
 /** Converts a `yts.VideoSearchResult` into a `Video`. */
 export const searchToVideo = ({title, videoId: id, author: {name}}: VideoSearchResult): Video =>

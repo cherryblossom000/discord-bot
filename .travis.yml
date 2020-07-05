@@ -8,10 +8,10 @@ jobs:
       - pnpm run build
       - pnpm run lint
       - pnpm run test
-      - pnpm run doc
+      - pnpm run docs
     after_success: chmod +x scripts/push-docs.sh && scripts/push-docs.sh
     deploy:
       - provider: script
         skip_cleanup: true
-        script: chmod +x scripts/deploy.sh && scripts/deploy.sh
+        script: pnpx semantic-release
         on: master

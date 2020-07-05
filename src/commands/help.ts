@@ -1,6 +1,7 @@
 import {Constants} from 'discord.js'
 import {defaultPrefix} from '../constants'
-import {sendMeError, getPrefix} from '../helpers'
+import {getPrefix} from '../database'
+import {sendMeError} from '../helpers'
 import type {Command} from '../types'
 
 const _: Command = {

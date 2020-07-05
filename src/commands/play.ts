@@ -1,5 +1,6 @@
 import ytdl, {getBasicInfo, validateURL} from 'ytdl-core'
 import yts from 'yt-search'
+import {getGuild} from '../database'
 import {checkPermissions, searchYoutube, sendMeError} from '../helpers'
 import {resume} from './resume'
 import type {Command, Video} from '../types'
@@ -67,7 +68,7 @@ The query to search on YouTube for.`,
             await queue!.textChannel.send(`Unfortunately, there was an error playing \u2018${_song.title}\u2019 ` +
               `(link: https://youtub.be/${_song.id}). Noot noot.`)
           })
-        const storedVolume = (await database.get(id))?.volume
+        const storedVolume = (await getGuild(database, id))?.volume
         if (storedVolume !== undefined && dispatcher.volume !== storedVolume) dispatcher.setVolume(storedVolume)
         await queue!.textChannel.send(`Playing \u2018${_song.title}\u2019 by ${_song.author}.`)
       }

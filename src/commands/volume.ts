@@ -1,4 +1,5 @@
-import {getQueue, set} from '../helpers'
+import {setGuildValue} from '../database'
+import {getQueue} from '../helpers'
 import type {Command} from '../types'
 
 const _: Command <true> = {
@@ -21,7 +22,7 @@ The new volume as a percentage to set it to. If omitted, the current volume will
     if (args[0]?.toLowerCase().startsWith('r')) {
       dispatcher.setVolume(1)
       await channel.send('Reset the volume to 100%.')
-      await set(database, guild, 'volume', 1)
+      await setGuildValue(database, guild, 'volume', 1)
       return
     }
 
@@ -32,7 +33,7 @@ The new volume as a percentage to set it to. If omitted, the current volume will
       const newVolume = input.startsWith('+') || input.startsWith('-') ? dispatcher.volume + n : n
       dispatcher.setVolume(newVolume)
       await channel.send(`Set the volume to ${newVolume * 100}%.`)
-      await set(database, guild, 'volume', newVolume)
+      await setGuildValue(database, guild, 'volume', newVolume)
     }
   }
 }
