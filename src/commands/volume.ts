@@ -2,7 +2,7 @@ import {setGuildValue} from '../database'
 import {getQueue} from '../helpers'
 import type {Command} from '../types'
 
-const _: Command <true> = {
+const command: Command <true> = {
   name: 'volume',
   aliases: ['v'],
   description: 'Changes or gets the volume of the music playing.',
@@ -37,4 +37,4 @@ The new volume as a percentage to set it to. If omitted, the current volume will
     }
   }
 }
-export default _
+export default command

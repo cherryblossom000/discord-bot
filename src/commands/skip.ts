@@ -1,7 +1,7 @@
 import {getQueue} from '../helpers'
 import type {Command} from '../types'
 
-const _: Command<true> = {
+const command: Command<true> = {
   name: 'skip',
   aliases: ['sk'],
   description: 'Skips the current song.',
@@ -14,4 +14,4 @@ const _: Command<true> = {
     await message.channel.send(`Skipped \u2018${queue.songs[0].title}\u2019.`)
   }
 }
-export default _
+export default command

@@ -3,7 +3,7 @@ import {checkPermissions} from '../helpers'
 import type {Collection, Snowflake} from 'discord.js'
 import type {Command, TextBasedGuildChannel} from '../types'
 
-const _: Command = {
+const command: Command = {
   name: 'pin',
   description: 'Pins a message.',
   syntax: '[message]',
@@ -45,4 +45,4 @@ The ID of the message to pin. Defaults to the last message (excluding the one to
     await msg.pin()
   }
 }
-export default _
+export default command

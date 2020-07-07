@@ -4,7 +4,7 @@ import {getPrefix} from '../database'
 import {sendMeError} from '../helpers'
 import type {Command} from '../types'
 
-const _: Command = {
+const command: Command = {
   name: 'help',
   aliases: ['commands', 'h'],
   description: 'Lists all my commands or gets info about a specific command.',
@@ -21,7 +21,7 @@ The command that you want to get info about. If omitted, all the commands will b
     if (!args.length) {
       data.push(
         'Here\u2019s a list of all my commands:',
-        ...commands.filter(({hidden = false}) => !hidden).map(command => `\`${command.name}\`: ${command.description}`),
+        ...commands.filter(({hidden = false}) => !hidden).map(({name, description}) => `\`${name}\`: ${description}`),
         `
 You can send \`${defaultPrefix}help [command name]\` to get info on a specific command. Noot noot.`
       )
@@ -48,16 +48,16 @@ Do you have DMs disabled?`
 
     // Specific command
     const commandName = args[0].toLowerCase()
-    const command = commands.get(commandName) ?? commands.find(({aliases = []}) => aliases.includes(commandName))
+    const _command = commands.get(commandName) ?? commands.find(({aliases = []}) => aliases.includes(commandName))
 
     // Invalid command
-    if (!command) {
+    if (!_command) {
       await message.reply('that\u2019s not a valid command. Noot noot.')
       return
     }
 
     // Gets info of command
-    const {name, aliases, description, syntax, usage, cooldown} = command
+    const {name, aliases, description, syntax, usage, cooldown} = _command
     data.push(`**Name:** ${name}`)
     if (aliases) data.push(`**Aliases:** ${aliases.join(', ')}`)
     if (description) data.push(`**Description:** ${description}`)
@@ -67,4 +67,4 @@ Do you have DMs disabled?`
     await message.channel.send(data, {split: true})
   }
 }
-export default _
+export default command

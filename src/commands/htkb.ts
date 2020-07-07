@@ -3,7 +3,7 @@ import {MessageAttachment} from 'discord.js'
 import {checkPermissions} from '../helpers'
 import type {Command} from '../types'
 
-const _: Command = {
+const command: Command = {
   name: 'htkb',
   aliases: ['howtokissboy'],
   description: 'Gets the image that shows how to kiss a boy.',
@@ -12,4 +12,4 @@ const _: Command = {
     await message.channel.send(new MessageAttachment(join(__dirname, '../../assets/img/htkb.png')))
   }
 }
-export default _
+export default command

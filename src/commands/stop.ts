@@ -2,7 +2,7 @@ import {emojis} from '../constants'
 import {getQueue, hasPermissions} from '../helpers'
 import type {Command} from '../types'
 
-const _: Command<true> = {
+const command: Command<true> = {
   name: 'stop',
   aliases: ['s'],
   description: 'Stops playing music.',
@@ -20,4 +20,4 @@ I can react on your message instead if you enable the READ_MESSAGE_HISTORY permi
     }
   }
 }
-export default _
+export default command

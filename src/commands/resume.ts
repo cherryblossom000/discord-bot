@@ -12,7 +12,7 @@ I can react on your message instead if you enable the READ_MESSAGE_HISTORY permi
   }
 }
 
-const _: Command<true> = {
+const command: Command<true> = {
   name: 'resume',
   aliases: ['r', 'unpause'],
   description: 'Resumes the song currently playing.',
@@ -23,4 +23,4 @@ const _: Command<true> = {
     await resume(queue.connection.dispatcher, message)
   }
 }
-export default _
+export default command

@@ -1,6 +1,6 @@
 import type {Command} from '../types'
 
-const _: Command = {
+const command: Command = {
   name: 'ping',
   aliases: ['p'],
   description: 'Gets my current latency.',
@@ -12,4 +12,4 @@ Latency: ${msg.createdTimestamp - createdTimestamp} ms
 Websocket: ${client.ws.ping} ms`)
   }
 }
-export default _
+export default command

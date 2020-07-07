@@ -8,7 +8,7 @@ import type {Command, Video} from '../types'
 /** Converts a `yts.VideoSearchResult` into a `Video`. */
 const searchToVideo = ({title, videoId: id, author: {name}}: yts.VideoSearchResult): Video => ({title, id, author: name})
 
-const _: Command<true> = {
+const command: Command<true> = {
   name: 'play',
   aliases: ['pl'],
   description: 'Plays a song from YouTube.',
@@ -111,4 +111,4 @@ The query to search on YouTube for.`,
     else await channel.send(`No results were found for ${query}. Try using a YouTube link instead.`)
   }
 }
-export default _
+export default command

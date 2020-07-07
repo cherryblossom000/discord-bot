@@ -1,7 +1,7 @@
 import {getQueue} from '../helpers'
 import type {Command} from '../types'
 
-const _: Command<true> = {
+const command: Command<true> = {
   name: 'nowplaying',
   aliases: ['np'],
   description: 'Gets the song currently playing.',
@@ -14,4 +14,4 @@ const _: Command<true> = {
     await message.channel.send(`Now playing \u2018${title}\u2019 by ${author} (${id}).`)
   }
 }
-export default _
+export default command

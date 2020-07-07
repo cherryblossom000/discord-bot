@@ -110,7 +110,7 @@ Streaming: ${formatBoolean(streaming)}`)
   }
 }
 
-const _: Command = {
+const command: Command = {
   name: 'profile',
   aliases: ['pr', 'pro', 'u', 'user'],
   description: 'Gets information on a user.',
@@ -148,4 +148,4 @@ You can mention the user or use their tag (for example \`Username#1234\`).`,
     await channel.send(embed)
   }
 }
-export default _
+export default command

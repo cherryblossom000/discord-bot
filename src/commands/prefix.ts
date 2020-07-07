@@ -2,7 +2,7 @@ import {defaultPrefix} from '../constants'
 import {getPrefix, setGuildValue} from '../database'
 import type {Command} from '../types'
 
-const _: Command<true> = {
+const command: Command<true> = {
   name: 'prefix',
   aliases: ['pre'],
   description: 'Gets or sets the prefix.',
@@ -27,4 +27,4 @@ The default prefix is \`${defaultPrefix}\`.`,
     await channel.send(`Successfully set the prefix to \`${newPrefix}\`. Noot noot.`)
   }
 }
-export default _
+export default command

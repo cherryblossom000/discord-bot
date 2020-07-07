@@ -1,7 +1,7 @@
 import {getQueue} from '../helpers'
 import type {Command} from '../types'
 
-const _: Command<true> = {
+const command: Command<true> = {
   name: 'queue',
   aliases: ['q'],
   description: 'Views the music queue.',
@@ -16,4 +16,4 @@ const _: Command<true> = {
     )
   }
 }
-export default _
+export default command

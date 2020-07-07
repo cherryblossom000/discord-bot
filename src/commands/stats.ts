@@ -1,6 +1,6 @@
 import type {Command} from '../types'
 
-const _: Command = {
+const command: Command = {
   name: 'stats',
   aliases: ['statistics'],
   description: 'Gets my stats.',
@@ -10,4 +10,4 @@ Channels: ${channels.cache.size}
 Guilds: ${guilds.cache.size}`)
   }
 }
-export default _
+export default command

@@ -1,6 +1,6 @@
 import type {Command} from '../types'
 
-const _: Command = {
+const command: Command = {
   name: 'website',
   aliases: ['site', 'w', 'web'],
   description: 'Sends my website.',
@@ -8,4 +8,4 @@ const _: Command = {
     await channel.send('https://comrade-pingu--cherryblossom00.repl.co')
   }
 }
-export default _
+export default command

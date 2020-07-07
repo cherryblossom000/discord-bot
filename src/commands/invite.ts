@@ -1,7 +1,7 @@
 import {permissions} from '../constants'
 import type {Command} from '../types'
 
-const _: Command = {
+const command: Command = {
   name: 'invite',
   aliases: ['add', 'inv', 'link'],
   description: 'Gets my invite link.',
@@ -9,4 +9,4 @@ const _: Command = {
     await channel.send(await client.generateInvite(permissions))
   }
 }
-export default _
+export default command

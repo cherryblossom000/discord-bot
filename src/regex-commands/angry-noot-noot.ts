@@ -28,8 +28,8 @@ const adjLast = `${nouns} ${verbs}? ${adverbs}? ${bad}`
 const adjFirst = `${bad} ${nouns}`
 const regex = new RegExp(`(${adjLast})|(${adjFirst})`.replace(/\s+/ug, '\\s*'), 'ui')
 
-const _: RegexCommand = {
+const command: RegexCommand = {
   regex,
   regexMessage: 'Noot noot!'
 }
-export default _
+export default command

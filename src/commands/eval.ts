@@ -24,7 +24,7 @@ declare global {
 // eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/no-empty-function -- AsyncFunction
 const AsyncFunction = (async (): Promise<void> => {}).constructor as AsyncFunctionConstructor
 
-const _: Command = {
+const command: Command = {
   name: 'eval',
   aliases: ['e'],
   cooldown: 0,
@@ -65,4 +65,4 @@ The code to execute. The following variables are available:
     }
   }
 }
-export default _
+export default command
