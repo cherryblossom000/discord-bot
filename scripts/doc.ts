@@ -1,12 +1,12 @@
 import {promises, readdirSync} from 'fs'
 import {join, resolve} from 'path'
-import MarkdownIt from 'markdown-it'
 import {Permissions} from 'discord.js'
-import table from 'markdown-table'
 import upperFirst from 'lodash.upperfirst'
-import exitOnError from './exitOnError'
+import MarkdownIt from 'markdown-it'
+import table from 'markdown-table'
 import {permissions} from '../src/constants'
 import type {Command} from '../src/types'
+import exitOnError, {exit} from './exitOnError'
 
 const {mkdir, readFile, writeFile} = promises
 
@@ -84,7 +84,4 @@ const readme = resolve('README.md')
   // Update license.html and changelog.html
   await writeOtherPage('license', 'LICENSE')
   await writeOtherPage('changelog', 'CHANGELOG.md')
-})().catch(e => {
-  console.error(e)
-  process.exit(1)
-})
+})().catch(exit)

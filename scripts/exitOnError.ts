@@ -1,4 +1,4 @@
-const exit = (error: any): never => {
+export const exit = (error: any): never => {
   console.log(error)
   process.exit(1)
 }
