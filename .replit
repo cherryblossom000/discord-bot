@@ -1,2 +1,0 @@
-language = 'nodejs'
-run = 'npm i -D pnpm && NODE_ENV=production npx pnpm run start'

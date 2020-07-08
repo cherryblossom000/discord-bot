@@ -23,8 +23,7 @@
     "watch": "tsc -p tsconfig.build.json --sourceMap --incremental -w",
     "test": "jest",
     "test:dev": "jest -c jest.config.dev.js",
-    "docs": "ts-node scripts/docs && mkdir dist/assets/css; purgecss -c purgecss.config.js -o dist/assets/css",
-    "start": "pnpm run build && pnpm run docs && node ."
+    "docs": "ts-node scripts/docs && mkdir dist/assets/css; purgecss -c purgecss.config.js -o dist/assets/css"
   },
   "config": {
     "commitizen": {

@@ -1,5 +1,7 @@
 language: node_js
 node_js: lts/*
+branches:
+  except: repl
 before_install: npm i -g pnpm
 install:
   - pnpm i
@@ -13,5 +15,5 @@ jobs:
     deploy:
       - provider: script
         skip_cleanup: true
-        script: pnpx semantic-release
+        script: chmod +x scripts/deploy.sh && scripts/deploy.sh
         on: master
