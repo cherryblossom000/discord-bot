@@ -2,7 +2,8 @@
 root: true
 extends: ['@cherryblossom/eslint-config/node']
 ignorePatterns:
-- dist
+- .history/
+- dist/
 - tests/coverage
 
 overrides:
