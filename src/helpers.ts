@@ -1,5 +1,7 @@
 import {join} from 'path'
-import {MessageEmbed} from 'discord.js'
+import {homedir} from 'os'
+import cleanStack from 'clean-stack'
+import {Constants, DiscordAPIError, MessageEmbed} from 'discord.js'
 import yts from 'yt-search'
 import {emojis, me} from './constants'
 import type {User, PermissionResolvable, PermissionString} from 'discord.js'
@@ -7,19 +9,39 @@ import type {VideoSearchResult} from 'yt-search'
 import type Client from './Client'
 import type {GuildMessage, Message, Queue, Video} from './types'
 
+const dev = process.env.NODE_ENV !== 'production'
+
 /** Creates a function to easily resolve paths relative to the `__dirname`. */
 export const createResolve = (dirname: string) => (p: string): string => join(dirname, p)
+
+/** Cleans up the error stack on an error. */
+const _cleanStack = <T extends Error>(error: T): T & {stack: string} => {
+  error.stack = error.stack === undefined
+    ? ''
+    : cleanStack(error.stack, {basePath: join(
+      homedir(),
+      ...dev ? ['dev', 'node'] : [],
+      'comrade-pingu',
+      'src'
+    )})
+  return error as T & {stack: string}
+}
+export {_cleanStack as cleanStack}
 
 /**
  * DMs me an error.
  * @param info Extra information to send.
  */
 export const sendMeError = async (client: Client, error: Error, info: string): Promise<void> => {
-  if (process.env.NODE_ENV === 'production') {
-    // TODO: provide more information if it's a DiscordAPIError (e.g. path)
+  if (!dev) {
+    _cleanStack(error)
     await (await client.users.fetch(me)!).send(`${info}
-**Error at ${new Date().toLocaleString()}**${error.stack === undefined ? '' : `
-${error.stack}`}`)
+**Error at ${new Date().toLocaleString()}**${error.stack! ? `
+${error.stack}` : ''}${error instanceof DiscordAPIError ? `
+Code: ${error.code} (${Object.entries(Constants.APIErrors).find(([, code]) => code === error.code)?.[0] ?? 'unknown'})
+Path: ${error.path}
+Method: ${error.method}
+Status: ${error.httpStatus}` : ''}`)
   }
 }
 
@@ -38,11 +60,13 @@ export const handleError = async (
 ): Promise<void> => {
   try {
     if (message) await message.reply(response)
-    if (process.env.NODE_ENV === 'production') await sendMeError(client, error, info)
-    else throw error
-  } catch (e) {
-    if (process.env.NODE_ENV === 'production') console.error('The error', e, 'occurred when trying to handle the error', error)
-    else throw e
+    if (dev) throw error
+    await sendMeError(client, error, info)
+  } catch (error2) {
+    if (error2 instanceof Error) _cleanStack(error2)
+    _cleanStack(error)
+    if (dev) throw error2
+    console.error('The error', error2, 'occurred when trying to handle the error', error)
   }
 }
 

@@ -1,11 +1,11 @@
-import {join} from 'path'
 import {promises} from 'fs'
+import {join} from 'path'
 import {Collection, Constants} from 'discord.js'
 import escapeRegex from 'escape-string-regexp'
 import express from 'express'
 import Client from './Client'
 import {connect, getPrefix} from './database'
-import {createResolve, handleError, sendMeError} from './helpers'
+import {cleanStack, createResolve, handleError, sendMeError} from './helpers'
 import type {AddressInfo} from 'net'
 import type {Snowflake} from 'discord.js'
 import type {Command, GuildMessage, Message, RegexCommand} from './types'
@@ -113,6 +113,7 @@ Guilds: ${client.guilds.cache.size}`)
   client.on('guildDelete', async () => client.setActivity())
 
   // Commands
+  // eslint-disable-next-line max-statements -- don't know how to shorten and isn't a typical, simple function
   client.on('message', async message => {
     const now = Date.now()
     const {author, content, channel, guild} = message
@@ -162,7 +163,7 @@ The syntax is: \`${prefix}${command.name}${command.syntax === undefined ? '' : `
         return true
       }
       const command = client.commands.get(commandName) ??
-      client.commands.find(({aliases = []}) => aliases.includes(commandName))
+        client.commands.find(({aliases = []}) => aliases.includes(commandName))
       if (!await checkCommand(command)) return
 
       if (!dev) {
@@ -195,13 +196,14 @@ The syntax is: \`${prefix}${command.name}${command.syntax === undefined ? '' : `
       }
 
       // Execute command
+      const _input = input.replace(new RegExp(`^${commandName}\\s*`, 'u'), '')
       try {
-        await command!.execute(message as GuildMessage, {args, input: input.replace(new RegExp(`^${commandName}\\s*`, 'u'), '')}, database)
+        await command!.execute(message as GuildMessage, {args, input: _input}, database)
       } catch (error) {
         await handleError(
           client,
           error,
-          `Command \`${command!.name}\` failed${args.length ? ` with args ${args.map(a => `\`${a}\``).join(', ')}` : ''}.`,
+          `Command \`${command!.name}\` failed${_input ? `with input ${_input}` : ''}.`,
           message
         )
       }
@@ -217,4 +219,4 @@ The syntax is: \`${prefix}${command.name}${command.syntax === undefined ? '' : `
     if (dev) console.log(`http://localhost:${(listener.address() as AddressInfo).port}`)
   })
   await client.login(process.env.TOKEN)
-})().catch(e => console.error('Error in main function:', e))
+})().catch(error => console.error('Error in main function:', cleanStack(error)))
