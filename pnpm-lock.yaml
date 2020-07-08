@@ -3,10 +3,12 @@ dependencies:
   discord.js: 12.2.0_@discordjs+opus@0.3.2
   escape-string-regexp: 4.0.0
   express: 4.17.1
+  lodash.shuffle: 4.2.0
   lodash.startcase: 4.4.0
   lodash.upperfirst: 4.3.1
   mongodb: 3.5.9
   ms: 2.1.2
+  node-fetch: 2.6.0
   yt-search: 1.1.2
   ytdl-core: 2.1.7
 devDependencies:
@@ -16,6 +18,7 @@ devDependencies:
   '@types/estree': 0.0.45
   '@types/express': 4.17.6
   '@types/jest': 26.0.3
+  '@types/lodash.shuffle': 4.2.6
   '@types/lodash.startcase': 4.4.6
   '@types/lodash.upperfirst': 4.3.6
   '@types/markdown-it': 10.0.1
@@ -23,6 +26,7 @@ devDependencies:
   '@types/mongodb': 3.5.25
   '@types/ms': 0.7.31
   '@types/node': 12.12.47
+  '@types/node-fetch': 2.5.7
   '@types/rewire': 2.5.28
   '@types/yt-search': 1.1.0
   '@typescript-eslint/eslint-plugin': 3.5.0_e6b9e0efb8888a683fd7e2e8057c1472
@@ -989,6 +993,12 @@ packages:
     dev: true
     resolution:
       integrity: sha512-Q7DYAOi9O/+cLLhdaSvKdaumWyHbm7HAk/bFwwyTuU0arR5yyCeW5GOoqt4tJTpDRxhpx9Q8kQL6vMpuw9hDSw==
+  /@types/lodash.shuffle/4.2.6:
+    dependencies:
+      '@types/lodash': 4.14.157
+    dev: true
+    resolution:
+      integrity: sha512-ucI9VswlV9jOZiIh43Nd0tJ4Z8pfXy3PbQ9cB6Re1gPds8gLbOdmB0l3UkVI2crZjnQB95bhyNZVEDH8DgglYA==
   /@types/lodash.startcase/4.4.6:
     dependencies:
       '@types/lodash': 4.14.152
@@ -1009,6 +1019,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-Vwf9YF2x1GE3WNeUMjT5bTHa2DqgUo87ocdgTScupY2JclZ5Nn7W2RLM/N0+oreexUk8uaVugR81NnTY/jNNXg==
+  /@types/lodash/4.14.157:
+    dev: true
+    resolution:
+      integrity: sha512-Ft5BNFmv2pHDgxV5JDsndOWTRJ+56zte0ZpYLowp03tW+K+t8u8YMOzAnpuqPgzX6WO1XpDIUm7u04M8vdDiVQ==
   /@types/markdown-it/10.0.1:
     dependencies:
       '@types/linkify-it': 2.1.0
@@ -1039,10 +1053,21 @@ packages:
     dev: true
     resolution:
       integrity: sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==
+  /@types/node-fetch/2.5.7:
+    dependencies:
+      '@types/node': 12.12.48
+      form-data: 3.0.0
+    dev: true
+    resolution:
+      integrity: sha512-o2WVNf5UhWRkxlf6eq+jMZDu7kjgpgJfl4xVNlvryc95O/6F2ld8ztKX+qu+Rjyet93WAWm5LjeX9H5FGkODvw==
   /@types/node/12.12.47:
     dev: true
     resolution:
       integrity: sha512-yzBInQFhdY8kaZmqoL2+3U5dSTMrKaYcb561VU+lDzAYvqt+2lojvBEy+hmpSNuXnPTx7m9+04CzWYOUqWME2A==
+  /@types/node/12.12.48:
+    dev: true
+    resolution:
+      integrity: sha512-m3Nmo/YaDUfYzdCQlxjF5pIy7TNyDTAJhIa//xtHcF0dlgYIBKULKnmloCPtByDxtZXrWV8Pge1AKT6/lRvVWg==
   /@types/node/13.13.4:
     dev: true
     resolution:
@@ -3498,6 +3523,16 @@ packages:
       node: '>= 0.12'
     resolution:
       integrity: sha512-1lLKB2Mu3aGP1Q/2eCOx0fNbRMe7XdwktwOruhfqqd0rIJWwN4Dh+E3hrPSlDCXnSR7UtZ1N38rVXm+6+MEhJQ==
+  /form-data/3.0.0:
+    dependencies:
+      asynckit: 0.4.0
+      combined-stream: 1.0.8
+      mime-types: 2.1.27
+    dev: true
+    engines:
+      node: '>= 6'
+    resolution:
+      integrity: sha512-CKMFDglpbMi6PyN+brwB9Q/GOw0eAnsrEZDgcsH5Krhz5Od/haKHAX0NmQfha2zPPz0JpWzA7GJHGSnvCRLWsg==
   /forwarded/0.1.2:
     dev: false
     engines:
@@ -5191,6 +5226,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-gNZJLcFHCGS79YNTO2UfQqn1JBU=
+  /lodash.shuffle/4.2.0:
+    dev: false
+    resolution:
+      integrity: sha1-FFtQU8+HX29cKjP0i26ZSMbse0s=
   /lodash.some/4.6.0:
     dev: false
     resolution:
@@ -8279,6 +8318,7 @@ specifiers:
   '@types/estree': ^0.0.45
   '@types/express': ^4.17.6
   '@types/jest': ^26.0.3
+  '@types/lodash.shuffle': ^4.2.6
   '@types/lodash.startcase': ^4.4.6
   '@types/lodash.upperfirst': ^4.3.6
   '@types/markdown-it': ^10.0.1
@@ -8286,6 +8326,7 @@ specifiers:
   '@types/mongodb': ^3.5.25
   '@types/ms': ^0.7.31
   '@types/node': ^12.12.47
+  '@types/node-fetch': ^2.5.7
   '@types/rewire': ^2.5.28
   '@types/yt-search': ^1.1.0
   '@typescript-eslint/eslint-plugin': ^3.5.0
@@ -8302,12 +8343,14 @@ specifiers:
   eslint-plugin-node: ^11.1.0
   express: ^4.17.1
   jest: ^26.1.0
+  lodash.shuffle: ^4.2.0
   lodash.startcase: ^4.4.0
   lodash.upperfirst: ^4.3.1
   markdown-it: ^11.0.0
   markdown-table: ^2.0.0
   mongodb: ^3.5.9
   ms: ^2.1.2
+  node-fetch: ^2.6.0
   purgecss: ^2.3.0
   rewire: ^5.0.0
   semantic-release: ^17.1.1

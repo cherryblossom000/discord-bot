@@ -3,6 +3,7 @@ import startCase from 'lodash.startcase'
 import upperFirst from 'lodash.upperfirst'
 import type {GuildMember, PresenceStatus, User} from 'discord.js'
 import type {Command} from '../types'
+import {resolveUser} from '../helpers'
 
 declare global {
   interface ObjectConstructor {
@@ -119,33 +120,17 @@ const command: Command = {
 The user to display information about. If omitted, defaults to you.
 You can mention the user or use their tag (for example \`Username#1234\`).`,
   async execute(message, {input}) {
-    const {author, client, channel, guild, mentions} = message
-
-    let user = mentions.users.first()
-    if (!user && input) {
-      if (!/^.{2,}#\d{4}$/u.test(input)) {
-        await message.reply(`\u2018${input}\u2019 is not a valid user!`)
-        return
-      }
-      if (!guild && input !== author.tag && input !== client.user!.tag) {
-        await message.reply('you can only get information about you or I in a DM!')
-        return
-      }
-      user = client.users.cache.find(u => u.tag === input)
-      if (!user || !guild!.member(user)) {
-        await message.reply(`\u2018${input}\u2019 is not a valid user or is not a member of this guild!`)
-        return
-      }
-    } else user = user ?? author
+    const user = await resolveUser(message, input)
+    if (!user) return
 
     const embed = getUserInfo(user)
       .setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL())
       .setTimestamp()
 
-    const member = guild?.member(user)
+    const member = message.guild?.member(user)
     if (member) addMemberInfo(embed, member)
 
-    await channel.send(embed)
+    await message.channel.send(embed)
   }
 }
 export default command

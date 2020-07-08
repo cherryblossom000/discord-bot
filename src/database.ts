@@ -2,6 +2,7 @@ import {defaultPrefix} from './constants'
 import {MongoClient} from 'mongodb'
 import type {Snowflake} from 'discord.js'
 import type {Db as MongoDb, Collection, UpdateWriteOpResult} from 'mongodb'
+import type {Difficulty, Type} from './opentdb'
 import type {Guild as DiscordGuild} from './types'
 
 interface Guild {
@@ -10,8 +11,22 @@ interface Guild {
   volume?: number
 }
 
+// eslint-disable-next-line import/no-unused-modules -- imported as a type in trivia
+export interface Question {
+  category: string
+  type: Type
+  difficulty: Difficulty
+  correct?: boolean
+}
+
+interface User {
+  _id: string
+  questionsAnswered: Question[]
+}
+
 interface Collections {
   guilds: Guild
+  users: User
 }
 
 // eslint-disable-next-line import/no-unused-modules -- used in Command interface

@@ -1,7 +1,7 @@
 import type {
-  APIMessage, Collection, DMChannel, Guild as DiscordGuild, GuildMember, MessageAdditions, Message as DiscordMessage,
-  MessageMentions, MessageOptions, NewsChannel, Snowflake, SplitOptions, StringResolvable, TextChannel, VoiceChannel,
-  VoiceConnection
+  APIMessage, AwaitReactionsOptions, Collection, DMChannel, Guild as DiscordGuild, GuildMember, MessageAdditions,
+  Message as DiscordMessage, MessageMentions, MessageOptions, MessageReaction, NewsChannel, Snowflake, SplitOptions,
+  StringResolvable, TextChannel, User, VoiceChannel, VoiceConnection
 } from 'discord.js'
 import type {Db} from './database'
 import type Client from './Client'
@@ -90,6 +90,10 @@ export type OptionsWithSplit = MessageOptions & {split: true | SplitOptions}
 interface BaseMessage extends DiscordMessage {
   client: Client
   guild: Guild | null
+  awaitReactions(
+    filter: (reaction: MessageReaction, user: User, collected?: Collection<Snowflake, MessageReaction>) => boolean,
+    options?: AwaitReactionsOptions
+  ): Promise<Collection<Snowflake, MessageReaction>>
   reply(
     content?: StringResolvable,
     options?: MessageAdditions | MessageOptions | OptionsNoSplit,

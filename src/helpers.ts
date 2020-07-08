@@ -2,7 +2,7 @@ import {join} from 'path'
 import {MessageEmbed} from 'discord.js'
 import yts from 'yt-search'
 import {emojis, me} from './constants'
-import type {PermissionResolvable, PermissionString} from 'discord.js'
+import type {User, PermissionResolvable, PermissionString} from 'discord.js'
 import type {VideoSearchResult} from 'yt-search'
 import type Client from './Client'
 import type {GuildMessage, Message, Queue, Video} from './types'
@@ -77,6 +77,38 @@ export const checkPermissions = async (
     return false
   }
   return true
+}
+
+/** Resolves a user based on user input. */
+export const resolveUser = async (message: Message, input: string): Promise<User | null> => {
+  const {author, client, guild, mentions} = message
+
+  // Check for mentioned user
+  const mentionedUser = mentions.users.first()
+  if (mentionedUser) return mentionedUser
+
+  // Default to the message author
+  if (!input) return author
+
+  // Check if it's a valid tag
+  if (!/^.{2,}#\d{4}$/u.test(input)) {
+    await message.reply(`\u2018${input}\u2019 is not a valid user!`)
+    return null
+  }
+
+  // Check if it's the bot or the author in a DM
+  if (!guild && input !== author.tag && input !== client.user!.tag) {
+    await message.reply('you can only get information about you or I in a DM!')
+    return null
+  }
+
+  // Find user
+  const user = client.users.cache.find(u => u.tag === input)
+  if (!user || !guild!.member(user)) {
+    await message.reply(`\u2018${input}\u2019 is not a valid user or is not a member of this guild!`)
+    return null
+  }
+  return user
 }
 
 /** Gets the queue and sends a message no music is playing. */

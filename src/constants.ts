@@ -33,5 +33,8 @@ export const emojis = {
   resume: '\u25b6',
   stop: '\u{1f6d1}',
   numbers,
-  delete: '\u{1f5d1}'
+  delete: '\u{1f5d1}',
+  letters: ['\u{1f1e6}', '\u{1f1e7}', '\u{1f1e8}', '\u{1f1e9}'],
+  tick: '\u2705',
+  cross: '\u274c'
 } as const
