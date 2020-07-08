@@ -1,3 +1,16 @@
+# [2.2.0](https://github.com/cherryblossom000/comrade-pingu/compare/v2.1.0...v2.2.0) (2020-07-08)
+
+
+### Features
+
+* **profile, trivia:** add ability to look up user based on id ([6cab331](https://github.com/cherryblossom000/comrade-pingu/commit/6cab3316d357bf4962cfcc86c610d94d3fb073b8))
+* add trivia command ([5522683](https://github.com/cherryblossom000/comrade-pingu/commit/552268346808c67d3faa875e8dde9456f4b7e014))
+
+
+### Reverts
+
+* **.replit:** don't install with pnpm as it does nothing ([4d5cfb8](https://github.com/cherryblossom000/comrade-pingu/commit/4d5cfb8a1dd04909e49667c027caa31e9a18e66e))
+
 # [2.1.0](https://github.com/cherryblossom000/comrade-pingu/compare/v2.0.0...v2.1.0) (2020-07-03)
 
 
