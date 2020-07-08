@@ -90,25 +90,27 @@ export const resolveUser = async (message: Message, input: string): Promise<User
   // Default to the message author
   if (!input) return author
 
-  // Check if it's a valid tag
-  if (!/^.{2,}#\d{4}$/u.test(input)) {
-    await message.reply(`\u2018${input}\u2019 is not a valid user!`)
-    return null
+  type KeysMatching<T, V> = {[K in keyof T]-?: T[K] extends V ? K : never}[keyof T]
+  const getUser = async (key: KeysMatching<User, string>): Promise<User | null> => {
+    // Check if it's the bot or the author in a DM
+    if (!guild && input !== author[key] && input !== client.user![key]) {
+      await message.reply('you can only get information about you or I in a DM!')
+      return null
+    }
+
+    // Find user
+    const user = client.users.cache.find(u => u[key] === input)
+    if (!user || !guild!.member(user)) {
+      await message.reply(`\u2018${input}\u2019 is not a valid user or is not a member of this guild!`)
+      return null
+    }
+    return user
   }
 
-  // Check if it's the bot or the author in a DM
-  if (!guild && input !== author.tag && input !== client.user!.tag) {
-    await message.reply('you can only get information about you or I in a DM!')
-    return null
-  }
-
-  // Find user
-  const user = client.users.cache.find(u => u.tag === input)
-  if (!user || !guild!.member(user)) {
-    await message.reply(`\u2018${input}\u2019 is not a valid user or is not a member of this guild!`)
-    return null
-  }
-  return user
+  if (/^.{2,}#\d{4}$/u.test(input)) return getUser('tag')
+  if (/^\d{17,19}$/u.test(input)) return getUser('id')
+  await message.reply(`\u2018${input}\u2019 is not a valid user tag or ID!`)
+  return null
 }
 
 /** Gets the queue and sends a message no music is playing. */
