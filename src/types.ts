@@ -43,7 +43,7 @@ interface CommandBase<T extends Message> {
   usage?: string
 
   /**
-   * The cooldown.
+   * The cooldown, in seconds.
    * @default 3
    */
   cooldown?: number

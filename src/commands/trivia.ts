@@ -70,6 +70,7 @@ const command: Command = {
   name: 'trivia',
   aliases: ['t'],
   description: 'Asks a trivia question.',
+  cooldown: 5,
   syntax: '[s(tat(s))] [user]',
   usage: `Using this command without any arguments will ask a trivia question.
 \`stats [user]\`
