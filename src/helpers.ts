@@ -92,7 +92,7 @@ export const checkPermissions = async (
     const permissionsString = ` permission${plural ? 's' : ''}`
 
     await message.reply([
-      `I don\u2019t have th${plural ? 'ese' : 'is'}${permissionsString}!`,
+      `I don’t have th${plural ? 'ese' : 'is'}${permissionsString}!`,
       neededPermissions.map(p => `- ${p}`).join('\n'),
       `To fix this, ask an admin or the owner of the server to add th${plural ? 'ose' : 'at'}${permissionsString} to ${
         guild.me!.roles.cache.find(role => role.managed)!
@@ -125,7 +125,7 @@ export const resolveUser = async (message: Message, input: string): Promise<User
     // Find user
     const user = client.users.cache.find(u => u[key] === input)
     if (!user || !guild!.member(user)) {
-      await message.reply(`\u2018${input}\u2019 is not a valid user or is not a member of this guild!`)
+      await message.reply(`‘${input}’ is not a valid user or is not a member of this guild!`)
       return null
     }
     return user
@@ -133,7 +133,7 @@ export const resolveUser = async (message: Message, input: string): Promise<User
 
   if (/^.{2,}#\d{4}$/u.test(input)) return getUser('tag')
   if (/^\d{17,19}$/u.test(input)) return getUser('id')
-  await message.reply(`\u2018${input}\u2019 is not a valid user tag or ID!`)
+  await message.reply(`‘${input}’ is not a valid user tag or ID!`)
   return null
 }
 
@@ -176,7 +176,7 @@ export const searchYoutube = async (
     const embed = new MessageEmbed()
       .setTitle(`Showing songs ${start + 1}-${start + current.length} out of ${videos.length}`)
       .setDescription(`Click on the title for the YouTube link.
-  If you can\u2019t be bothered to wait for the reactions you can just add the reaction yourself.`)
+  If you can’t be bothered to wait for the reactions you can just add the reaction yourself.`)
     current.forEach((v, i) => embed.addField(`${i + start + 1}. ${v.author.name}
   ${emojis.numbers[i + 1]}`, `[${v.title}](${v.url})`, true))
     return ['**Which song would you like to play?**', embed]

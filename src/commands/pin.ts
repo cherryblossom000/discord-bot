@@ -27,18 +27,18 @@ The ID of the message to pin. Defaults to the last message (excluding the one to
         .sort((a, b) => Number(b) - Number(a))[1]) as string | undefined
 
     if (id === undefined) {
-      await message.reply('you have not provided an ID and I went offline since you sent your last message (or you haven\u2019t sent another message)!')
+      await message.reply('you have not provided an ID and I went offline since you sent your last message (or you haven’t sent another message)!')
       return
     }
 
     if (!/^\d{17,19}$/u.test(id)) {
-      await message.reply(`${id} isn\u2019t a valid ID!`)
+      await message.reply(`${id} isn’t a valid ID!`)
       return
     }
 
     const msg = message.guild ? allGuildMessages!.get(id) : message.channel.messages.cache.get(id)
     if (!msg) {
-      await message.reply(`the message with ID ${id} couldn\u2019t be found!`)
+      await message.reply(`the message with ID ${id} couldn’t be found!`)
       return
     }
 

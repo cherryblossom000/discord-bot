@@ -23,18 +23,18 @@ export const me = '506054261717598210'
 
 const numbers = []
 for (let i = 0; i <= 9; i++) numbers.push(`${i}\ufe0f\u20e3`)
-numbers.push('\u{1f51f}')
+numbers.push('🔟')
 
 /** Emojis. */
 export const emojis = {
-  left: '\u2b05',
-  right: '\u27a1',
-  pause: '\u23f8',
-  resume: '\u25b6',
-  stop: '\u{1f6d1}',
+  left: '⬅',
+  right: '➡',
+  pause: '⏸',
+  resume: '▶',
+  stop: '🛑',
   numbers,
-  delete: '\u{1f5d1}',
-  letters: ['\u{1f1e6}', '\u{1f1e7}', '\u{1f1e8}', '\u{1f1e9}'],
-  tick: '\u2705',
-  cross: '\u274c'
+  delete: '🗑',
+  letters: ['🇦', '🇧', '🇨', '🇩'],
+  tick: '✅',
+  cross: '❌'
 } as const

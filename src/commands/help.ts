@@ -20,7 +20,7 @@ The command that you want to get info about. If omitted, all the commands will b
     // All commands
     if (!args.length) {
       data.push(
-        'Here\u2019s a list of all my commands:',
+        'Hereâ€™s a list of all my commands:',
         ...commands.filter(({hidden = false}) => !hidden).map(({name, description}) => `\`${name}\`: ${description}`),
         `
 You can send \`${defaultPrefix}help [command name]\` to get info on a specific command. Noot noot.`
@@ -28,7 +28,7 @@ You can send \`${defaultPrefix}help [command name]\` to get info on a specific c
 
       try {
         await author.send(data, {split: true})
-        if (message.channel.type !== 'dm') await message.reply('I\u2019ve sent you a DM with all my commands. Noot noot.')
+        if (message.channel.type !== 'dm') await message.reply('I’ve sent you a DM with all my commands. Noot noot.')
         return
       } catch (error) {
         if ((error as {code?: number}).code === Constants.APIErrors.CANNOT_MESSAGE_USER) {
@@ -36,7 +36,7 @@ You can send \`${defaultPrefix}help [command name]\` to get info on a specific c
             sendMeError(client, error, `Could not send help DM to ${author.tag}.`),
             message.sendDeletableMessage({
               reply: true,
-              content: `it seems like I can\u2019t DM you. Noot noot.
+              content: `it seems like I can’t DM you. Noot noot.
 Do you have DMs disabled?`
             })
           ])
@@ -52,7 +52,7 @@ Do you have DMs disabled?`
 
     // Invalid command
     if (!_command) {
-      await message.reply('that\u2019s not a valid command. Noot noot.')
+      await message.reply('that’s not a valid command. Noot noot.')
       return
     }
 

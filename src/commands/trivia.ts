@@ -132,7 +132,7 @@ Gets the trivia statistics for a user. If no user is specified, it will get the 
         await channel.send(correct
           ? `${emojis.tick} Congratulations, **${correctAnswer}** was the correct answer!`
           : `${emojis.cross} **${format(selectedAnswer)}** was incorrect. The correct answer was **${correctAnswer}**.`)
-      } else await channel.send(`Time\u2019s up! The correct answer was **${correctAnswer}**.`)
+      } else await channel.send(`Time’s up! The correct answer was **${correctAnswer}**.`)
 
       await database.collection('users').updateOne(
         {_id: author.id},

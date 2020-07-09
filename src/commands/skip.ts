@@ -11,7 +11,7 @@ const command: Command<true> = {
     if (!queue) return
 
     queue.connection.dispatcher.end()
-    await message.channel.send(`Skipped \u2018${queue.songs[0].title}\u2019.`)
+    await message.channel.send(`Skipped **${queue.songs[0].title}**.`)
   }
 }
 export default command

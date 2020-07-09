@@ -16,10 +16,10 @@ const command: Command<true> = {
   syntax: '[song]|search [query]',
   usage: `\`[song]\`
 \`song\` (optional)
-The video that you want to play. If it\u2019s:
+The video that you want to play. If it’s:
 * a YouTube link or ID: plays the YouTube video
 * anything else: searches YouTube and plays the first result
-* omitted: resumes the music (if it\u2019s paused) (the same as \`resume\`)
+* omitted: resumes the music (if it’s paused) (the same as \`resume\`)
 
 \`search [query]\`
 \`query\`
@@ -65,17 +65,16 @@ The query to search on YouTube for.`,
           })
           .on('error', async error => {
             await sendMeError(client, error, `Error playing song: https://youtu.be/${_song.id}`)
-            await queue!.textChannel.send(`Unfortunately, there was an error playing \u2018${_song.title}\u2019 ` +
-              `(link: https://youtub.be/${_song.id}). Noot noot.`)
+            await queue!.textChannel.send(`Unfortunately, there was an error playing **${_song.title}** (link: https://youtub.be/${_song.id}). Noot noot.`)
           })
         const storedVolume = (await getGuild(database, id))?.volume
         if (storedVolume !== undefined && dispatcher.volume !== storedVolume) dispatcher.setVolume(storedVolume)
-        await queue!.textChannel.send(`Playing \u2018${_song.title}\u2019 by ${_song.author}.`)
+        await queue!.textChannel.send(`Playing **${_song.title}** by ${_song.author}.`)
       }
 
       if (queue) {
         queue.songs.push(song)
-        await channel.send(`\u2018${song.title}\u2019 has been added to the queue.`)
+        await channel.send(`**${song.title}** has been added to the queue.`)
       } else {
         // eslint-disable-next-line require-atomic-updates -- queue will not cause a race condition
         queue = {

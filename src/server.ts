@@ -146,7 +146,7 @@ My prefix is \`${prefix}\`. Run \`${prefix}help\` for a list of commands.`)
         // Guild only
         if (guildOnly && channel.type !== 'text') {
           await message.sendDeletableMessage({
-            reply: true, content: 'sorry, I can\u2019t execute that command inside DMs. Noot noot.'
+            reply: true, content: 'sorry, I can’t execute that command inside DMs. Noot noot.'
           })
           return false
         }
@@ -155,7 +155,7 @@ My prefix is \`${prefix}\`. Run \`${prefix}help\` for a list of commands.`)
         if (commandArgs && !args.length) {
           await message.sendDeletableMessage({
             reply: true,
-            content: `you didn\u2019t provide any arguments. Noot noot.
+            content: `you didn’t provide any arguments. Noot noot.
 The syntax is: \`${prefix}${command.name}${command.syntax === undefined ? '' : ` ${command.syntax}`}\`. Noot noot.`
           })
           return false
