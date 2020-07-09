@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.2](https://github.com/cherryblossom000/comrade-pingu/compare/v2.2.1...v2.2.2) (2020-07-09)
+
+
+### Bug Fixes
+
+* **trivia stats:** order difficulty ([2565d61](https://github.com/cherryblossom000/comrade-pingu/commit/2565d61c8fa1a6dc1b060deb7349a7408e4291db))
+
 ## [2.2.1](https://github.com/cherryblossom000/comrade-pingu/compare/v2.2.0...v2.2.1) (2020-07-09)
 
 
