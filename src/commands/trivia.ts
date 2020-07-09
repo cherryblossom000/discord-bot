@@ -46,7 +46,7 @@ const statsCommand = async (message: Message, input: string, database: Db): Prom
         value: formatPercentage(questions.filter(({correct}) => correct).length, questions.length),
         inline: true
       },
-      ...reduceQuestions('difficulty').map(([correct, total], difficulty) => ({
+      ...reduceQuestions('difficulty').sorted((_, __, a, b) => a - b).map(([correct, total], difficulty) => ({
         name: `Correct answers (${Difficulty[difficulty].toLowerCase()})`,
         value: formatPercentage(correct, total),
         inline: true
