@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.1](https://github.com/cherryblossom000/comrade-pingu/compare/v2.2.0...v2.2.1) (2020-07-09)
+
+
+### Bug Fixes
+
+* **trivia:** add 5 second cooldown ([b253fa9](https://github.com/cherryblossom000/comrade-pingu/commit/b253fa9a63b83cb27e38276e352b54a2eb9135e4))
+
 # [2.2.0](https://github.com/cherryblossom000/comrade-pingu/compare/v2.1.0...v2.2.0) (2020-07-08)
 
 
