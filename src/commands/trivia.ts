@@ -1,4 +1,4 @@
-import {Collection, MessageEmbed} from 'discord.js'
+import {Collection, MessageEmbed, escapeMarkdown} from 'discord.js'
 import shuffle from 'lodash.shuffle'
 import {emojis} from '../constants'
 import {checkPermissions, resolveUser} from '../helpers'
@@ -105,11 +105,11 @@ Gets the trivia statistics for a user. If no user is specified, it will get the 
       questionPrefix = ''
     ): Promise<void> => {
       const msg = await channel.send({embed: {
-        title: questionPrefix + question.question,
+        title: questionPrefix + escapeMarkdown(question.question),
         description: 'You have 15 seconds to answer.',
         fields: [
           ...fields,
-          {name: 'Category', value: question.category, inline: true},
+          {name: 'Category', value: escapeMarkdown(question.category), inline: true},
           {name: 'Difficulty', value: Difficulty[question.difficulty], inline: true}
         ]
       }}) as Message
@@ -153,7 +153,7 @@ Gets the trivia statistics for a user. If no user is specified, it will get the 
     } else {
       const answers = shuffle([...question.incorrectAnswers, question.correctAnswer])
       await execute(
-        answers.map((a, i) => ({name: String.fromCharCode(i + 65), value: a})),
+        answers.map((a, i) => ({name: String.fromCharCode(i + 65), value: escapeMarkdown(a)})),
         emojis.letters,
         emoji => answers[(emojis.letters as readonly string[]).indexOf(emoji)]
       )
