@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.2.3](https://github.com/cherryblossom000/comrade-pingu/compare/v2.2.2...v2.2.3) (2020-07-10)
+
+
+### Bug Fixes
+
+* **trivia:** escape markdown ([a883eb9](https://github.com/cherryblossom000/comrade-pingu/commit/a883eb95ee7c04cedcdb3400aff4b652bd905630))
+* **trivia:** use refresh tokens to reduce duplicate questions ([272e221](https://github.com/cherryblossom000/comrade-pingu/commit/272e221b4a314bb1ba9b7398ec0f3839dd829f11))
+
 ## [2.2.2](https://github.com/cherryblossom000/comrade-pingu/compare/v2.2.1...v2.2.2) (2020-07-09)
 
 

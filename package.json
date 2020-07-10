@@ -1,6 +1,6 @@
 {
   "name": "comrade-pingu",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "private": true,
   "publishConfig": {
     "access": "restricted"
