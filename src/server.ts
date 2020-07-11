@@ -127,8 +127,9 @@ Guilds: ${client.guilds.cache.size}`)
 
       // Exits if there is no input and the bot was mentioned
       if (!input.length && matchedPrefix !== prefix) {
-        return channel.send(`Hi, I am Comrade Pingu. Noot noot.
+        await channel.send(`Hi, I am Comrade Pingu. Noot noot.
 My prefix is \`${prefix}\`. Run \`${prefix}help\` for a list of commands.`)
+        return
       }
 
       // Get args and command
