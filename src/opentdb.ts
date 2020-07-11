@@ -47,7 +47,6 @@ interface ResetTokenResponse extends TokenResponse {
 // #endregion
 
 class OpenTDBError extends Error {
-  static INVALID_TOKEN = 'Invalid token'
   static INVALID_PARAMETER = 'Invalid parameter'
   name = 'OpenTDBError'
 
@@ -72,7 +71,7 @@ const fetchToken = async (): Promise<string> => (await api<FetchTokenResponse>('
 const resetToken = async (token: string): Promise<string> => {
   const path = `api_token.php?command=reset&token=${token}`
   const {code, token: newToken} = await api<ResetTokenResponse>(path)
-  if (code === ResponseCode.TokenNotFound) throw new OpenTDBError(OpenTDBError.INVALID_TOKEN, path)
+  if (code === ResponseCode.TokenNotFound) return fetchToken()
   return newToken
 }
 
@@ -110,11 +109,11 @@ export const fetchQuestion = async (): Promise<Question | null> => {
   const {code, results: [question]} = await api<FetchQuestionResponse>(path)
 
   switch (code) {
-    case ResponseCode.TokenNotFound: throw new OpenTDBError(OpenTDBError.INVALID_TOKEN, path)
     case ResponseCode.NoResults: return null
+    case ResponseCode.TokenNotFound:
     case ResponseCode.TokenEmpty:
       // eslint-disable-next-line require-atomic-updates -- unavoidable
-      token = await resetToken(token)
+      token = await (code === ResponseCode.TokenNotFound ? fetchToken() : resetToken(token))
       return fetchQuestion()
     case ResponseCode.Success: {
       const type = question.type === 'multiple' ? Type.MultipleChoice : Type.TrueFalse
