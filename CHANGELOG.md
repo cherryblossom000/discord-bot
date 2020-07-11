@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.4](https://github.com/cherryblossom000/comrade-pingu/compare/v2.2.3...v2.2.4) (2020-07-11)
+
+
+### Bug Fixes
+
+* **trivia:** fix command not working after 6 hours ([abfd62c](https://github.com/cherryblossom000/comrade-pingu/commit/abfd62c4239b021f85f424d31ed4e7b09357eaf4))
+
 ## [2.2.3](https://github.com/cherryblossom000/comrade-pingu/compare/v2.2.2...v2.2.3) (2020-07-10)
 
 
