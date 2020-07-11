@@ -1,15 +1,16 @@
 {
+  "include": ["**/*.ts"],
   "compilerOptions": {
     "esModuleInterop": true,
+    "resolveJsonModule": true,
     "lib": ["esnext"],
     "module": "commonjs",
+    "skipLibCheck": true,
+    "target": "es2019",
+    "outDir": "dist",
+    "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "outDir": "dist",
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "target": "es2019"
-  },
-  "include": ["**/*.ts"]
+    "strict": true
+  }
 }
