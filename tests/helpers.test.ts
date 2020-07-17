@@ -19,14 +19,7 @@ describe('Helpers', () => {
       ago: '1 minute ago',
       author: {
         name: 'author',
-        id: 'author id',
-        url: 'author url',
-        userId: 'user id',
-        userUrl: 'user url',
-        userName: 'user name',
-        channelId: 'channel id',
-        channelUrl: 'channel url',
-        channelName: 'channel name'
+        url: 'user url'
       }
     }))
       .toEqual<Video>({title: 'title', id: 'id', author: 'author'})

@@ -10,7 +10,6 @@ declare global {
     entries<K extends keyof any, V>(o: Partial<Record<K, V>>): [K, V][]
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-namespace -- needed to augment DateTimeFormatOptions
   namespace Intl {
     interface DateTimeFormatOptions {
       dateStyle?: 'full' | 'long' | 'medium' | 'short'
