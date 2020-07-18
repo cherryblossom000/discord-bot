@@ -3,8 +3,9 @@ import testRegexCommand from './test-regex-command'
 
 testRegexCommand('noot-noot', NootNoot, [
   'noot noot',
-  'Noot Noot'
+  'NOOOOT  noot'
 ], [
   'not not',
-  'noot'
+  'noot',
+  'nooot not'
 ])
