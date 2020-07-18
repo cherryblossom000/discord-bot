@@ -1,5 +1,12 @@
 # Changelog
 
+# [2.3.0](https://github.com/cherryblossom000/comrade-pingu/compare/v2.2.4...v2.3.0) (2020-07-18)
+
+
+### Features
+
+* **noot-noot:** trigger on more than 2 os (e.g. `nooot noot`) ([449c3c0](https://github.com/cherryblossom000/comrade-pingu/commit/449c3c0eb6d1df766f5977fd196d4152197e684d))
+
 ## [2.2.4](https://github.com/cherryblossom000/comrade-pingu/compare/v2.2.3...v2.2.4) (2020-07-11)
 
 
