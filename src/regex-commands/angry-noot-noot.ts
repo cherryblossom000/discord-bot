@@ -2,31 +2,25 @@ import type {RegexCommand} from '../types'
 
 const joinAlternate = (...strings: string[]): string => `(${strings.join('|')})`
 
-const nouns = joinAlternate(...[
-  'bots?', 'pingu', 'communism', 'communists?'
-])
-const verbs = joinAlternate(...[
-  'is', 'are'
-])
-const adverbs = joinAlternate(...[
-  'very', 'much', 'so', 'too', 'really'
-])
-const adjectives = joinAlternate(...[
+// pingu
+const nouns = joinAlternate('bots?', 'pingu', 'communism', 'communists?')
+// very
+const adverbs = joinAlternate('very', 'much', 'so', 'too', 'really')
+// bad
+const adjectives = joinAlternate(
   'down', 'not working', 'offline', 'stupid', 'dumb', 'annoying', 'bad', 'frustrating', 'sucks?'
-])
-const negative = joinAlternate(...[
-  'not?', 'never'
-])
-const good = joinAlternate(...[
-  'good', 'amazing', 'great', 'lovely', 'fast'
-])
+)
+// not (very) good | (very) bad
+const bad = joinAlternate(
+  adjectives, `${joinAlternate('not?', 'never')} ${adverbs}? ${joinAlternate('good', 'amazing', 'great', 'lovely', 'fast')}`
+)
 
-const negativeGood = `${negative} ${adverbs}? ${good}`
-const bad = joinAlternate(adjectives, negativeGood)
-
-const adjLast = `${nouns} ${verbs}? ${adverbs}? ${bad}`
-const adjFirst = `${bad} ${nouns}`
-const regex = new RegExp(`(${adjLast})|(${adjFirst})`.replace(/\s+/ug, '\\s*'), 'ui')
+// pingu (is) (very) (bad | not (very) good)
+const adjLast = `(${nouns} ${joinAlternate('is', 'are')}? ${adverbs}? ${bad})`
+// bad pingu
+const adjFirst = `(${bad} ${nouns})`
+// bad pingu | pingu (is) (very) (bad | not (very) good)
+const regex = new RegExp(joinAlternate(adjLast, adjFirst).replace(/\s+/ug, '\\s*'), 'ui')
 
 const command: RegexCommand = {
   regex,
