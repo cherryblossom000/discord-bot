@@ -4,16 +4,16 @@ branches:
   except: repl
 before_install: npm i -g pnpm
 install:
-  - pnpm i
+- pnpm i
 jobs:
     script:
-      - pnpm run build
-      - pnpm run lint
-      - pnpm run test
-      - pnpm run docs
+    - pnpm run build
+    - pnpm run lint
+    - pnpm run test
+    - pnpm run docs
     after_success: chmod +x scripts/push-docs.sh && scripts/push-docs.sh
     deploy:
-      - provider: script
-        skip_cleanup: true
-        script: chmod +x scripts/deploy.sh && scripts/deploy.sh
-        on: master
+    - provider: script
+      skip_cleanup: true
+      script: chmod +x scripts/deploy.sh && scripts/deploy.sh
+      on: master
