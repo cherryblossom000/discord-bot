@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.1](https://github.com/cherryblossom000/comrade-pingu/compare/v2.3.0...v2.3.1) (2020-07-21)
+
+
+### Bug Fixes
+
+* **capitalist-scum:** trigger on melon but not on other words containing elon ([469673d](https://github.com/cherryblossom000/comrade-pingu/commit/469673d3685d5350c6569a36ab9deb3f58c11723))
+
 # [2.3.0](https://github.com/cherryblossom000/comrade-pingu/compare/v2.2.4...v2.3.0) (2020-07-18)
 
 
