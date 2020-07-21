@@ -5,7 +5,12 @@ testRegexCommand('capitalist-scum', CapitalistScum, [
   'capitalism',
   'capitalist',
   'elon',
+  'elons',
+  'elonsss',
+  'melon',
+  'watermelon',
   'musk'
 ], [
-  'capital'
+  'capital',
+  'belong'
 ])
