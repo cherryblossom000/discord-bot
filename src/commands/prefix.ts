@@ -14,17 +14,23 @@ The default prefix is \`${defaultPrefix}\`.`,
   async execute(message, {args: [newPrefix]}, database) {
     const {channel, member, guild} = message
     if (!member.hasPermission('ADMINISTRATOR')) {
-      await message.reply('you must be an admin to run this command. Noot noot.')
+      await message.reply(
+        'you must be an admin to run this command. Noot noot.'
+      )
       return
     }
 
     if (!newPrefix) {
-      await channel.send(`The prefix is \`${await getPrefix(database, guild)}\`. Noot noot.`)
+      await channel.send(
+        `The prefix is \`${await getPrefix(database, guild)}\`. Noot noot.`
+      )
       return
     }
 
     await setGuildValue(database, guild, 'prefix', newPrefix)
-    await channel.send(`Successfully set the prefix to \`${newPrefix}\`. Noot noot.`)
+    await channel.send(
+      `Successfully set the prefix to \`${newPrefix}\`. Noot noot.`
+    )
   }
 }
 export default command

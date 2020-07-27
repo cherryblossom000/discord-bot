@@ -22,7 +22,8 @@ declare global {
 
 // class, using it to get AsyncFunction
 // eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/no-empty-function -- AsyncFunction
-const AsyncFunction = (async (): Promise<void> => {}).constructor as AsyncFunctionConstructor
+const AsyncFunction = (async (): Promise<void> => {})
+  .constructor as AsyncFunctionConstructor
 
 const command: Command = {
   name: 'eval',
@@ -48,20 +49,27 @@ The code to execute. The following variables are available:
     let result
     try {
       result = await AsyncFunction(
-        'message', 'input', 'Discord', '_', `return (${input.input})`
-      )(
-        message, input, Discord, kDiscardResult
-      )
+        'message',
+        'input',
+        'Discord',
+        '_',
+        `return (${input.input})`
+      )(message, input, Discord, kDiscardResult)
     } catch (error) {
       await message.sendDeletableMessage({content: [`${error}`, {code: true}]})
       return
     }
 
     if (result !== kDiscardResult) {
-      await message.sendDeletableMessage({content: [
-        inspect(result).replace(new RegExp(escapeRegex(process.env.TOKEN!), 'ug'), '<token>'),
-        {code: 'js', split: true}
-      ]})
+      await message.sendDeletableMessage({
+        content: [
+          inspect(result).replace(
+            new RegExp(escapeRegex(process.env.TOKEN!), 'ug'),
+            '<token>'
+          ),
+          {code: 'js', split: true}
+        ]
+      })
     }
   }
 }

@@ -12,7 +12,8 @@ const command: Command<true> = {
     if (!queue) return
 
     queue.connection.dispatcher.pause()
-    if (hasPermissions(message, 'READ_MESSAGE_HISTORY')) await message.react(emojis.pause)
+    if (hasPermissions(message, 'READ_MESSAGE_HISTORY'))
+      await message.react(emojis.pause)
     else {
       await message.channel.send(`Paused the music.
 I can react on your message instead if you enable the READ_MESSAGE_HISTORY permission.`)

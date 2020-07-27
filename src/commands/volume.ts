@@ -2,7 +2,7 @@ import {setGuildValue} from '../database'
 import {getQueue} from '../utils'
 import type {Command} from '../types'
 
-const command: Command <true> = {
+const command: Command<true> = {
   name: 'volume',
   aliases: ['v'],
   description: 'Changes or gets the volume of the music playing.',
@@ -18,7 +18,9 @@ The new volume as a percentage to set it to. If omitted, the current volume will
     if (!queue) return
 
     const {channel, guild} = message
-    const {connection: {dispatcher}} = queue
+    const {
+      connection: {dispatcher}
+    } = queue
     if (args[0]?.toLowerCase().startsWith('r')) {
       dispatcher.setVolume(1)
       await channel.send('Reset the volume to 100%.')
@@ -26,11 +28,15 @@ The new volume as a percentage to set it to. If omitted, the current volume will
       return
     }
 
-    const input = args[0]?.replace(/%/ug, '')
-    if (isNaN(input as any)) await channel.send(`The current volume is ${dispatcher.volume * 100}%.`)
+    const input = args[0]?.replace(/%/gu, '')
+    if (isNaN(input as any))
+      await channel.send(`The current volume is ${dispatcher.volume * 100}%.`)
     else {
       const n = Number(input) / 100
-      const newVolume = input.startsWith('+') || input.startsWith('-') ? dispatcher.volume + n : n
+      const newVolume =
+        input.startsWith('+') || input.startsWith('-')
+          ? dispatcher.volume + n
+          : n
       dispatcher.setVolume(newVolume)
       await channel.send(`Set the volume to ${newVolume * 100}%.`)
       await setGuildValue(database, guild, 'volume', newVolume)

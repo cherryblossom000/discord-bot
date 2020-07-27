@@ -11,7 +11,10 @@ const command: Command<true> = {
     if (!queue) return
 
     await message.channel.send(
-      queue.songs.map((song, i) => `${i + 1}: **${song.title}** by ${song.author} (${song.id})`),
+      queue.songs.map(
+        (song, i) =>
+          `${i + 1}: **${song.title}** by ${song.author} (${song.id})`
+      ),
       {split: true}
     )
   }

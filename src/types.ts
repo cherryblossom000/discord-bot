@@ -1,7 +1,23 @@
 import type {
-  APIMessage, AwaitReactionsOptions, Collection, DMChannel, Guild as DiscordGuild, GuildMember, MessageAdditions,
-  Message as DiscordMessage, MessageMentions, MessageOptions, MessageReaction, NewsChannel, Snowflake, SplitOptions,
-  StringResolvable, TextChannel, User, VoiceChannel, VoiceConnection
+  APIMessage,
+  AwaitReactionsOptions,
+  Collection,
+  DMChannel,
+  Guild as DiscordGuild,
+  GuildMember,
+  MessageAdditions,
+  Message as DiscordMessage,
+  MessageMentions,
+  MessageOptions,
+  MessageReaction,
+  NewsChannel,
+  Snowflake,
+  SplitOptions,
+  StringResolvable,
+  TextChannel,
+  User,
+  VoiceChannel,
+  VoiceConnection
 } from 'discord.js'
 import type {Db} from './database'
 import type Client from './Client'
@@ -49,7 +65,11 @@ interface CommandBase<T extends Message> {
   cooldown?: number
 
   /** The actual command. */
-  execute(message: T, input: {args: string[], input: string}, database: Db): void | Promise<void>
+  execute(
+    message: T,
+    input: {args: string[]; input: string},
+    database: Db
+  ): void | Promise<void>
 }
 
 /**
@@ -69,6 +89,7 @@ export interface RegexCommand {
   regexMessage: string | ((message: Message) => string)
 }
 
+// eslint-disable-next-line import/no-unused-modules -- it is used
 export interface Video {
   title: string
   id: string
@@ -91,22 +112,38 @@ interface BaseMessage extends DiscordMessage {
   client: Client
   guild: Guild | null
   awaitReactions(
-    filter: (reaction: MessageReaction, user: User, collected?: Collection<Snowflake, MessageReaction>) => boolean,
+    filter: (
+      reaction: MessageReaction,
+      user: User,
+      collected?: Collection<Snowflake, MessageReaction>
+    ) => boolean,
     options?: AwaitReactionsOptions
   ): Promise<Collection<Snowflake, MessageReaction>>
   reply(
     content?: StringResolvable,
-    options?: MessageAdditions | MessageOptions | OptionsNoSplit,
+    options?: MessageAdditions | MessageOptions | OptionsNoSplit
   ): Promise<this>
-  reply(content?: StringResolvable, options?: MessageAdditions | OptionsWithSplit): Promise<this[]>
-  reply(options?: APIMessage | MessageOptions | MessageAdditions | OptionsNoSplit): Promise<this>
-  reply(options?: APIMessage | MessageAdditions | OptionsWithSplit): Promise<this[]>
-  sendDeletableMessage(
-    {reply, content}: {
-      reply?: boolean
-      content: MessageOptions | MessageAdditions | any | [any, (MessageOptions | MessageAdditions)?]
-    }
-  ): Promise<void>
+  reply(
+    content?: StringResolvable,
+    options?: MessageAdditions | OptionsWithSplit
+  ): Promise<this[]>
+  reply(
+    options?: APIMessage | MessageOptions | MessageAdditions | OptionsNoSplit
+  ): Promise<this>
+  reply(
+    options?: APIMessage | MessageAdditions | OptionsWithSplit
+  ): Promise<this[]>
+  sendDeletableMessage({
+    reply,
+    content
+  }: {
+    reply?: boolean
+    content:
+      | MessageOptions
+      | MessageAdditions
+      | any
+      | [any, (MessageOptions | MessageAdditions)?]
+  }): Promise<void>
 }
 
 /** A message from a guild. */
@@ -114,7 +151,9 @@ export interface GuildMessage extends BaseMessage {
   channel: TextBasedGuildChannel
   guild: Guild
   member: GuildMember
-  mentions: MessageMentions & {readonly members: Collection<Snowflake, GuildMember>}
+  mentions: MessageMentions & {
+    readonly members: Collection<Snowflake, GuildMember>
+  }
 }
 
 /** A message from a DM. */

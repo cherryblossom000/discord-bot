@@ -6,7 +6,11 @@ import {resume} from './resume'
 import type {Command, Video} from '../types'
 
 /** Converts a `yts.VideoSearchResult` into a `Video`. */
-const searchToVideo = ({title, videoId: id, author: {name}}: yts.VideoSearchResult): Video => ({title, id, author: name})
+const searchToVideo = ({
+  title,
+  videoId: id,
+  author: {name}
+}: yts.VideoSearchResult): Video => ({title, id, author: name})
 
 const command: Command<true> = {
   name: 'play',
@@ -27,8 +31,13 @@ The query to search on YouTube for.`,
   // TODO: Use information of the video when downloading instead of making a request twice
   // eslint-disable-next-line max-statements -- I don't know how else to shorten this function
   async execute(message, {args}, database) {
-    const {channel, client, guild: {id}, member} = message
-    if (!await checkPermissions(message, ['CONNECT', 'SPEAK'])) return
+    const {
+      channel,
+      client,
+      guild: {id},
+      member
+    } = message
+    if (!(await checkPermissions(message, ['CONNECT', 'SPEAK']))) return
 
     const [url] = args
     let queue = client.queues.get(id)
@@ -36,10 +45,16 @@ The query to search on YouTube for.`,
     // Resume music if possible
     if (!url) {
       if (queue) {
-        const {connection: {dispatcher}} = queue
+        const {
+          connection: {dispatcher}
+        } = queue
         if (dispatcher.paused) await resume(dispatcher, message)
         else await channel.send('The music is already playing!')
-      } else await message.reply('you must specify a valid YouTube URL to play! Noot noot.')
+      } else {
+        await message.reply(
+          'you must specify a valid YouTube URL to play! Noot noot.'
+        )
+      }
       return
     }
 
@@ -64,12 +79,21 @@ The query to search on YouTube for.`,
             await playSong(queue!.songs[0])
           })
           .on('error', async error => {
-            await sendMeError(client, error, `Error playing song: https://youtu.be/${_song.id}`)
-            await queue!.textChannel.send(`Unfortunately, there was an error playing **${_song.title}** (link: https://youtub.be/${_song.id}). Noot noot.`)
+            await sendMeError(
+              client,
+              error,
+              `Error playing song: https://youtu.be/${_song.id}`
+            )
+            await queue!.textChannel.send(
+              `Unfortunately, there was an error playing **${_song.title}** (link: https://youtub.be/${_song.id}). Noot noot.`
+            )
           })
         const storedVolume = (await getGuild(database, id))?.volume
-        if (storedVolume !== undefined && dispatcher.volume !== storedVolume) dispatcher.setVolume(storedVolume)
-        await queue!.textChannel.send(`Playing **${_song.title}** by ${_song.author}.`)
+        if (storedVolume !== undefined && dispatcher.volume !== storedVolume)
+          dispatcher.setVolume(storedVolume)
+        await queue!.textChannel.send(
+          `Playing **${_song.title}** by ${_song.author}.`
+        )
       }
 
       if (queue) {
@@ -97,8 +121,12 @@ The query to search on YouTube for.`,
 
     // Play url
     if (validateURL(url)) {
-      // eslint-disable-next-line @typescript-eslint/naming-convention -- video_id is in
-      const {title, video_id: videoID, author: {name}} = await getBasicInfo(url)
+      const {
+        title,
+        // eslint-disable-next-line @typescript-eslint/naming-convention -- video_id is in
+        video_id: videoID,
+        author: {name}
+      } = await getBasicInfo(url)
       await play({title, id: videoID, author: name})
       return
     }
@@ -107,7 +135,11 @@ The query to search on YouTube for.`,
     const query = args.join(' ')
     const {videos} = await yts(query)
     if (videos.length) await play(searchToVideo(videos[0]))
-    else await channel.send(`No results were found for ${query}. Try using a YouTube link instead.`)
+    else {
+      await channel.send(
+        `No results were found for ${query}. Try using a YouTube link instead.`
+      )
+    }
   }
 }
 export default command

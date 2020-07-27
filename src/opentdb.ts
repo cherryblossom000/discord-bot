@@ -23,13 +23,14 @@ interface Response {
 }
 
 interface FetchQuestionResponse extends Response {
-  results: (QuestionResponseBase & (
-    | {type: 'multiple', incorrect_answers: string[]}
-    | ({type: 'boolean'} & (
-      | {correct_answer: 'True', incorrect_answers: ['False']}
-      | {correct_answer: 'False', incorrect_answers: ['True']}
-    ))
-  ))[]
+  results: (QuestionResponseBase &
+    (
+      | {type: 'multiple'; incorrect_answers: string[]}
+      | ({type: 'boolean'} & (
+          | {correct_answer: 'True'; incorrect_answers: ['False']}
+          | {correct_answer: 'False'; incorrect_answers: ['True']}
+        ))
+    ))[]
 }
 
 interface TokenResponse extends Response {
@@ -58,15 +59,24 @@ class OpenTDBError extends Error {
 const api = async <T extends Response = Response>(
   path: string
 ): Promise<
-Omit<T, 'response_code'> & {code: typeof ResponseCode[Exclude<keyof typeof ResponseCode, 'InvalidParameter'>]}
+  Omit<T, 'response_code'> & {
+    code: typeof ResponseCode[Exclude<
+      keyof typeof ResponseCode,
+      'InvalidParameter'
+    >]
+  }
 > => {
   // eslint-disable-next-line @typescript-eslint/naming-convention -- destructuring
-  const {response_code: code, ...rest} = await (await fetch(`https://opentdb.com/${path}`)).json() as T
-  if (code === ResponseCode.InvalidParameter) throw new OpenTDBError(OpenTDBError.INVALID_PARAMETER, path)
+  const {response_code: code, ...rest} = (await (
+    await fetch(`https://opentdb.com/${path}`)
+  ).json()) as T
+  if (code === ResponseCode.InvalidParameter)
+    throw new OpenTDBError(OpenTDBError.INVALID_PARAMETER, path)
   return {code, ...rest}
 }
 
-const fetchToken = async (): Promise<string> => (await api<FetchTokenResponse>('api_token.php?command=request')).token
+const fetchToken = async (): Promise<string> =>
+  (await api<FetchTokenResponse>('api_token.php?command=request')).token
 
 const resetToken = async (token: string): Promise<string> => {
   const path = `api_token.php?command=reset&token=${token}`
@@ -94,39 +104,63 @@ interface QuestionBase {
   question: string
 }
 
-type Question = QuestionBase & (
-  | {type: Type.MultipleChoice, correctAnswer: string, incorrectAnswers: string[]}
-  | {type: Type.TrueFalse, correctAnswer: boolean}
-)
+type Question = QuestionBase &
+  (
+    | {
+        type: Type.MultipleChoice
+        correctAnswer: string
+        incorrectAnswers: string[]
+      }
+    | {type: Type.TrueFalse; correctAnswer: boolean}
+  )
 
 let token: string | undefined
 
 /** Fetches a question from the Open Trivia Database. */
 export const fetchQuestion = async (): Promise<Question | null> => {
   // TODO [typescript@>=4]: update to token ??= await fetchToken()
-  // eslint-disable-next-line require-atomic-updates -- token not reassigned based on outdated value
-  const path = `api.php?amount=1&encode=url3986&token=${token ?? (token = await fetchToken())}`
-  const {code, results: [question]} = await api<FetchQuestionResponse>(path)
+  const path = `api.php?amount=1&encode=url3986&token=${
+    // eslint-disable-next-line require-atomic-updates -- token not reassigned based on outdated value
+    token ?? (token = await fetchToken())
+  }`
+  const {
+    code,
+    results: [question]
+  } = await api<FetchQuestionResponse>(path)
 
   switch (code) {
-    case ResponseCode.NoResults: return null
+    case ResponseCode.NoResults:
+      return null
     case ResponseCode.TokenNotFound:
     case ResponseCode.TokenEmpty:
       // eslint-disable-next-line require-atomic-updates -- unavoidable
-      token = await (code === ResponseCode.TokenNotFound ? fetchToken() : resetToken(token))
+      token = await (code === ResponseCode.TokenNotFound
+        ? fetchToken()
+        : resetToken(token))
       return fetchQuestion()
     case ResponseCode.Success: {
-      const type = question.type === 'multiple' ? Type.MultipleChoice : Type.TrueFalse
+      const type =
+        question.type === 'multiple' ? Type.MultipleChoice : Type.TrueFalse
 
       return {
         type,
-        difficulty: Difficulty[upperFirst(question.difficulty) as keyof typeof Difficulty],
+        difficulty:
+          Difficulty[
+            upperFirst(question.difficulty) as keyof typeof Difficulty
+          ],
         category: decodeURIComponent(question.category),
         question: decodeURIComponent(question.question),
-        correctAnswer: type === Type.MultipleChoice ? decodeURIComponent(question.correct_answer) : question.correct_answer === 'True',
-        ...type === Type.MultipleChoice
-          ? {incorrectAnswers: (question.incorrect_answers as string[]).map(decodeURIComponent)}
-          : {}
+        correctAnswer:
+          type === Type.MultipleChoice
+            ? decodeURIComponent(question.correct_answer)
+            : question.correct_answer === 'True',
+        ...(type === Type.MultipleChoice
+          ? {
+              incorrectAnswers: (question.incorrect_answers as string[]).map(
+                decodeURIComponent
+              )
+            }
+          : {})
       } as Question
     }
   }

@@ -4,7 +4,5 @@ export const exit = (error: any): never => {
 }
 
 export default (): void => {
-  process
-    .on('unhandledRejection', exit)
-    .on('uncaughtException', exit)
+  process.on('unhandledRejection', exit).on('uncaughtException', exit)
 }

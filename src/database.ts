@@ -29,14 +29,18 @@ interface Collections {
   users: User
 }
 
-// eslint-disable-next-line import/no-unused-modules -- used in Command interface
 export interface Db extends MongoDb {
   collection<T extends keyof Collections>(name: T): Collection<Collections[T]>
 }
 
 /** Gets a guild's entry in the database. */
-export const getGuild = async (database: Db, guild: DiscordGuild | Snowflake): Promise<Guild | null> =>
-  database.collection('guilds').findOne({_id: typeof guild === 'string' ? guild : guild.id})
+export const getGuild = async (
+  database: Db,
+  guild: DiscordGuild | Snowflake
+): Promise<Guild | null> =>
+  database
+    .collection('guilds')
+    .findOne({_id: typeof guild === 'string' ? guild : guild.id})
 
 /** Sets a value for a guild in a database. */
 export const setGuildValue = async <T extends keyof Guild>(
@@ -45,14 +49,28 @@ export const setGuildValue = async <T extends keyof Guild>(
   key: T,
   value: Guild[T]
 ): Promise<UpdateWriteOpResult> =>
-  database.collection('guilds').updateOne({_id: guild.id}, {$set: {[key]: value}}, {upsert: true})
+  database
+    .collection('guilds')
+    .updateOne({_id: guild.id}, {$set: {[key]: value}}, {upsert: true})
 
 /** Gets the prefix for a guild. */
-export const getPrefix = async (database: Db, guild: DiscordGuild | null): Promise<string> =>
-  guild ? (await database.collection('guilds').findOne({_id: guild.id}))?.prefix ?? defaultPrefix : defaultPrefix
+export const getPrefix = async (
+  database: Db,
+  guild: DiscordGuild | null
+): Promise<string> =>
+  guild
+    ? (await database.collection('guilds').findOne({_id: guild.id}))?.prefix ??
+      defaultPrefix
+    : defaultPrefix
 
 /** Connects to the database. */
-export const connect = async (user: string, password: string, name: string): Promise<Db> =>
-  (await new MongoClient(
-    `mongodb+srv://${user}:${password}@comrade-pingu.vnvdt.mongodb.net/${name}?retryWrites=true&w=majority&useNewUrlParser=true&useUnifiedTopology=true`
-  ).connect()).db(name)
+export const connect = async (
+  user: string,
+  password: string,
+  name: string
+): Promise<Db> =>
+  (
+    await new MongoClient(
+      `mongodb+srv://${user}:${password}@comrade-pingu.vnvdt.mongodb.net/${name}?retryWrites=true&w=majority&useNewUrlParser=true&useUnifiedTopology=true`
+    ).connect()
+  ).db(name)

@@ -12,17 +12,21 @@ import type {GuildMessage, Message, Queue, Video} from './types'
 const dev = process.env.NODE_ENV !== 'production'
 
 /** Creates a function to easily resolve paths relative to the `__dirname`. */
-export const createResolve = (dirname: string) => (p: string): string => join(dirname, p)
+export const createResolve = (dirname: string) => (p: string): string =>
+  join(dirname, p)
 
 /** Cleans up the error stack on an error. */
 const _cleanStack = <T extends Error>(error: T): T & {stack: string} => {
-  error.stack = error.stack === undefined
-    ? ''
-    : cleanStack(error.stack, {basePath: join(
-      homedir(),
-      ...dev ? ['dev', 'node'] : [],
-      'comrade-pingu'
-    )})
+  error.stack =
+    error.stack === undefined
+      ? ''
+      : cleanStack(error.stack, {
+          basePath: join(
+            homedir(),
+            ...(dev ? ['dev', 'node'] : []),
+            'comrade-pingu'
+          )
+        })
   return error as T & {stack: string}
 }
 export {_cleanStack as cleanStack}
@@ -31,16 +35,32 @@ export {_cleanStack as cleanStack}
  * DMs me an error.
  * @param info Extra information to send.
  */
-export const sendMeError = async (client: Client, error: Error, info: string): Promise<void> => {
+export const sendMeError = async (
+  client: Client,
+  error: Error,
+  info: string
+): Promise<void> => {
   if (!dev) {
     _cleanStack(error)
     await (await client.users.fetch(me)!).send(`${info}
-**Error at ${new Date().toLocaleString()}**${error.stack! ? `
-${error.stack}` : ''}${error instanceof DiscordAPIError ? `
-Code: ${error.code} (${Object.entries(Constants.APIErrors).find(([, code]) => code === error.code)?.[0] ?? 'unknown'})
+**Error at ${new Date().toLocaleString()}**${
+      error.stack!
+        ? `
+${error.stack}`
+        : ''
+    }${
+      error instanceof DiscordAPIError
+        ? `
+Code: ${error.code} (${
+            Object.entries(Constants.APIErrors).find(
+              ([, code]) => code === error.code
+            )?.[0] ?? 'unknown'
+          })
 Path: ${error.path}
 Method: ${error.method}
-Status: ${error.httpStatus}` : ''}`)
+Status: ${error.httpStatus}`
+        : ''
+    }`)
   }
 }
 
@@ -61,17 +81,24 @@ export const handleError = async (
     if (message) await message.reply(response)
     if (dev) throw error
     await sendMeError(client, error, info)
-  } catch (error2) {
-    if (error2 instanceof Error) _cleanStack(error2)
+  } catch (error_) {
+    if (error_ instanceof Error) _cleanStack(error_)
     _cleanStack(error)
-    if (dev) throw error2
-    console.error('The error', error2, 'occurred when trying to handle the error', error)
+    if (dev) throw error_
+    console.error(
+      'The error',
+      error_,
+      'occurred when trying to handle the error',
+      error
+    )
   }
 }
 
 /** Check if the bot has permissions. */
-export const hasPermissions = ({channel, client}: GuildMessage, permissions: PermissionResolvable): boolean =>
-  channel.permissionsFor(client.user!)?.has(permissions) ?? false
+export const hasPermissions = (
+  {channel, client}: GuildMessage,
+  permissions: PermissionResolvable
+): boolean => channel.permissionsFor(client.user!)?.has(permissions) ?? false
 
 /** Check if the bot has permissions and sends a message if it doesn't. */
 export const checkPermissions = async (
@@ -83,8 +110,8 @@ export const checkPermissions = async (
   // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions -- optional chaining
   if (!channelPermissions?.has(permissions)) {
     const neededPermissions = Array.isArray(permissions)
-      // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions -- optional chaining
-      ? permissions.filter(p => !channelPermissions?.has(p))
+      ? // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions -- optional chaining
+        permissions.filter(p => !channelPermissions?.has(p))
       : [permissions]
 
     const plural = neededPermissions.length !== 1
@@ -93,9 +120,11 @@ export const checkPermissions = async (
     await message.reply([
       `I don’t have th${plural ? 'ese' : 'is'}${permissionsString}!`,
       neededPermissions.map(p => `- ${p}`).join('\n'),
-      `To fix this, ask an admin or the owner of the server to add th${plural ? 'ose' : 'at'}${permissionsString} to ${
-        guild.me!.roles.cache.find(role => role.managed)!
-      }.`
+      `To fix this, ask an admin or the owner of the server to add th${
+        plural ? 'ose' : 'at'
+      }${permissionsString} to ${guild.me!.roles.cache.find(
+        role => role.managed
+      )!}.`
     ])
     return false
   }
@@ -103,7 +132,10 @@ export const checkPermissions = async (
 }
 
 /** Resolves a user based on user input. */
-export const resolveUser = async (message: Message, input: string): Promise<User | null> => {
+export const resolveUser = async (
+  message: Message,
+  input: string
+): Promise<User | null> => {
   const {author, client, guild, mentions} = message
 
   // Check for mentioned user
@@ -113,18 +145,26 @@ export const resolveUser = async (message: Message, input: string): Promise<User
   // Default to the message author
   if (!input) return author
 
-  type KeysMatching<T, V> = {[K in keyof T]-?: T[K] extends V ? K : never}[keyof T]
-  const getUser = async (key: KeysMatching<User, string>): Promise<User | null> => {
+  type KeysMatching<T, V> = {
+    [K in keyof T]-?: T[K] extends V ? K : never
+  }[keyof T]
+  const getUser = async (
+    key: KeysMatching<User, string>
+  ): Promise<User | null> => {
     // Check if it's the bot or the author in a DM
     if (!guild && input !== author[key] && input !== client.user![key]) {
-      await message.reply('you can only get information about you or I in a DM!')
+      await message.reply(
+        'you can only get information about you or I in a DM!'
+      )
       return null
     }
 
     // Find user
     const user = client.users.cache.find(u => u[key] === input)
     if (!user || !guild!.member(user)) {
-      await message.reply(`‘${input}’ is not a valid user or is not a member of this guild!`)
+      await message.reply(
+        `‘${input}’ is not a valid user or is not a member of this guild!`
+      )
       return null
     }
     return user
@@ -137,29 +177,45 @@ export const resolveUser = async (message: Message, input: string): Promise<User
 }
 
 /** Gets the queue and sends a message no music is playing. */
-export const getQueue = async ({channel, client: {queues}, guild}: GuildMessage): Promise<Queue | void> => {
+export const getQueue = async ({
+  channel,
+  client: {queues},
+  guild
+}: GuildMessage): Promise<Queue | void> => {
   const queue = queues.get(guild.id)
   if (queue) return queue
   await channel.send('No music is playing!')
 }
 
 /** Converts a `yts.VideoSearchResult` into a `Video`. */
-export const searchToVideo = ({title, videoId: id, author: {name}}: VideoSearchResult): Video =>
-  ({title, id, author: name})
+export const searchToVideo = ({
+  title,
+  videoId: id,
+  author: {name}
+}: VideoSearchResult): Video => ({title, id, author: name})
 
 /** Searches YouTube for a video. */
 export const searchYoutube = async (
   message: Message,
   query: string
 ): Promise<VideoSearchResult | void> => {
-  if (message.guild && !await checkPermissions(message, [
-    'MANAGE_MESSAGES', 'EMBED_LINKS', 'READ_MESSAGE_HISTORY', 'ADD_REACTIONS'
-  ])) return
+  if (
+    message.guild &&
+    !(await checkPermissions(message, [
+      'MANAGE_MESSAGES',
+      'EMBED_LINKS',
+      'READ_MESSAGE_HISTORY',
+      'ADD_REACTIONS'
+    ]))
+  )
+    return
   const {author, channel} = message
 
   const {videos} = await yts(query)
   if (!videos.length) {
-    await channel.send(`No results were found for ${query}. Try using a YouTube link instead.`)
+    await channel.send(
+      `No results were found for ${query}. Try using a YouTube link instead.`
+    )
     return
   }
 
@@ -172,20 +228,29 @@ export const searchYoutube = async (
   const generateEmbed = (start: number): [string, MessageEmbed] => {
     current = videos.slice(start, start + 10)
 
-    const embed = new MessageEmbed()
-      .setTitle(`Showing songs ${start + 1}-${start + current.length} out of ${videos.length}`)
-      .setDescription(`Click on the title for the YouTube link.
+    const embed = new MessageEmbed().setTitle(
+      `Showing songs ${start + 1}-${start + current.length} out of ${
+        videos.length
+      }`
+    ).setDescription(`Click on the title for the YouTube link.
   If you can’t be bothered to wait for the reactions you can just add the reaction yourself.`)
-    current.forEach((v, i) => embed.addField(`${i + start + 1}. ${v.author.name}
-  ${emojis.numbers[i + 1]}`, `[${v.title}](${v.url})`, true))
+    current.forEach((v, i) =>
+      embed.addField(
+        `${i + start + 1}. ${v.author.name}
+  ${emojis.numbers[i + 1]}`,
+        `[${v.title}](${v.url})`,
+        true
+      )
+    )
     return ['**Which song would you like to play?**', embed]
   }
 
   const embedMessage = await channel.send(...generateEmbed(0))
 
   const reactNumbers = async (): Promise<void> => {
-    // eslint-disable-next-line no-await-in-loop -- loop is necessary for the numbers to be in order
-    for (let i = 1; i <= current.length; i++) await embedMessage.react(emojis.numbers[i])
+    for (let i = 1; i <= current.length; i++)
+      // eslint-disable-next-line no-await-in-loop -- loop is necessary for the numbers to be in order
+      await embedMessage.react(emojis.numbers[i])
   }
 
   if (videos.length <= 10) return
@@ -195,7 +260,9 @@ export const searchYoutube = async (
   let currentIndex = 0
 
   const collector = embedMessage.createReactionCollector(
-    ({emoji: {name}}, {id}) => [emojis.left, emojis.right, ...emojis.numbers].includes(name) && id === author.id,
+    ({emoji: {name}}, {id}) =>
+      [emojis.left, emojis.right, ...emojis.numbers].includes(name) &&
+      id === author.id,
     {idle: 60_000}
   )
 
@@ -216,7 +283,8 @@ export const searchYoutube = async (
       currentIndex += name === emojis.left ? -10 : 10
       await embedMessage.edit(...generateEmbed(currentIndex))
       if (currentIndex !== 0) await embedMessage.react(emojis.left)
-      if (currentIndex + 10 < videos.length) await embedMessage.react(emojis.right)
+      if (currentIndex + 10 < videos.length)
+        await embedMessage.react(emojis.right)
       await reactNumbers()
     })
   })

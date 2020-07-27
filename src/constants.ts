@@ -22,7 +22,7 @@ export const permissions: PermissionString[] = [
 export const me = '506054261717598210'
 
 const numbers = []
-for (let i = 0; i <= 9; i++) numbers.push(`${i}\ufe0f\u20e3`)
+for (let i = 0; i <= 9; i++) numbers.push(`${i}\uFE0F\u20E3`)
 numbers.push('🔟')
 
 /** Emojis. */

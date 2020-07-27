@@ -18,38 +18,53 @@ const readme = resolve('README.md')
 ;(async (): Promise<void> => {
   // Update readme
   const files = readdirSync(commandsPath)
-  const modules = await Promise.all(files
-    .filter(f => !f.endsWith('.map'))
-    .map(async f => import(join(commandsPath, f))))
+  const modules = await Promise.all(
+    files
+      .filter(f => !f.endsWith('.map'))
+      .map(async f => import(join(commandsPath, f)))
+  )
   const commands = modules.map(m => (m as {default: Command<boolean>}).default)
   const usageMarkdownIt = new MarkdownIt({html: true, breaks: true})
-  const docs = [['Command', 'Aliases', 'Description', 'Usage', 'Cooldown (s)'],
+  const docs = [
+    ['Command', 'Aliases', 'Description', 'Usage', 'Cooldown (s)'],
     ...commands
       .filter(({hidden = false}) => !hidden)
-      .map(
-        ({name, aliases, description, syntax, usage, cooldown = 3}) => [
-          `\`${name}\``,
-          aliases?.map(a => `\`${a}\``).join(', ') ?? '-',
-          name === 'iwmelc'
-            ? `${description}<br>![i will murder every last capitalist](./assets/img/iwmelc.jpg)`
-            : name === 'htkb' ? `${description}<br>![how to kiss boy](./assets/img/htkb.png)` : description,
-          `\`.${name}${syntax === undefined ? '' : ` ${syntax.replace(/\|/ug, '\\|')}`}\`${usage === undefined
+      .map(({name, aliases, description, syntax, usage, cooldown = 3}) => [
+        `\`${name}\``,
+        aliases?.map(a => `\`${a}\``).join(', ') ?? '-',
+        name === 'iwmelc'
+          ? `${description}<br>![i will murder every last capitalist](./assets/img/iwmelc.jpg)`
+          : name === 'htkb'
+          ? `${description}<br>![how to kiss boy](./assets/img/htkb.png)`
+          : description,
+        `\`.${name}${
+          syntax === undefined ? '' : ` ${syntax.replace(/\|/gu, '\\|')}`
+        }\`${
+          usage === undefined
             ? ''
             : `<br>${(name === 'play' || name === 'volume'
-              ? usageMarkdownIt.render(usage)
-                .replace(/\|/ug, '\\|')
-                .replace(/\n/ug, '')
-                .replace(/<\/?p>/ug, '')
-              : usage
-            ).replace(/\n/ug, '<br>')}`
-          }`,
-          cooldown.toString()
-        ]
-      )]
+                ? usageMarkdownIt
+                    .render(usage)
+                    .replace(/\|/gu, '\\|')
+                    .replace(/\n/gu, '')
+                    .replace(/<\/?p>/gu, '')
+                : usage
+              ).replace(/\n/gu, '<br>')}`
+        }`,
+        cooldown.toString()
+      ])
+  ]
 
-  const newReadme = (await readFile(readme)).toString()
-    .replace(/(?<=## Documentation\n\n)[\s\S]+(?=\n\n## Links)/u, table(docs, {alignDelimiters: false}))
-    .replace(/(?<=permissions=)\d+/u, new Permissions(permissions).bitfield.toString())
+  const newReadme = (await readFile(readme))
+    .toString()
+    .replace(
+      /(?<=## Documentation\n\n)[\s\S]+(?=\n\n## Links)/u,
+      table(docs, {alignDelimiters: false})
+    )
+    .replace(
+      /(?<=permissions=)\d+/u,
+      new Permissions(permissions).bitfield.toString()
+    )
 
   await writeFile(readme, newReadme)
 
@@ -57,13 +72,24 @@ const readme = resolve('README.md')
   const template = (await readFile(resolve('scripts/template.html'))).toString()
 
   const htmlMarkdownIt = new MarkdownIt({html: true})
-  const writeHtml = async (p: string, title: string, description: string, md: string): Promise<void> =>
-    writeFile(resolve(`dist/assets/html/${p}.html`), template
-      .replace('[title]', title)
-      .replace('[description]', description)
-      .replace('[content]', htmlMarkdownIt.render(md)))
+  const writeHtml = async (
+    p: string,
+    title: string,
+    description: string,
+    md: string
+  ): Promise<void> =>
+    writeFile(
+      resolve(`dist/assets/html/${p}.html`),
+      template
+        .replace('[title]', title)
+        .replace('[description]', description)
+        .replace('[content]', htmlMarkdownIt.render(md))
+    )
 
-  const writeOtherPage = async (htmlPath: string, mdPath: string): Promise<void> => {
+  const writeOtherPage = async (
+    htmlPath: string,
+    mdPath: string
+  ): Promise<void> => {
     const title = upperFirst(htmlPath)
     return writeHtml(
       htmlPath,
@@ -75,12 +101,17 @@ const readme = resolve('README.md')
   }
 
   // Update index.html
-  await writeHtml('index', 'Comrade Pingu', 'Kill all the capitalist scum!', newReadme
-    // Replace the escaped pipe in play but not in volume
-    .replace('\\|', '|')
-    .replace(/\.\/assets\/img/ug, '')
-    .replace('LICENSE', 'license')
-    .replace('CHANGELOG.md', 'changelog'))
+  await writeHtml(
+    'index',
+    'Comrade Pingu',
+    'Kill all the capitalist scum!',
+    newReadme
+      // Replace the escaped pipe in play but not in volume
+      .replace('\\|', '|')
+      .replace(/\.\/assets\/img/gu, '')
+      .replace('LICENSE', 'license')
+      .replace('CHANGELOG.md', 'changelog')
+  )
   // Update license.html and changelog.html
   await writeOtherPage('license', 'LICENSE')
   await writeOtherPage('changelog', 'CHANGELOG.md')

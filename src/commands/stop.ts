@@ -13,7 +13,8 @@ const command: Command<true> = {
 
     queue.voiceChannel.leave()
     message.client.queues.delete(message.guild.id)
-    if (hasPermissions(message, 'READ_MESSAGE_HISTORY')) await message.react(emojis.stop)
+    if (hasPermissions(message, 'READ_MESSAGE_HISTORY'))
+      await message.react(emojis.stop)
     else {
       await message.channel.send(`Stopped the music.
 I can react on your message instead if you enable the READ_MESSAGE_HISTORY permission.`)

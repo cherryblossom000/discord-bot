@@ -13,7 +13,6 @@ const resolve = createResolve(__dirname)
 
 const dev = process.env.NODE_ENV !== 'production'
 
-// eslint-disable-next-line max-statements -- main
 ;(async (): Promise<void> => {
   if (dev) {
     // eslint-disable-next-line node/no-unpublished-import -- dotenv is only needed to be imported in development
@@ -31,15 +30,17 @@ const dev = process.env.NODE_ENV !== 'production'
 
   const client = new Client({
     disableMentions: 'everyone',
-    ws: {intents: [
-      'GUILDS',
-      'GUILD_MESSAGES',
-      'GUILD_MESSAGE_REACTIONS',
-      'GUILD_EMOJIS',
-      'GUILD_VOICE_STATES',
-      'GUILD_PRESENCES',
-      'DIRECT_MESSAGES'
-    ]}
+    ws: {
+      intents: [
+        'GUILDS',
+        'GUILD_MESSAGES',
+        'GUILD_MESSAGE_REACTIONS',
+        'GUILD_EMOJIS',
+        'GUILD_VOICE_STATES',
+        'GUILD_PRESENCES',
+        'DIRECT_MESSAGES'
+      ]
+    }
   })
 
   // Handle promise rejections and uncaught exceptions
@@ -49,20 +50,48 @@ const dev = process.env.NODE_ENV !== 'production'
     })
   } else {
     process.on('unhandledRejection', async reason =>
-      handleError(client, reason instanceof Error ? reason : new Error(`${reason}`), 'Uncaught promise rejection:'))
-    process.on('uncaughtException', async error => handleError(client, error, 'Uncaught exception:'))
+      handleError(
+        client,
+        reason instanceof Error ? reason : new Error(`${reason}`),
+        'Uncaught promise rejection:'
+      )
+    )
+    process.on('uncaughtException', async error =>
+      handleError(client, error, 'Uncaught exception:')
+    )
   }
 
   // Connect to database
-  const database = await connect(process.env.DB_USER!, process.env.DB_PASSWORD!, process.env.DB_NAME!)
+  const database = await connect(
+    process.env.DB_USER!,
+    process.env.DB_PASSWORD!,
+    process.env.DB_NAME!
+  )
 
-  const importFolder = async <T>(path: string, callback: (command: T, file: string) => void): Promise<void> => {
+  const importFolder = async <T>(
+    path: string,
+    // eslint-disable-next-line promise/prefer-await-to-callbacks -- easier to handle errors in one spot
+    callback: (command: T, file: string) => void
+  ): Promise<void> => {
     try {
-      await Promise.all((await readdir(resolve(path)))
-        .filter(file => !file.endsWith('.map'))
-        .map(async file => callback((await import(join(resolve(path), file)) as {default: T}).default, file.slice(0, -3))))
+      await Promise.all(
+        (await readdir(resolve(path)))
+          .filter(file => !file.endsWith('.map'))
+          .map(async file =>
+            // eslint-disable-next-line promise/prefer-await-to-callbacks -- see above
+            callback(
+              ((await import(join(resolve(path), file))) as {default: T})
+                .default,
+              file.slice(0, -3)
+            )
+          )
+      )
     } catch (error) {
-      await sendMeError(client, error, `\`importFolder\` failed with path \`${path}\`.`)
+      await sendMeError(
+        client,
+        error,
+        `\`importFolder\` failed with path \`${path}\`.`
+      )
       throw error
     }
   }
@@ -78,16 +107,24 @@ const dev = process.env.NODE_ENV !== 'production'
 
   // Initialise event listeners
   await importFolder<ClientListener<keyof ClientEvents>>(
-    'events', (listener, name) => client.on(name as keyof ClientEvents, listener(client, database))
+    'events',
+    (listener, name) =>
+      client.on(name as keyof ClientEvents, listener(client, database))
   )
 
   // Initialise commands
   await Promise.all([
     importFolder<Command>('commands', c => client.commands.set(c.name, c)),
-    importFolder<RegexCommand>('regex-commands', c => client.regexCommands.set(c.regex, c.regexMessage))
+    importFolder<RegexCommand>('regex-commands', c =>
+      client.regexCommands.set(c.regex, c.regexMessage)
+    )
   ])
   const listener = app.listen(process.env.PORT, () => {
-    if (dev) console.log(`http://localhost:${(listener.address() as AddressInfo).port}`)
+    if (dev) {
+      console.log(
+        `http://localhost:${(listener.address() as AddressInfo).port}`
+      )
+    }
   })
   await client.login(process.env.TOKEN)
 })().catch(error => console.error('Error in main function:', cleanStack(error)))
