@@ -144,7 +144,7 @@ The syntax is: \`${prefix}${command.name}${
         client,
         error,
         `Command \`${command!.name}\` failed${
-          _input ? `with input ${_input}` : ''
+          _input ? ` with input ${_input}` : ''
         }.`,
         message
       )
