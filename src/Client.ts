@@ -3,14 +3,22 @@ import upperFirst from 'lodash.upperfirst'
 import {emojis} from './constants'
 import {checkPermissions} from './utils'
 import type {
-  APIMessage, ClientEvents, MessageAdditions, MessageOptions, MessageReaction, Snowflake, StringResolvable, User
+  APIMessage, MessageAdditions, MessageOptions, MessageReaction, Snowflake, StringResolvable, User
 } from 'discord.js'
+import type {Db} from './database'
 import type {Command, GuildMessage, Message, OptionsNoSplit, OptionsWithSplit, RegexCommand, Queue} from './types'
+
+export interface ClientEvents extends Discord.ClientEvents {
+  message: [Message]
+}
+
+type Listener<K extends keyof ClientEvents> = (...args: ClientEvents[K]) => void
+export type ClientListener<K extends keyof ClientEvents> = (client: Client, database: Db) => Listener<K>
 
 /** The Discord client for this bot. */
 export default class Client extends Discord.Client {
   declare on: <K extends keyof ClientEvents>(
-    event: K, listener: (...args: (ClientEvents & {message: [Message]})[K]) => void
+    event: K, listener: Listener<K>
   ) => this
 
   /** The commands. */
