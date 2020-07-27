@@ -32,13 +32,18 @@ const dev = process.env.NODE_ENV !== 'production'
     disableMentions: 'everyone',
     ws: {
       intents: [
+        // Guild create (logging in, presence), guild role update (rejoin)
         'GUILDS',
+        // Guild commands
         'GUILD_MESSAGES',
+        // Guild reactions
         'GUILD_MESSAGE_REACTIONS',
-        'GUILD_EMOJIS',
+        // Members joining voice channels
         'GUILD_VOICE_STATES',
-        'GUILD_PRESENCES',
-        'DIRECT_MESSAGES'
+        // DM commands
+        'DIRECT_MESSAGES',
+        // DM reactions
+        'DIRECT_MESSAGE_REACTIONS'
       ]
     }
   })
