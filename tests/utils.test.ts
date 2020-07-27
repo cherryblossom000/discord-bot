@@ -1,4 +1,4 @@
-import {createResolve, searchToVideo} from '../src/helpers'
+import {createResolve, searchToVideo} from '../src/utils'
 import type {Video} from '../src/types'
 
 describe('Helpers', () => {

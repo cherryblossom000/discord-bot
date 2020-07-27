@@ -1,4 +1,4 @@
-import {getQueue} from '../helpers'
+import {getQueue} from '../utils'
 import type {Command} from '../types'
 
 const command: Command<true> = {

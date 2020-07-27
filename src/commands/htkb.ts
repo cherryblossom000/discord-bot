@@ -1,6 +1,6 @@
 import {join} from 'path'
 import {MessageAttachment} from 'discord.js'
-import {checkPermissions} from '../helpers'
+import {checkPermissions} from '../utils'
 import type {Command} from '../types'
 
 const command: Command = {

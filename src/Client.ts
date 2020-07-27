@@ -1,7 +1,7 @@
 import Discord, {Collection, Structures} from 'discord.js'
 import upperFirst from 'lodash.upperfirst'
 import {emojis} from './constants'
-import {checkPermissions} from './helpers'
+import {checkPermissions} from './utils'
 import type {
   APIMessage, ClientEvents, MessageAdditions, MessageOptions, MessageReaction, Snowflake, StringResolvable, User
 } from 'discord.js'

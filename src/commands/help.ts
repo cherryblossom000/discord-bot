@@ -1,7 +1,7 @@
 import {Constants} from 'discord.js'
 import {defaultPrefix} from '../constants'
 import {getPrefix} from '../database'
-import {sendMeError} from '../helpers'
+import {sendMeError} from '../utils'
 import type {Command} from '../types'
 
 const command: Command = {
@@ -28,7 +28,7 @@ You can send \`${defaultPrefix}help [command name]\` to get info on a specific c
 
       try {
         await author.send(data, {split: true})
-        if (message.channel.type !== 'dm') await message.reply('I’ve sent you a DM with all my commands. Noot noot.')
+        if (message.channel.type !== 'dm') await message.reply('Iï¿½ve sent you a DM with all my commands. Noot noot.')
         return
       } catch (error) {
         if ((error as {code?: number}).code === Constants.APIErrors.CANNOT_MESSAGE_USER) {
@@ -36,7 +36,7 @@ You can send \`${defaultPrefix}help [command name]\` to get info on a specific c
             sendMeError(client, error, `Could not send help DM to ${author.tag}.`),
             message.sendDeletableMessage({
               reply: true,
-              content: `it seems like I can’t DM you. Noot noot.
+              content: `it seems like I canï¿½t DM you. Noot noot.
 Do you have DMs disabled?`
             })
           ])
@@ -52,7 +52,7 @@ Do you have DMs disabled?`
 
     // Invalid command
     if (!_command) {
-      await message.reply('that’s not a valid command. Noot noot.')
+      await message.reply('thatï¿½s not a valid command. Noot noot.')
       return
     }
 

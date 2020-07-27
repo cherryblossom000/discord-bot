@@ -1,5 +1,5 @@
 import {me} from '../constants'
-import {checkPermissions} from '../helpers'
+import {checkPermissions} from '../utils'
 import type {Collection, Snowflake} from 'discord.js'
 import type {Command, TextBasedGuildChannel} from '../types'
 

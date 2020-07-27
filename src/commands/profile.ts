@@ -3,7 +3,7 @@ import startCase from 'lodash.startcase'
 import upperFirst from 'lodash.upperfirst'
 import type {GuildMember, PresenceStatus, User} from 'discord.js'
 import type {Command} from '../types'
-import {resolveUser} from '../helpers'
+import {resolveUser} from '../utils'
 
 declare global {
   interface ObjectConstructor {

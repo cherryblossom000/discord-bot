@@ -1,5 +1,5 @@
 import {emojis} from '../constants'
-import {getQueue, hasPermissions} from '../helpers'
+import {getQueue, hasPermissions} from '../utils'
 import type {Command} from '../types'
 
 const command: Command<true> = {

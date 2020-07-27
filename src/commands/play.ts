@@ -1,7 +1,7 @@
 import ytdl, {getBasicInfo, validateURL} from 'ytdl-core'
 import yts from 'yt-search'
 import {getGuild} from '../database'
-import {checkPermissions, searchYoutube, sendMeError} from '../helpers'
+import {checkPermissions, searchYoutube, sendMeError} from '../utils'
 import {resume} from './resume'
 import type {Command, Video} from '../types'
 
