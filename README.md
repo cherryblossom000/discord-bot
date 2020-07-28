@@ -37,6 +37,7 @@ Comrade Pingu’s default prefix is `.`.
 | `prefix` | `pre` | Gets or sets the prefix. | `.prefix [new prefix]`<br>`new prefix` (optional)<br>The text that you want to set the prefix to. If omitted, displays the current prefix.<br>The default prefix is `.`. | 3 |
 | `profile` | `pr`, `pro`, `u`, `user` | Gets information on a user. | `.profile [user]`<br>`user` (optional)<br>The user to display information about. If omitted, defaults to you.<br>You can mention the user or use their tag (for example `Username#1234`). | 3 |
 | `queue` | `q` | Views the music queue. | `.queue` | 3 |
+| `rejoin` | `re`, `rj` | Manages settings for what to do when a member rejoins this server. | `.rejoin [e(nable) [r(oles)\|n(ickname)\|a(ll)]]\|[d(isable)]`<br>This command has 3 subcommands.<br>`rejoin`<br>See this server’s rejoining configuration.<br><br>`rejoin e(nable) [r(oles)|n(ickname)|a(ll)]`<br>Enables adding a member’s past roles, nickname, or both of these. Defaults to `all`.<br><br>`rejoin d(isable)`<br>Stops doing anything when a member rejoins this server. | 10 |
 | `resume` | `r`, `unpause` | Resumes the song currently playing. | `.resume` | 3 |
 | `skip` | `sk` | Skips the current song. | `.skip` | 3 |
 | `stats` | `statistics` | Gets my stats. | `.stats` | 3 |
