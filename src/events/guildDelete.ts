@@ -1,6 +1,6 @@
-import type {ClientListener} from '../Client'
+import type {EventListener} from '../Client'
 
-const listener: ClientListener<'guildDelete'> = client => async (): Promise<
+const listener: EventListener<'guildDelete'> = client => async (): Promise<
   void
 > => client.setActivity()
 export default listener

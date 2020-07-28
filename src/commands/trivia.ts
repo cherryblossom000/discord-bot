@@ -1,6 +1,7 @@
 import {Collection, MessageEmbed, escapeMarkdown} from 'discord.js'
 import shuffle from 'lodash.shuffle'
 import {emojis} from '../constants'
+import {collection} from '../database'
 import {checkPermissions, resolveUser} from '../utils'
 import {Difficulty, Type, fetchQuestion} from '../opentdb'
 import type {EmbedFieldData} from 'discord.js'
@@ -26,7 +27,7 @@ const statsCommand = async (
     .setTimestamp()
 
   const questions =
-    (await database.collection('users').findOne({_id: user.id}))
+    (await collection(database, 'users').findOne({_id: user.id}))
       ?.questionsAnswered ?? []
   if (questions.length) {
     const _formatPercentage = (
@@ -200,7 +201,7 @@ Gets the trivia statistics for a user. If no user is specified, it will get the 
         )
       }
 
-      await database.collection('users').updateOne(
+      await collection(database, 'users').updateOne(
         {_id: author.id},
         {
           $push: {

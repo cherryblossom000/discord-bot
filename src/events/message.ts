@@ -3,7 +3,7 @@ import escapeRegex from 'escape-string-regexp'
 import {getPrefix} from '../database'
 import {handleError} from '../utils'
 import type {Snowflake} from 'discord.js'
-import type {ClientListener} from '../Client'
+import type {EventListener} from '../Client'
 import type {Command, GuildMessage, Message} from '../types'
 
 const executeRegexCommands = (message: Message): void => {
@@ -30,7 +30,7 @@ const executeRegexCommands = (message: Message): void => {
 const cooldowns = new Collection<string, Collection<Snowflake, number>>()
 
 // eslint-disable-next-line max-statements -- don't know how to shorten and isn't a typical, simple function
-const listener: ClientListener<'message'> = (client, database) => async (
+const listener: EventListener<'message'> = (client, database) => async (
   message
 ): Promise<void> => {
   const now = Date.now()

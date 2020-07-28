@@ -2,10 +2,11 @@ import {promises} from 'fs'
 import {join} from 'path'
 import express from 'express'
 import Client from './Client'
-import {connect} from './database'
+import {addListeners} from './commands/rejoin'
+import {collection, connect} from './database'
 import {cleanStack, createResolve, handleError, sendMeError} from './utils'
 import type {AddressInfo} from 'net'
-import type {ClientEvents, ClientListener} from './Client'
+import type {ClientEvents, EventListener} from './Client'
 import type {Command, RegexCommand} from './types'
 
 const {readdir} = promises
@@ -13,6 +14,7 @@ const resolve = createResolve(__dirname)
 
 const dev = process.env.NODE_ENV !== 'production'
 
+// eslint-disable-next-line max-statements -- main
 ;(async (): Promise<void> => {
   if (dev) {
     // eslint-disable-next-line node/no-unpublished-import -- dotenv is only needed to be imported in development
@@ -32,8 +34,10 @@ const dev = process.env.NODE_ENV !== 'production'
     disableMentions: 'everyone',
     ws: {
       intents: [
-        // Guild create (logging in, presence), guild role update (rejoin)
+        // Guild create (logging in, presence)
         'GUILDS',
+        // Roles and nicknames changing, members leaving and joining (rejoin)
+        'GUILD_MEMBERS',
         // Guild commands
         'GUILD_MESSAGES',
         // Guild reactions
@@ -104,6 +108,19 @@ const dev = process.env.NODE_ENV !== 'production'
   // Ready
   client.once('ready', async () => {
     await client.setActivity()
+
+    // Initialise rejoin listeners
+    await collection(database, 'guilds')
+      .find({rejoinFlags: {$exists: true}}, {projection: {rejoinFlags: 1}})
+      .forEach(({_id, rejoinFlags}) =>
+        addListeners(
+          client,
+          client.guilds.cache.get(_id)!,
+          database,
+          rejoinFlags!
+        )
+      )
+
     console.log(`READY
   Users: ${client.users.cache.size}
   Channels: ${client.channels.cache.size}
@@ -111,7 +128,7 @@ const dev = process.env.NODE_ENV !== 'production'
   })
 
   // Initialise event listeners
-  await importFolder<ClientListener<keyof ClientEvents>>(
+  await importFolder<EventListener<keyof ClientEvents>>(
     'events',
     (listener, name) =>
       client.on(name as keyof ClientEvents, listener(client, database))

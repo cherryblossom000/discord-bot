@@ -4,6 +4,8 @@ import {emojis} from './constants'
 import {checkPermissions} from './utils'
 import type {
   APIMessage,
+  GuildMember,
+  GuildResolvable,
   MessageAdditions,
   MessageOptions,
   MessageReaction,
@@ -14,6 +16,7 @@ import type {
 import type {Db} from './database'
 import type {
   Command,
+  Guild,
   GuildMessage,
   Message,
   OptionsNoSplit,
@@ -24,22 +27,33 @@ import type {
 
 // eslint-disable-next-line import/no-unused-modules -- it is used
 export interface ClientEvents extends Discord.ClientEvents {
+  guildMemberAdd: [GuildMember & {client: Client}]
   message: [Message]
 }
 
-type Listener<K extends keyof ClientEvents> = (...args: ClientEvents[K]) => void
+export type Listener<K extends keyof ClientEvents> = (
+  ...args: ClientEvents[K]
+) => void
 // eslint-disable-next-line import/no-unused-modules -- it is used
-export type ClientListener<K extends keyof ClientEvents> = (
+export type EventListener<K extends keyof ClientEvents> = (
   client: Client,
   database: Db
 ) => Listener<K>
 
+interface RejoinListeners {
+  guildMemberAdd: Listener<'guildMemberAdd'>
+  guildMemberRemove: Listener<'guildMemberRemove'>
+}
+
+interface GuildManager
+  extends Discord.BaseManager<Snowflake, Guild, GuildResolvable> {
+  create(...args: Parameters<Discord.GuildManager['create']>): Promise<Guild>
+}
+
 /** The Discord client for this bot. */
 export default class Client extends Discord.Client {
-  declare on: <K extends keyof ClientEvents>(
-    event: K,
-    listener: Listener<K>
-  ) => this
+  guilds!: GuildManager
+  on!: <K extends keyof ClientEvents>(event: K, listener: Listener<K>) => this
 
   /** The commands. */
   readonly commands: Collection<string, Command<boolean>>
@@ -49,6 +63,9 @@ export default class Client extends Discord.Client {
 
   /** The music queue for each guild. */
   readonly queues: Collection<Snowflake, Queue>
+
+  /** The about the rejoining listeners, mapped by a guild's ID. */
+  readonly rejoinListeners: Collection<Snowflake, RejoinListeners>
 
   constructor(...args: ConstructorParameters<typeof Discord.Client>) {
     Structures.extend(
@@ -134,7 +151,15 @@ export default class Client extends Discord.Client {
     this.commands = new Collection<string, Command<boolean>>()
     this.regexCommands = new Collection<RegExp, RegexCommand['regexMessage']>()
     this.queues = new Collection<Snowflake, Queue>()
+    this.rejoinListeners = new Collection<Snowflake, RejoinListeners>()
   }
+
+  /*
+   * the issue with voice
+   * server UDP not sending IP info after IP discovery
+   * working    : [0,12,39,49, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+   * not working: [0,2, 11,198,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+   */
 
   /** Set the activity. */
   async setActivity(): Promise<void> {

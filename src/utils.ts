@@ -1,13 +1,24 @@
 import {join} from 'path'
 import {homedir} from 'os'
 import cleanStack from 'clean-stack'
-import {Constants, DiscordAPIError, MessageEmbed} from 'discord.js'
+import {
+  Constants,
+  DiscordAPIError,
+  Message as DiscordMessage,
+  MessageEmbed
+} from 'discord.js'
 import yts from 'yt-search'
 import {emojis, me} from './constants'
 import type {User, PermissionResolvable, PermissionString} from 'discord.js'
 import type {VideoSearchResult} from 'yt-search'
 import type Client from './Client'
-import type {GuildMessage, Message, Queue, Video} from './types'
+import type {
+  GuildMessage,
+  Message,
+  Queue,
+  TextBasedChannel,
+  Video
+} from './types'
 
 const dev = process.env.NODE_ENV !== 'production'
 
@@ -74,11 +85,15 @@ export const handleError = async (
   client: Client,
   error: Error,
   info: string,
-  message?: Message,
+  messageOrChannel?: Message | TextBasedChannel,
   response = 'unfortunately, there was an error trying to execute that command. Noot noot.'
 ): Promise<void> => {
   try {
-    if (message) await message.reply(response)
+    if (messageOrChannel) {
+      await (messageOrChannel instanceof DiscordMessage
+        ? messageOrChannel.reply(response)
+        : (messageOrChannel as TextBasedChannel).send(response))
+    }
     if (dev) throw error
     await sendMeError(client, error, info)
   } catch (error_) {
