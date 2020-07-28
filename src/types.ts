@@ -26,6 +26,7 @@ import type Client from './Client'
 // eslint-disable-next-line import/no-unused-modules -- it is used
 export type TextBasedGuildChannel = TextChannel | NewsChannel
 
+// eslint-disable-next-line import/no-unused-modules -- it is used
 export type TextBasedChannel = TextBasedGuildChannel | DMChannel
 
 /** @template T The type of the message in `execute`. */

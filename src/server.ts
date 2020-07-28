@@ -14,7 +14,6 @@ const resolve = createResolve(__dirname)
 
 const dev = process.env.NODE_ENV !== 'production'
 
-// eslint-disable-next-line max-statements -- main
 ;(async (): Promise<void> => {
   if (dev) {
     // eslint-disable-next-line node/no-unpublished-import -- dotenv is only needed to be imported in development

@@ -92,7 +92,7 @@ export const handleError = async (
     if (messageOrChannel) {
       await (messageOrChannel instanceof DiscordMessage
         ? messageOrChannel.reply(response)
-        : (messageOrChannel as TextBasedChannel).send(response))
+        : messageOrChannel.send(response))
     }
     if (dev) throw error
     await sendMeError(client, error, info)

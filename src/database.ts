@@ -48,6 +48,7 @@ interface Collections {
 }
 
 /** A collection for this client. */
+// eslint-disable-next-line import/no-unused-modules -- it is used
 export type Collection<K extends keyof Collections> = MongoCollection<
   Collections[K]
 >

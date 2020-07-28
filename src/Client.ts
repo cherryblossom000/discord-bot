@@ -31,6 +31,7 @@ export interface ClientEvents extends Discord.ClientEvents {
   message: [Message]
 }
 
+// eslint-disable-next-line import/no-unused-modules -- it is used
 export type Listener<K extends keyof ClientEvents> = (
   ...args: ClientEvents[K]
 ) => void
