@@ -37,7 +37,7 @@ You can send \`${defaultPrefix}help [command name]\` to get info on a specific c
         await author.send(data, {split: true})
         if (message.channel.type !== 'dm') {
           await message.reply(
-            'I�ve sent you a DM with all my commands. Noot noot.'
+            'I’ve sent you a DM with all my commands. Noot noot.'
           )
         }
         return
@@ -54,7 +54,7 @@ You can send \`${defaultPrefix}help [command name]\` to get info on a specific c
             ),
             message.sendDeletableMessage({
               reply: true,
-              content: `it seems like I can�t DM you. Noot noot.
+              content: `it seems like I can’t DM you. Noot noot.
 Do you have DMs disabled?`
             })
           ])
@@ -72,7 +72,7 @@ Do you have DMs disabled?`
 
     // Invalid command
     if (!_command) {
-      await message.reply('that�s not a valid command. Noot noot.')
+      await message.reply('that’s not a valid command. Noot noot.')
       return
     }
 
