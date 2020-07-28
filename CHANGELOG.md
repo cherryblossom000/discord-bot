@@ -1,5 +1,19 @@
 # Changelog
 
+# [2.4.0](https://github.com/cherryblossom000/comrade-pingu/compare/v2.3.1...v2.4.0) (2020-07-28)
+
+
+### Bug Fixes
+
+* **help:** fix some invalid characters ([f848bf9](https://github.com/cherryblossom000/comrade-pingu/commit/f848bf996029199f58b0018286a7b7346e61f7f9))
+* make reactions work in DMs ([59169e5](https://github.com/cherryblossom000/comrade-pingu/commit/59169e5ced54041047b5272b12a83b31baf9a471))
+* **pin:** make pin command available to people with manage messages ([a31a6f0](https://github.com/cherryblossom000/comrade-pingu/commit/a31a6f049c2336be0d9b5ca64ef406a7af509845))
+
+
+### Features
+
+* add `rejoin` command ([46ed369](https://github.com/cherryblossom000/comrade-pingu/commit/46ed369b71ab08ad20d4494545f2bf90b03111ed))
+
 ## [2.3.1](https://github.com/cherryblossom000/comrade-pingu/compare/v2.3.0...v2.3.1) (2020-07-21)
 
 
