@@ -3,7 +3,6 @@
   "typescript.tsc.autoDetect": "off",
   "typescript.tsdk": "node_modules/typescript/lib",
   "search.exclude": {
-    ".data/": true,
     ".history/": true,
     "dist/": true,
     "node_modules/": true,

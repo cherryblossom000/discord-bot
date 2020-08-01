@@ -1,5 +1,6 @@
----
+extends: semantic-release-monorepo
 plugins:
+- '@semantic-release/commit-analyzer'
 - - '@semantic-release/changelog'
   - changelogTitle: '# Changelog'
 - '@semantic-release/npm'

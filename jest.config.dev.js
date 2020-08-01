@@ -1,17 +1,17 @@
 'use strict'
+// import 'ts-jest'
 
-const jest = require('./jest.config')
+const base = require('./jest.config')
 
+/** @typedef {import('ts-jest')} */
+/** @type {import('@jest/types').Config.InitialOptions} */
 module.exports = {
-  ...jest,
+  ...base,
   collectCoverage: true,
-  collectCoverageFrom: ['src/**/*.ts'],
-  coverageDirectory: 'tests/coverage',
-  coveragePathIgnorePatterns: ['/node_modules/'],
   coverageReporters: ['lcov'],
+  coveragePathIgnorePatterns: ['node_modules/'],
   globals: {
     'ts-jest': {
-      ...jest.globals['ts-jest'],
       diagnostics: {
         ignoreCodes: [
           // Left side of comma operator is unused and has no side effects.

@@ -4,7 +4,7 @@ set -e
 pnpx semantic-release
 
 (
-  cd dist
+  cd packages/bot/dist
 
   # Copy package.json because that could have changed due to semantic-release
   cp ../package.json package.json

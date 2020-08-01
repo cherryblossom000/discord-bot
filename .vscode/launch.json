@@ -5,8 +5,8 @@
       "type": "node",
       "request": "launch",
       "name": "Launch",
-      "program": "${workspaceFolder}/src/server.ts",
-      "outFiles": ["${workspaceFolder}/dist/src/**/*.js"],
+      "program": "${workspaceFolder}/packages/bot/src/server.ts",
+      "outFiles": ["${workspaceFolder}/packages/bot/dist/src/**/*.js"],
       "skipFiles": ["<node_internals>/**"],
       "presentation": {"group": "0 launch"}
     },
@@ -14,8 +14,8 @@
       "type": "node",
       "request": "launch",
       "name": "Launch ignoring node_modules",
-      "program": "${workspaceFolder}/src/server.ts",
-      "outFiles": ["${workspaceFolder}/dist/src/**/*.js"],
+      "program": "${workspaceFolder}/packages/bot/src/server.ts",
+      "outFiles": ["${workspaceFolder}/packages/bot/dist/src/**/*.js"],
       "skipFiles": ["<node_internals>/**", "node_modules/**"],
       "presentation": {"group": "0 launch"}
     },
@@ -24,8 +24,8 @@
       "request": "launch",
       "name": "Launch (watch)",
       "runtimeExecutable": "nodemon",
-      "program": "${workspaceFolder}/src/server.ts",
-      "outFiles": ["${workspaceFolder}/dist/src/**/*.js"],
+      "program": "${workspaceFolder}/packages/bot/src/server.ts",
+      "outFiles": ["${workspaceFolder}/packages/bot/dist/src/**/*.js"],
       "restart": true,
       "skipFiles": ["<node_internals>/**"],
       "presentation": {"group": "1 watch"}
@@ -35,8 +35,8 @@
       "request": "launch",
       "name": "Launch (watch) ignoring node_modules",
       "runtimeExecutable": "nodemon",
-      "program": "${workspaceFolder}/src/server.ts",
-      "outFiles": ["${workspaceFolder}/dist/src/**/*.js"],
+      "program": "${workspaceFolder}/packages/bot/src/server.ts",
+      "outFiles": ["${workspaceFolder}/packages/bot/dist/src/**/*.js"],
       "restart": true,
       "skipFiles": ["<node_internals>/**", "node_modules/**"],
       "presentation": {"group": "1 watch"}
@@ -46,7 +46,7 @@
       "request": "attach",
       "name": "Attach",
       "processId": "${command:PickProcess}",
-      "outFiles": ["${workspaceFolder}/dist/src/**/*.js"],
+      "outFiles": ["${workspaceFolder}/packages/bot/dist/src/**/*.js"],
       "skipFiles": ["<node_internals>/**"]
     },
     {
@@ -60,7 +60,7 @@
     },
     {
       "type": "node",
-      "name": "Tests",
+      "name": "Tests (main)",
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/jest/bin/jest",
       "args": ["-c", "jest.config.dev.js", "-i", "--forceExit"],
@@ -69,7 +69,7 @@
     },
     {
       "type": "node",
-      "name": "Test Current File",
+      "name": "Test Current File (main)",
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/jest/bin/jest",
       "args": ["-c", "jest.config.dev.js", "-i", "--forceExit", "^${file}$"],

@@ -34,8 +34,9 @@ const _cleanStack = <T extends Error>(error: T): T & {stack: string} => {
       : cleanStack(error.stack, {
           basePath: join(
             homedir(),
-            ...(dev ? ['dev', 'node'] : []),
-            'comrade-pingu'
+            ...(dev
+              ? ['dev', 'node', 'comrade-pingu', 'packages', 'bot']
+              : ['comrade-pingu'])
           )
         })
   return error as T & {stack: string}

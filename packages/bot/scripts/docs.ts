@@ -1,27 +1,31 @@
 import {promises, readdirSync} from 'fs'
-import {join, resolve} from 'path'
+import {join} from 'path'
 import {Permissions} from 'discord.js'
 import upperFirst from 'lodash.upperfirst'
 import MarkdownIt from 'markdown-it'
 import table from 'markdown-table'
+import exitOnError, {exit} from '../../../scripts/exit-on-error'
 import {permissions} from '../src/constants'
 import type {Command} from '../src/types'
-import exitOnError, {exit} from './exitOnError'
-
-const {mkdir, readFile, writeFile} = promises
 
 exitOnError()
 
-const commandsPath = resolve('dist/src/commands')
-const readme = resolve('README.md')
+const {mkdir, readFile, writeFile} = promises
+const resolve = (...paths: string[]): string => join(__dirname, ...paths)
+
+const rootFolder = resolve('..')
+const dist = join(rootFolder, 'dist')
+const commandsFolder = join(dist, 'src', 'commands')
+const htmlFolder = join(dist, 'assets', 'html')
+const readme = join(rootFolder, 'README.md')
 
 ;(async (): Promise<void> => {
   // Update readme
-  const files = readdirSync(commandsPath)
+  const files = readdirSync(commandsFolder)
   const modules = await Promise.all(
     files
       .filter(f => !f.endsWith('.map'))
-      .map(async f => import(join(commandsPath, f)))
+      .map(async f => import(join(commandsFolder, f)))
   )
   const commands = modules.map(m => (m as {default: Command<boolean>}).default)
   const usageMarkdownIt = new MarkdownIt({html: true, breaks: true})
@@ -68,8 +72,8 @@ const readme = resolve('README.md')
 
   await writeFile(readme, newReadme)
 
-  await mkdir(resolve('dist/assets/html'), {recursive: true})
-  const template = (await readFile(resolve('scripts/template.html'))).toString()
+  await mkdir(htmlFolder, {recursive: true})
+  const template = (await readFile(resolve('template.html'))).toString()
 
   const htmlMarkdownIt = new MarkdownIt({html: true})
   const writeHtml = async (
@@ -79,7 +83,7 @@ const readme = resolve('README.md')
     md: string
   ): Promise<void> =>
     writeFile(
-      resolve(`dist/assets/html/${p}.html`),
+      join(htmlFolder, `${p}.html`),
       template
         .replace('[title]', title)
         .replace('[description]', description)
@@ -95,7 +99,7 @@ const readme = resolve('README.md')
       htmlPath,
       `${title} - Comrade Pingu`,
       `${title} for Comrade Pingu`,
-      `${(await readFile(resolve(mdPath))).toString()}
+      `${(await readFile(join(rootFolder, mdPath))).toString()}
 #### [\u2190 back](/)`
     )
   }
@@ -113,6 +117,6 @@ const readme = resolve('README.md')
       .replace('CHANGELOG.md', 'changelog')
   )
   // Update license.html and changelog.html
-  await writeOtherPage('license', 'LICENSE')
+  await writeOtherPage('license', join('..', '..', 'LICENSE'))
   await writeOtherPage('changelog', 'CHANGELOG.md')
 })().catch(exit)

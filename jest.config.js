@@ -1,9 +1,9 @@
 'use strict'
 
+/** @typedef {import('ts-jest')} */
+/** @type {import('@jest/types').Config.InitialOptions} */
 module.exports = {
-  globals: {'ts-jest': {packageJson: './package.json'}},
-  modulePathIgnorePatterns: ['<rootDir>/dist'],
   preset: 'ts-jest',
   testEnvironment: 'node',
-  testMatch: ['<rootDir>/tests/**/*.test.ts', '<rootDir>/scripts/**/*.test.ts']
+  testMatch: ['<rootDir>/packages/*/tests/**/*.test.ts']
 }
