@@ -54,13 +54,11 @@ export type Plugin = (
 
 type ContextWithNextRelease = RequiredPick<Context, 'nextRelease' | 'options'>
 
-// eslint-disable-next-line import/no-unused-modules -- it is used
 export type PluginWithNextRelease = (
   pluginConfig: PluginConfig,
   context: ContextWithNextRelease
 ) => Promisable<void>
 
-// eslint-disable-next-line import/no-unused-modules -- it is used
 export type PublishPlugin = (
   pluginConfig: PluginConfig,
   context: ContextWithNextRelease
