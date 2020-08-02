@@ -18,6 +18,21 @@
         "kind": "build",
         "isDefault": true
       }
+    },
+    {
+      "label": "Watch (semantic-release)",
+      "type": "npm",
+      "script": "watch",
+      "path": "packages/semantic-release/",
+      "problemMatcher": {
+        "base": "$tsc-watch",
+        "fileLocation": ["relative", "${workspaceFolder}/packages/semantic-release"]
+      },
+      "isBackground": true,
+      "presentation": {
+        "reveal": "never"
+      },
+      "group": "build"
     }
   ]
 }

@@ -1,7 +1,7 @@
 set -e
 
 # semantic-release
-pnpx semantic-release
+pnpx multi-semantic-release
 
 (
   cd packages/bot/dist

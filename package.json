@@ -5,7 +5,8 @@
     "access": "restricted"
   },
   "workspaces": [
-    "packages/bot"
+    "packages/bot",
+    "packages/semantic-release"
   ],
   "homepage": "https://comrade-pingu--cherryblossom00.repl.co",
   "repository": "github:cherryblossom000/comrade-pingu",
@@ -31,6 +32,7 @@
   },
   "devDependencies": {
     "@cherryblossom/eslint-config": "^6.0.3",
+    "@comrade-pingu/semantic-release": "file:packages/semantic-release",
     "@jest/types": "^26.2.0",
     "@semantic-release/changelog": "^5.0.1",
     "@semantic-release/git": "^9.0.0",

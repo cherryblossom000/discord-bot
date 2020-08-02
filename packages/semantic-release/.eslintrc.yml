@@ -1,0 +1,22 @@
+ignorePatterns: [dist/]
+
+rules:
+  # Only for types
+  node/no-extraneous-import:
+  - 2
+  - allowModules: [semantic-release]
+  node/no-unpublished-import:
+  - 2
+  - allowModules:
+    - '@octokit/rest'
+    - type-fest
+
+overrides:
+- files: [src/index.ts]
+  rules:
+    # Main file
+    import/no-unused-modules: 0
+- files: [src/*.d.ts]
+  rules:
+    # Typing a module, import can't detect it
+    import/no-unused-modules: 0
