@@ -17,7 +17,7 @@
   "scripts": {
     "lint": "eslint --report-unused-disable-directives --max-warnings 0 --ext ts .",
     "lint:dev": "pnpm run lint -- --cache",
-    "typecheck": "pnpm run build --noEmit",
+    "typecheck": "pnpm run build -- --noEmit",
     "build": "tsc -p src/tsconfig.json",
     "build:dev": "pnpm run build -- --sourceMap --incremental",
     "watch": "pnpm run build:dev -- -w"
