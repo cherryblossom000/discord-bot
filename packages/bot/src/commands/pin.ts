@@ -11,7 +11,7 @@ const command: Command = {
 The ID of the message to pin. Defaults to the last message (excluding the one to execute this command) you sent in this server.`,
   async execute(message, {args}) {
     if (
-      message.member?.hasPermission('MANAGE_MESSAGES') === true &&
+      message.member?.hasPermission('MANAGE_MESSAGES') !== true &&
       message.author.id !== me
     ) {
       await message.reply(
