@@ -1,0 +1,35 @@
+{
+  "name": "@comrade-pingu/eslint-plugin",
+  "version": "0.0.0-development",
+  "private": true,
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cherryblossom000/comrade-pingu",
+    "directory": "packages/eslint-plugin"
+  },
+  "main": "dist/index",
+  "engines": {
+    "node": ">=12"
+  },
+  "scripts": {
+    "lint": "eslint --report-unused-disable-directives --max-warnings 0 --ext ts .",
+    "lint:dev": "pnpm run lint -- --cache",
+    "typecheck": "pnpm run build -- --noEmit",
+    "build": "tsc -p src/tsconfig.json",
+    "build:dev": "pnpm run build -- --sourceMap --incremental",
+    "watch": "pnpm run build:dev -- -w"
+  },
+  "dependencies": {
+    "@typescript-eslint/experimental-utils": "^3.7.1"
+  },
+  "peerDependencies": {
+    "@typescript-eslint/parser": "^3.7.1"
+  },
+  "devDependencies": {
+    "@types/eslint": "^7.2.0",
+    "eslint-plugin-eslint-plugin": "^2.3.0"
+  }
+}

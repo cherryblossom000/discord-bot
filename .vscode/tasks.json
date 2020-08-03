@@ -20,6 +20,21 @@
       }
     },
     {
+      "label": "Watch (eslint-plugin)",
+      "type": "npm",
+      "script": "watch",
+      "path": "packages/eslint-plugin/",
+      "problemMatcher": {
+        "base": "$tsc-watch",
+        "fileLocation": ["relative", "${workspaceFolder}/packages/eslint-plugin"]
+      },
+      "isBackground": true,
+      "presentation": {
+        "reveal": "never"
+      },
+      "group": "build"
+    },
+    {
       "label": "Watch (semantic-release)",
       "type": "npm",
       "script": "watch",
