@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.1](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.4.0...@comrade-pingu/bot@2.4.1) (2020-08-03)
+
+
+### Bug Fixes
+
+* **pin:** only allow people with manage messages to pin messages ([4cb60be](https://github.com/cherryblossom000/comrade-pingu/commit/4cb60bef007dd74b3a3b1f4ece31ffecce1ee815))
+
 # [2.4.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.3.1...@comrade-pingu/bot@2.4.0) (2020-07-28)
 
 
