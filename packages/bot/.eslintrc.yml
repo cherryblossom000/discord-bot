@@ -1,17 +1,19 @@
+extends: ['plugin:@comrade-pingu/recommended']
+plugins: ['@comrade-pingu']
 ignorePatterns:
 - dist/
 - tests/coverage
 
 overrides:
+- files:
+  - src/commands/*.ts
+  - src/regex-commands/*.ts
+  - src/events/*.ts
+  rules:
+    import/no-unused-modules: 0
 - files: [tests/**/*.test.ts]
   env:
     jest: true
-- files:
-  - src/commands/**/*.ts
-  - src/regex-commands/**/*.ts
-  - src/events/**/*.ts
-  rules:
-    import/no-unused-modules: 0
 
 rules:
   jsdoc/check-param-names: 0
