@@ -113,12 +113,11 @@ The syntax is: \`${prefix}${command.name}${
             // Can't use delete with timeout because I need to return false before waiting 10 seconds
             client.setTimeout(async () => {
               await msg.delete()
-              await message.delete().catch(error => {
-                if (
-                  (error as {code?: number}).code !==
-                  Constants.APIErrors.MISSING_PERMISSIONS
-                )
-                  throw error
+              await message.delete().catch((error: {code?: number}) => {
+                if (error.code !== Constants.APIErrors.MISSING_PERMISSIONS)
+                  // TODO [@typescript-eslint/eslint-plugin@>3.7.1]: remove this comment
+                  // eslint-disable-next-line @typescript-eslint/no-throw-literal -- https://github.com/typescript-eslint/typescript-eslint/issues/2350
+                  throw error as Error
               })
             }, 5_000)
             return false

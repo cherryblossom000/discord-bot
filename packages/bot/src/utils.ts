@@ -218,7 +218,6 @@ export const searchYoutube = async (
   if (
     message.guild &&
     !(await checkPermissions(message, [
-      'MANAGE_MESSAGES',
       'EMBED_LINKS',
       'READ_MESSAGE_HISTORY',
       'ADD_REACTIONS'
@@ -294,14 +293,25 @@ export const searchYoutube = async (
         return resolve(current[n - 1])
       }
 
+      let shouldReact = true
       // If the reaction is an arrow change the page
-      await embedMessage.reactions.removeAll()
+      await embedMessage.reactions
+        .removeAll()
+        .catch((error: {code?: number}) => {
+          if (error.code !== Constants.APIErrors.MISSING_PERMISSIONS)
+            // TODO [@typescript-eslint/eslint-plugin@>3.7.1]: remove this comment
+            // eslint-disable-next-line @typescript-eslint/no-throw-literal -- https://github.com/typescript-eslint/typescript-eslint/issues/2350
+            throw error as Error
+          shouldReact = false
+        })
       currentIndex += name === emojis.left ? -10 : 10
       await embedMessage.edit(...generateEmbed(currentIndex))
-      if (currentIndex !== 0) await embedMessage.react(emojis.left)
-      if (currentIndex + 10 < videos.length)
-        await embedMessage.react(emojis.right)
-      await reactNumbers()
+      if (shouldReact as boolean) {
+        if (currentIndex !== 0) await embedMessage.react(emojis.left)
+        if (currentIndex + 10 < videos.length)
+          await embedMessage.react(emojis.right)
+        await reactNumbers()
+      }
     })
   })
 }
