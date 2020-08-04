@@ -1,5 +1,26 @@
 # Changelog
 
+# [2.5.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.4.1...@comrade-pingu/bot@2.5.0) (2020-08-04)
+
+
+### Bug Fixes
+
+* **play:** allow bot to not have manage messages ([084a2bd](https://github.com/cherryblossom000/comrade-pingu/commit/084a2bd27af88d11083c7c3e37c07b760eda372e))
+* **play:** leave voice channel on error ([780538f](https://github.com/cherryblossom000/comrade-pingu/commit/780538f3223d48853ebe7d60e09fc201a8ffdef9))
+
+
+### Features
+
+* **trivia:** add leaderboard command ([28dda41](https://github.com/cherryblossom000/comrade-pingu/commit/28dda41bbdb4e6490e2cd9830b77eaa2e4a0a455))
+
+
+
+
+
+### Dependencies
+
+* **@comrade-pingu/eslint-plugin:** upgraded to 1.0.0
+
 ## [2.4.1](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.4.0...@comrade-pingu/bot@2.4.1) (2020-08-03)
 
 
