@@ -9,5 +9,5 @@ const package_ = JSON.parse(
 delete package_.devDependencies
 writeFileSync(
   join(botFolder, 'dist', 'package.json'),
-  `${JSON.stringify(package_)}\n`
+  `${JSON.stringify(package_, null, 2)}\n`
 )
