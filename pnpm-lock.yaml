@@ -1,7 +1,7 @@
 importers:
   .:
     devDependencies:
-      '@cherryblossom/eslint-config': 6.0.3_2419a649e2ab39b38ef4387debb3b1b8
+      '@cherryblossom/eslint-config': 7.0.0_90f275e01ac7cc231b9002c05d728845
       '@comrade-pingu/semantic-release': 'link:packages/semantic-release'
       '@jest/types': 26.2.0
       '@semantic-release/changelog': 5.0.1_semantic-release@17.1.1
@@ -29,7 +29,7 @@ importers:
       lodash.upperfirst: 4.3.1
       markdown-it: 11.0.0
       markdown-table: 2.0.0
-      multi-semantic-release: 2.4.2
+      multi-semantic-release: 2.4.4
       prettier: 2.0.5
       purgecss: 2.3.0
       semantic-release: 17.1.1_semantic-release@17.1.1
@@ -37,39 +37,39 @@ importers:
       ts-node: 8.10.2_typescript@3.9.7
       typescript: 3.9.7
     specifiers:
-      '@cherryblossom/eslint-config': ^6.0.3
+      '@cherryblossom/eslint-config': ^7.0.0
       '@comrade-pingu/semantic-release': 'file:packages/semantic-release'
       '@jest/types': ^26.2.0
       '@semantic-release/changelog': ^5.0.1
       '@semantic-release/git': ^9.0.0
-      '@types/jest': ^26.0.7
+      '@types/jest': ^26.0.8
       '@types/lodash.upperfirst': ^4.3.6
       '@types/markdown-it': ^10.0.1
       '@types/markdown-table': ^2.0.0
       '@types/node': ^12.12.53
-      '@typescript-eslint/eslint-plugin': ^3.7.0
-      '@typescript-eslint/parser': ^3.7.0
+      '@typescript-eslint/eslint-plugin': ^3.7.1
+      '@typescript-eslint/parser': ^3.7.1
       commitizen: ^4.1.2
       cz-conventional-changelog: ^3.2.0
       discord.js: ^12.2.0
       dotenv: ^8.2.0
-      eslint: ^7.5.0
+      eslint: ^7.6.0
       eslint-plugin-eslint-comments: ^3.2.0
       eslint-plugin-import: ^2.22.0
-      eslint-plugin-jsdoc: ^30.0.3
+      eslint-plugin-jsdoc: ^30.1.0
       eslint-plugin-node: ^11.1.0
       eslint-plugin-prettier: ^3.1.4
       eslint-plugin-promise: ^4.2.1
       eslint-plugin-unicorn: ^21.0.0
-      jest: ^26.1.0
+      jest: ^26.2.2
       lodash.upperfirst: ^4.3.1
       markdown-it: ^11.0.0
       markdown-table: ^2.0.0
-      multi-semantic-release: ^2.4.2
+      multi-semantic-release: ^2.4.4
       prettier: ^2.0.5
       purgecss: ^2.3.0
       semantic-release: ^17.1.1
-      ts-jest: ^26.1.3
+      ts-jest: ^26.1.4
       ts-node: ^8.10.2
       typescript: ^3.9.7
   packages/bot:
@@ -435,7 +435,7 @@ packages:
     dev: true
     resolution:
       integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
-  /@cherryblossom/eslint-config/6.0.3_2419a649e2ab39b38ef4387debb3b1b8:
+  /@cherryblossom/eslint-config/7.0.0_90f275e01ac7cc231b9002c05d728845:
     dependencies:
       '@typescript-eslint/eslint-plugin': 3.7.1_98f5354ad0bbc327ab4925c12674a6b1
       '@typescript-eslint/parser': 3.7.1_eslint@7.6.0+typescript@3.9.7
@@ -445,7 +445,6 @@ packages:
       eslint-plugin-jsdoc: 30.1.0_eslint@7.6.0
       eslint-plugin-node: 11.1.0_eslint@7.6.0
       eslint-plugin-prettier: 3.1.4_eslint@7.6.0+prettier@2.0.5
-      eslint-plugin-promise: 4.2.1
       eslint-plugin-unicorn: 21.0.0_eslint@7.6.0
       typescript: 3.9.7
     dev: true
@@ -465,7 +464,7 @@ packages:
       eslint-plugin-prettier: ^3
       eslint-plugin-promise: ^4
       eslint-plugin-react-hooks: ^4
-      eslint-plugin-unicorn: '>=20 <22'
+      eslint-plugin-unicorn: ^21
     peerDependenciesMeta:
       '@typescript-eslint/eslint-plugin':
         optional: true
@@ -486,7 +485,7 @@ packages:
       typescript:
         optional: true
     resolution:
-      integrity: sha512-tEG4AcOs8W/BDZc/SioK/ZYTRJI2xcfXOEHQI4j9py1cHWPSGxHJq8nh+EvCGbhiu2U6KPeXBaVt3aOPSV1uYA==
+      integrity: sha512-OlfJ0e/xwGO1ccpHi3ePkUUOSAQZUbd1CNuMfGSa4NskU6HvqwEWiZlUN+/VJYIGEFG3xo/iqlpqZaYantzOXw==
   /@cnakazawa/watch/1.0.4:
     dependencies:
       exec-sh: 0.3.4
@@ -5842,7 +5841,7 @@ packages:
   /ms/2.1.2:
     resolution:
       integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==
-  /multi-semantic-release/2.4.2:
+  /multi-semantic-release/2.4.4:
     dependencies:
       bash-glob: 2.0.0
       blork: 9.2.2
@@ -5864,7 +5863,7 @@ packages:
       yarn: '>=1.0.0'
     hasBin: true
     resolution:
-      integrity: sha512-BhrGXKXNbrDaYKlNwNqtE8p2JAUiJxdxGkw1fRzs+XE4if+aiHtc473i/AVFF6JBZU8pTieqLdTTa4dqxamCEg==
+      integrity: sha512-DF2R0PY2m/T7D72tQXGMEZGgSAB0FKhK1Jt+chcpiBUnEFIkPFeKJRRkZiItCkr16HXRxatwplo1DHZNiOT9FQ==
   /multimap/1.1.0:
     dev: true
     resolution:
