@@ -3,11 +3,13 @@ set -e
 # semantic-release
 pnpx multi-semantic-release
 
+# Update package.json (could have changed due to semantic-release) and remove
+# devDependencies so thhey aren't installed on Repl.it
+pnpx ts-node scripts/update-package
+
 (
   cd packages/bot/dist
 
-  # Copy package.json because that could have changed due to semantic-release
-  cp ../package.json package.json
   # Add .replit
   echo "language = 'nodejs'" > .replit
   echo "run = 'node src/server'" >> .replit
