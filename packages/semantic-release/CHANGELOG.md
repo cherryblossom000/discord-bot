@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/semantic-release@1.0.1...@comrade-pingu/semantic-release@1.0.2) (2020-08-04)
+
+
+### Bug Fixes
+
+* remove unnecessary prepare-package ([44c02da](https://github.com/cherryblossom000/comrade-pingu/commit/44c02dabb4ca9bb065fd391e17fdf4137cb22cf1))
+
 ## [1.0.1](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/semantic-release@1.0.0...@comrade-pingu/semantic-release@1.0.1) (2020-08-02)
 
 
