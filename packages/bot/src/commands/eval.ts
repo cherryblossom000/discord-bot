@@ -39,7 +39,7 @@ The code to execute. The following variables are available:
 - \`Discord: Discord\` The discord.js module.
 - \`_: symbol\` Return this (for example using the comma operator) to make me not send the result.`,
   hidden: true,
-  async execute(message, input) {
+  async execute(message, input, database) {
     const {author, channel} = message
     if (author.id !== me) {
       await channel.send('This command can only be done by the bot owner!')
@@ -48,13 +48,16 @@ The code to execute. The following variables are available:
 
     let result
     try {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports -- passing through require to eval
       result = await AsyncFunction(
         'message',
         'input',
+        'database',
         'Discord',
+        'require',
         '_',
         `return (${input.input})`
-      )(message, input, Discord, kDiscardResult)
+      )(message, input, database, Discord, require, kDiscardResult)
     } catch (error) {
       await message.sendDeletableMessage({content: [`${error}`, {code: true}]})
       return
