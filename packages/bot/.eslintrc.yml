@@ -1,8 +1,5 @@
 extends: ['plugin:@comrade-pingu/recommended']
 plugins: ['@comrade-pingu']
-ignorePatterns:
-- dist/
-- tests/coverage
 
 overrides:
 - files:

@@ -1,5 +1,3 @@
-ignorePatterns: [dist/]
-
 rules:
   # Only for types
   node/no-extraneous-import:

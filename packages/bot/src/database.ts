@@ -21,6 +21,7 @@ interface Member {
   nickname?: string | null
 }
 
+// eslint-disable-next-line import/no-unused-modules -- it is used
 export interface Guild {
   _id: string
   prefix?: string
