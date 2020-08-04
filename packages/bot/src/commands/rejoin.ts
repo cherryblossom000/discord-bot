@@ -7,9 +7,10 @@ import {
 } from '../database'
 import {checkPermissions, handleError} from '../utils'
 import type {GuildMember} from 'discord.js'
+import type {FilterQuery, UpdateQuery} from 'mongodb'
 // eslint-disable-next-line import/no-named-default -- can't because type import
 import type {default as Client, Listener} from '../Client'
-import type {Collection, Db} from '../database'
+import type {Db, Guild as DbGuild} from '../database'
 import type {Command, Guild, GuildMessage} from '../types'
 
 export const addListeners = (
@@ -22,12 +23,12 @@ export const addListeners = (
   const enabledNickname = flags & MemberRejoinFlags.Nickname
   const enabledAll = enabledRoles && enabledNickname
 
-  const removeMember = async (
-    guilds: Collection<'guilds'>,
+  const removeMemberArgs = (
     id: string
-  ): Promise<void> => {
-    await guilds.updateOne({_id: guild.id}, {$pull: {members: {_id: id}}})
-  }
+  ): {filter: FilterQuery<DbGuild>; update: UpdateQuery<DbGuild>} => ({
+    filter: {_id: guild.id},
+    update: {$pull: {members: {_id: id}}}
+  })
 
   const guildMemberAdd: Listener<'guildMemberAdd'> = async member => {
     if (member.guild.id === guild.id) {
@@ -73,13 +74,16 @@ ${guild.owner} sorry, but you have to do this yourself.`
         )
       }
 
-      await removeMember(guilds, member.id).catch(async error =>
-        handleError(
-          client,
-          error,
-          `Removing member from DB failed (member ${member.id}, flags ${flags})`
+      const args = removeMemberArgs(member.id)
+      await guilds
+        .updateOne(args.filter, args.update)
+        .catch(async error =>
+          handleError(
+            client,
+            error,
+            `Removing member from DB failed (member ${member.id}, flags ${flags})`
+          )
         )
-      )
     }
   }
 
@@ -98,25 +102,27 @@ ${guild.owner} sorry, but you have to do this yourself.`
          * Even though the member should be removed from the database once they
          * rejoin, you never know if the bot will ever be offline and won't be
          * able to remove it.
-         *
-         * Until
-         * https://stackoverflow.com/questions/63126946/positional-update-operator-with-upsert
-         * gets a better answer:
          */
-        await removeMember(guilds, id)
-        await guilds.updateOne(
-          {_id: guild.id},
+        await guilds.bulkWrite([
           {
-            $push: {
-              members: {
-                _id: id,
-                ...(enabledRoles ? {roles: roles.cache.keyArray()} : {}),
-                ...(enabledNickname ? {nickname} : {})
-              }
-            }
+            updateOne: removeMemberArgs(id)
           },
-          {upsert: true}
-        )
+          {
+            updateOne: {
+              filter: {_id: guild.id},
+              update: {
+                $push: {
+                  members: {
+                    _id: id,
+                    ...(enabledRoles ? {roles: roles.cache.keyArray()} : {}),
+                    ...(enabledNickname ? {nickname} : {})
+                  }
+                }
+              },
+              upsert: true
+            }
+          }
+        ])
       } catch (error) {
         await handleError(
           client,

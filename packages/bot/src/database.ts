@@ -21,7 +21,7 @@ interface Member {
   nickname?: string | null
 }
 
-interface Guild {
+export interface Guild {
   _id: string
   prefix?: string
   volume?: number
