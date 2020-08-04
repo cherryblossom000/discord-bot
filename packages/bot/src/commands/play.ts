@@ -65,10 +65,14 @@ The query to search on YouTube for.`,
     }
 
     const play = async (song: Video): Promise<void> => {
+      const cleanup = (): void => {
+        queue!.voiceChannel.leave()
+        client.queues.delete(id)
+      }
+
       const playSong = async (_song?: Video): Promise<void> => {
         if (!_song) {
-          queue!.voiceChannel.leave()
-          client.queues.delete(id)
+          cleanup()
           return
         }
 
@@ -87,6 +91,7 @@ The query to search on YouTube for.`,
             await queue!.textChannel.send(
               `Unfortunately, there was an error playing **${_song.title}** (link: https://youtub.be/${_song.id}). Noot noot.`
             )
+            cleanup()
           })
         const storedVolume = (await getGuild(database, id))?.volume
         if (storedVolume !== undefined && dispatcher.volume !== storedVolume)
