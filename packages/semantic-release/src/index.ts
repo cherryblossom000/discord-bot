@@ -4,7 +4,6 @@ import successGithub from '@semantic-release/github/lib/success'
 import verifyChangelog from '@semantic-release/changelog/lib/verify'
 import verifyGithub from '@semantic-release/github/lib/verify'
 import prepareChangelog from './prepare-changelog'
-import preparePackage from './prepare-package'
 import publishGithub from './publish-github'
 import type {Plugin, PluginWithNextRelease, PublishPlugin} from './types'
 
@@ -27,11 +26,7 @@ export const prepare: PluginWithNextRelease = async (pluginConfig, context) => {
     verifyChangelog(pluginConfig)
     changelogVerified = true
   }
-  await Promise.all([
-    prepareChangelog(pluginConfig, context),
-    // Update the package.json
-    preparePackage(context)
-  ])
+  await prepareChangelog(pluginConfig, context)
 }
 
 // https://github.com/semantic-release/github/blob/v7.0.7/index.js#L31-L47
