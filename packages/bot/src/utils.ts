@@ -238,20 +238,20 @@ export const searchYoutube = async (
 
   /**
    * Generates the embed with videos and message content.
-   * @param start The index to start from.
+   * @param skip The index to start from.
    */
-  const generateEmbed = (start: number): [string, MessageEmbed] => {
-    current = videos.slice(start, start + 10)
+  const generateEmbed = (skip: number): [string, MessageEmbed] => {
+    current = videos.slice(skip, skip + 10)
 
     const embed = new MessageEmbed().setTitle(
-      `Showing songs ${start + 1}-${start + current.length} out of ${
+      `Showing songs ${skip + 1}-${skip + current.length} out of ${
         videos.length
       }`
     ).setDescription(`Click on the title for the YouTube link.
   If you can’t be bothered to wait for the reactions you can just add the reaction yourself.`)
     current.forEach((v, i) =>
       embed.addField(
-        `${i + start + 1}. ${v.author.name}
+        `${i + skip + 1}. ${v.author.name}
   ${emojis.numbers[i + 1]}`,
         `[${v.title}](${v.url})`,
         true
@@ -307,7 +307,7 @@ export const searchYoutube = async (
       currentIndex += name === emojis.left ? -10 : 10
       await embedMessage.edit(...generateEmbed(currentIndex))
       if (shouldReact as boolean) {
-        if (currentIndex !== 0) await embedMessage.react(emojis.left)
+        if (currentIndex) await embedMessage.react(emojis.left)
         if (currentIndex + 10 < videos.length)
           await embedMessage.react(emojis.right)
         await reactNumbers()

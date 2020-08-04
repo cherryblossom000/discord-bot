@@ -1,4 +1,4 @@
-import {Collection, MessageEmbed, escapeMarkdown} from 'discord.js'
+import {Collection, Constants, MessageEmbed, escapeMarkdown} from 'discord.js'
 import shuffle from 'lodash.shuffle'
 import {emojis} from '../constants'
 import {collection} from '../database'
@@ -7,6 +7,17 @@ import {Difficulty, Type, fetchQuestion} from '../opentdb'
 import type {EmbedFieldData} from 'discord.js'
 import type {Db, Question} from '../database'
 import type {Command, Message} from '../types'
+
+/** Formats a percentage, with the percentage already calculated. */
+const _formatPercentage = (
+  numerator: number,
+  denominator: number,
+  percentage: number
+): string => `${numerator}/${denominator} (${(percentage * 100).toFixed(2)}%)`
+
+/** Formats a percentage. */
+const formatPercentage = (numerator: number, denominator: number): string =>
+  _formatPercentage(numerator, denominator, numerator / denominator)
 
 const statsCommand = async (
   message: Message,
@@ -30,15 +41,7 @@ const statsCommand = async (
     (await collection(database, 'users').findOne({_id: user.id}))
       ?.questionsAnswered ?? []
   if (questions.length) {
-    const _formatPercentage = (
-      numerator: number,
-      denominator: number,
-      percentage: number
-    ): string =>
-      `${numerator}/${denominator} (${(percentage * 100).toFixed(2)}%)`
-    const formatPercentage = (a: number, b: number): string =>
-      _formatPercentage(a, b, a / b)
-
+    /** Groups questions by a key and returns `[numberCorrect, total]`. */
     const reduceQuestions = <T extends keyof Question>(
       key: T
     ): Collection<Question[T], readonly [number, number]> =>
@@ -103,6 +106,130 @@ const statsCommand = async (
   await message.channel.send(embed)
 }
 
+const leaderboardCommand = async (
+  message: Message,
+  database: Db
+): Promise<void> => {
+  if (!message.guild) {
+    await message.sendDeletableMessage({
+      reply: true,
+      content: 'sorry, I can’t execute that command inside DMs. Noot noot.'
+    })
+    return
+  }
+  if (
+    !(await checkPermissions(message, [
+      'EMBED_LINKS',
+      'READ_MESSAGE_HISTORY',
+      'ADD_REACTIONS'
+    ]))
+  )
+    return
+
+  const usersCol = collection(database, 'users')
+  const query = {
+    _id: {$in: (await message.guild.members.fetch()).keyArray()},
+    questionsAnswered: {$not: {$size: 0}}
+  }
+  const totalUsers = await usersCol.countDocuments(query)
+
+  interface User {
+    _id: string
+    correct: number
+    total: number
+    percentage: number
+  }
+  const usersCache = new Map<number, User[]>()
+  const getUsers = async (skip: number): Promise<User[]> => {
+    const existing = usersCache.get(skip)
+    if (existing) return existing
+    const users = await usersCol
+      .aggregate<User>([
+        {$match: query},
+        {
+          $project: {
+            correct: {
+              $size: {
+                $filter: {input: '$questionsAnswered', cond: '$$this.correct'}
+              }
+            },
+            total: {$size: '$questionsAnswered'}
+          }
+        },
+        {
+          $project: {
+            correct: 1,
+            total: 1,
+            percentage: {$divide: ['$correct', '$total']}
+          }
+        },
+        {
+          $sort: {
+            percentage: -1,
+            correct: -1
+          }
+        },
+        {$skip: skip},
+        {$limit: 10}
+      ])
+      .toArray()
+    usersCache.set(skip, users)
+    return users
+  }
+
+  collection(database, 'users').aggregate()
+
+  const generateEmbed = async (skip: number): Promise<MessageEmbed> => {
+    const users = await getUsers(skip)
+
+    const embed = new MessageEmbed().setTitle(
+      `Showing users ${skip + 1}-${skip + users.length} out of ${totalUsers}`
+    )
+    embed.addFields(
+      await Promise.all(
+        users.map(async ({_id, correct, total, percentage}, i) => ({
+          name: `${i + skip + 1}. ${
+            (await message.guild.members.fetch(_id)).user.tag
+          }`,
+          value: _formatPercentage(correct, total, percentage)
+        }))
+      )
+    )
+    return embed
+  }
+
+  const embedMessage = await message.channel.send(await generateEmbed(0))
+
+  if (totalUsers <= 10) return
+  await embedMessage.react(emojis.right)
+
+  let currentIndex = 0
+
+  const collector = embedMessage.createReactionCollector(
+    ({emoji: {name}}, {id}) =>
+      (name === emojis.left || name === emojis.right) &&
+      id === message.author.id,
+    {idle: 60_000}
+  )
+
+  collector.on('collect', async ({emoji: {name}}) => {
+    let shouldReact = true
+    await embedMessage.reactions.removeAll().catch((error: {code?: number}) => {
+      if (error.code !== Constants.APIErrors.MISSING_PERMISSIONS)
+        // TODO [@typescript-eslint/eslint-plugin@>3.7.1]: remove this comment
+        // eslint-disable-next-line @typescript-eslint/no-throw-literal -- https://github.com/typescript-eslint/typescript-eslint/issues/2350
+        throw error as Error
+      shouldReact = false
+    })
+    currentIndex += name === emojis.left ? -10 : 10
+    await embedMessage.edit(await generateEmbed(currentIndex))
+    if (shouldReact as boolean) {
+      if (currentIndex) await embedMessage.react(emojis.left)
+      if (currentIndex + 10 < totalUsers) await embedMessage.react(emojis.right)
+    }
+  })
+}
+
 /** Formats a trivia answer. */
 const format = (answer: string | boolean): string =>
   typeof answer === 'boolean' ? (answer ? 'True' : 'False') : answer
@@ -112,15 +239,23 @@ const command: Command = {
   aliases: ['t'],
   description: 'Asks a trivia question.',
   cooldown: 5,
-  syntax: '[s(tat(s))] [user]',
+  syntax: '9[s(tat(s))] [user]|l(eaderboard))',
   usage: `Using this command without any arguments will ask a trivia question.
-\`stats [user]\`
-Gets the trivia statistics for a user. If no user is specified, it will get the stats for yourself.`,
+\`s(tat(s)) [user]\`
+Gets the trivia statistics for a user. If no user is specified, it will get the stats for yourself.
+
+\`l(eaderboard)\`
+Gets the leaderboard for this server.`,
   async execute(message, {input}, database) {
     // eslint-disable-next-line unicorn/no-unsafe-regex -- don't know how else to do it
     const match = /^s(?:tats?)?\s*/iu.exec(input)
     if (match) {
       await statsCommand(message, input.slice(match[0].length), database)
+      return
+    }
+
+    if (/^l(?:eaderboard)?/iu.test(input)) {
+      await leaderboardCommand(message, database)
       return
     }
 
