@@ -24,6 +24,7 @@ Comrade Pingu’s default prefix is `.`.
 
 | Command | Aliases | Description | Usage | Cooldown (s) |
 | - | - | - | - | - |
+| `dog` | `d`, `randomdog` | Gets a random image of a dog from random.dog. | `.dog` | 3 |
 | `help` | `commands`, `h` | Lists all my commands or gets info about a specific command. | `.help [command]`<br>`command` (optional)<br>The command that you want to get info about. If omitted, all the commands will be listed. | 5 |
 | `htkb` | `howtokissboy` | Gets the image that shows how to kiss a boy.<br>![how to kiss boy](./assets/img/htkb.png) | `.htkb` | 3 |
 | `info` | `in` | Gets info about me. | `.info` | 3 |
