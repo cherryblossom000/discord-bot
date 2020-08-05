@@ -1,5 +1,12 @@
 # Changelog
 
+# [2.6.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.5.0...@comrade-pingu/bot@2.6.0) (2020-08-05)
+
+
+### Features
+
+* add `dog` command ([5790f9e](https://github.com/cherryblossom000/comrade-pingu/commit/5790f9ed84cdfde73aeeeba9ce24e00a28a8d461))
+
 # [2.5.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.4.1...@comrade-pingu/bot@2.5.0) (2020-08-04)
 
 
