@@ -23,7 +23,7 @@
     "watch": "pnpm run build:dev -- -w"
   },
   "dependencies": {
-    "@typescript-eslint/experimental-utils": "^3.7.1"
+    "@typescript-eslint/experimental-utils": "^3.8.0"
   },
   "peerDependencies": {
     "@typescript-eslint/parser": "^3.7.1"
