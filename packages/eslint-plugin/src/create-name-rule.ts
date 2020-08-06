@@ -7,9 +7,9 @@ export default (
   meta: {
     type: 'suggestion',
     messages: {
-      incorrectName: '`{{name}}` should be `listener`.',
+      incorrectName: `\`{{name}}\` should be \`${name}\`.`,
       notIdentifier:
-        'An identifier called `listener` should be the default export.'
+        `An identifier called \`${name}\` should be the default export.`
     },
     schema: []
   },
