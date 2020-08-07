@@ -1,6 +1,6 @@
 {
   "name": "@comrade-pingu/bot",
-  "version": "2.6.0",
+  "version": "2.6.1",
   "private": true,
   "publishConfig": {
     "access": "restricted"
@@ -43,7 +43,7 @@
     "ytdl-core": "^3.2.0"
   },
   "devDependencies": {
-    "@comrade-pingu/eslint-plugin": "1.0.0",
+    "@comrade-pingu/eslint-plugin": "1.0.1",
     "@types/express": "^4.17.7",
     "@types/lodash.shuffle": "^4.2.6",
     "@types/lodash.startcase": "^4.4.6",

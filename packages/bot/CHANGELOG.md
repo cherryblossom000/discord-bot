@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.6.1](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.6.0...@comrade-pingu/bot@2.6.1) (2020-08-07)
+
+
+### Bug Fixes
+
+* **profile:** show activity/presence ([85dbab5](https://github.com/cherryblossom000/comrade-pingu/commit/85dbab5250f1b59c5c9b44ff5d468d31047219e1))
+
+
+
+
+
+### Dependencies
+
+* **@comrade-pingu/eslint-plugin:** upgraded to 1.0.1
+
 # [2.6.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.5.0...@comrade-pingu/bot@2.6.0) (2020-08-05)
 
 
