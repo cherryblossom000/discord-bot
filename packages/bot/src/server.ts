@@ -41,6 +41,8 @@ const dev = process.env.NODE_ENV !== 'production'
         'GUILD_MESSAGES',
         // Guild reactions
         'GUILD_MESSAGE_REACTIONS',
+        // Presences in profile
+        'GUILD_PRESENCES',
         // Members joining voice channels
         'GUILD_VOICE_STATES',
         // DM commands
