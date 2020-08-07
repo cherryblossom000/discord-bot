@@ -216,7 +216,7 @@ const leaderboardCommand = async (
     let shouldReact = true
     await embedMessage.reactions.removeAll().catch((error: {code?: number}) => {
       if (error.code !== Constants.APIErrors.MISSING_PERMISSIONS)
-        // TODO [@typescript-eslint/eslint-plugin@>3.7.1]: remove this comment
+        // TODO [@typescript-eslint/eslint-plugin@>3.8.0]: remove this comment
         // eslint-disable-next-line @typescript-eslint/no-throw-literal -- https://github.com/typescript-eslint/typescript-eslint/issues/2350
         throw error as Error
       shouldReact = false

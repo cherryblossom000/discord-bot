@@ -115,7 +115,7 @@ The syntax is: \`${prefix}${command.name}${
               await msg.delete()
               await message.delete().catch((error: {code?: number}) => {
                 if (error.code !== Constants.APIErrors.MISSING_PERMISSIONS)
-                  // TODO [@typescript-eslint/eslint-plugin@>3.7.1]: remove this comment
+                  // TODO [@typescript-eslint/eslint-plugin@>3.8]: remove this comment
                   // eslint-disable-next-line @typescript-eslint/no-throw-literal -- https://github.com/typescript-eslint/typescript-eslint/issues/2350
                   throw error as Error
               })

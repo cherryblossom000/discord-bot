@@ -8,8 +8,7 @@ export default (
     type: 'suggestion',
     messages: {
       incorrectName: `\`{{name}}\` should be \`${name}\`.`,
-      notIdentifier:
-        `An identifier called \`${name}\` should be the default export.`
+      notIdentifier: `An identifier called \`${name}\` should be the default export.`
     },
     schema: []
   },
