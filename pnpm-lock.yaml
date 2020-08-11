@@ -7,7 +7,6 @@ importers:
       '@semantic-release/changelog': 5.0.1_semantic-release@17.1.1
       '@semantic-release/git': 9.0.0_semantic-release@17.1.1
       '@types/jest': 26.0.9
-      '@types/lodash.upperfirst': 4.3.6
       '@types/markdown-it': 10.0.1
       '@types/markdown-table': 2.0.0
       '@types/node': 12.12.54
@@ -26,7 +25,6 @@ importers:
       eslint-plugin-promise: 4.2.1
       eslint-plugin-unicorn: 21.0.0_eslint@7.6.0
       jest: 26.2.2
-      lodash.upperfirst: 4.3.1
       markdown-it: 11.0.0
       markdown-table: 2.0.0
       multi-semantic-release: 2.4.5
@@ -44,7 +42,6 @@ importers:
       '@semantic-release/changelog': ^5.0.1
       '@semantic-release/git': ^9.0.0
       '@types/jest': ^26.0.9
-      '@types/lodash.upperfirst': ^4.3.6
       '@types/markdown-it': ^10.0.1
       '@types/markdown-table': ^2.0.0
       '@types/node': ^12.12.54
@@ -63,7 +60,6 @@ importers:
       eslint-plugin-promise: ^4.2.1
       eslint-plugin-unicorn: ^21.0.0
       jest: ^26.2.2
-      lodash.upperfirst: ^4.3.1
       markdown-it: ^11.0.0
       markdown-table: ^2.0.0
       multi-semantic-release: ^2.4.5
@@ -81,9 +77,6 @@ importers:
       discord.js: 12.2.0_@discordjs+opus@0.3.2
       escape-string-regexp: 4.0.0
       express: 4.17.1
-      lodash.shuffle: 4.2.0
-      lodash.startcase: 4.4.0
-      lodash.upperfirst: 4.3.1
       mongodb: 3.6.0
       ms: 2.1.2
       node-fetch: 2.6.0
@@ -92,9 +85,6 @@ importers:
     devDependencies:
       '@comrade-pingu/eslint-plugin': 'link:../eslint-plugin'
       '@types/express': 4.17.7
-      '@types/lodash.shuffle': 4.2.6
-      '@types/lodash.startcase': 4.4.6
-      '@types/lodash.upperfirst': 4.3.6
       '@types/mongodb': 3.5.25
       '@types/ms': 0.7.31
       '@types/node': 12.12.54
@@ -102,12 +92,9 @@ importers:
       '@types/yt-search': 2.0.0
       dotenv: 8.2.0
     specifiers:
-      '@comrade-pingu/eslint-plugin': 1.0.0
+      '@comrade-pingu/eslint-plugin': 1.0.1
       '@discordjs/opus': 0.3.2
       '@types/express': ^4.17.7
-      '@types/lodash.shuffle': ^4.2.6
-      '@types/lodash.startcase': ^4.4.6
-      '@types/lodash.upperfirst': ^4.3.6
       '@types/mongodb': ^3.5.25
       '@types/ms': ^0.7.31
       '@types/node': ^12.12.54
@@ -118,9 +105,6 @@ importers:
       dotenv: ^8.2.0
       escape-string-regexp: ^4.0.0
       express: ^4.17.1
-      lodash.shuffle: ^4.2.0
-      lodash.startcase: ^4.4.0
-      lodash.upperfirst: ^4.3.1
       mongodb: ^3.6.0
       ms: ^2.1.2
       node-fetch: ^2.6.0
@@ -1226,28 +1210,6 @@ packages:
     dev: true
     resolution:
       integrity: sha512-Q7DYAOi9O/+cLLhdaSvKdaumWyHbm7HAk/bFwwyTuU0arR5yyCeW5GOoqt4tJTpDRxhpx9Q8kQL6vMpuw9hDSw==
-  /@types/lodash.shuffle/4.2.6:
-    dependencies:
-      '@types/lodash': 4.14.158
-    dev: true
-    resolution:
-      integrity: sha512-ucI9VswlV9jOZiIh43Nd0tJ4Z8pfXy3PbQ9cB6Re1gPds8gLbOdmB0l3UkVI2crZjnQB95bhyNZVEDH8DgglYA==
-  /@types/lodash.startcase/4.4.6:
-    dependencies:
-      '@types/lodash': 4.14.158
-    dev: true
-    resolution:
-      integrity: sha512-wtUyl30SWGQY08prEd5zdflQKbl/lwKXwLfWaQbTLwnGPFAFkAWOOOI/WYVfK8p61CtfmCbxNHvnTK4vW2idxg==
-  /@types/lodash.upperfirst/4.3.6:
-    dependencies:
-      '@types/lodash': 4.14.158
-    dev: true
-    resolution:
-      integrity: sha512-op4ctKkT1eD/Nt8MCPlN7O2IQrYWIcH1rOPHM86SKzbliLG50eVXM6+qzkdxtBV7DZb3W/1Up2+k43WK9F0Bgg==
-  /@types/lodash/4.14.158:
-    dev: true
-    resolution:
-      integrity: sha512-InCEXJNTv/59yO4VSfuvNrZHt7eeNtWQEgnieIA+mIC+MOWM9arOWG2eQ8Vhk6NbOre6/BidiXhkZYeDY9U35w==
   /@types/lodash/4.14.159:
     dev: true
     resolution:
@@ -2830,7 +2792,6 @@ packages:
     engines:
       node: '>=12.0.0'
     peerDependencies:
-      '@discordjs/opus': '*'
       bufferutil: ^4.0.1
       erlpack: discordapp/erlpack
       libsodium-wrappers: ^0.7.6
@@ -5452,10 +5413,6 @@ packages:
     dev: false
     resolution:
       integrity: sha1-gNZJLcFHCGS79YNTO2UfQqn1JBU=
-  /lodash.shuffle/4.2.0:
-    dev: false
-    resolution:
-      integrity: sha1-FFtQU8+HX29cKjP0i26ZSMbse0s=
   /lodash.some/4.6.0:
     dev: false
     resolution:
@@ -5464,10 +5421,6 @@ packages:
     dev: true
     resolution:
       integrity: sha1-7dFMgk4sycHgsKG0K7UhBRakJDg=
-  /lodash.startcase/4.4.0:
-    dev: false
-    resolution:
-      integrity: sha1-lDbjTtJgk+1/+uGTYUQ1CRXZrdg=
   /lodash.toarray/4.4.0:
     dev: true
     resolution:
@@ -5475,9 +5428,6 @@ packages:
   /lodash.uniqby/4.7.0:
     resolution:
       integrity: sha1-2ZwHpmnp5tJOE2Lf4mbGdhavEwI=
-  /lodash.upperfirst/4.3.1:
-    resolution:
-      integrity: sha1-E2Xt9DFIBIHvDRxolXpe2Z1J984=
   /lodash.zip/4.2.0:
     dev: true
     resolution:

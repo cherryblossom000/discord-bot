@@ -1,7 +1,7 @@
 import {Collection, Constants, MessageEmbed, escapeMarkdown} from 'discord.js'
-import shuffle from 'lodash.shuffle'
 import {emojis} from '../constants'
 import {collection} from '../database'
+import {shuffle} from '../lodash'
 import {checkPermissions, resolveUser} from '../utils'
 import {Difficulty, Type, fetchQuestion} from '../opentdb'
 import type {EmbedFieldData} from 'discord.js'

@@ -1,11 +1,11 @@
 import {promises, readdirSync} from 'fs'
 import {join} from 'path'
 import {Permissions} from 'discord.js'
-import upperFirst from 'lodash.upperfirst'
 import MarkdownIt from 'markdown-it'
 import table from 'markdown-table'
 import exitOnError, {exit} from '../../../scripts/exit-on-error'
 import {permissions} from '../src/constants'
+import {upperFirst} from '../src/lodash'
 import type {Command} from '../src/types'
 
 exitOnError()
