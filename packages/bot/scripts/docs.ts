@@ -100,7 +100,7 @@ const readme = join(rootFolder, 'README.md')
       `${title} - Comrade Pingu`,
       `${title} for Comrade Pingu`,
       `${(await readFile(join(rootFolder, mdPath))).toString()}
-#### [\u2190 back](/)`
+#### [← back](/)`
     )
   }
 
