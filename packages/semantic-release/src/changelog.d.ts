@@ -6,21 +6,20 @@ declare module '@semantic-release/changelog' {
 }
 
 declare module '@semantic-release/changelog/lib/verify' {
-  const verifyChangelog: (
-    pluginConfig: import('@semantic-release/changelog').PluginConfig
-  ) => void
+  import type {PluginConfig} from '@semantic-release/changelog'
+
+  const verifyChangelog: (pluginConfig: PluginConfig) => void
   export = verifyChangelog
 }
 
 declare module '@semantic-release/changelog/lib/resolve-config' {
-  type PluginConfig = import('@semantic-release/changelog').PluginConfig
+  import type {PluginConfig} from '@semantic-release/changelog'
+
+  type RequiredPick<T, K extends keyof T> = import('./types').RequiredPick<T, K>
 
   const resolveConfig: ({
     changelogFile,
     changelogTitle
-  }: PluginConfig) => import('./types').RequiredPick<
-    PluginConfig,
-    'changelogFile'
-  >
+  }: PluginConfig) => RequiredPick<PluginConfig, 'changelogFile'>
   export = resolveConfig
 }

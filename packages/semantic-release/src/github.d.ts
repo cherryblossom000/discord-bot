@@ -1,5 +1,5 @@
 declare module '@semantic-release/github' {
-  type Many<T> = import('lodash').Many<T>
+  import type {Many} from 'lodash'
 
   export interface PluginConfig {
     githubUrl?: string
@@ -27,53 +27,60 @@ declare module '@semantic-release/github/lib/definitions/constants' {
 }
 
 declare module '@semantic-release/github/lib/add-channel' {
+  import type {PluginConfig} from '@semantic-release/github'
+  import type {Context} from 'semantic-release'
+
   const addChannelGithub: (
-    pluginConfig: import('@semantic-release/github').PluginConfig,
-    context: import('semantic-release').Context
+    pluginConfig: PluginConfig,
+    context: Context
   ) => Promise<{url: string; name: string}>
   export = addChannelGithub
 }
 
 declare module '@semantic-release/github/lib/fail' {
+  import type {PluginConfig} from '@semantic-release/github'
+  import type {Context} from 'semantic-release'
+
   const failGithub: (
-    pluginConfig: import('@semantic-release/github').PluginConfig,
-    context: import('semantic-release').Context
+    pluginConfig: PluginConfig,
+    context: Context
   ) => Promise<void>
   export = failGithub
 }
 
 declare module '@semantic-release/github/lib/get-client' {
+  import type {Octokit} from '@octokit/rest'
+  import type resolveConfig from '@semantic-release/github/lib/resolve-config'
+
   const getClient: ({
     githubToken,
     githubUrl,
     githubApiPathPrefix,
     proxy
   }: Pick<
-    ReturnType<typeof import('@semantic-release/github/lib/resolve-config')>,
+    ReturnType<typeof resolveConfig>,
     'githubToken' | 'githubUrl' | 'githubApiPathPrefix' | 'proxy'
-  >) => import('@octokit/rest').Octokit
+  >) => Octokit
   export = getClient
 }
 
 declare module '@semantic-release/github/lib/glob-assets' {
-  type ReadonlyArrayType<
-    T extends readonly any[]
-  > = T extends readonly (infer U)[] ? U : never
-  type Assets = NonNullable<
-    ReturnType<
-      typeof import('@semantic-release/github/lib/resolve-config')
-    >['assets']
-  >
+  import type resolveConfig from '@semantic-release/github/lib/resolve-config'
+  import type {Context} from 'semantic-release'
+
+  type RequiredPick<T, K extends keyof T> = import('./types').RequiredPick<T, K>
+
+  type ArrayType<T extends readonly any[]> = T extends readonly (infer U)[]
+    ? U
+    : never
+  type Assets = NonNullable<ReturnType<typeof resolveConfig>['assets']>
 
   const globAssets: (
-    {cwd}: import('semantic-release').Context,
+    {cwd}: Context,
     assets: Assets
   ) => Promise<
     (
-      | import('./types').RequiredPick<
-          Exclude<ReadonlyArrayType<Assets>, string>,
-          'path' | 'name'
-        >
+      | RequiredPick<Exclude<ArrayType<Assets>, string>, 'path' | 'name'>
       | string
     )[]
   >
@@ -81,7 +88,9 @@ declare module '@semantic-release/github/lib/glob-assets' {
 }
 
 declare module '@semantic-release/github/lib/is-prerelease' {
-  const isPrerelease: ({type, main}: import('./types').Branch) => boolean
+  type Branch = import('./types').Branch
+
+  const isPrerelease: (branch: Branch) => boolean
   export = isPrerelease
 }
 
@@ -94,8 +103,12 @@ declare module '@semantic-release/github/lib/parse-github-url' {
 }
 
 declare module '@semantic-release/github/lib/resolve-config' {
+  import type {PluginConfig} from '@semantic-release/github'
+  import type {Context} from 'semantic-release'
+
+  type RequiredPick<T, K extends keyof T> = import('./types').RequiredPick<T, K>
+
   type Override<T, U> = Omit<T, keyof U> & U
-  type PluginConfig = import('@semantic-release/github').PluginConfig
   type CastArray<K extends keyof PluginConfig> = Extract<
     PluginConfig[K],
     readonly any[]
@@ -114,28 +127,34 @@ declare module '@semantic-release/github/lib/resolve-config' {
       assignees,
       releasedLabels
     }: PluginConfig,
-    {env}: import('semantic-release').Context
+    {env}: Context
   ) => {githubToken: string} & Override<
     PluginConfig,
     {[K in 'assets' | 'assignees']?: CastArray<K>} &
       {[K in 'labels' | 'releasedLabels']: CastArray<K> | false}
   > &
-    import('./types').RequiredPick<PluginConfig, 'failTitle'>
+    RequiredPick<PluginConfig, 'failTitle'>
   export = resolveConfig
 }
 
 declare module '@semantic-release/github/lib/success' {
+  import type {PluginConfig} from '@semantic-release/github'
+  import type {Context} from 'semantic-release'
+
   const successGithub: (
-    pluginConfig: import('@semantic-release/github').PluginConfig,
-    context: import('semantic-release').Context
+    pluginConfig: PluginConfig,
+    context: Context
   ) => Promise<void>
   export = successGithub
 }
 
 declare module '@semantic-release/github/lib/verify' {
+  import type {PluginConfig} from '@semantic-release/github'
+  import type {Context} from 'semantic-release'
+
   const verifyGithub: (
-    pluginConfig: import('@semantic-release/github').PluginConfig,
-    context: import('semantic-release').Context
+    pluginConfig: PluginConfig,
+    context: Context
   ) => Promise<void>
   export = verifyGithub
 }

@@ -16,5 +16,7 @@ overrides:
     import/no-unused-modules: 0
 - files: [src/*.d.ts]
   rules:
+    # Have to import multiple times for different module declarations
+    import/no-duplicates: 0
     # Typing a module, import can't detect it
     import/no-unused-modules: 0
