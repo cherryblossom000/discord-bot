@@ -139,8 +139,8 @@ const leaderboardCommand = async (
     total: number
     percentage: number
   }
-  const usersCache = new Map<number, User[]>()
-  const getUsers = async (skip: number): Promise<User[]> => {
+  const usersCache = new Map<number, readonly User[]>()
+  const getUsers = async (skip: number): Promise<readonly User[]> => {
     const existing = usersCache.get(skip)
     if (existing) return existing
     const users = await usersCol
@@ -282,7 +282,7 @@ Gets the leaderboard for this server.`,
      * @param questionPrefix A prefix to put at the beginning of the question on the embed title.
      */
     const execute = async (
-      fields: EmbedFieldData[],
+      fields: readonly EmbedFieldData[],
       _emojis: readonly string[],
       getSelectedAnswer: (emoji: string) => string | boolean,
       questionPrefix = ''

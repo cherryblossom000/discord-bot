@@ -10,13 +10,13 @@ declare global {
   interface AsyncFunction extends Function {
     readonly constructor: AsyncFunctionConstructor
     readonly [Symbol.toStringTag]: string
-    (...args: unknown[]): Promise<unknown>
+    (...args: readonly unknown[]): Promise<unknown>
   }
 
   interface AsyncFunctionConstructor extends FunctionConstructor {
     readonly prototype: AsyncFunction
-    new (...args: string[]): AsyncFunction
-    (...args: string[]): AsyncFunction
+    new (...args: readonly string[]): AsyncFunction
+    (...args: readonly string[]): AsyncFunction
   }
 }
 

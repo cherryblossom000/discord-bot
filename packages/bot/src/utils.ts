@@ -119,12 +119,16 @@ export const hasPermissions = (
 /** Check if the bot has permissions and sends a message if it doesn't. */
 export const checkPermissions = async (
   message: GuildMessage,
-  permissions: PermissionString | PermissionString[]
+  permissions: PermissionString | readonly PermissionString[]
 ): Promise<boolean> => {
   const {channel, client, guild} = message
   const channelPermissions = channel.permissionsFor(client.user!)
-  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions -- optional chaining
-  if (!channelPermissions?.has(permissions)) {
+  if (
+    channelPermissions?.has(
+      // TODO: remove once https://github.com/discordjs/discord.js/pull/4692 is merged
+      permissions as PermissionString | PermissionString[]
+    ) !== true
+  ) {
     const neededPermissions = Array.isArray(permissions)
       ? // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions -- optional chaining
         permissions.filter(p => !channelPermissions?.has(p))
@@ -234,13 +238,13 @@ export const searchYoutube = async (
     return
   }
 
-  let current: VideoSearchResult[]
+  let current: readonly VideoSearchResult[]
 
   /**
    * Generates the embed with videos and message content.
    * @param skip The index to start from.
    */
-  const generateEmbed = (skip: number): [string, MessageEmbed] => {
+  const generateEmbed = (skip: number): readonly [string, MessageEmbed] => {
     current = videos.slice(skip, skip + 10)
 
     const embed = new MessageEmbed().setTitle(

@@ -25,7 +25,7 @@ interface Response {
 interface FetchQuestionResponse extends Response {
   results: (QuestionResponseBase &
     (
-      | {type: 'multiple'; incorrect_answers: string[]}
+      | {type: 'multiple'; incorrect_answers: readonly string[]}
       | ({type: 'boolean'} & (
           | {correct_answer: 'True'; incorrect_answers: ['False']}
           | {correct_answer: 'False'; incorrect_answers: ['True']}
@@ -109,7 +109,7 @@ type Question = QuestionBase &
     | {
         type: Type.MultipleChoice
         correctAnswer: string
-        incorrectAnswers: string[]
+        incorrectAnswers: readonly string[]
       }
     | {type: Type.TrueFalse; correctAnswer: boolean}
   )
@@ -156,7 +156,7 @@ export const fetchQuestion = async (): Promise<Question | null> => {
             : question.correct_answer === 'True',
         ...(type === Type.MultipleChoice
           ? {
-              incorrectAnswers: (question.incorrect_answers as string[]).map(
+              incorrectAnswers: (question.incorrect_answers as readonly string[]).map(
                 decodeURIComponent
               )
             }

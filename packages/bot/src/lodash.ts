@@ -1,4 +1,4 @@
-export const shuffle = <T>(collection: readonly T[]): T[] => {
+export const shuffle = <T>(collection: readonly T[]): readonly T[] => {
   const {length} = collection
   const array = [...collection]
   let i = -1

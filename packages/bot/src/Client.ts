@@ -7,6 +7,8 @@ import type {
   GuildMember,
   GuildResolvable,
   MessageAdditions,
+  MessageAttachment,
+  MessageEmbed,
   MessageOptions,
   MessageReaction,
   Snowflake,
@@ -24,6 +26,12 @@ import type {
   RegexCommand,
   Queue
 } from './types'
+
+declare global {
+  interface ArrayConstructor {
+    isArray(arg: readonly any[] | any): arg is readonly any[]
+  }
+}
 
 // eslint-disable-next-line import/no-unused-modules -- it is used
 export interface ClientEvents extends Discord.ClientEvents {
@@ -114,9 +122,13 @@ export default class Client extends Discord.Client {
             reply?: boolean
             content:
               | MessageOptions
-              | MessageAdditions
-              | any
-              | [any, (MessageOptions | MessageAdditions)?]
+              | MessageEmbed
+              | MessageAttachment
+              | string
+              | readonly [
+                  string | readonly string[],
+                  (MessageOptions | MessageAdditions)?
+                ]
           }): Promise<void> {
             if (
               this.guild &&
@@ -126,10 +138,10 @@ export default class Client extends Discord.Client {
               ]))
             )
               return
-            const _content = (Array.isArray(content) ? content : [content]) as [
-              any,
+            const _content: readonly [
+              string | readonly string[] | MessageOptions | MessageAdditions,
               (MessageOptions | MessageAdditions)?
-            ]
+            ] = Array.isArray(content) ? content : [content]
             const msg = (await (reply
               ? this.reply(..._content)
               : this.channel.send(..._content))) as Message | Message[]

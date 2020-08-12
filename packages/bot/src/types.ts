@@ -7,6 +7,8 @@ import type {
   GuildMember,
   MessageAdditions,
   Message as DiscordMessage,
+  MessageAttachment,
+  MessageEmbed,
   MessageMentions,
   MessageOptions,
   MessageReaction,
@@ -38,7 +40,7 @@ interface CommandBase<T extends Message> {
    * Aliases.
    * @default []
    */
-  aliases?: string[]
+  aliases?: readonly string[]
 
   /** A description. */
   description: string
@@ -70,7 +72,7 @@ interface CommandBase<T extends Message> {
   /** The actual command. */
   execute(
     message: T,
-    input: {args: string[]; input: string},
+    input: {args: readonly string[]; input: string},
     database: Db
   ): void | Promise<void>
 }
@@ -143,9 +145,13 @@ interface BaseMessage extends DiscordMessage {
     reply?: boolean
     content:
       | MessageOptions
-      | MessageAdditions
-      | any
-      | [any, (MessageOptions | MessageAdditions)?]
+      | MessageEmbed
+      | MessageAttachment
+      | string
+      | readonly [
+          string | readonly string[],
+          (MessageOptions | MessageAdditions)?
+        ]
   }): Promise<void>
 }
 
