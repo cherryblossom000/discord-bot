@@ -284,7 +284,7 @@ Gets the leaderboard for this server.`,
       getSelectedAnswer: (emoji: string) => string | boolean,
       questionPrefix = ''
     ): Promise<void> => {
-      const msg = (await channel.send({
+      const msg = await channel.send({
         embed: {
           title: questionPrefix + escapeMarkdown(question.question),
           description: 'You have 15 seconds to answer.',
@@ -302,7 +302,7 @@ Gets the leaderboard for this server.`,
             }
           ]
         }
-      })) as Message
+      })
 
       // eslint-disable-next-line no-await-in-loop, no-restricted-syntax -- need to react individually
       for (const emoji of _emojis) await msg.react(emoji)

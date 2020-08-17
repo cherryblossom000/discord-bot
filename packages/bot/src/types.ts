@@ -2,7 +2,7 @@ import type {
   APIMessage,
   AwaitReactionsOptions,
   Collection,
-  DMChannel,
+  DMChannel as DiscordDMChannel,
   Guild as DiscordGuild,
   GuildMember,
   MessageAdditions,
@@ -12,17 +12,105 @@ import type {
   MessageMentions,
   MessageOptions,
   MessageReaction,
-  NewsChannel,
+  NewsChannel as DiscordNewsChannel,
   Snowflake,
   SplitOptions,
   StringResolvable,
-  TextChannel,
+  TextChannel as DiscordTextChannel,
   User,
   VoiceChannel,
   VoiceConnection
 } from 'discord.js'
 import type {Db} from './database'
 import type Client from './Client'
+
+// Make send return custom Message
+interface TextChannel extends DiscordTextChannel {
+  send(
+    options:
+      | MessageOptions
+      | (MessageOptions & {split?: false})
+      | MessageAdditions
+      | APIMessage
+  ): Promise<Message>
+  send(
+    options:
+      | (MessageOptions & {
+          split: true | SplitOptions
+          content: StringResolvable
+        })
+      | APIMessage
+  ): Promise<Message[]>
+  send(
+    content: StringResolvable,
+    options?:
+      | MessageOptions
+      | (MessageOptions & {split?: false})
+      | MessageAdditions
+  ): Promise<Message>
+  send(
+    content: StringResolvable,
+    options?: MessageOptions & {split: true | SplitOptions}
+  ): Promise<Message[]>
+}
+
+interface NewsChannel extends DiscordNewsChannel {
+  send(
+    options:
+      | MessageOptions
+      | (MessageOptions & {split?: false})
+      | MessageAdditions
+      | APIMessage
+  ): Promise<Message>
+  send(
+    options:
+      | (MessageOptions & {
+          split: true | SplitOptions
+          content: StringResolvable
+        })
+      | APIMessage
+  ): Promise<Message[]>
+  send(
+    content: StringResolvable,
+    options?:
+      | MessageOptions
+      | (MessageOptions & {split?: false})
+      | MessageAdditions
+  ): Promise<Message>
+  send(
+    content: StringResolvable,
+    options?: MessageOptions & {split: true | SplitOptions}
+  ): Promise<Message[]>
+}
+
+interface DMChannel extends DiscordDMChannel {
+  send(
+    options:
+      | MessageOptions
+      | (MessageOptions & {split?: false})
+      | MessageAdditions
+      | APIMessage
+  ): Promise<Message>
+  send(
+    options:
+      | (MessageOptions & {
+          split: true | SplitOptions
+          content: StringResolvable
+        })
+      | APIMessage
+  ): Promise<Message[]>
+  send(
+    content: StringResolvable,
+    options?:
+      | MessageOptions
+      | (MessageOptions & {split?: false})
+      | MessageAdditions
+  ): Promise<Message>
+  send(
+    content: StringResolvable,
+    options?: MessageOptions & {split: true | SplitOptions}
+  ): Promise<Message[]>
+}
 
 /** Any text-based guild channel. */
 // eslint-disable-next-line import/no-unused-modules -- it is used
@@ -139,10 +227,10 @@ interface BaseMessage extends DiscordMessage {
     options?: APIMessage | MessageAdditions | OptionsWithSplit
   ): Promise<this[]>
   sendDeletableMessage({
+    content,
     reply,
-    content
+    user
   }: {
-    reply?: boolean
     content:
       | MessageOptions
       | MessageEmbed
@@ -152,6 +240,8 @@ interface BaseMessage extends DiscordMessage {
           string | readonly string[],
           (MessageOptions | MessageAdditions)?
         ]
+    reply?: boolean
+    user?: User
   }): Promise<void>
 }
 
@@ -178,4 +268,5 @@ export type Message = GuildMessage | DMMessage
 /** A guild from this client. */
 export interface Guild extends DiscordGuild {
   client: Client
+  systemChannel: TextChannel | null
 }
