@@ -36,5 +36,6 @@ export const emojis = {
   delete: '🗑',
   letters: ['🇦', '🇧', '🇨', '🇩'],
   tick: '✅',
-  cross: '❌'
+  cross: '❌',
+  clock: '🕒'
 } as const

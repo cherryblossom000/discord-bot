@@ -329,7 +329,7 @@ Gets the leaderboard for this server.`,
         )
       } else {
         await channel.send(
-          `Time’s up! The correct answer was **${correctAnswer}**.`
+          `${emojis.clock} Time’s up! The correct answer was **${correctAnswer}**.`
         )
       }
 
