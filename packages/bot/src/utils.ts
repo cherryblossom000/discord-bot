@@ -9,7 +9,12 @@ import {
 } from 'discord.js'
 import yts from 'yt-search'
 import {emojis, me} from './constants'
-import type {User, PermissionResolvable, PermissionString} from 'discord.js'
+import type {
+  MessageReaction,
+  PermissionResolvable,
+  PermissionString,
+  User
+} from 'discord.js'
 import type {VideoSearchResult} from 'yt-search'
 import type Client from './Client'
 import type {
@@ -279,7 +284,7 @@ export const searchYoutube = async (
   let currentIndex = 0
 
   const collector = embedMessage.createReactionCollector(
-    ({emoji: {name}}, {id}) =>
+    ({emoji: {name}}: MessageReaction, {id}: User) =>
       [emojis.left, emojis.right, ...emojis.numbers].includes(name) &&
       id === author.id,
     {idle: 60_000}
