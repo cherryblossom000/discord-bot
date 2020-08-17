@@ -1,7 +1,7 @@
-import {Collection, Constants} from 'discord.js'
+import {Collection} from 'discord.js'
 import escapeRegex from 'escape-string-regexp'
 import {getPrefix} from '../database'
-import {handleError} from '../utils'
+import {handleError, ignoreError} from '../utils'
 import type {Snowflake} from 'discord.js'
 import type {EventListener} from '../Client'
 import type {Command, GuildMessage, Message} from '../types'
@@ -113,12 +113,7 @@ The syntax is: \`${prefix}${command.name}${
             // Can't use delete with timeout because I need to return false before waiting 10 seconds
             client.setTimeout(async () => {
               await msg.delete()
-              await message.delete().catch((error: {code?: number}) => {
-                if (error.code !== Constants.APIErrors.MISSING_PERMISSIONS)
-                  // TODO [@typescript-eslint/eslint-plugin@>3.8]: remove this comment
-                  // eslint-disable-next-line @typescript-eslint/no-throw-literal -- https://github.com/typescript-eslint/typescript-eslint/issues/2350
-                  throw error as Error
-              })
+              await message.delete().catch(ignoreError('MISSING_PERMISSIONS'))
             }, 5_000)
             return false
           }

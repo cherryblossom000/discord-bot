@@ -48,6 +48,19 @@ const _cleanStack = <T extends Error>(error: T): T & {stack: string} => {
 }
 export {_cleanStack as cleanStack}
 
+/** Creates a `catch` handler that ignores `DiscordAPIError`s. */
+export const ignoreError = (key: keyof typeof Constants.APIErrors) => (
+  error: unknown
+): void => {
+  if (
+    !(
+      error instanceof DiscordAPIError &&
+      error.code === Constants.APIErrors[key]
+    )
+  )
+    throw error
+}
+
 /**
  * DMs me an error.
  * @param info Extra information to send.
@@ -304,15 +317,10 @@ export const searchYoutube = async (
 
       let shouldReact = true
       // If the reaction is an arrow change the page
-      await embedMessage.reactions
-        .removeAll()
-        .catch((error: {code?: number}) => {
-          if (error.code !== Constants.APIErrors.MISSING_PERMISSIONS)
-            // TODO [@typescript-eslint/eslint-plugin@>3.8.0]: remove this comment
-            // eslint-disable-next-line @typescript-eslint/no-throw-literal -- https://github.com/typescript-eslint/typescript-eslint/issues/2350
-            throw error as Error
-          shouldReact = false
-        })
+      await embedMessage.reactions.removeAll().catch(error => {
+        ignoreError('MISSING_PERMISSIONS')(error)
+        shouldReact = false
+      })
       currentIndex += name === emojis.left ? -10 : 10
       await embedMessage.edit(...generateEmbed(currentIndex))
       if (shouldReact as boolean) {

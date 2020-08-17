@@ -1,8 +1,8 @@
-import {Collection, Constants, MessageEmbed, escapeMarkdown} from 'discord.js'
+import {Collection, MessageEmbed, escapeMarkdown} from 'discord.js'
 import {emojis} from '../constants'
 import {collection} from '../database'
 import {shuffle} from '../lodash'
-import {checkPermissions, resolveUser} from '../utils'
+import {checkPermissions, ignoreError, resolveUser} from '../utils'
 import {Difficulty, Type, fetchQuestion} from '../opentdb'
 import type {EmbedFieldData} from 'discord.js'
 import type {Db, Question} from '../database'
@@ -214,11 +214,8 @@ const leaderboardCommand = async (
 
   collector.on('collect', async ({emoji: {name}}) => {
     let shouldReact = true
-    await embedMessage.reactions.removeAll().catch((error: {code?: number}) => {
-      if (error.code !== Constants.APIErrors.MISSING_PERMISSIONS)
-        // TODO [@typescript-eslint/eslint-plugin@>3.8.0]: remove this comment
-        // eslint-disable-next-line @typescript-eslint/no-throw-literal -- https://github.com/typescript-eslint/typescript-eslint/issues/2350
-        throw error as Error
+    await embedMessage.reactions.removeAll().catch(error => {
+      ignoreError('MISSING_PERMISSIONS')(error)
       shouldReact = false
     })
     currentIndex += name === emojis.left ? -10 : 10

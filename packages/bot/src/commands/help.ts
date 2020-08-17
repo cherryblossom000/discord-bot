@@ -1,4 +1,4 @@
-import {Constants} from 'discord.js'
+import {Constants, DiscordAPIError} from 'discord.js'
 import {defaultPrefix} from '../constants'
 import {getPrefix} from '../database'
 import {sendMeError} from '../utils'
@@ -43,8 +43,8 @@ You can send \`${defaultPrefix}help [command name]\` to get info on a specific c
         return
       } catch (error) {
         if (
-          (error as {code?: number}).code ===
-          Constants.APIErrors.CANNOT_MESSAGE_USER
+          error instanceof DiscordAPIError &&
+          error.code === Constants.APIErrors.CANNOT_MESSAGE_USER
         ) {
           await Promise.all<void>([
             sendMeError(
