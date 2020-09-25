@@ -74,7 +74,7 @@ importers:
     dependencies:
       '@discordjs/opus': 0.3.2
       clean-stack: 3.0.0
-      discord.js: 12.3.1
+      discord.js: 12.3.1_@discordjs+opus@0.3.2
       escape-string-regexp: 4.0.0
       express: 4.17.1
       mongodb: 3.6.2
@@ -1164,19 +1164,19 @@ packages:
     dev: true
     resolution:
       integrity: sha512-jnqIUKDUqJbDIUxm0Uj7bnlMnRm1T/eZ9N+AVMqhPgzrba2GhGG5o/jCTwmdPK709nEZsGoMzXEDUjcXHa3W0g==
-  /@types/express-serve-static-core/4.17.9:
+  /@types/express-serve-static-core/4.17.13:
     dependencies:
       '@types/node': 12.12.62
-      '@types/qs': 6.9.4
+      '@types/qs': 6.9.5
       '@types/range-parser': 1.2.3
     dev: true
     resolution:
-      integrity: sha512-DG0BYg6yO+ePW+XoDENYz8zhNGC3jDDEpComMYn7WJc4mY1Us8Rw9ax2YhJXxpyk2SF47PQAoQ0YyVT1a0bEkA==
+      integrity: sha512-RgDi5a4nuzam073lRGKTUIaL3eF2+H7LJvJ8eUnCI0wA6SNjXc44DCmWNiTLs/AZ7QlsFWZiw/gTG3nSQGL0fA==
   /@types/express/4.17.8:
     dependencies:
       '@types/body-parser': 1.19.0
-      '@types/express-serve-static-core': 4.17.9
-      '@types/qs': 6.9.4
+      '@types/express-serve-static-core': 4.17.13
+      '@types/qs': 6.9.5
       '@types/serve-static': 1.13.5
     dev: true
     resolution:
@@ -1309,10 +1309,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-IkVfat549ggtkZUthUzEX49562eGikhSYeVGX97SkMFn+sTZrgRewXjQ4tPKFPCykZHkX1Zfd9OoELGqKU2jJA==
-  /@types/qs/6.9.4:
+  /@types/qs/6.9.5:
     dev: true
     resolution:
-      integrity: sha512-+wYo+L6ZF6BMoEjtf8zB2esQsqdV6WsjRK/GP9WOgLPrq87PbNWgIxS76dS5uvl/QXtHGakZmwTznIfcPXcKlQ==
+      integrity: sha512-/JHkVHtx/REVG0VVToGRGH2+23hsYLHdyG+GrvoUGlGAd0ErauXDyvHtRI/7H7mzLm+tBCKA7pfcpkQ1lf58iQ==
   /@types/range-parser/1.2.3:
     dev: true
     resolution:
@@ -1328,7 +1328,7 @@ packages:
       integrity: sha512-p8g5EWp6kQ601GPSi1Xb4+z2YB4J1muGkB7Xy5eRX/fZfbKRfW33j5D8JHb9D4C8jx5w14eLvQufZ5IfZZsoEA==
   /@types/serve-static/1.13.5:
     dependencies:
-      '@types/express-serve-static-core': 4.17.9
+      '@types/express-serve-static-core': 4.17.13
       '@types/mime': 2.0.3
     dev: true
     resolution:
@@ -2890,8 +2890,26 @@ packages:
       setimmediate: 1.0.5
       tweetnacl: 1.0.3
       ws: 7.3.1
+    dev: true
     engines:
       node: '>=12.0.0'
+    resolution:
+      integrity: sha512-mSFyV/mbvzH12UXdS4zadmeUf8IMQOo/YdunubG1wWt1xjWvtaJz/s9CGsFD2B5pTw1W/LXxxUbrQjIZ/xlUdw==
+  /discord.js/12.3.1_@discordjs+opus@0.3.2:
+    dependencies:
+      '@discordjs/collection': 0.1.6
+      '@discordjs/form-data': 3.0.1
+      abort-controller: 3.0.0
+      node-fetch: 2.6.1
+      prism-media: 1.2.2_@discordjs+opus@0.3.2
+      setimmediate: 1.0.5
+      tweetnacl: 1.0.3
+      ws: 7.3.1
+    dev: false
+    engines:
+      node: '>=12.0.0'
+    peerDependencies:
+      '@discordjs/opus': '*'
     resolution:
       integrity: sha512-mSFyV/mbvzH12UXdS4zadmeUf8IMQOo/YdunubG1wWt1xjWvtaJz/s9CGsFD2B5pTw1W/LXxxUbrQjIZ/xlUdw==
   /doctrine/1.5.0:
@@ -6752,6 +6770,27 @@ packages:
     resolution:
       integrity: sha512-zK6Gd8zDsEiVydOCGLkoBoZuqv8VTiHyAbKznXe/gaph/DAeZOmit9yMfgIz5adIgAMMs5XfoYSwAX3jcCO1tA==
   /prism-media/1.2.2:
+    dev: true
+    peerDependencies:
+      '@discordjs/opus': ^0.1.0
+      ffmpeg-static: ^2.4.0 || ^3.0.0
+      node-opus: ^0.3.1
+      opusscript: ^0.0.6
+    peerDependenciesMeta:
+      '@discordjs/opus':
+        optional: true
+      ffmpeg-static:
+        optional: true
+      node-opus:
+        optional: true
+      opusscript:
+        optional: true
+    resolution:
+      integrity: sha512-I+nkWY212lJ500jLe4tN9tWO7nRiBAVdMv76P9kffZjYhw20raMlW1HSSvS+MLXC9MmbNZCazMrAr+5jEEgTuw==
+  /prism-media/1.2.2_@discordjs+opus@0.3.2:
+    dependencies:
+      '@discordjs/opus': 0.3.2
+    dev: false
     peerDependencies:
       '@discordjs/opus': ^0.1.0
       ffmpeg-static: ^2.4.0 || ^3.0.0
