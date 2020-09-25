@@ -27,7 +27,9 @@ import type {
   Queue
 } from './types'
 
+// eslint-disable-next-line @typescript-eslint/no-shadow -- augmentation
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-shadow -- augmentation
   interface ArrayConstructor {
     isArray(arg: readonly any[] | any): arg is readonly any[]
   }
@@ -35,6 +37,7 @@ declare global {
 
 // eslint-disable-next-line import/no-unused-modules -- it is used
 export interface ClientEvents extends Discord.ClientEvents {
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define -- circular
   guildMemberAdd: [GuildMember & {client: Client}]
   message: [Message]
 }
@@ -57,12 +60,14 @@ interface RejoinListeners {
 interface GuildManager
   extends Discord.BaseManager<Snowflake, Guild, GuildResolvable> {
   create(...args: Parameters<Discord.GuildManager['create']>): Promise<Guild>
+  fetch(id: Snowflake, cache?: boolean, force?: boolean): Promise<Guild>
 }
 
 /** The Discord client for this bot. */
 export default class Client extends Discord.Client {
   guilds!: GuildManager
   on!: <K extends keyof ClientEvents>(event: K, listener: Listener<K>) => this
+  off!: <K extends keyof ClientEvents>(event: K, listener: Listener<K>) => this
 
   /** The commands. */
   readonly commands: Collection<string, Command<boolean>>

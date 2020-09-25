@@ -96,7 +96,7 @@ const dev = process.env.NODE_ENV !== 'production'
             )
           )
       )
-    } catch (error) {
+    } catch (error: unknown) {
       await sendMeError(
         client,
         error,

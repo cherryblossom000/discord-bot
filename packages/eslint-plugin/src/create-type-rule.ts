@@ -13,7 +13,7 @@ export default <T extends Record<string, unknown> | undefined = undefined>(
   extraValidation?: (
     typeAnnotation: TSESTree.TSTypeReference,
     report: ReportFn,
-    data: T
+    _data: T
   ) => void
 ): TSESLint.RuleModule<'incorrectType', []> => ({
   meta: {

@@ -51,7 +51,6 @@ const publishGithub: PublishPlugin = async (pluginConfig, context) => {
 
   if (!assets || !assets.length) {
     const {
-      // eslint-disable-next-line @typescript-eslint/naming-convention -- destructuring
       data: {html_url: url}
     } = await github.repos.createRelease(release)
     logger.log('Published GitHub release: %s', url)
@@ -60,7 +59,6 @@ const publishGithub: PublishPlugin = async (pluginConfig, context) => {
 
   const draftRelease = {...release, draft: true}
   const {
-    // eslint-disable-next-line @typescript-eslint/naming-convention -- destructuring
     data: {upload_url: uploadUrl, id: releaseId}
   } = await github.repos.createRelease(draftRelease)
 
@@ -122,7 +120,6 @@ const publishGithub: PublishPlugin = async (pluginConfig, context) => {
         upload.label = template(asset.label)(context)
 
       const {
-        // eslint-disable-next-line @typescript-eslint/naming-convention -- destructuring
         data: {browser_download_url: downloadUrl}
       } = await github.repos.uploadReleaseAsset(upload)
       logger.log('Published file %s', downloadUrl)
@@ -130,7 +127,6 @@ const publishGithub: PublishPlugin = async (pluginConfig, context) => {
   )
 
   const {
-    // eslint-disable-next-line @typescript-eslint/naming-convention -- destructuring
     data: {html_url: url}
   } = await github.repos.updateRelease({
     owner,

@@ -46,14 +46,14 @@ export const addListeners = (
                 (member as {
                   // TODO: Fix Discord.js' types (nickname is nullable)
                   setNickname(
-                    nickname: string | null,
+                    _nickname: string | null,
                     reason?: string
                   ): Promise<GuildMember>
                 }).setNickname(nickname)
               ]
             : [])
         ])
-      } catch (error) {
+      } catch (error: unknown) {
         await handleError(
           client,
           error,
@@ -123,7 +123,7 @@ ${guild.owner} sorry, but you have to do this yourself.`
             }
           }
         ])
-      } catch (error) {
+      } catch (error: unknown) {
         await handleError(
           client,
           error,

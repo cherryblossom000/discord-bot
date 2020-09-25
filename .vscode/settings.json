@@ -1,7 +1,7 @@
 {
   "jest.pathToConfig": "jest.config.dev.js",
   "typescript.tsc.autoDetect": "off",
-  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.tsdk": "./node_modules/typescript/lib",
   "search.exclude": {
     ".history/": true,
     "dist/": true,

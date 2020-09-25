@@ -15,7 +15,7 @@ const executeRegexCommands = (message: Message): void => {
         await (typeof regexMessage === 'string'
           ? channel.send(regexMessage)
           : channel.send(regexMessage(message)))
-      } catch (error) {
+      } catch (error: unknown) {
         await handleError(
           client,
           error,
@@ -133,7 +133,7 @@ The syntax is: \`${prefix}${command.name}${
         {args, input: _input},
         database
       )
-    } catch (error) {
+    } catch (error: unknown) {
       await handleError(
         client,
         error,

@@ -41,7 +41,7 @@ You can send \`${defaultPrefix}help [command name]\` to get info on a specific c
           )
         }
         return
-      } catch (error) {
+      } catch (error: unknown) {
         if (
           error instanceof DiscordAPIError &&
           error.code === Constants.APIErrors.CANNOT_MESSAGE_USER

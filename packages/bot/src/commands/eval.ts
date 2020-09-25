@@ -6,8 +6,10 @@ import type {Command} from '../types'
 
 const kDiscardResult = Symbol('discard result')
 
+// eslint-disable-next-line @typescript-eslint/no-shadow -- augmentation
 declare global {
   interface AsyncFunction extends Function {
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define -- circular
     readonly constructor: AsyncFunctionConstructor
     readonly [Symbol.toStringTag]: string
     (...args: readonly unknown[]): Promise<unknown>
@@ -58,7 +60,7 @@ The code to execute. The following variables are available:
         '_',
         `return (${input.input})`
       )(message, input, database, Discord, require, kDiscardResult)
-    } catch (error) {
+    } catch (error: unknown) {
       await message.sendDeletableMessage({content: [`${error}`, {code: true}]})
       return
     }

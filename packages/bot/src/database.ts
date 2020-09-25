@@ -2,7 +2,7 @@
 
 import {defaultPrefix} from './constants'
 import {MongoClient} from 'mongodb'
-import {Snowflake} from 'discord.js'
+import type {Snowflake} from 'discord.js'
 import type {
   Db as MongoDb,
   Collection as MongoCollection,

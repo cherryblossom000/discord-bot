@@ -67,17 +67,19 @@ export const ignoreError = (key: keyof typeof Constants.APIErrors) => (
  */
 export const sendMeError = async (
   client: Client,
-  error: Error,
+  error: unknown,
   info: string
 ): Promise<void> => {
   if (!dev) {
-    _cleanStack(error)
+    if (error instanceof Error) _cleanStack(error)
     await (await client.users.fetch(me)!).send(`${info}
 **Error at ${new Date().toLocaleString()}**${
-      error.stack!
-        ? `
+      error instanceof Error
+        ? error.stack!
+          ? `
 ${error.stack}`
-        : ''
+          : ''
+        : error
     }${
       error instanceof DiscordAPIError
         ? `
@@ -102,7 +104,7 @@ Status: ${error.httpStatus}`
  */
 export const handleError = async (
   client: Client,
-  error: Error,
+  error: unknown,
   info: string,
   messageOrChannel?: Message | TextBasedChannel,
   response = 'unfortunately, there was an error trying to execute that command. Noot noot.'
@@ -115,9 +117,9 @@ export const handleError = async (
     }
     if (dev) throw error
     await sendMeError(client, error, info)
-  } catch (error_) {
+  } catch (error_: unknown) {
     if (error_ instanceof Error) _cleanStack(error_)
-    _cleanStack(error)
+    if (error instanceof Error) _cleanStack(error)
     if (dev) throw error_
     console.error(
       'The error',

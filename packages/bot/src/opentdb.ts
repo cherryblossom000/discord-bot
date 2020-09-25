@@ -66,7 +66,6 @@ const api = async <T extends Response = Response>(
     >]
   }
 > => {
-  // eslint-disable-next-line @typescript-eslint/naming-convention -- destructuring
   const {response_code: code, ...rest} = (await (
     await fetch(`https://opentdb.com/${path}`)
   ).json()) as T
@@ -118,11 +117,8 @@ let token: string | undefined
 
 /** Fetches a question from the Open Trivia Database. */
 export const fetchQuestion = async (): Promise<Question | null> => {
-  // TODO [typescript@>=4]: update to token ??= await fetchToken()
-  const path = `api.php?amount=1&encode=url3986&token=${
-    // eslint-disable-next-line require-atomic-updates -- token not reassigned based on outdated value
-    token ?? (token = await fetchToken())
-  }`
+  // eslint-disable-next-line require-atomic-updates -- token not reassigned based on outdated value
+  const path = `api.php?amount=1&encode=url3986&token=${(token ??= await fetchToken())}`
   const {
     code,
     results: [question]

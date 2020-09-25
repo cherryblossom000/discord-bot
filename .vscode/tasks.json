@@ -1,11 +1,11 @@
 {
   "version": "2.0.0",
   "tasks": [
+    // Can't use npm scripts because of pnpm workspace
     {
       "label": "Watch (main)",
-      "type": "npm",
-      "script": "watch",
-      "path": "packages/bot/",
+      "type": "shell",
+      "command": "pnpm -C packages/bot watch",
       "problemMatcher": {
         "base": "$tsc-watch",
         "fileLocation": ["relative", "${workspaceFolder}/packages/bot"]
@@ -21,9 +21,8 @@
     },
     {
       "label": "Watch (eslint-plugin)",
-      "type": "npm",
-      "script": "watch",
-      "path": "packages/eslint-plugin/",
+      "type": "shell",
+      "command": "pnpm -C packages/eslint-plugin watch",
       "problemMatcher": {
         "base": "$tsc-watch",
         "fileLocation": ["relative", "${workspaceFolder}/packages/eslint-plugin"]
@@ -36,9 +35,8 @@
     },
     {
       "label": "Watch (semantic-release)",
-      "type": "npm",
-      "script": "watch",
-      "path": "packages/semantic-release/",
+      "type": "shell",
+      "command": "pnpm -C packages/semantic-release watch",
       "problemMatcher": {
         "base": "$tsc-watch",
         "fileLocation": ["relative", "${workspaceFolder}/packages/semantic-release"]

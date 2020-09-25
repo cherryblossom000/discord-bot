@@ -119,82 +119,10 @@ export type TextBasedGuildChannel = TextChannel | NewsChannel
 // eslint-disable-next-line import/no-unused-modules -- it is used
 export type TextBasedChannel = TextBasedGuildChannel | DMChannel
 
-/** @template T The type of the message in `execute`. */
-interface CommandBase<T extends Message> {
-  /** The name. */
-  name: string
-
-  /**
-   * Aliases.
-   * @default []
-   */
-  aliases?: readonly string[]
-
-  /** A description. */
-  description: string
-
-  /** Whether or not the command is only available in a server. */
-  guildOnly?: boolean
-
-  /** Whether or not the command is not shown in the help list of commands. */
-  hidden?: boolean
-
-  /**
-   * Whether or nor the command requires arguments.
-   * @default false
-   */
-  args?: boolean
-
-  /** The syntax. */
-  syntax?: string
-
-  /** The explanation for how to use it. */
-  usage?: string
-
-  /**
-   * The cooldown, in seconds.
-   * @default 3
-   */
-  cooldown?: number
-
-  /** The actual command. */
-  execute(
-    message: T,
-    input: {args: readonly string[]; input: string},
-    database: Db
-  ): void | Promise<void>
-}
-
-/**
- * A command.
- * @template T Whether the command is guild only or not.
- */
-export type Command<T extends boolean = false> = T extends true
-  ? CommandBase<GuildMessage> & {guildOnly: true}
-  : CommandBase<GuildMessage | DMMessage> & {guildOnly?: false}
-
-/** A command that is triggered based on a regular expression. */
-export interface RegexCommand {
-  /** The regex to test for. */
-  regex: RegExp
-
-  /** The message to reply with. Can be a function that returns the message.. */
-  regexMessage: string | ((message: Message) => string)
-}
-
-// eslint-disable-next-line import/no-unused-modules -- it is used
-export interface Video {
-  title: string
-  id: string
-  author: string
-}
-
-/** A music queue. */
-export interface Queue {
-  textChannel: TextBasedGuildChannel
-  voiceChannel: VoiceChannel
-  connection: VoiceConnection
-  songs: Video[]
+/** A guild from this client. */
+export interface Guild extends DiscordGuild {
+  client: Client
+  systemChannel: TextChannel | null
 }
 
 export type OptionsNoSplit = MessageOptions & {split?: false}
@@ -265,8 +193,84 @@ interface DMMessage extends BaseMessage {
 /** A message from this client. */
 export type Message = GuildMessage | DMMessage
 
-/** A guild from this client. */
-export interface Guild extends DiscordGuild {
-  client: Client
-  systemChannel: TextChannel | null
+/* eslint-disable jsdoc/valid-types -- description for template */
+/** @template T The type of the message in `execute`. */
+/* eslint-enable jsdoc/valid-types -- see above */
+interface CommandBase<T extends Message> {
+  /** The name. */
+  name: string
+
+  /**
+   * Aliases.
+   * @default []
+   */
+  aliases?: readonly string[]
+
+  /** A description. */
+  description: string
+
+  /** Whether or not the command is only available in a server. */
+  guildOnly?: boolean
+
+  /** Whether or not the command is not shown in the help list of commands. */
+  hidden?: boolean
+
+  /**
+   * Whether or nor the command requires arguments.
+   * @default false
+   */
+  args?: boolean
+
+  /** The syntax. */
+  syntax?: string
+
+  /** The explanation for how to use it. */
+  usage?: string
+
+  /**
+   * The cooldown, in seconds.
+   * @default 3
+   */
+  cooldown?: number
+
+  /** The actual command. */
+  execute(
+    message: T,
+    input: {args: readonly string[]; input: string},
+    database: Db
+  ): void | Promise<void>
+}
+
+/* eslint-disable jsdoc/valid-types -- description for template */
+/**
+ * A command.
+ * @template T Whether the command is guild only or not.
+ */
+/* eslint-enable jsdoc/valid-types -- see above */
+export type Command<T extends boolean = false> = T extends true
+  ? CommandBase<GuildMessage> & {guildOnly: true}
+  : CommandBase<GuildMessage | DMMessage> & {guildOnly?: false}
+
+/** A command that is triggered based on a regular expression. */
+export interface RegexCommand {
+  /** The regex to test for. */
+  regex: RegExp
+
+  /** The message to reply with. Can be a function that returns the message.. */
+  regexMessage: string | ((message: Message) => string)
+}
+
+// eslint-disable-next-line import/no-unused-modules -- it is used
+export interface Video {
+  title: string
+  id: string
+  author: string
+}
+
+/** A music queue. */
+export interface Queue {
+  textChannel: TextBasedGuildChannel
+  voiceChannel: VoiceChannel
+  connection: VoiceConnection
+  songs: Video[]
 }

@@ -128,7 +128,6 @@ The query to search on YouTube for.`,
     if (validateURL(url)) {
       const {
         title,
-        // eslint-disable-next-line @typescript-eslint/naming-convention -- video_id is in
         video_id: videoID,
         author: {name}
       } = await getBasicInfo(url)

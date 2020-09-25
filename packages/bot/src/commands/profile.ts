@@ -4,11 +4,14 @@ import {resolveUser} from '../utils'
 import type {GuildMember, PresenceStatus, User} from 'discord.js'
 import type {Command} from '../types'
 
+// eslint-disable-next-line @typescript-eslint/no-shadow -- augmentation
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-shadow -- augmentation
   interface ObjectConstructor {
     entries<K extends keyof any, V>(o: Partial<Record<K, V>>): [K, V][]
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-shadow -- augmentation
   namespace Intl {
     interface DateTimeFormatOptions {
       dateStyle?: 'full' | 'long' | 'medium' | 'short'
@@ -56,8 +59,9 @@ const getUserInfo = (user: User): MessageEmbed => {
       // TODO: Fix Discord.js: it has user#locale as string not as an optional string
     )
 
-  const flags = user.flags.toArray()
-  if (flags.length) {
+  const flags = user.flags?.toArray()
+  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions -- otherwise prefer-optional-chain
+  if (flags?.length) {
     embed.addField(
       'Flags',
       flags
