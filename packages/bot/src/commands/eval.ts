@@ -68,9 +68,14 @@ The code to execute. The following variables are available:
     if (result !== kDiscardResult) {
       await message.sendDeletableMessage({
         content: [
-          inspect(result).replace(
-            new RegExp(escapeRegex(process.env.TOKEN!), 'ug'),
-            '<token>'
+          ['TOKEN', 'DB_USER', 'DB_PASSWORD', 'REPLIT_DB_URL'].reduce(
+            (acc, key) => {
+              const value = process.env[key]
+              return value === undefined
+                ? acc
+                : acc.replace(new RegExp(escapeRegex(value), 'ug'), `<${key}>`)
+            },
+            inspect(result)
           ),
           {code: 'js', split: true}
         ]
