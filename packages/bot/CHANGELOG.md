@@ -1,5 +1,17 @@
 # Changelog
 
+# [2.7.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.6.1...@comrade-pingu/bot@2.7.0) (2020-09-25)
+
+
+### Bug Fixes
+
+* **eval:** censor `DB_USER`, `DB_PASSWORD`, and `REPLIT_DB_URL` from output ([d50eb7d](https://github.com/cherryblossom000/comrade-pingu/commit/d50eb7dddf1a641e610dec15589dd8685bc26a0b))
+
+
+### Features
+
+* **trivia:** show clock emoji on time out ([6d58adf](https://github.com/cherryblossom000/comrade-pingu/commit/6d58adf56c6a5bf96a1bd2150ce75a77d47acbc7))
+
 ## [2.6.1](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.6.0...@comrade-pingu/bot@2.6.1) (2020-08-07)
 
 
