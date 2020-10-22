@@ -6,7 +6,6 @@ import type {Command} from '../types'
 
 const kDiscardResult = Symbol('discard result')
 
-// eslint-disable-next-line @typescript-eslint/no-shadow -- augmentation
 declare global {
   interface AsyncFunction extends Function {
     // eslint-disable-next-line @typescript-eslint/no-use-before-define -- circular

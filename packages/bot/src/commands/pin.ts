@@ -15,7 +15,7 @@ The ID of the message to pin. Defaults to the last message (excluding the one to
       message.author.id !== me
     ) {
       await message.reply(
-        'This command can only be used by someone with the Manage Messages permission or the bot owner!'
+        'this command can only be used by someone with the Manage Messages permission or the bot owner!'
       )
       return
     }

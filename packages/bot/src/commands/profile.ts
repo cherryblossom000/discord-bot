@@ -4,7 +4,6 @@ import {resolveUser} from '../utils'
 import type {GuildMember, PresenceStatus, User} from 'discord.js'
 import type {Command} from '../types'
 
-// eslint-disable-next-line @typescript-eslint/no-shadow -- augmentation
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-shadow -- augmentation
   interface ObjectConstructor {
@@ -20,7 +19,8 @@ declare global {
   }
 }
 
-const formatBoolean = (boolean = false): string => (boolean ? 'Yes' : 'No')
+const formatBoolean = (boolean: boolean | null): string =>
+  boolean === true ? 'Yes' : 'No'
 const formatStatus = (status: PresenceStatus): string =>
   status === 'dnd' ? 'Do Not Disturb' : upperFirst(status)
 const formatDate = (date: Date): string =>
@@ -177,8 +177,8 @@ const addMemberInfo = (
     embed.addField(
       'Voice',
       `Channel: ${channel.name}
-Muted: ${formatBoolean(mute)}${serverMute ? ' (server)' : ''}
-Deafened: ${formatBoolean(deaf)}${serverDeaf ? ' (server)' : ''}
+Muted: ${formatBoolean(mute)}${serverMute === true ? ' (server)' : ''}
+Deafened: ${formatBoolean(deaf)}${serverDeaf === true ? ' (server)' : ''}
 Streaming: ${formatBoolean(streaming)}`
     )
   }

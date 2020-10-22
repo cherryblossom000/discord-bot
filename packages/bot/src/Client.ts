@@ -1,14 +1,19 @@
-import Discord, {Collection, Structures} from 'discord.js'
+import Discord, {
+  Collection,
+  MessageAttachment,
+  MessageEmbed,
+  Util,
+  Structures
+} from 'discord.js'
 import {emojis} from './constants'
 import {upperFirst} from './lodash'
 import {checkPermissions} from './utils'
 import type {
   APIMessage,
+  APIMessageContentResolvable,
   GuildMember,
   GuildResolvable,
   MessageAdditions,
-  MessageAttachment,
-  MessageEmbed,
   MessageOptions,
   MessageReaction,
   Snowflake,
@@ -21,13 +26,14 @@ import type {
   Guild,
   GuildMessage,
   Message,
+  SendArgs,
   OptionsNoSplit,
   OptionsWithSplit,
   RegexCommand,
-  Queue
+  Queue,
+  TextBasedChannel
 } from './types'
 
-// eslint-disable-next-line @typescript-eslint/no-shadow -- augmentation
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-shadow -- augmentation
   interface ArrayConstructor {
@@ -87,37 +93,51 @@ export default class Client extends Discord.Client {
       // eslint-disable-next-line @typescript-eslint/naming-convention -- Message is a class
       _Message =>
         class extends _Message {
-          // TODO: Fix Discord.js' types of reply and send (1st overload) because it sues MessageAdditions twice in options param
+          channel!: TextBasedChannel
+
+          async reply(content: OptionsWithSplit): Promise<this[]>
           async reply(
-            content?: StringResolvable,
-            options?: MessageOptions | MessageAdditions | OptionsNoSplit
-          ): Promise<this>
-          async reply(
-            content?: StringResolvable,
-            options?: MessageAdditions | OptionsWithSplit
-          ): Promise<this[]>
-          async reply(
-            options?:
-              | APIMessage
-              | MessageOptions
-              | MessageAdditions
+            options:
+              | APIMessageContentResolvable
               | OptionsNoSplit
+              | MessageAdditions
           ): Promise<this>
           async reply(
-            options?: APIMessage | MessageAdditions | OptionsWithSplit
+            content: StringResolvable,
+            options: OptionsWithSplit
           ): Promise<this[]>
           async reply(
-            content?: StringResolvable,
+            content: StringResolvable,
+            options: OptionsNoSplit | MessageAdditions
+          ): Promise<this>
+          async reply(...[content, options]: SendArgs): Promise<this | this[]>
+          async reply(
+            content: unknown,
             options?: MessageOptions | MessageAdditions
           ): Promise<this | this[]> {
-            return super.reply(
-              this.guild
-                ? content
-                : Array.isArray(content)
-                ? [upperFirst(content[0]), ...(content.slice(1) as unknown[])]
-                : upperFirst(content),
-              options
-            ) as Promise<this | this[]>
+            return (super.reply as (
+              ...[_content, _options]: SendArgs
+            ) => Promise<this | this[]>)(
+              ...(this.guild
+                ? ([content, options] as Readonly<SendArgs>)
+                : Array.isArray(content) &&
+                  content.length &&
+                  !content.some(
+                    x =>
+                      x instanceof MessageEmbed ||
+                      x instanceof MessageAttachment
+                  )
+                ? [
+                    [
+                      upperFirst(Util.resolveString(content[0])),
+                      ...(content.slice(1) as readonly unknown[])
+                    ],
+                    options
+                  ]
+                : typeof content == 'object' && content && !options
+                ? [content as MessageAdditions | APIMessage]
+                : [upperFirst(Util.resolveString(content)), options])
+            )
           }
 
           async sendDeletableMessage({
@@ -143,13 +163,12 @@ export default class Client extends Discord.Client {
               ]))
             )
               return
-            const _content: readonly [
-              string | readonly string[] | MessageOptions | MessageAdditions,
-              (MessageOptions | MessageAdditions)?
-            ] = Array.isArray(content) ? content : [content]
-            const msg = (await (reply
+            const _content: Readonly<SendArgs> = Array.isArray(content)
+              ? content
+              : [content]
+            const msg = await (reply
               ? this.reply(..._content)
-              : this.channel.send(..._content))) as Message | Message[]
+              : this.channel.send(..._content))
             await Promise.all(
               (Array.isArray(msg) ? msg : [msg]).map(async m => {
                 await m.react(emojis.delete)
@@ -171,13 +190,6 @@ export default class Client extends Discord.Client {
     this.queues = new Collection<Snowflake, Queue>()
     this.rejoinListeners = new Collection<Snowflake, RejoinListeners>()
   }
-
-  /*
-   * the issue with voice
-   * server UDP not sending IP info after IP discovery
-   * working    : [0,12,39,49, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-   * not working: [0,2, 11,198,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-   */
 
   /** Set the activity. */
   async setActivity(): Promise<void> {

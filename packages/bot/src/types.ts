@@ -1,5 +1,6 @@
 import type {
   APIMessage,
+  APIMessageContentResolvable,
   AwaitReactionsOptions,
   Collection,
   DMChannel as DiscordDMChannel,
@@ -26,97 +27,56 @@ import type Client from './Client'
 
 // Make send return custom Message
 interface TextChannel extends DiscordTextChannel {
+  send(content: OptionsWithSplit): Promise<GuildMessage[]>
   send(
-    options:
-      | MessageOptions
-      | (MessageOptions & {split?: false})
-      | MessageAdditions
-      | APIMessage
-  ): Promise<Message>
-  send(
-    options:
-      | (MessageOptions & {
-          split: true | SplitOptions
-          content: StringResolvable
-        })
-      | APIMessage
-  ): Promise<Message[]>
+    options: APIMessageContentResolvable | OptionsNoSplit | MessageAdditions
+  ): Promise<GuildMessage>
   send(
     content: StringResolvable,
-    options?:
-      | MessageOptions
-      | (MessageOptions & {split?: false})
-      | MessageAdditions
-  ): Promise<Message>
+    options: OptionsWithSplit
+  ): Promise<GuildMessage[]>
   send(
     content: StringResolvable,
-    options?: MessageOptions & {split: true | SplitOptions}
-  ): Promise<Message[]>
+    options: OptionsNoSplit | MessageAdditions
+  ): Promise<GuildMessage>
+  send(...[content, options]: SendArgs): Promise<GuildMessage | GuildMessage[]>
 }
 
 interface NewsChannel extends DiscordNewsChannel {
+  send(content: OptionsWithSplit): Promise<GuildMessage[]>
   send(
-    options:
-      | MessageOptions
-      | (MessageOptions & {split?: false})
-      | MessageAdditions
-      | APIMessage
-  ): Promise<Message>
-  send(
-    options:
-      | (MessageOptions & {
-          split: true | SplitOptions
-          content: StringResolvable
-        })
-      | APIMessage
-  ): Promise<Message[]>
+    options: APIMessageContentResolvable | OptionsNoSplit | MessageAdditions
+  ): Promise<GuildMessage>
   send(
     content: StringResolvable,
-    options?:
-      | MessageOptions
-      | (MessageOptions & {split?: false})
-      | MessageAdditions
-  ): Promise<Message>
+    options: OptionsWithSplit
+  ): Promise<GuildMessage[]>
   send(
     content: StringResolvable,
-    options?: MessageOptions & {split: true | SplitOptions}
-  ): Promise<Message[]>
+    options: OptionsNoSplit | MessageAdditions
+  ): Promise<GuildMessage>
+  send(...[content, options]: SendArgs): Promise<GuildMessage | GuildMessage[]>
 }
 
 interface DMChannel extends DiscordDMChannel {
+  send(content: OptionsWithSplit): Promise<DMMessage[]>
   send(
-    options:
-      | MessageOptions
-      | (MessageOptions & {split?: false})
-      | MessageAdditions
-      | APIMessage
-  ): Promise<Message>
-  send(
-    options:
-      | (MessageOptions & {
-          split: true | SplitOptions
-          content: StringResolvable
-        })
-      | APIMessage
-  ): Promise<Message[]>
+    options: APIMessageContentResolvable | OptionsNoSplit | MessageAdditions
+  ): Promise<DMMessage>
   send(
     content: StringResolvable,
-    options?:
-      | MessageOptions
-      | (MessageOptions & {split?: false})
-      | MessageAdditions
-  ): Promise<Message>
+    options: OptionsWithSplit
+  ): Promise<DMMessage[]>
   send(
     content: StringResolvable,
-    options?: MessageOptions & {split: true | SplitOptions}
-  ): Promise<Message[]>
+    options: OptionsNoSplit | MessageAdditions
+  ): Promise<DMMessage>
+  send(...[content, options]: SendArgs): Promise<DMMessage | DMMessage[]>
 }
 
 /** Any text-based guild channel. */
 // eslint-disable-next-line import/no-unused-modules -- it is used
 export type TextBasedGuildChannel = TextChannel | NewsChannel
-
-// eslint-disable-next-line import/no-unused-modules -- it is used
 export type TextBasedChannel = TextBasedGuildChannel | DMChannel
 
 /** A guild from this client. */
@@ -127,6 +87,16 @@ export interface Guild extends DiscordGuild {
 
 export type OptionsNoSplit = MessageOptions & {split?: false}
 export type OptionsWithSplit = MessageOptions & {split: true | SplitOptions}
+
+export type SendArgs =
+  | [
+      | APIMessageContentResolvable
+      | MessageOptions
+      | MessageAdditions
+      | APIMessage
+    ]
+  | [APIMessageContentResolvable, (MessageOptions | MessageAdditions)?]
+  | [StringResolvable, MessageOptions | MessageAdditions]
 
 /** A message from this client. */
 interface BaseMessage extends DiscordMessage {
@@ -140,24 +110,19 @@ interface BaseMessage extends DiscordMessage {
     ) => boolean,
     options?: AwaitReactionsOptions
   ): Promise<Collection<Snowflake, MessageReaction>>
+  reply(content: OptionsWithSplit): Promise<this[]>
   reply(
-    content?: StringResolvable,
-    options?: MessageAdditions | MessageOptions | OptionsNoSplit
+    options: APIMessageContentResolvable | OptionsNoSplit | MessageAdditions
   ): Promise<this>
+  reply(content: StringResolvable, options: OptionsWithSplit): Promise<this[]>
   reply(
-    content?: StringResolvable,
-    options?: MessageAdditions | OptionsWithSplit
-  ): Promise<this[]>
-  reply(
-    options?: APIMessage | MessageOptions | MessageAdditions | OptionsNoSplit
+    content: StringResolvable,
+    options: OptionsNoSplit | MessageAdditions
   ): Promise<this>
-  reply(
-    options?: APIMessage | MessageAdditions | OptionsWithSplit
-  ): Promise<this[]>
+  reply(...[content, options]: SendArgs): Promise<this | this[]>
   sendDeletableMessage({
     content,
-    reply,
-    user
+    reply
   }: {
     content:
       | MessageOptions
@@ -169,7 +134,6 @@ interface BaseMessage extends DiscordMessage {
           (MessageOptions | MessageAdditions)?
         ]
     reply?: boolean
-    user?: User
   }): Promise<void>
 }
 
