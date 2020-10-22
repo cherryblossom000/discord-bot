@@ -102,11 +102,19 @@ Status: ${error.httpStatus}`
  * @param message The message to reply to, if applicable.
  * @param response The response in the message reply.
  */
-export const handleError = async (
+// explicit type annotation needed for declaration (otherwise can't find name
+// TextChanel etc)
+export const handleError: (
   client: Client,
   error: unknown,
   info: string,
   messageOrChannel?: Message | TextBasedChannel,
+  response?: string
+) => Promise<void> = async (
+  client,
+  error,
+  info,
+  messageOrChannel,
   response = 'unfortunately, there was an error trying to execute that command. Noot noot.'
 ): Promise<void> => {
   try {

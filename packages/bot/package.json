@@ -16,12 +16,12 @@
     "node": ">=12"
   },
   "scripts": {
-    "lint": "eslint --report-unused-disable-directives --max-warnings 0 --ext .js,ts .",
-    "lint:dev": "pnpm run lint -- --cache",
-    "typecheck": "tsc -p src/tsconfig.json --noEmit & tsc -p tests/tsconfig.json & tsc -p scripts/tsconfig.json & tsc -p tsconfig.jest-config.json",
-    "build": "tsc -p src/tsconfig.json && pnpm run copy && pnpm run docs",
-    "build:dev": "tsc -p src/tsconfig.json --sourceMap --incremental && pnpm run copy",
-    "watch": "tsc -p src/tsconfig.json --sourceMap --incremental -w",
+    "lint": "eslint --max-warnings 0 --ext .js,ts .",
+    "lint:dev": "pnpm lint -- --cache",
+    "typecheck": "tsc -b tsconfig.typecheck.json",
+    "build": "tsc -b src && pnpm copy && pnpm docs",
+    "build:dev": "tsc -b src/tsconfig.dev.json && pnpm copy && pnpm docs",
+    "watch": "tsc -b src/tsconfig.dev.json -w",
     "test": "jest",
     "test:dev": "jest -c jest.config.dev.js",
     "copy": " (cd dist && mkdir assets; cp -r ../assets/img assets/img)",

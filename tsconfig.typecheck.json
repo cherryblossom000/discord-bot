@@ -1,8 +1,9 @@
 {
   "files": [],
+  "compilerOptions": {
+    "noEmit": true
+  },
   "references": [
-    {"path": "./src"},
-    {"path": "./tests"},
     {"path": "./scripts"},
     {"path": "./tsconfig.jest-config.json"}
   ]

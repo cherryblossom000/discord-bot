@@ -1,7 +1,10 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "./tsconfig.settings.json",
   "include": ["**/jest.config*.js"],
   "compilerOptions": {
-    "types": ["node"]
+    "types": ["node"],
+    "noEmit": true,
+    "allowJs": true,
+    "checkJs": true
   }
 }

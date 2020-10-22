@@ -1,11 +1,10 @@
 {
-  "extends": "../../../tsconfig.json",
+  "extends": "../../../tsconfig.settings.json",
   "include": ["**/*.ts"],
   "compilerOptions": {
+    "composite": false,
+    "outDir": "../dist",
     "skipLibCheck": false,
-    "allowJs": false,
-    "checkJs": false,
-    "noEmit": false,
-    "outDir": "../dist"
+    "types": ["node"]
   }
 }

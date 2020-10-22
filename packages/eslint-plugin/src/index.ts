@@ -6,7 +6,7 @@ const rulesFolder = join(__dirname, 'rules')
 
 export const rules = Object.fromEntries(
   readdirSync(join(__dirname, 'rules'))
-    .filter(file => !file.endsWith('.map'))
+    .filter(file => file.endsWith('.js'))
     .map(file => [
       file.slice(0, -3),
       // eslint-disable-next-line @typescript-eslint/no-require-imports -- needs to be synchronous

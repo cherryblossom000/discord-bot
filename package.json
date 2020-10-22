@@ -16,9 +16,10 @@
   },
   "main": "packages/bot/dist/src/server",
   "scripts": {
-    "lint": "eslint --report-unused-disable-directives --max-warnings 0 --ext .js,ts .",
-    "lint:dev": "pnpm run lint -- --cache",
-    "typecheck": "pnpm m run typecheck && tsc -p tsconfig.jest-config.json",
+    "lint:jest-config": "eslint --max-warnings 0 jest.config*.js",
+    "lint": "pnpm m run lint && pnpm lint:jest-config",
+    "lint:dev": "pnpm m run lint:dev && pnpm lint:jest-config -- --cache",
+    "typecheck": "pnpm m run typecheck && tsc -b tsconfig.typecheck.json",
     "build": "pnpm m run build",
     "build:dev": "pnpm m run build:dev",
     "watch": "pnpm m run watch",

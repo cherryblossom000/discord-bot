@@ -1,24 +1,10 @@
 {
-  "include": ["**/*.ts", "scripts/**/*.js", "**/jest.config*.js"],
-  "exclude": ["node_modules/", "dist/"],
-  "compilerOptions": {
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "lib": [
-      "ES2019",
-      "ES2020.BigInt",
-      "ES2020.String",
-      "ES2020.Symbol.WellKnown"
-    ],
-    "module": "commonjs",
-    "target": "es2019",
-    "skipLibCheck": true,
-    "allowJs": true,
-    "checkJs": true,
-    "noEmit": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "strict": true
-  }
+  "files": [],
+  "references": [
+    {"path": "./packages/bot"},
+    {"path": "./packages/eslint-plugin"},
+    {"path": "./packages/semantic-release"},
+    {"path": "./scripts"},
+    {"path": "./tsconfig.jest-config.json"}
+  ]
 }

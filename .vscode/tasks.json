@@ -1,7 +1,6 @@
 {
   "version": "2.0.0",
   "tasks": [
-    // Can't use npm scripts because of pnpm workspace
     {
       "label": "Watch (main)",
       "type": "shell",

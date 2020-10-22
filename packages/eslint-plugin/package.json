@@ -15,12 +15,12 @@
     "node": ">=12"
   },
   "scripts": {
-    "lint": "eslint --report-unused-disable-directives --max-warnings 0 --ext ts .",
-    "lint:dev": "pnpm run lint -- --cache",
-    "typecheck": "pnpm run build -- --noEmit",
-    "build": "tsc -p src/tsconfig.json",
-    "build:dev": "pnpm run build -- --sourceMap --incremental",
-    "watch": "pnpm run build:dev -- -w"
+    "lint": "eslint --max-warnings 0 --ext ts .",
+    "lint:dev": "pnpm lint -- --cache",
+    "typecheck": "tsc -b tsconfig.typecheck.json",
+    "build": "tsc -b src",
+    "build:dev": "tsc -b src/tsconfig.dev.json",
+    "watch": "pnpm build:dev -- -w"
   },
   "dependencies": {
     "@typescript-eslint/experimental-utils": "^4.2.0"
