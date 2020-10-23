@@ -1,6 +1,6 @@
 {
   "extends": "../../tsconfig.config.json",
-  "include": ["jest.config*.js"],
+  "include": ["*.config*.js"],
   "compilerOptions": {
     "composite": false
   }
