@@ -1,0 +1,28 @@
+{
+  "name": "@comrade-pingu/commitlint-plugin",
+  "version": "0.0.0-development",
+  "private": true,
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cherryblossom000/comrade-pingu",
+    "directory": "packages/commitlint-plugin"
+  },
+  "main": "dist",
+  "engines": {
+    "node": ">=12"
+  },
+  "scripts": {
+    "lint": "eslint --max-warnings 0 --ext ts .",
+    "lint:dev": "pnpm lint -- --cache",
+    "typecheck": "tsc -b tsconfig.typecheck.json",
+    "build": "tsc -b src",
+    "build:dev": "tsc -b src/tsconfig.dev.json",
+    "watch": "pnpm build:dev -- -w"
+  },
+  "devDependencies": {
+    "@commitlint/types": "^11.0.0"
+  }
+}

@@ -19,6 +19,20 @@
       }
     },
     {
+      "label": "Watch (commitlint-plugin)",
+      "type": "shell",
+      "command": "pnpm -C packages/commitlint-plugin watch",
+      "problemMatcher": {
+        "base": "$tsc-watch",
+        "fileLocation": ["relative", "${workspaceFolder}/packages/commitlint-plugin"]
+      },
+      "isBackground": true,
+      "presentation": {
+        "reveal": "never"
+      },
+      "group": "build"
+    },
+    {
       "label": "Watch (eslint-plugin)",
       "type": "shell",
       "command": "pnpm -C packages/eslint-plugin watch",
