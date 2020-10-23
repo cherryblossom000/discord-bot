@@ -10,7 +10,7 @@
     "url": "https://github.com/cherryblossom000/comrade-pingu",
     "directory": "packages/eslint-plugin"
   },
-  "main": "dist/index",
+  "main": "dist",
   "engines": {
     "node": ">=12"
   },
