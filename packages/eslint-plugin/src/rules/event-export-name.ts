@@ -1,3 +1,2 @@
-import createNameRule from '../create-name-rule'
-
-export = createNameRule('listener')
+import createDefaultExportRule from '../create-default-export-rule'
+export = createDefaultExportRule('listener')

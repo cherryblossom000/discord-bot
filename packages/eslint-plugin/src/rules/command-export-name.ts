@@ -1,3 +1,2 @@
-import createNameRule from '../create-name-rule'
-
-export = createNameRule('command')
+import createDefaultExportRule from '../create-default-export-rule'
+export = createDefaultExportRule('command')
