@@ -2,8 +2,7 @@ import {basename} from 'path'
 import {AST_NODE_TYPES} from '@typescript-eslint/experimental-utils'
 import createTypeRule from '../create-type-rule'
 
-// TODO [eslint-plugin-import@>2.22.0]: Refactor to export = createTypeRule(...)
-const rule = createTypeRule(
+export = createTypeRule(
   'listener',
   'EventListener',
   "EventListener<'{{event}}'>",
@@ -23,4 +22,3 @@ const rule = createTypeRule(
       report(typeParam)
   }
 )
-export = rule

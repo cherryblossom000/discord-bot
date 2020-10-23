@@ -151,15 +151,9 @@ export const checkPermissions = async (
 ): Promise<boolean> => {
   const {channel, client, guild} = message
   const channelPermissions = channel.permissionsFor(client.user!)
-  if (
-    channelPermissions?.has(
-      // TODO: remove once https://github.com/discordjs/discord.js/pull/4692 is merged
-      permissions as PermissionString | PermissionString[]
-    ) !== true
-  ) {
+  if (channelPermissions?.has(permissions) !== true) {
     const neededPermissions = Array.isArray(permissions)
-      ? // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions -- optional chaining
-        permissions.filter(p => !channelPermissions?.has(p))
+      ? permissions.filter(p => channelPermissions?.has(p) === true)
       : [permissions]
 
     const plural = neededPermissions.length !== 1

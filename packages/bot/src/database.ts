@@ -1,5 +1,3 @@
-// TODO: make arrays readonly once https://github.com/DefinitelyTyped/DefinitelyTyped/pull/46682 is merged
-
 import {defaultPrefix} from './constants'
 import {MongoClient} from 'mongodb'
 import type {Snowflake} from 'discord.js'
@@ -19,8 +17,7 @@ export const enum MemberRejoinFlags {
 
 interface Member {
   _id: string
-  // roles?: readonly string[]
-  roles?: string[]
+  roles?: readonly string[]
   nickname?: string | null
 }
 
@@ -30,8 +27,7 @@ export interface Guild {
   prefix?: string
   volume?: number
   rejoinFlags?: MemberRejoinFlags
-  // members?: readonly Member[]
-  members?: Member[]
+  members?: readonly Member[]
 }
 
 // eslint-disable-next-line import/no-unused-modules -- imported as a type in trivia
@@ -44,8 +40,7 @@ export interface Question {
 
 interface User {
   _id: string
-  // questionsAnswered: readonly Question[]
-  questionsAnswered: Question[]
+  questionsAnswered: readonly Question[]
 }
 
 interface Collections {

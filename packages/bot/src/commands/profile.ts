@@ -56,7 +56,6 @@ const getUserInfo = (user: User): MessageEmbed => {
         name: `Avatar${user.avatar == null ? ' (Default)' : ''}`,
         value: `[Link](${avatar})`
       }
-      // TODO: Fix Discord.js: it has user#locale as string not as an optional string
     )
 
   const flags = user.flags?.toArray()
