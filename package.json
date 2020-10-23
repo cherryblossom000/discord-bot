@@ -27,11 +27,6 @@
     "test:dev": "pnpm m run test:dev",
     "docs": "pnpm m run docs"
   },
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
-  },
   "devDependencies": {
     "@cherryblossom/eslint-config": "^10.0.0",
     "@comrade-pingu/semantic-release": "link:packages/semantic-release",
