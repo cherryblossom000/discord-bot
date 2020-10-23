@@ -26,6 +26,13 @@ export const configs: Record<string, Linter.Config> = {
         }
       },
       {
+        files: ['src/regex-commands/*.ts'],
+        rules: {
+          '@comrade-pingu/correct-regex-command-type': 2,
+          '@comrade-pingu/command-export-name': 1
+        }
+      },
+      {
         files: ['src/events/*.ts'],
         rules: {
           '@comrade-pingu/correct-event-type': 2,
