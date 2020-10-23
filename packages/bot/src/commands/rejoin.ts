@@ -40,7 +40,13 @@ export const addListeners = (
             ({_id}) => _id === member.id
           ) ?? {}
         await Promise.all([
-          ...(enabledRoles && roles ? [member.roles.add(roles)] : []),
+          ...(enabledRoles && roles
+            ? [
+                member.roles.add(
+                  roles.filter(r => member.guild.roles.cache.has(r))
+                )
+              ]
+            : []),
           ...(enabledNickname && nickname !== undefined
             ? [
                 (member as {
