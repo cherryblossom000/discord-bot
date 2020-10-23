@@ -7,7 +7,7 @@ module.exports = {
   ignorePatterns: ['.history/', 'dist/', 'tests/coverage/'],
   overrides: [
     {
-      files: ['**/jest.config*.js'],
+      files: ['**/*.config*.js'],
       rules: {
         // Allow @typedef {import('ts-jest')} (stops 'Tag @typedef must have a name/namepath in "typescript" mode')
         'jsdoc/valid-types': 0,
@@ -23,9 +23,9 @@ module.exports = {
       }
     },
     {
-      files: ['jest.config*.js'],
+      files: ['*.config*.js'],
       parserOptions: {
-        project: './tsconfig.jest-config.json',
+        project: './tsconfig.config.json',
         tsconfigRootDir: __dirname
       }
     }

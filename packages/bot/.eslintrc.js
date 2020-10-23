@@ -16,7 +16,7 @@ module.exports = {
     {
       files: ['jest.config*.js'],
       parserOptions: {
-        project: './tsconfig.jest-config.json',
+        project: './tsconfig.config.json',
         tsconfigRootDir: __dirname
       }
     },

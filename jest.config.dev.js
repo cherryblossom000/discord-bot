@@ -1,11 +1,9 @@
 'use strict'
-// import 'ts-jest'
 
 const base = require('./jest.config')
 
-/** @typedef {import('ts-jest')} */
 /** @type {import('@jest/types').Config.InitialOptions} */
-module.exports = {
+const config = {
   ...base,
   collectCoverage: true,
   coverageReporters: ['lcov'],
@@ -37,3 +35,4 @@ module.exports = {
     }
   }
 }
+module.exports = config

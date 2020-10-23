@@ -2,9 +2,8 @@
 
 const base = require('../../jest.config')
 
-/** @typedef {import('ts-jest')} */
 /** @type {import('@jest/types').Config.InitialOptions} */
-module.exports = {
+const config = {
   ...base,
   globals: {
     'ts-jest': {
@@ -15,3 +14,4 @@ module.exports = {
   modulePathIgnorePatterns: ['<rootDir>/dist'],
   testMatch: ['<rootDir>/tests/**/*.test.ts']
 }
+module.exports = config

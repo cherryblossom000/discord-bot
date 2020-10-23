@@ -4,6 +4,6 @@
     {"path": "./src"},
     {"path": "./tests"},
     {"path": "./scripts"},
-    {"path": "./tsconfig.jest-config.json"}
+    {"path": "./tsconfig.config.json"}
   ]
 }

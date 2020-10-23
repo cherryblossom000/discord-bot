@@ -3,12 +3,12 @@
 const base = require('../../jest.config.dev')
 const mainBase = require('./jest.config')
 
-/** @typedef {import('ts-jest')} */
 /** @type {import('@jest/types').Config.InitialOptions} */
-module.exports = {
+const config = {
   ...base,
   ...mainBase,
   collectCoverage: true,
   collectCoverageFrom: ['src/**/*.ts'],
   coverageDirectory: 'tests/coverage'
 }
+module.exports = config

@@ -1,7 +1,8 @@
 {
   "extends": "./tsconfig.settings.json",
-  "include": ["**/jest.config*.js"],
+  "include": ["*.config*.js"],
   "compilerOptions": {
+    "composite": false,
     "types": ["node"],
     "noEmit": true,
     "allowJs": true,

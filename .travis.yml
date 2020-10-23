@@ -7,6 +7,7 @@ install:
 - pnpm i
 jobs:
   script:
+  - pnpx commitlint-travis
   - pnpm typecheck
   - pnpm build
   - pnpm lint
