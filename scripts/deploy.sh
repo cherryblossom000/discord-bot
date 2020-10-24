@@ -19,7 +19,7 @@ pnpx ts-node scripts/update-package
   git remote add origin "https://$GH_TOKEN@github.com/cherryblossom000/comrade-pingu"
   git checkout -b repl
   # Push to repl branch
-  git add *.js **/*.js assets ':!**/*.DS_Store'
+  git add *.js .replit package.json **/*.js assets ':!**/*.DS_Store'
   git commit -m "chore: update from travis build #$TRAVIS_BUILD_NUMBER"
   git push -f origin repl
 )
