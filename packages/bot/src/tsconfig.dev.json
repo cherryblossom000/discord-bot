@@ -4,8 +4,5 @@
     "composite": false,
     "sourceMap": true,
     "incremental": true
-  },
-  "references": [
-    {"path": "../tsconfig.package.json"}
-  ]
+  }
 }

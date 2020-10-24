@@ -19,13 +19,14 @@
     "lint": "eslint --max-warnings 0 --ext .js,ts .",
     "lint:dev": "pnpm lint -- --cache",
     "typecheck": "tsc -b tsconfig.typecheck.json",
-    "build": "tsc -b src && pnpm copy && pnpm docs",
-    "build:dev": "tsc -b src/tsconfig.dev.json && pnpm copy && pnpm docs",
+    "copy": " (cd dist && mkdir assets; cp -r ../assets/img assets/img)",
+    "docs": "ts-node -P scripts/tsconfig.json scripts/docs && mkdir -p dist/assets/css; purgecss -c purgecss.config.js -o dist/assets/css",
+    "copy-and-docs": "pnpm copy && pnpm run docs",
+    "build": "tsc -b src && pnpm copy-and-docs",
+    "build:dev": "tsc -b src/tsconfig.dev.json && pnpm copy-and-docs",
     "watch": "tsc -b src/tsconfig.dev.json -w",
     "test": "jest",
-    "test:dev": "jest -c jest.config.dev.js",
-    "copy": " (cd dist && mkdir assets; cp -r ../assets/img assets/img)",
-    "docs": "ts-node -P scripts/tsconfig.json scripts/docs && mkdir -p dist/assets/css; purgecss -c purgecss.config.js -o dist/assets/css"
+    "test:dev": "jest -c jest.config.dev.js"
   },
   "dependencies": {
     "@discordjs/opus": "0.3.2",

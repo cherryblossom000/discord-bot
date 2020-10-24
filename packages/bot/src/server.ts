@@ -86,7 +86,7 @@ const dev = process.env.NODE_ENV !== 'production'
     try {
       await Promise.all(
         (await readdir(resolve(path)))
-          .filter(file => !file.endsWith('.map'))
+          .filter(file => file.endsWith('.js'))
           .map(async file =>
             // eslint-disable-next-line promise/prefer-await-to-callbacks -- see above
             callback(

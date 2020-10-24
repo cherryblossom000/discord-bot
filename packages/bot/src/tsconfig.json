@@ -1,11 +1,10 @@
 {
   "extends": "../../../tsconfig.settings.json",
-  "include": ["**/*.ts"],
+  "include": ["**/*.ts", "../package.json"],
   "compilerOptions": {
+    // Needs to be in src for deployment
+    "rootDir": "..",
     "outDir": "../dist",
     "types": ["node"]
-  },
-  "references": [
-    {"path": "../tsconfig.package.json"}
-  ]
+  }
 }

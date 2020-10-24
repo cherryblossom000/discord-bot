@@ -24,7 +24,7 @@ const readme = join(rootFolder, 'README.md')
   const files = readdirSync(commandsFolder)
   const modules = await Promise.all(
     files
-      .filter(f => !f.endsWith('.map'))
+      .filter(f => f.endsWith('.js'))
       .map(async f => import(join(commandsFolder, f)))
   )
   const commands = modules.map(m => (m as {default: Command<boolean>}).default)
