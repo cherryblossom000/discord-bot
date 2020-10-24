@@ -106,7 +106,7 @@ importers:
       '@types/yt-search': 2.3.0
       dotenv: 8.2.0
     specifiers:
-      '@comrade-pingu/eslint-plugin': 'workspace:1.0.1'
+      '@comrade-pingu/eslint-plugin': 1.1.0
       '@discordjs/opus': 0.3.2
       '@types/express': ^4.17.8
       '@types/mongodb': ^3.5.31
