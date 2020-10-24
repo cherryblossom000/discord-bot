@@ -1,5 +1,27 @@
 # Changelog
 
+# [2.7.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.6.1...@comrade-pingu/bot@2.7.0) (2020-10-24)
+
+
+### Bug Fixes
+
+* **bot:** set activity on shard resume ([ad64596](https://github.com/cherryblossom000/comrade-pingu/commit/ad645961b2907ca032bf1d045a904c625b97fcc2))
+* **bot/rejoin:** fix error on adding deleted role ([53476e6](https://github.com/cherryblossom000/comrade-pingu/commit/53476e6c825143e3bb37d7d176be834b2ff3fa49))
+* **eval:** censor `DB_USER`, `DB_PASSWORD`, and `REPLIT_DB_URL` from output ([8fa0637](https://github.com/cherryblossom000/comrade-pingu/commit/8fa0637874401e3fb5e33ff82b3010e41db761b9))
+
+
+### Features
+
+* **trivia:** show clock emoji on time out ([6d58adf](https://github.com/cherryblossom000/comrade-pingu/commit/6d58adf56c6a5bf96a1bd2150ce75a77d47acbc7))
+
+
+
+
+
+### Dependencies
+
+* **@comrade-pingu/eslint-plugin:** upgraded to 1.1.0
+
 # [2.7.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.6.1...@comrade-pingu/bot@2.7.0) (2020-09-25)
 
 
