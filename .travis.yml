@@ -7,6 +7,7 @@ install:
 - pnpm i
 jobs:
   script:
+  - pnpm -C packages/commitlint-plugin build
   - pnpx commitlint-travis
   - pnpm typecheck
   - pnpm build
