@@ -1,5 +1,12 @@
 # Changelog
 
+# [2.8.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.7.0...@comrade-pingu/bot@2.8.0) (2020-10-26)
+
+
+### Features
+
+* add `emoji` command ([7f9880f](https://github.com/cherryblossom000/comrade-pingu/commit/7f9880f6f945b0ac15099c809d164bd2fbc9bea5))
+
 # [2.7.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.6.1...@comrade-pingu/bot@2.7.0) (2020-10-24)
 
 
