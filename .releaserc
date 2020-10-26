@@ -1,8 +1,6 @@
 plugins:
 - - '@semantic-release/commit-analyzer'
   - preset: conventionalcommits
-    parserOpts:
-      warn: true
 - - '@comrade-pingu/semantic-release'
   - changelogTitle: '# Changelog'
 - '@semantic-release/npm'
