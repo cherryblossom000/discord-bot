@@ -9,7 +9,7 @@ const command: Command<true> = {
   usage: `\`emoji\`
 The emoji to get the image of.`,
   async execute(message) {
-    const id = /<:[\w]+:(\d+)>/u.exec(message.content)?.[1]
+    const id = /<(?::a)?:[\w]+:(\d+)>/u.exec(message.content)?.[1]
     if (id === undefined) {
       await message.reply('please provide an emoji!')
       return
