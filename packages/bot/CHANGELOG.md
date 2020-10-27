@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.1](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.8.0...@comrade-pingu/bot@2.8.1) (2020-10-27)
+
+
+### Bug Fixes
+
+* **emoji:** support animated emojis ([42d4a95](https://github.com/cherryblossom000/comrade-pingu/commit/42d4a9541300d498e37f88e9e798f4b823a3a1af))
+
 # [2.8.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.7.0...@comrade-pingu/bot@2.8.0) (2020-10-26)
 
 
