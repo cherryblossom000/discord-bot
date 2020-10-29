@@ -1,10 +1,20 @@
 'use strict'
 
-module.exports = {
+/** @type {import('eslint').Linter.Config & {parserOptions?: import('@typescript-eslint/parser').ParserOptions}} */
+const config = {
   root: true,
   extends: ['@cherryblossom/eslint-config/node'],
   reportUnusedDisableDirectives: true,
   ignorePatterns: ['.history/', 'dist/', 'tests/coverage/'],
+  parserOptions: {
+    project: [
+      './tsconfig.json',
+      './packages/*/tsconfig.json',
+      './scripts/tsconfig.json',
+      './tsconfig.config.json'
+    ],
+    tsconfigRootDir: __dirname
+  },
   overrides: [
     {
       files: ['**/*.config*.js'],
@@ -31,3 +41,4 @@ module.exports = {
     }
   ]
 }
+module.exports = config

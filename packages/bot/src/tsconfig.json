@@ -5,6 +5,8 @@
     // Needs to be in src for deployment
     "rootDir": "..",
     "outDir": "../dist",
-    "types": ["node"]
+    "types": ["node"],
+    "esModuleInterop": true,
+    "resolveJsonModule": true
   }
 }

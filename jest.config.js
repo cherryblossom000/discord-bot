@@ -1,9 +1,10 @@
 'use strict'
 
+/** @type {import('ts-jest')} */
+
 /** @type {import('@jest/types').Config.InitialOptions} */
 const config = {
   preset: 'ts-jest',
-  testEnvironment: 'node',
-  testMatch: ['<rootDir>/packages/*/tests/**/*.test.ts']
+  testEnvironment: 'node'
 }
 module.exports = config

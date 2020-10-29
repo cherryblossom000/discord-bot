@@ -71,9 +71,9 @@ interface GuildManager
 
 /** The Discord client for this bot. */
 export default class Client extends Discord.Client {
-  guilds!: GuildManager
-  on!: <K extends keyof ClientEvents>(event: K, listener: Listener<K>) => this
-  off!: <K extends keyof ClientEvents>(event: K, listener: Listener<K>) => this
+  declare guilds: GuildManager
+  declare on: <K extends keyof ClientEvents>(event: K, listener: Listener<K>) => this
+  declare off: <K extends keyof ClientEvents>(event: K, listener: Listener<K>) => this
 
   /** The commands. */
   readonly commands: Collection<string, Command<boolean>>
@@ -93,7 +93,7 @@ export default class Client extends Discord.Client {
       // eslint-disable-next-line @typescript-eslint/naming-convention -- Message is a class
       _Message =>
         class extends _Message {
-          channel!: TextBasedChannel
+          declare channel: TextBasedChannel
 
           async reply(content: OptionsWithSplit): Promise<this[]>
           async reply(

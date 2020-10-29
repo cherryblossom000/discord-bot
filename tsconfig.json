@@ -2,6 +2,7 @@
   "files": [],
   "references": [
     {"path": "./packages/bot"},
+    {"path": "./packages/commitlint-plugin"},
     {"path": "./packages/eslint-plugin"},
     {"path": "./packages/semantic-release"},
     {"path": "./scripts"},

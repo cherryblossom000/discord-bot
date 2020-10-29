@@ -9,4 +9,3 @@ pnpm-debug.log
 *.tsbuildinfo
 /scripts/**/*.js
 /scripts/**/*.d.ts
-!/scripts/.eslintrc.js

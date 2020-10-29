@@ -1,0 +1,11 @@
+{
+  "files": [],
+  "references": [
+    {"path": "./packages/bot/tsconfig.dev.json"},
+    {"path": "./packages/commitlint-plugin/tsconfig.dev.json"},
+    {"path": "./packages/eslint-plugin/tsconfig.dev.json"},
+    {"path": "./packages/semantic-release/tsconfig.dev.json"},
+    {"path": "./scripts/tsconfig.dev.json"},
+    {"path": "./tsconfig.config.json"}
+  ]
+}

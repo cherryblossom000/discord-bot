@@ -17,9 +17,8 @@
   "scripts": {
     "lint": "eslint --max-warnings 0 --ext ts .",
     "lint:dev": "pnpm lint -- --cache",
-    "typecheck": "tsc -b tsconfig.typecheck.json",
-    "build": "tsc -b src",
-    "build:dev": "tsc -b src/tsconfig.dev.json",
+    "build": "tsc -b",
+    "build:dev": "tsc -b tsconfig.dev.json",
     "watch": "pnpm build:dev -- -w"
   },
   "dependencies": {
