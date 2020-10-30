@@ -2,7 +2,6 @@
   "extends": "../../../tsconfig.settings.json",
   "include": ["**/*.ts"],
   "compilerOptions": {
-    "composite": false,
     "noEmit": true
   },
   "references": [

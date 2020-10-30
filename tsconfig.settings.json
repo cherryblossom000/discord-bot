@@ -2,10 +2,13 @@
   "exclude": ["**/node_modules/", "**/dist/"],
   "compilerOptions": {
     "composite": true,
+    "incremental": true,
     "skipLibCheck": true,
     "lib": ["es2020"],
     "target": "es2019",
     "module": "commonjs",
+    "declarationMap": true,
+    "sourceMap": true,
     "removeComments": true,
 
     "allowUnreachableCode": false,

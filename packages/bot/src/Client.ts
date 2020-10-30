@@ -72,8 +72,16 @@ interface GuildManager
 /** The Discord client for this bot. */
 export default class Client extends Discord.Client {
   declare guilds: GuildManager
-  declare on: <K extends keyof ClientEvents>(event: K, listener: Listener<K>) => this
-  declare off: <K extends keyof ClientEvents>(event: K, listener: Listener<K>) => this
+
+  declare on: <K extends keyof ClientEvents>(
+    event: K,
+    listener: Listener<K>
+  ) => this
+
+  declare off: <K extends keyof ClientEvents>(
+    event: K,
+    listener: Listener<K>
+  ) => this
 
   /** The commands. */
   readonly commands: Collection<string, Command<boolean>>

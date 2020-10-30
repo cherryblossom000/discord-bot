@@ -9,13 +9,6 @@ const mainBase = require('./jest.config')
 const config = {
   ...base,
   ...mainBase,
-  // globals: {
-  //   'ts-jest': {
-  //     .../** @type {ConfigGlobals} */ (base.globals)['ts-jest'],
-  //     .../** @type {ConfigGlobals} */ (mainBase.globals)['ts-jest'],
-  //     tsconfig: '<rootDir>/tests/tsconfig.dev.json'
-  //   }
-  // },
   collectCoverageFrom: ['src/**/*.ts'],
   coverageDirectory: '<rootDir>/tests/coverage'
 }

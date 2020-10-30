@@ -18,8 +18,7 @@
     "lint": "eslint --max-warnings 0 --ext ts .",
     "lint:dev": "pnpm lint -- --cache",
     "build": "tsc -b",
-    "build:dev": "tsc -b tsconfig.dev.json",
-    "watch": "pnpm build:dev -- -w"
+    "watch": "pnpm build -- -w"
   },
   "dependencies": {
     "@semantic-release/changelog": "^5.0.1",

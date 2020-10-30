@@ -1,8 +1,0 @@
-{
-  "files": [],
-  "references": [
-    {"path": "./src/tsconfig.dev.json"},
-    {"path": "./tests/tsconfig.dev.json"},
-    {"path": "./scripts/tsconfig.dev.json"}
-  ]
-}

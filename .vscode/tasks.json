@@ -4,7 +4,7 @@
     {
       "label": "Watch (all)",
       "type": "shell",
-      "command": "pnpm watch:all",
+      "command": "pnpm watch",
       "problemMatcher": "$tsc-watch",
       "isBackground": true,
       "presentation": {

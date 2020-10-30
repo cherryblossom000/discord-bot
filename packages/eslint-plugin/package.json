@@ -17,10 +17,8 @@
   "scripts": {
     "lint": "eslint --max-warnings 0 --ext ts .",
     "lint:dev": "pnpm lint -- --cache",
-    "typecheck": "tsc -b tsconfig.typecheck.json",
     "build": "tsc -b",
-    "build:dev": "tsc -b tsconfig.dev.json",
-    "watch": "pnpm build:dev -- -w"
+    "watch": "pnpm build -- -w"
   },
   "dependencies": {
     "@typescript-eslint/experimental-utils": "^4.5.0"

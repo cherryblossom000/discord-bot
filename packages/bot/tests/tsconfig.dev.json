@@ -1,9 +1,0 @@
-{
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "incremental": true
-  },
-  "references": [
-    {"path": "../src/tsconfig.dev.json"}
-  ]
-}

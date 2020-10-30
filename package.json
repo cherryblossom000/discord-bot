@@ -17,12 +17,12 @@
   },
   "main": "packages/bot/dist/src/server",
   "scripts": {
-    "lint:config": "eslint --max-warnings 0 *.config*.js",
-    "lint": "pnpm m run lint && pnpm lint:config",
-    "lint:dev": "pnpm m run lint:dev && pnpm lint:config -- --cache",
+    "lint:config": "eslint --max-warnings 0 **/*.config*.js **/.eslintrc.js",
+    "lint:config:dev": "pnpm lint:config -- --cache",
+    "lint": "eslint --max-warnings 0 --ext ts,js .",
+    "lint:dev": "pnpm lint -- --cache",
     "build": "tsc -b",
-    "build:dev": "tsc -b tsconfig.dev.json",
-    "watch:all": "pnpm build:dev -- -w",
+    "watch": "pnpm build -- -w",
     "test": "pnpm m run test",
     "test:dev": "pnpm m run test:dev",
     "docs": "pnpm m run docs"

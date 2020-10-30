@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.settings.json",
+  "exclude": ["**/node_modules/", "**/dist/"],
+  "references": [
+    {"path": "./packages/bot/tsconfig.eslint.json"},
+    {"path": "./packages/commitlint-plugin"},
+    {"path": "./packages/eslint-plugin"},
+    {"path": "./packages/semantic-release"},
+    {"path": "./scripts"},
+    {"path": "./tsconfig.config.json"}
+  ]
+}

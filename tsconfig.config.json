@@ -2,7 +2,6 @@
   "extends": "./tsconfig.settings.json",
   "include": ["**/*.config*.js", "**/.eslintrc.js"],
   "compilerOptions": {
-    "composite": false,
     "types": ["node"],
     "noEmit": true,
     "allowJs": true,
