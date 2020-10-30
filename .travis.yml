@@ -25,7 +25,7 @@ jobs:
     - pnpm -C packages/semantic-release build
     after_success: chmod +x scripts/push-docs.sh && scripts/push-docs.sh
     deploy:
-    - provider: script
+      provider: script
       skip_cleanup: true
       script: chmod +x scripts/deploy.sh && scripts/deploy.sh
       on: master
