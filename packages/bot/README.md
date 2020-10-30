@@ -46,7 +46,7 @@ Comrade Pingu’s default prefix is `.`.
 | `skip` | `sk` | Skips the current song. | `.skip` | 3 |
 | `stats` | `statistics` | Gets my stats. | `.stats` | 3 |
 | `stop` | `s` | Stops playing music. | `.stop` | 3 |
-| `trivia` | `t` | Asks a trivia question. | `.trivia 9[s(tat(s))] [user]\|l(eaderboard))`<br>Using this command without any arguments will ask a trivia question.<br>`s(tat(s)) [user]`<br>Gets the trivia statistics for a user. If no user is specified, it will get the stats for yourself.<br><br>`l(eaderboard)`<br>Gets the leaderboard for this server. | 5 |
+| `trivia` | `t` | Asks a trivia question. | `.trivia ([s(tat(s))] [user]\|l(eaderboard))`<br>Using this command without any arguments will ask a trivia question.<br>`s(tat(s)) [user]`<br>Gets the trivia statistics for a user. If no user is specified, it will get the stats for yourself.<br><br>`l(eaderboard)`<br>Gets the leaderboard for this server. | 5 |
 | `uptime` | `up` | Gets my uptime. | `.uptime` | 3 |
 | `volume` | `v` | Changes or gets the volume of the music playing. | `.volume [volume]`<br><code>volume</code> (optional)<br>The new volume as a percentage to set it to. If omitted, the current volume will be shown. Can be one of the following:<ul><li><code>&lt;number&gt;[%]</code> Sets the current volume.</li><li><code>&lt;+\|-&gt;&lt;number&gt;[%]</code> Increments/decrements the volume.</li><li><code>reset</code> (or anything starting with <code>r</code>) Resets the volume to 100%.</li></ul> | 3 |
 | `website` | `site`, `w`, `web` | Sends my website. | `.website` | 3 |
