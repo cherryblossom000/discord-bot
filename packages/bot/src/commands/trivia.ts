@@ -284,7 +284,7 @@ Gets the leaderboard for this server.`,
       getSelectedAnswer: (emoji: string) => string | boolean,
       questionPrefix = ''
     ): Promise<void> => {
-      const msg = await channel.send({
+      const msg = await channel.send(author, {
         embed: {
           title: questionPrefix + escapeMarkdown(question.question),
           description: 'You have 15 seconds to answer.',
@@ -321,15 +321,17 @@ Gets the leaderboard for this server.`,
         correct = selectedAnswer === question.correctAnswer
 
         await channel.send(
-          correct
-            ? `${emojis.tick} Congratulations, **${correctAnswer}** was the correct answer!`
-            : `${emojis.cross} **${format(
-                selectedAnswer
-              )}** was incorrect. The correct answer was **${correctAnswer}**.`
+          `${author} ${
+            correct
+              ? `${emojis.tick} Congratulations, **${correctAnswer}** was the correct answer!`
+              : `${emojis.cross} **${format(
+                  selectedAnswer
+                )}** was incorrect. The correct answer was **${correctAnswer}**.`
+          }`
         )
       } else {
         await channel.send(
-          `${emojis.clock} Time’s up! The correct answer was **${correctAnswer}**.`
+          `${author} ${emojis.clock} Time’s up! The correct answer was **${correctAnswer}**.`
         )
       }
 

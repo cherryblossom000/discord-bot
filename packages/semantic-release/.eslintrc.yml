@@ -4,7 +4,7 @@ rules:
   - 2
   - allowModules: semantic-release
   node/no-unpublished-import:
-  - 2,
+  - 2
   - allowModules:
     - '@octokit/rest'
     - type-fest
