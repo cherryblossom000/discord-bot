@@ -1,5 +1,12 @@
 # Changelog
 
+# [1.1.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/semantic-release@1.0.2...@comrade-pingu/semantic-release@1.1.0) (2020-10-30)
+
+
+### Features
+
+* **bot/trivia:** mention user ([3cbe042](https://github.com/cherryblossom000/comrade-pingu/commit/3cbe0420f3b8694b8632553779aca714352b32d1))
+
 ## [1.0.2](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/semantic-release@1.0.1...@comrade-pingu/semantic-release@1.0.2) (2020-08-04)
 
 
