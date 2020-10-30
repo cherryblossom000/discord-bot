@@ -20,7 +20,9 @@ script:
 jobs:
   include:
     stage: Update Docs and Deploy
-    script: pnpm -C packages/bot build
+    script:
+    - pnpm -C packages/bot build
+    - pnpm -C packages/semantic-release build
     after_success: chmod +x scripts/push-docs.sh && scripts/push-docs.sh
     deploy:
     - provider: script
