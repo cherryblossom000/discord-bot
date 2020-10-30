@@ -19,7 +19,7 @@
     "lint": "eslint --max-warnings 0 --ext ts .",
     "lint:dev": "pnpm lint -- --cache",
     "copy": " (cd dist && mkdir assets; cp -r ../assets/img assets/img)",
-    "docs": "ts-node -P scripts/tsconfig.json scripts/docs && mkdir -p dist/assets/css; purgecss -c purgecss.config.js -o dist/assets/css",
+    "docs": "ts-node -P scripts/tsconfig.json -T scripts/docs && mkdir -p dist/assets/css; purgecss -c purgecss.config.js -o dist/assets/css",
     "build": "tsc -b src",
     "postbuild": "pnpm copy && pnpm run docs",
     "build:all": "tsc -b && pnpm postbuild",
