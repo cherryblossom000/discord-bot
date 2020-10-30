@@ -236,7 +236,7 @@ const command: Command = {
   aliases: ['t'],
   description: 'Asks a trivia question.',
   cooldown: 5,
-  syntax: '9[s(tat(s))] [user]|l(eaderboard))',
+  syntax: '([s(tat(s))] [user]|l(eaderboard))',
   usage: `Using this command without any arguments will ask a trivia question.
 \`s(tat(s)) [user]\`
 Gets the trivia statistics for a user. If no user is specified, it will get the stats for yourself.
