@@ -1,5 +1,12 @@
 # Changelog
 
+# [2.9.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.8.1...@comrade-pingu/bot@2.9.0) (2020-10-30)
+
+
+### Features
+
+* **bot/trivia:** mention user ([3cbe042](https://github.com/cherryblossom000/comrade-pingu/commit/3cbe0420f3b8694b8632553779aca714352b32d1))
+
 ## [2.8.1](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.8.0...@comrade-pingu/bot@2.8.1) (2020-10-27)
 
 
