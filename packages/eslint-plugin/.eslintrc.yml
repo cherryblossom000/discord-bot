@@ -29,7 +29,7 @@ overrides:
     '@typescript-eslint/naming-convention':
     - 1
     - selector: default
-      format: camelCase
+      format: [camelCase]
       leadingUnderscore: allow
       trailingUnderscore: allow
     - selector: variable

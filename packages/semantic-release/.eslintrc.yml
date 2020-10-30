@@ -2,7 +2,7 @@ rules:
   # Only for types
   node/no-extraneous-import:
   - 2
-  - allowModules: semantic-release
+  - allowModules: [semantic-release]
   node/no-unpublished-import:
   - 2
   - allowModules:
