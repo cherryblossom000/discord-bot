@@ -19,8 +19,7 @@ script:
 
 jobs:
   include:
-    stage: deploy
-    name: Update Docs and Deploy
+    stage: Update Docs and Deploy
     script: pnpm -C packages/bot build
     after_success: chmod +x scripts/push-docs.sh && scripts/push-docs.sh
     deploy:
