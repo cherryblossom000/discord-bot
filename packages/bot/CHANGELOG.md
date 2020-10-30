@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.9.2](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.9.1...@comrade-pingu/bot@2.9.2) (2020-10-30)
+
+
+### Performance Improvements
+
+* **bot/emoji:** avoid fetching guild ([04e8a10](https://github.com/cherryblossom000/comrade-pingu/commit/04e8a102de8e5252640875b323cd7061df9c4429))
+
 ## [2.9.1](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.9.0...@comrade-pingu/bot@2.9.1) (2020-10-30)
 
 
