@@ -9,19 +9,23 @@ const command: Command<true> = {
   usage: `\`emoji\`
 The emoji to get the image of.`,
   async execute(message) {
-    const id = /<(?::a)?:[\w]+:(\d+)>/u.exec(message.content)?.[1]
+    // TODO: check for permissons
+    const {channel, content, guild} = message
+    const id = /<(?::a)?:[\w]+:(\d+)>/u.exec(content)?.[1]
     if (id === undefined) {
       await message.reply('please provide an emoji!')
       return
     }
 
-    const emoji = (await message.guild.fetch()).emojis.cache.get(id)
+    // Maybe the bot went offline or something when an emoji was created
+    const emoji =
+      guild.emojis.cache.get(id) ?? (await guild.fetch()).emojis.cache.get(id)
     if (!emoji) {
       await message.reply(`${id} is not a valid emoji id!`)
       return
     }
 
-    await message.channel.send({files: [emoji.url]})
+    await channel.send({files: [emoji.url]})
   }
 }
 export default command

@@ -37,14 +37,16 @@ const dev = process.env.NODE_ENV !== 'production'
         'GUILDS',
         // Roles and nicknames changing, members leaving and joining (rejoin)
         'GUILD_MEMBERS',
-        // Guild commands
-        'GUILD_MESSAGES',
+        // Emoji command
+        'GUILD_EMOJIS',
         // Guild reactions
         'GUILD_MESSAGE_REACTIONS',
-        // Presences in profile
-        'GUILD_PRESENCES',
         // Members joining voice channels
         'GUILD_VOICE_STATES',
+        // Presences in profile
+        'GUILD_PRESENCES',
+        // Guild commands
+        'GUILD_MESSAGES',
         // DM commands
         'DIRECT_MESSAGES',
         // DM reactions
