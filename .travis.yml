@@ -1,20 +1,31 @@
 language: node_js
-node_js: lts/*
+os:
+- linux
+- osx
+node_js:
+- lts/*
+- v12.18.3
 branches:
   except: repl
+
 before_install: npm i -g pnpm
-install:
-- pnpm i
+install: pnpm i
+script:
+- pnpm -C packages/commitlint-plugin build
+- pnpx commitlint-travis
+- pnpm build
+- pnpm lint
+- pnpm test
+
 jobs:
-  script:
-  - pnpm -C packages/commitlint-plugin build
-  - pnpx commitlint-travis
-  - pnpm build
-  - pnpm lint
-  - pnpm test
-  after_success: chmod +x scripts/push-docs.sh && scripts/push-docs.sh
-  deploy:
-  - provider: script
-    skip_cleanup: true
-    script: chmod +x scripts/deploy.sh && scripts/deploy.sh
-    on: master
+  include:
+    stage: deploy
+    name: Update Docs and Deploy
+    script: pnpm -C packages/bot build
+    after_success: chmod +x scripts/push-docs.sh && scripts/push-docs.sh
+    deploy:
+    - provider: script
+      skip_cleanup: true
+      script: chmod +x scripts/deploy.sh && scripts/deploy.sh
+      on: master
+  fast_finish: true
