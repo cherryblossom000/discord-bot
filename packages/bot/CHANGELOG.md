@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.9.1](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.9.0...@comrade-pingu/bot@2.9.1) (2020-10-30)
+
+
+### Bug Fixes
+
+* **bot/trivia:** fix typo ([795e49b](https://github.com/cherryblossom000/comrade-pingu/commit/795e49bb6c1c1af34aa4fb125f70c7a68c53ee8e))
+
 # [2.9.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.8.1...@comrade-pingu/bot@2.9.0) (2020-10-30)
 
 
