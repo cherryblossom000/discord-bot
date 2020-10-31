@@ -23,7 +23,7 @@
     "docs": "ts-node -P scripts/tsconfig.json -T scripts/docs && mkdir -p dist/assets/css; purgecss -c purgecss.config.js -o dist/assets/css",
     "postbuild": "pnpm copy && pnpm run docs",
     "build:all": "tsc -b && pnpm postbuild",
-    "watch": "tsc -bw",
+    "watch": "tsc -b -w",
     "test": "jest",
     "test:dev": "jest -c jest.config.dev.js"
   },
