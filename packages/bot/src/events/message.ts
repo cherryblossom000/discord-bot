@@ -16,7 +16,7 @@ const executeRegexCommands = (message: Message): void => {
           ? channel.send(regexMessage)
           : channel.send(regexMessage(message)))
       } catch (error: unknown) {
-        await handleError(
+        handleError(
           client,
           error,
           `Regex command with regex \`${regex}\` failed with message content \`${content}\`.`,
@@ -134,7 +134,7 @@ The syntax is: \`${prefix}${command.name}${
         database
       )
     } catch (error: unknown) {
-      await handleError(
+      handleError(
         client,
         error,
         `Command \`${command!.name}\` failed${

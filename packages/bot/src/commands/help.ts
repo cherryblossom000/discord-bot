@@ -1,7 +1,7 @@
 import {Constants, DiscordAPIError} from 'discord.js'
 import {defaultPrefix} from '../constants'
 import {getPrefix} from '../database'
-import {sendMeError} from '../utils'
+import {handleError} from '../utils'
 import type {Command} from '../types'
 
 const command: Command = {
@@ -47,10 +47,10 @@ You can send \`${defaultPrefix}help [command name]\` to get info on a specific c
           error.code === Constants.APIErrors.CANNOT_MESSAGE_USER
         ) {
           await Promise.all<void>([
-            sendMeError(
+            handleError(
               client,
               error,
-              `Could not send help DM to ${author.tag}.`
+              `Could not send help DM to ${author.tag}:`
             ),
             message.sendDeletableMessage({
               reply: true,

@@ -1,12 +1,10 @@
-import {handleError} from '../utils'
 import type {EventListener} from '../Client'
+import {handleError} from '../utils'
 
-const listener: EventListener<'shardResume'> = client => async (): Promise<
-  void
-> =>
+const listener: EventListener<'shardResume'> = client => async (): Promise<void> =>
   client
     .setActivity()
-    .catch(async error =>
-      handleError(client, error, 'Error setting activity on shard resume')
+    .catch(error =>
+      handleError(client, error, 'Error setting activity on shard resume:')
     )
 export default listener

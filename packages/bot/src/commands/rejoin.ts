@@ -60,7 +60,7 @@ export const addListeners = (
             : [])
         ])
       } catch (error: unknown) {
-        await handleError(
+        handleError(
           client,
           error,
           `Rejoin guildMemberAdd failed (member ${member.id}, flags ${flags})`,
@@ -83,7 +83,7 @@ ${guild.owner} sorry, but you have to do this yourself.`
       const args = removeMemberArgs(member.id)
       await guilds
         .updateOne(args.filter, args.update)
-        .catch(async error =>
+        .catch(error =>
           handleError(
             client,
             error,
@@ -130,7 +130,7 @@ ${guild.owner} sorry, but you have to do this yourself.`
           }
         ])
       } catch (error: unknown) {
-        await handleError(
+        handleError(
           client,
           error,
           `Rejoin guildMemberRemove failed (member ${id}, flags ${flags})`,

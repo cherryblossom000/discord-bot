@@ -4,7 +4,7 @@ import express from 'express'
 import Client from './Client'
 import {addListeners} from './commands/rejoin'
 import {collection, connect} from './database'
-import {cleanStack, createResolve, handleError, sendMeError} from './utils'
+import {cleanStack, createResolve, handleError} from './utils'
 import type {AddressInfo} from 'net'
 import type {ClientEvents, EventListener} from './Client'
 import type {Command, RegexCommand} from './types'
@@ -61,14 +61,14 @@ const dev = process.env.NODE_ENV !== 'production'
       throw reason instanceof Error ? reason : new Error(`${reason}`)
     })
   } else {
-    process.on('unhandledRejection', async reason =>
+    process.on('unhandledRejection', reason =>
       handleError(
         client,
         reason instanceof Error ? reason : new Error(`${reason}`),
         'Uncaught promise rejection:'
       )
     )
-    process.on('uncaughtException', async error =>
+    process.on('uncaughtException', error =>
       handleError(client, error, 'Uncaught exception:')
     )
   }
@@ -99,12 +99,11 @@ const dev = process.env.NODE_ENV !== 'production'
           )
       )
     } catch (error: unknown) {
-      await sendMeError(
+      handleError(
         client,
         error,
         `\`importFolder\` failed with path \`${path}\`.`
       )
-      throw error
     }
   }
 

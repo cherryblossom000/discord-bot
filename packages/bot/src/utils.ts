@@ -62,41 +62,6 @@ export const ignoreError = (key: keyof typeof Constants.APIErrors) => (
 }
 
 /**
- * DMs me an error.
- * @param info Extra information to send.
- */
-export const sendMeError = async (
-  client: Client,
-  error: unknown,
-  info: string
-): Promise<void> => {
-  if (!dev) {
-    if (error instanceof Error) _cleanStack(error)
-    await (await client.users.fetch(me)!).send(`${info}
-**Error at ${new Date().toLocaleString()}**${
-      error instanceof Error
-        ? error.stack!
-          ? `
-${error.stack}`
-          : ''
-        : error
-    }${
-      error instanceof DiscordAPIError
-        ? `
-Code: ${error.code} (${
-            Object.entries(Constants.APIErrors).find(
-              ([, code]) => code === error.code
-            )?.[0] ?? 'unknown'
-          })
-Path: ${error.path}
-Method: ${error.method}
-Status: ${error.httpStatus}`
-        : ''
-    }`)
-  }
-}
-
-/**
  * Replies to a message causing an error and either logs it or DMs me it depending on `NODE_ENV`.
  * @param info Extra information to send to the DM.
  * @param message The message to reply to, if applicable.
@@ -110,32 +75,60 @@ export const handleError: (
   info: string,
   messageOrChannel?: Message | TextBasedChannel,
   response?: string
-) => Promise<void> = async (
+) => void = (
   client,
   error,
   info,
   messageOrChannel,
   response = 'unfortunately, there was an error trying to execute that command. Noot noot.'
-): Promise<void> => {
-  try {
-    if (messageOrChannel) {
-      await (messageOrChannel instanceof DiscordMessage
-        ? messageOrChannel.reply(response)
-        : messageOrChannel.send(response))
-    }
-    if (dev) throw error
-    await sendMeError(client, error, info)
-  } catch (error_: unknown) {
-    if (error_ instanceof Error) _cleanStack(error_)
-    if (error instanceof Error) _cleanStack(error)
-    if (dev) throw error_
+): void => {
+  const errorHandler = (_error: unknown): void => {
+    if (_error instanceof Error) _cleanStack(_error)
     console.error(
       'The error',
-      error_,
+      _error,
       'occurred when trying to handle the error',
       error
     )
   }
+  // only error that will be thrown is if it's in development mode, which is
+  // eslint-disable-next-line @typescript-eslint/no-floating-promises -- intended
+  ;(async (): Promise<void> => {
+    if (error instanceof Error) _cleanStack(error)
+    if (messageOrChannel) {
+      await ((messageOrChannel instanceof DiscordMessage
+        ? messageOrChannel.reply(response)
+        : messageOrChannel.send(response)) as Promise<Message>).catch(
+        errorHandler
+      )
+    }
+    if (dev) throw error
+    try {
+      await (await client.users.fetch(me)!).send(`${info}
+**Error at ${new Date().toLocaleString()}**${
+        error instanceof Error
+          ? error.stack!
+            ? `
+      ${error.stack}`
+            : ''
+          : error
+      }${
+        error instanceof DiscordAPIError
+          ? `
+Code: ${error.code} (${
+              Object.entries(Constants.APIErrors).find(
+                ([, code]) => code === error.code
+              )?.[0] ?? 'unknown'
+            })
+Path: ${error.path}
+Method: ${error.method}
+Status: ${error.httpStatus}`
+          : ''
+      }`)
+    } catch (_error: unknown) {
+      errorHandler(_error)
+    }
+  })()
 }
 
 /** Check if the bot has permissions. */

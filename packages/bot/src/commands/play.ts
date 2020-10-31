@@ -1,7 +1,7 @@
 import ytdl, {getBasicInfo, validateURL} from 'ytdl-core'
 import yts from 'yt-search'
 import {getGuild} from '../database'
-import {checkPermissions, searchYoutube, sendMeError} from '../utils'
+import {checkPermissions, handleError, searchYoutube} from '../utils'
 import {resume} from './resume'
 import type {Command, Video} from '../types'
 
@@ -76,21 +76,35 @@ The query to search on YouTube for.`,
           return
         }
 
+        const errorHandler = (error: unknown): void =>
+          handleError(
+            client,
+            error,
+            `Error playing song: https://youtu.be/${_song.id}`
+          )
+
         const dispatcher = queue!.connection
           .play(ytdl(_song.id, {filter: 'audioonly', quality: 'highestaudio'}))
-          .on('finish', async () => {
+          .on('finish', () => {
             queue!.songs.shift()
-            await playSong(queue!.songs[0])
+            playSong(queue!.songs[0]).catch(errorHandler)
           })
           .on('error', async error => {
-            await sendMeError(
-              client,
-              error,
-              `Error playing song: https://youtu.be/${_song.id}`
-            )
-            await queue!.textChannel.send(
-              `Unfortunately, there was an error playing **${_song.title}** (link: https://youtub.be/${_song.id}). Noot noot.`
-            )
+            errorHandler(error)
+            // eslint-disable-next-line promise/no-promise-in-callback -- not callback (event listener)
+            await queue!.textChannel
+              .send(
+                `Unfortunately, there was an error playing **${_song.title}** (link: https://youtub.be/${_song.id}). Noot noot.`
+              )
+              .catch(_error =>
+                handleError(
+                  client,
+                  _error,
+                  `Error sending error message to channel with ID ${
+                    queue!.textChannel.id
+                  } about song https://youtu.be/${_song.id} failing to play:`
+                )
+              )
             cleanup()
           })
         const storedVolume = (await getGuild(database, id))?.volume
