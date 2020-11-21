@@ -14,7 +14,9 @@ const config = {
     'jsdoc/newline-after-description': 0,
     'jsdoc/require-param': 0,
     'jsdoc/require-throws': 0,
-    'jsdoc/require-returns': 0
+    'jsdoc/require-returns': 0,
+    // Just for types
+    'node/no-unpublished-import': [2, {allowModules: ['mathjax-full']}]
   },
 
   overrides: [
