@@ -1,8 +1,8 @@
 import {MessageEmbed} from 'discord.js'
 import {startCase, upperFirst} from '../lodash'
 import {resolveUser} from '../utils'
-import type {GuildMember, PresenceStatus, User} from 'discord.js'
-import type {Command} from '../types'
+import type {PresenceStatus, User} from 'discord.js'
+import type {GuildMember, Command} from '../types'
 
 declare global {
   interface ObjectConstructor {

@@ -7,3 +7,6 @@ tests/coverage
 .env
 pnpm-debug.log
 *.tsbuildinfo
+
+db/
+*.mongodb

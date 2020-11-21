@@ -1,5 +1,5 @@
 import {defaultPrefix} from '../constants'
-import {getPrefix, setGuildValue} from '../database'
+import {getPrefix, setValue} from '../database'
 import type {Command} from '../types'
 
 const command: Command<true> = {
@@ -27,7 +27,7 @@ The default prefix is \`${defaultPrefix}\`.`,
       return
     }
 
-    await setGuildValue(database, guild, 'prefix', newPrefix)
+    await setValue(database, 'guilds', guild, 'prefix', newPrefix)
     await channel.send(
       `Successfully set the prefix to \`${newPrefix}\`. Noot noot.`
     )

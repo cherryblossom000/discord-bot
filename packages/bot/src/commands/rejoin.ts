@@ -1,16 +1,18 @@
 import {me} from '../constants'
 import {
   MemberRejoinFlags,
+  addMemberRejoinInfo,
   collection,
-  getGuild,
-  setGuildValue
+  fetchMemberRejoinInfo,
+  fetchValue,
+  removeMember,
+  setValue,
+  disableRejoin
 } from '../database'
 import {checkPermissions, handleError} from '../utils'
-import type {GuildMember} from 'discord.js'
-import type {FilterQuery, UpdateQuery} from 'mongodb'
 // eslint-disable-next-line import/no-named-default -- can't because type import
 import type {default as Client, Listener} from '../Client'
-import type {Db, Guild as DbGuild} from '../database'
+import type {Db} from '../database'
 import type {Command, Guild, GuildMessage} from '../types'
 
 export const addListeners = (
@@ -23,22 +25,12 @@ export const addListeners = (
   const enabledNickname = flags & MemberRejoinFlags.Nickname
   const enabledAll = enabledRoles && enabledNickname
 
-  const removeMemberArgs = (
-    id: string
-  ): {filter: FilterQuery<DbGuild>; update: UpdateQuery<DbGuild>} => ({
-    filter: {_id: guild.id},
-    update: {$pull: {members: {_id: id}}}
-  })
-
   const guildMemberAdd: Listener<'guildMemberAdd'> = async member => {
     if (member.guild.id === guild.id) {
       const guilds = collection(database, 'guilds')
       try {
         // Set roles and nicknames
-        const {roles, nickname} =
-          (await guilds.findOne({_id: guild.id}))?.members?.find(
-            ({_id}) => _id === member.id
-          ) ?? {}
+        const {roles, nickname} = await fetchMemberRejoinInfo(guilds, member)
         await Promise.all([
           ...(enabledRoles && roles
             ? [
@@ -48,15 +40,7 @@ export const addListeners = (
               ]
             : []),
           ...(enabledNickname && nickname !== undefined
-            ? [
-                (member as {
-                  // TODO: Fix Discord.js' types (nickname is nullable)
-                  setNickname(
-                    _nickname: string | null,
-                    reason?: string
-                  ): Promise<GuildMember>
-                }).setNickname(nickname)
-              ]
+            ? [member.setNickname(nickname)]
             : [])
         ])
       } catch (error: unknown) {
@@ -80,64 +64,34 @@ ${guild.owner} sorry, but you have to do this yourself.`
         )
       }
 
-      const args = removeMemberArgs(member.id)
-      await guilds
-        .updateOne(args.filter, args.update)
-        .catch(error =>
-          handleError(
-            client,
-            error,
-            `Removing member from DB failed (member ${member.id}, flags ${flags})`
-          )
-        )
-    }
-  }
-
-  const guildMemberRemove: Listener<'guildMemberRemove'> = async ({
-    displayName,
-    guild: memberGuild,
-    id,
-    nickname,
-    roles
-  }) => {
-    if (memberGuild.id === guild.id) {
-      try {
-        const guilds = collection(database, 'guilds')
-
-        /*
-         * Even though the member should be removed from the database once they
-         * rejoin, you never know if the bot will ever be offline and won't be
-         * able to remove it.
-         */
-        await guilds.bulkWrite([
-          {
-            updateOne: removeMemberArgs(id)
-          },
-          {
-            updateOne: {
-              filter: {_id: guild.id},
-              update: {
-                $push: {
-                  members: {
-                    _id: id,
-                    ...(enabledRoles ? {roles: roles.cache.keyArray()} : {}),
-                    ...(enabledNickname ? {nickname} : {})
-                  }
-                }
-              },
-              upsert: true
-            }
-          }
-        ])
-      } catch (error: unknown) {
+      removeMember(guilds, member).catch(error =>
         handleError(
           client,
           error,
-          `Rejoin guildMemberRemove failed (member ${id}, flags ${flags})`,
+          `Removing member from DB failed (member ${member.id}, flags ${flags})`
+        )
+      )
+    }
+  }
+
+  const guildMemberRemove: Listener<'guildMemberRemove'> = async member => {
+    if (member.guild.id === guild.id) {
+      await addMemberRejoinInfo(
+        database,
+        enabledRoles,
+        enabledNickname,
+        member
+      ).catch(error =>
+        handleError(
+          client,
+          error,
+          `Rejoin guildMemberRemove failed (member ${member.id}, flags ${flags})`,
           (!guild.systemChannelFlags.has('WELCOME_MESSAGE_DISABLED') &&
             guild.systemChannel) ||
             undefined,
-          `${displayName} has left the server. Unfortunately, there was an error trying to save their ${
+          `${
+            member.displayName
+          } has left the server. Unfortunately, there was an error trying to save their ${
             enabledRoles ? 'roles' : ''
           }${enabledAll ? ' and/or ' : ''}${
             enabledNickname ? 'nickname' : ''
@@ -152,7 +106,7 @@ ${guild.owner} sorry, but you have to do this yourself.`
               : ''
           }`
         )
-      }
+      )
     }
   }
   client
@@ -168,7 +122,7 @@ const getRejoinStatus = async (
   {channel, guild}: GuildMessage,
   database: Db
 ): Promise<void> => {
-  const {rejoinFlags} = (await getGuild(database, guild)) ?? {}
+  const rejoinFlags = await fetchValue(database, 'guilds', guild, 'rejoinFlags')
   await channel.send(
     rejoinFlags === undefined
       ? 'Disabled'
@@ -224,7 +178,7 @@ Valid options: roles, nickname, all`)
 
   const {client, channel, guild} = message
   addListeners(client, guild, database, flags)
-  await setGuildValue(database, guild, 'rejoinFlags', flags)
+  await setValue(database, 'guilds', guild, 'rejoinFlags', flags)
   await channel.send('Successfully enabled! Noot noot.')
 }
 
@@ -236,10 +190,7 @@ const disable = async (message: GuildMessage, database: Db): Promise<void> => {
     await message.channel.send('Already disabled! Noot noot.')
     return
   }
-  await collection(database, 'guilds').updateOne(
-    {_id: guild.id},
-    {$unset: {members: 1, rejoinFlags: 1}}
-  )
+  await disableRejoin(database, guild)
   client.off('guildMemberAdd', listeners.guildMemberAdd)
   client.off('guildMemberRemove', listeners.guildMemberRemove)
 }

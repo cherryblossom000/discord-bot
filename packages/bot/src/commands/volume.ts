@@ -1,4 +1,4 @@
-import {setGuildValue} from '../database'
+import {setValue} from '../database'
 import {getQueue} from '../utils'
 import type {Command} from '../types'
 
@@ -24,7 +24,7 @@ The new volume as a percentage to set it to. If omitted, the current volume will
     if (args[0]?.toLowerCase().startsWith('r')) {
       dispatcher.setVolume(1)
       await channel.send('Reset the volume to 100%.')
-      await setGuildValue(database, guild, 'volume', 1)
+      await setValue(database, 'guilds', guild, 'volume', 1)
       return
     }
 
@@ -39,7 +39,7 @@ The new volume as a percentage to set it to. If omitted, the current volume will
           : n
       dispatcher.setVolume(newVolume)
       await channel.send(`Set the volume to ${newVolume * 100}%.`)
-      await setGuildValue(database, guild, 'volume', newVolume)
+      await setValue(database, 'guilds', guild, 'volume', newVolume)
     }
   }
 }

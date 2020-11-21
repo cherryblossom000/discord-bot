@@ -5,7 +5,7 @@ import type {
   Collection,
   DMChannel as DiscordDMChannel,
   Guild as DiscordGuild,
-  GuildMember,
+  GuildMember as DiscordGuildMember,
   MessageAdditions,
   Message as DiscordMessage,
   MessageAttachment,
@@ -19,11 +19,14 @@ import type {
   StringResolvable,
   TextChannel as DiscordTextChannel,
   User,
+  UserResolvable,
   VoiceChannel,
   VoiceConnection
 } from 'discord.js'
 import type {Db} from './database'
 import type Client from './Client'
+
+// #region Discord Extensions
 
 // Make send return custom Message
 interface TextChannel extends DiscordTextChannel {
@@ -83,6 +86,7 @@ export type TextBasedChannel = TextBasedGuildChannel | DMChannel
 export interface Guild extends DiscordGuild {
   client: Client
   systemChannel: TextChannel | null
+  member(user: UserResolvable): GuildMember | null
 }
 
 export type OptionsNoSplit = MessageOptions & {split?: false}
@@ -137,6 +141,12 @@ interface BaseMessage extends DiscordMessage {
   }): Promise<void>
 }
 
+export interface GuildMember extends DiscordGuildMember {
+  guild: Guild
+  // TODO: Fix Discord.js' types (nickname is nullable)
+  setNickname(nickname: string | null, reason?: string): Promise<GuildMember>
+}
+
 /** A message from a guild. */
 export interface GuildMessage extends BaseMessage {
   channel: TextBasedGuildChannel
@@ -156,6 +166,8 @@ interface DMMessage extends BaseMessage {
 
 /** A message from this client. */
 export type Message = GuildMessage | DMMessage
+
+// #endregion
 
 /** @template T The type of the message in `execute`. */
 interface CommandBase<T extends Message> {

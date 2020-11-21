@@ -1,11 +1,17 @@
 import {Collection, MessageEmbed, escapeMarkdown} from 'discord.js'
 import {emojis} from '../constants'
-import {collection} from '../database'
+import {
+  aggregateTriviaUsers,
+  collection,
+  fetchValue,
+  triviaUsersCount,
+  triviaUsersCountQuery
+} from '../database'
 import {shuffle} from '../lodash'
 import {checkPermissions, ignoreError, resolveUser} from '../utils'
 import {Difficulty, Type, fetchQuestion} from '../opentdb'
 import type {EmbedFieldData} from 'discord.js'
-import type {Db, Question} from '../database'
+import type {AggregatedTriviaUser, Db, Question} from '../database'
 import type {Command, Message} from '../types'
 
 /** Formats a percentage, with the percentage already calculated. */
@@ -38,8 +44,7 @@ const statsCommand = async (
     .setTimestamp()
 
   const questions =
-    (await collection(database, 'users').findOne({_id: user.id}))
-      ?.questionsAnswered ?? []
+    (await fetchValue(database, 'users', user, 'questionsAnswered')) ?? []
   if (questions.length) {
     /** Groups questions by a key and returns `[numberCorrect, total]`. */
     const reduceQuestions = <T extends keyof Question>(
@@ -127,57 +132,19 @@ const leaderboardCommand = async (
     return
 
   const usersCol = collection(database, 'users')
-  const query = {
-    _id: {$in: (await message.guild.members.fetch()).keyArray()},
-    questionsAnswered: {$not: {$size: 0}}
-  }
-  const totalUsers = await usersCol.countDocuments(query)
+  const query = await triviaUsersCountQuery(message.guild)
+  const totalUsers = await triviaUsersCount(usersCol, query)
 
-  interface User {
-    _id: string
-    correct: number
-    total: number
-    percentage: number
-  }
-  const usersCache = new Map<number, readonly User[]>()
-  const getUsers = async (skip: number): Promise<readonly User[]> => {
+  const usersCache = new Map<number, readonly AggregatedTriviaUser[]>()
+  const getUsers = async (
+    skip: number
+  ): Promise<readonly AggregatedTriviaUser[]> => {
     const existing = usersCache.get(skip)
     if (existing) return existing
-    const users = await usersCol
-      .aggregate<User>([
-        {$match: query},
-        {
-          $project: {
-            correct: {
-              $size: {
-                $filter: {input: '$questionsAnswered', cond: '$$this.correct'}
-              }
-            },
-            total: {$size: '$questionsAnswered'}
-          }
-        },
-        {
-          $project: {
-            correct: 1,
-            total: 1,
-            percentage: {$divide: ['$correct', '$total']}
-          }
-        },
-        {
-          $sort: {
-            percentage: -1,
-            correct: -1
-          }
-        },
-        {$skip: skip},
-        {$limit: 10}
-      ])
-      .toArray()
+    const users = await aggregateTriviaUsers(usersCol, query, skip)
     usersCache.set(skip, users)
     return users
   }
-
-  collection(database, 'users').aggregate()
 
   const generateEmbed = async (skip: number): Promise<MessageEmbed> => {
     const users = await getUsers(skip)

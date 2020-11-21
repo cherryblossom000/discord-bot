@@ -11,7 +11,6 @@ import {checkPermissions} from './utils'
 import type {
   APIMessage,
   APIMessageContentResolvable,
-  GuildMember,
   GuildResolvable,
   MessageAdditions,
   MessageOptions,
@@ -25,6 +24,7 @@ import type {
   Command,
   Guild,
   GuildMessage,
+  GuildMember,
   Message,
   SendArgs,
   OptionsNoSplit,

@@ -1,6 +1,6 @@
 import ytdl, {getBasicInfo, validateURL} from 'ytdl-core'
 import yts from 'yt-search'
-import {getGuild} from '../database'
+import {fetchValue} from '../database'
 import {checkPermissions, handleError, searchYoutube} from '../utils'
 import {resume} from './resume'
 import type {Command, Video} from '../types'
@@ -107,7 +107,7 @@ The query to search on YouTube for.`,
               )
             cleanup()
           })
-        const storedVolume = (await getGuild(database, id))?.volume
+        const storedVolume = await fetchValue(database, 'guilds', id, 'volume')
         if (storedVolume !== undefined && dispatcher.volume !== storedVolume)
           dispatcher.setVolume(storedVolume)
         await queue!.textChannel.send(

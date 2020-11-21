@@ -3,7 +3,7 @@ import {join} from 'path'
 import express from 'express'
 import Client from './Client'
 import {addListeners} from './commands/rejoin'
-import {collection, connect} from './database'
+import {connect, getRejoinGuilds} from './database'
 import {cleanStack, createResolve, handleError} from './utils'
 import type {AddressInfo} from 'net'
 import type {ClientEvents, EventListener} from './Client'
@@ -35,7 +35,8 @@ const dev = process.env.NODE_ENV !== 'production'
       intents: [
         // Guild create (logging in, presence)
         'GUILDS',
-        // Roles and nicknames changing, members leaving and joining (rejoin)
+        // Roles and nicknames changing, members leaving and joining (rejoin),
+        // fetching of members for trivia leaderboard
         'GUILD_MEMBERS',
         // Emoji command
         'GUILD_EMOJIS',
@@ -112,16 +113,14 @@ const dev = process.env.NODE_ENV !== 'production'
     await client.setActivity()
 
     // Initialise rejoin listeners
-    await collection(database, 'guilds')
-      .find({rejoinFlags: {$exists: true}}, {projection: {rejoinFlags: 1}})
-      .forEach(({_id, rejoinFlags}) =>
-        addListeners(
-          client,
-          client.guilds.cache.get(_id)!,
-          database,
-          rejoinFlags!
-        )
+    await getRejoinGuilds(database).forEach(({_id, rejoinFlags}) =>
+      addListeners(
+        client,
+        client.guilds.cache.get(_id)!,
+        database,
+        rejoinFlags!
       )
+    )
 
     console.log(`READY
   Users: ${client.users.cache.size}
