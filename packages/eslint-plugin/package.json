@@ -21,13 +21,13 @@
     "watch": "pnpm build -- -w"
   },
   "dependencies": {
-    "@typescript-eslint/experimental-utils": "^4.6.0"
+    "@typescript-eslint/experimental-utils": "^4.8.1"
   },
   "peerDependencies": {
     "@typescript-eslint/parser": "^4"
   },
   "devDependencies": {
-    "@types/eslint": "^7.2.4",
+    "@types/eslint": "^7.2.5",
     "eslint-plugin-eslint-plugin": "^2.3.0"
   }
 }
