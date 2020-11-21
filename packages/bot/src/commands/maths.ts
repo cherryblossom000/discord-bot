@@ -26,7 +26,7 @@ The LaTeX to convert. See http://docs.mathjax.org/en/latest/input/tex/macros/ind
       mathJax = await (await import('mathjax')).init({
         loader: {
           load: ['input/tex-base', '[tex]/ams', 'output/svg'],
-          failed: error =>
+          failed: (error): void =>
             handleError(message.client, error, 'MathJax loader error')
         },
         startup: {typeset: false},

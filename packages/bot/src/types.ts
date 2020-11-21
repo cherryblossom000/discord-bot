@@ -78,7 +78,6 @@ interface DMChannel extends DiscordDMChannel {
 }
 
 /** Any text-based guild channel. */
-// eslint-disable-next-line import/no-unused-modules -- it is used
 export type TextBasedGuildChannel = TextChannel | NewsChannel
 export type TextBasedChannel = TextBasedGuildChannel | DMChannel
 
@@ -232,7 +231,6 @@ export interface RegexCommand {
   regexMessage: string | ((message: Message) => string)
 }
 
-// eslint-disable-next-line import/no-unused-modules -- it is used
 export interface Video {
   title: string
   id: string

@@ -23,7 +23,7 @@ export const enum MemberRejoinFlags {
   All = Roles | Nickname
 }
 
-export interface Member {
+interface Member {
   _id: Snowflake
   roles?: readonly Snowflake[]
   nickname?: string | null
@@ -163,7 +163,7 @@ const getCache = <C extends CollectionsKeys>(
   return newCache
 }
 
-export const updateCache = <C extends CollectionsKeys>(
+const updateCache = <C extends CollectionsKeys>(
   col: Collection<C>,
   id: string | DiscordType<C>,
   value: Cached<C> | ((cached?: Cached<C>) => Cached<C> | undefined)
@@ -222,9 +222,9 @@ const findOne = <C extends CollectionsKeys>(col: Collection<C>) => async <
 }
 
 // TODO: Uncurry if partial type inference is ever added: https://github.com/microsoft/TypeScript/issues/26242
-export const fetchValueC = <C extends CollectionsKeys>(
-  col: Collection<C>
-) => async <K extends keyof Cached<C>>(
+const fetchValueC = <C extends CollectionsKeys>(col: Collection<C>) => async <
+  K extends keyof Cached<C>
+>(
   _id: Snowflake | DiscordType<C>,
   key: K
 ): Promise<DatabaseType<C>[K] | undefined> =>
@@ -406,6 +406,7 @@ export const triviaUsersCount = async (
   query: FilterQuery<User>
 ): Promise<number> => users.countDocuments(query)
 
+// eslint-disable-next-line import/no-unused-modules -- it is used
 export interface AggregatedTriviaUser {
   _id: Snowflake
   correct: number
