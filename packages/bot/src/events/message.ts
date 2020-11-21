@@ -114,7 +114,7 @@ The syntax is: \`${prefix}${command.name}${
             client.setTimeout(async () => {
               await msg.delete()
               await message.delete().catch(ignoreError('MISSING_PERMISSIONS'))
-            }, 5_000)
+            }, 5000)
             return false
           }
         }

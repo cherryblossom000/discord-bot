@@ -309,7 +309,8 @@ export const searchYoutube = async (
       // If the reaction is a number return the video
       if (n > -1) {
         collector.stop()
-        return resolve(current[n - 1])
+        resolve(current[n - 1])
+        return
       }
 
       let shouldReact = true

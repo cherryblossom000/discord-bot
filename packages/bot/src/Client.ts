@@ -35,16 +35,16 @@ import type {
 } from './types'
 
 declare global {
-  // eslint-disable-next-line @typescript-eslint/no-shadow -- augmentation
   interface ArrayConstructor {
-    isArray(arg: readonly any[] | any): arg is readonly any[]
+    isArray(arg: readonly unknown[] | unknown): arg is readonly unknown[]
   }
 }
 
 // eslint-disable-next-line import/no-unused-modules -- it is used
 export interface ClientEvents extends Discord.ClientEvents {
-  // eslint-disable-next-line @typescript-eslint/no-use-before-define -- circular
-  guildMemberAdd: [GuildMember & {client: Client}]
+  guildMemberAdd: [GuildMember]
+  // Not using partials
+  guildMemberRemove: [GuildMember]
   message: [Message]
 }
 

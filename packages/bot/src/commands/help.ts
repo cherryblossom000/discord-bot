@@ -47,6 +47,7 @@ You can send \`${defaultPrefix}help [command name]\` to get info on a specific c
           error.code === Constants.APIErrors.CANNOT_MESSAGE_USER
         ) {
           await Promise.all<void>([
+            // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression -- Promise.all
             handleError(
               client,
               error,

@@ -68,7 +68,7 @@ const publishGithub: PublishPlugin = async (pluginConfig, context) => {
   await Promise.all(
     globbedAssets.map(async asset => {
       // eslint-disable-next-line @typescript-eslint/ban-types -- checking for an object
-      const filePath = (isPlainObject as (value?: any) => value is object)(
+      const filePath = (isPlainObject as (value?: unknown) => value is object)(
         asset
       )
         ? asset.path
@@ -113,7 +113,7 @@ const publishGithub: PublishPlugin = async (pluginConfig, context) => {
 
       if (
         // eslint-disable-next-line @typescript-eslint/ban-types -- checking for an object
-        (isPlainObject as (value?: any) => value is object)(asset) &&
+        (isPlainObject as (value?: unknown) => value is object)(asset) &&
         asset.label !== undefined &&
         asset.label !== ''
       )

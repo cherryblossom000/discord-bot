@@ -5,12 +5,10 @@ import type {GuildMember, PresenceStatus, User} from 'discord.js'
 import type {Command} from '../types'
 
 declare global {
-  // eslint-disable-next-line @typescript-eslint/no-shadow -- augmentation
   interface ObjectConstructor {
-    entries<K extends keyof any, V>(o: Partial<Record<K, V>>): [K, V][]
+    entries<K extends PropertyKey, V>(o: Partial<Record<K, V>>): [K, V][]
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-shadow -- augmentation
   namespace Intl {
     interface DateTimeFormatOptions {
       dateStyle?: 'full' | 'long' | 'medium' | 'short'

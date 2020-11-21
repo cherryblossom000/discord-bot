@@ -157,9 +157,7 @@ interface DMMessage extends BaseMessage {
 /** A message from this client. */
 export type Message = GuildMessage | DMMessage
 
-/* eslint-disable jsdoc/valid-types -- description for template */
 /** @template T The type of the message in `execute`. */
-/* eslint-enable jsdoc/valid-types -- see above */
 interface CommandBase<T extends Message> {
   /** The name. */
   name: string
@@ -205,12 +203,10 @@ interface CommandBase<T extends Message> {
   ): void | Promise<void>
 }
 
-/* eslint-disable jsdoc/valid-types -- description for template */
 /**
  * A command.
  * @template T Whether the command is guild only or not.
  */
-/* eslint-enable jsdoc/valid-types -- see above */
 export type Command<T extends boolean = false> = T extends true
   ? CommandBase<GuildMessage> & {guildOnly: true}
   : CommandBase<GuildMessage | DMMessage> & {guildOnly?: false}

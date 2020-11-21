@@ -29,7 +29,7 @@ The new volume as a percentage to set it to. If omitted, the current volume will
     }
 
     const input = args[0]?.replace(/%/gu, '')
-    if (isNaN(input as any))
+    if ((isNaN as (number: unknown) => boolean)(input))
       await channel.send(`The current volume is ${dispatcher.volume * 100}%.`)
     else {
       const n = Number(input) / 100

@@ -70,7 +70,7 @@ declare module '@semantic-release/github/lib/glob-assets' {
 
   type RequiredPick<T, K extends keyof T> = import('./types').RequiredPick<T, K>
 
-  type ArrayType<T extends readonly any[]> = T extends readonly (infer U)[]
+  type ArrayType<T extends readonly unknown[]> = T extends readonly (infer U)[]
     ? U
     : never
   type Assets = NonNullable<ReturnType<typeof resolveConfig>['assets']>
@@ -111,7 +111,7 @@ declare module '@semantic-release/github/lib/resolve-config' {
   type Override<T, U> = Omit<T, keyof U> & U
   type CastArray<K extends keyof PluginConfig> = Extract<
     PluginConfig[K],
-    readonly any[]
+    readonly unknown[]
   >
 
   const resolveConfig: (
