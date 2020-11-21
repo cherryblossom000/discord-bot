@@ -1,5 +1,12 @@
 # Changelog
 
+# [2.10.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.9.2...@comrade-pingu/bot@2.10.0) (2020-11-21)
+
+
+### Features
+
+* **bot:** add maths command ([44323e1](https://github.com/cherryblossom000/comrade-pingu/commit/44323e1f048379aaf556e083dc15a5bb13b3cbd0))
+
 ## [2.9.2](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.9.1...@comrade-pingu/bot@2.9.2) (2020-10-30)
 
 
