@@ -33,6 +33,7 @@ Comrade Pingu’s default prefix is `.`.
 | `info` | `in` | Gets info about me. | `.info` | 3 |
 | `invite` | `add`, `inv`, `link` | Gets my invite link. | `.invite` | 3 |
 | `iwmelc` | `iwillmurdereverylastcapitalist` | Gets the meme that shows that ‘noot noot’ in Pingu means ‘i will murder every last capitalist’ in English.<br>![i will murder every last capitalist](./assets/img/iwmelc.jpg) | `.iwmelc` | 3 |
+| `maths` | `m`, `math`, `mathsimage`, `latex` | Convert LaTeX into an image. | `.maths <LaTeX>`<br>`LaTeX`<br>The LaTeX to convert. See http://docs.mathjax.org/en/latest/input/tex/macros/index.html for supported tags (ams is the only package loaded). | 3 |
 | `nowplaying` | `np` | Gets the song currently playing. | `.nowplaying` | 3 |
 | `pause` | `pa` | Pauses the song currently playing. | `.pause` | 3 |
 | `pin` | - | Pins a message. | `.pin [message]`<br>`message` (optional)<br>The ID of the message to pin. Defaults to the last message (excluding the one to execute this command) you sent in this server. | 3 |
