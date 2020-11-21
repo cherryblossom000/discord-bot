@@ -140,12 +140,10 @@ The query to search on YouTube for.`,
 
     // Play url
     if (validateURL(url)) {
-      const {
-        title,
-        video_id: videoID,
-        author: {name}
-      } = await getBasicInfo(url)
-      await play({title, id: videoID, author: name})
+      const {title, videoId, author} = (
+        await getBasicInfo(url)
+      ).player_response.videoDetails
+      await play({title, id: videoId, author})
       return
     }
 
