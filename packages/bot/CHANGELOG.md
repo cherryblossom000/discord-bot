@@ -1,5 +1,12 @@
 # Changelog
 
+# [2.11.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.10.0...@comrade-pingu/bot@2.11.0) (2020-11-23)
+
+
+### Features
+
+* **bot:** add calculator command ([9783d58](https://github.com/cherryblossom000/comrade-pingu/commit/9783d587c146d2a926852b213799d9832928cbd4))
+
 # [2.10.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.9.2...@comrade-pingu/bot@2.10.0) (2020-11-21)
 
 
