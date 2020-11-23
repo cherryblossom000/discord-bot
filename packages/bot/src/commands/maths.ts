@@ -78,7 +78,6 @@ The LaTeX to convert. See http://docs.mathjax.org/en/latest/input/tex/macros/ind
               right: PADDING,
               background: WHITE
             })
-            .png()
             .toBuffer()
         }
       ]
