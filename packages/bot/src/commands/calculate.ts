@@ -2,14 +2,10 @@ import {ResultSet, evaluate, simplify} from 'mathjs'
 import type {Command} from '../types'
 
 interface _MathResult {
-  toTex?: () => string
   toString: () => string
 }
 
 type MathResult = ResultSet<_MathResult> | _MathResult
-
-const resultToString = (result: _MathResult): string =>
-  result.toTex ? result.toTex() : result.toString()
 
 const command: Command = {
   name: 'calculate',
@@ -46,9 +42,9 @@ The expression to calculate. See https://mathjs.org/docs/expressions/syntax.html
     await message.channel.send(
       result instanceof ResultSet
         ? result.entries.length === 1
-          ? resultToString(result.entries[0] as MathResult)
-          : result.entries.map(resultToString).join('\n')
-        : resultToString(result),
+          ? (result.entries[0] as MathResult).toString()
+          : result.entries.map(e => e.toString()).join('\n')
+        : result.toString(),
       {code: true}
     )
   }
