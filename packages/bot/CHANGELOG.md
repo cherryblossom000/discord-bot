@@ -1,5 +1,18 @@
 # Changelog
 
+# [2.12.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.11.0...@comrade-pingu/bot@2.12.0) (2020-12-03)
+
+
+### Bug Fixes
+
+* **bot/calculate:** remove latex formatting ([60a3317](https://github.com/cherryblossom000/comrade-pingu/commit/60a3317bec9a7996bc51c07b7706723c734996ca))
+
+
+### Features
+
+* **bot:** improve date formatting and add `timezone` command ([bc88320](https://github.com/cherryblossom000/comrade-pingu/commit/bc88320181cd3b8a2fb6dab37c5b1d05d821fb07))
+* **bot/noot-noot:** support more adjectives and allow an article ([d41c7e3](https://github.com/cherryblossom000/comrade-pingu/commit/d41c7e3cb986ad085a2a378b8b00165ee05af30f))
+
 # [2.11.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.10.0...@comrade-pingu/bot@2.11.0) (2020-11-23)
 
 
