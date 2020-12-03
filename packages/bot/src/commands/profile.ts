@@ -186,7 +186,7 @@ Streaming: ${formatBoolean(streaming)}`
 const formatDate = (timeZone: string): FormatDate => {
   const format = new Intl.DateTimeFormat('en-AU', {
     dateStyle: 'short',
-    timeStyle: 'short',
+    timeStyle: 'long',
     timeZone
   })
   return (date): string => {
