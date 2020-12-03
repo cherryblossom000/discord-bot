@@ -20,8 +20,7 @@ const config = {
           )
         ).compilerOptions,
         esModuleInterop: true
-      },
-      packageJson: '<rootDir>/package.json'
+      }
     }
   },
   modulePathIgnorePatterns: ['<rootDir>/dist'],
