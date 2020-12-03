@@ -1,6 +1,6 @@
 import {Collection} from 'discord.js'
 import escapeRegex from 'escape-string-regexp'
-import {getPrefix} from '../database'
+import {fetchPrefix} from '../database'
 import {handleError, ignoreError} from '../utils'
 import type {Snowflake} from 'discord.js'
 import type {EventListener} from '../Client'
@@ -38,7 +38,7 @@ const listener: EventListener<'message'> = (client, database) => async (
 
   if (author.bot) return
 
-  const prefix = await getPrefix(database, guild)
+  const prefix = await fetchPrefix(database, guild)
   const matchedPrefix = new RegExp(
     `^(<@!?${client.user!.id}>|${escapeRegex(prefix)})`,
     'u'

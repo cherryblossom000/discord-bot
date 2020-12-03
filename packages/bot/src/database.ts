@@ -36,6 +36,7 @@ export interface Guild {
   volume?: number
   rejoinFlags?: MemberRejoinFlags
   members?: readonly Member[]
+  timeZone?: string
 }
 
 // eslint-disable-next-line import/no-unused-modules -- imported as a type in trivia
@@ -270,13 +271,15 @@ export const setValue = async <
 // #endregion
 
 /** Gets the prefix for a guild. */
-export const getPrefix = async (
+export const fetchPrefix = async (
   database: Db,
-  guild: Discord.Guild | null
+  guild: Snowflake | Discord.Guild | null
 ): Promise<string> =>
-  guild
-    ? (await fetchValue(database, 'guilds', guild, 'prefix')) ?? defaultPrefix
-    : defaultPrefix
+  guild === null
+    ? defaultPrefix
+    : (await fetchValue(database, 'guilds', guild, 'prefix')) ?? defaultPrefix
+
+// Rejoin
 
 export const disableRejoin = async (
   database: Db,
@@ -386,13 +389,15 @@ export const addMemberRejoinInfo = async (
   }))
 }
 
-export const getRejoinGuilds = (
+export const fetchRejoinGuilds = (
   database: Db
 ): Cursor<Pick<Guild, '_id' | 'rejoinFlags'>> =>
   collection(database, 'guilds').find(
     {rejoinFlags: {$exists: true}},
     {projection: {rejoinFlags: 1}}
   )
+
+// Trivia
 
 export const triviaUsersCountQuery = async (
   guild: Discord.Guild
@@ -449,6 +454,8 @@ export const aggregateTriviaUsers = async (
       {$limit: 10}
     ])
     .toArray()
+
+// Connect
 
 /** Connects to the database. */
 export const connect = async (

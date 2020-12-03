@@ -3,7 +3,7 @@ import {join} from 'path'
 import express from 'express'
 import Client from './Client'
 import {addListeners} from './commands/rejoin'
-import {connect, getRejoinGuilds} from './database'
+import {connect, fetchRejoinGuilds} from './database'
 import {cleanStack, createResolve, handleError} from './utils'
 import type {AddressInfo} from 'net'
 import type {ClientEvents, EventListener} from './Client'
@@ -113,7 +113,7 @@ const dev = process.env.NODE_ENV !== 'production'
     await client.setActivity()
 
     // Initialise rejoin listeners
-    await getRejoinGuilds(database).forEach(({_id, rejoinFlags}) =>
+    await fetchRejoinGuilds(database).forEach(({_id, rejoinFlags}) =>
       addListeners(
         client,
         client.guilds.cache.get(_id)!,

@@ -1,6 +1,6 @@
 import {Constants, DiscordAPIError} from 'discord.js'
 import {defaultPrefix} from '../constants'
-import {getPrefix} from '../database'
+import {fetchPrefix} from '../database'
 import {handleError} from '../utils'
 import type {Command} from '../types'
 
@@ -83,7 +83,7 @@ Do you have DMs disabled?`
     if (aliases) data.push(`**Aliases:** ${aliases.join(', ')}`)
     if (description) data.push(`**Description:** ${description}`)
     data.push(
-      `**Usage:** \`${await getPrefix(database, guild)}${name} ${
+      `**Usage:** \`${await fetchPrefix(database, guild)}${name} ${
         syntax ?? ''
       }\`${usage === undefined ? '' : `\n${usage}`}`
     )
