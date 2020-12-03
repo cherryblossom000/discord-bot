@@ -1,8 +1,9 @@
 import {MessageEmbed} from 'discord.js'
+import {fetchTimeZone} from '../database'
 import {startCase, upperFirst} from '../lodash'
 import {resolveUser} from '../utils'
 import type {PresenceStatus, User} from 'discord.js'
-import type {GuildMember, Command} from '../types'
+import type {Command, GuildMember} from '../types'
 
 declare global {
   interface ObjectConstructor {
@@ -21,11 +22,11 @@ const formatBoolean = (boolean: boolean | null): string =>
   boolean === true ? 'Yes' : 'No'
 const formatStatus = (status: PresenceStatus): string =>
   status === 'dnd' ? 'Do Not Disturb' : upperFirst(status)
-const formatDate = (date: Date): string =>
-  date.toLocaleString('en-AU', {dateStyle: 'short', timeStyle: 'short'})
+
+type FormatDate = (date: Date) => string
 
 /** Creates an embed with information about a user. */
-const getUserInfo = (user: User): MessageEmbed => {
+const getUserInfo = (user: User, formatDate: FormatDate): MessageEmbed => {
   const avatar = user.displayAvatarURL()
   const {bot, createdAt, id, presence, tag} = user
   const clientStatuses = presence.clientStatus
@@ -155,7 +156,8 @@ const addMemberInfo = (
       serverMute = false,
       streaming
     }
-  }: GuildMember
+  }: GuildMember,
+  formatDate: FormatDate
 ): void => {
   if (joinedAt) embed.addField('Joined this Server', formatDate(joinedAt))
   if (premiumSince) embed.addField('Boosting this server since', premiumSince)
@@ -181,6 +183,24 @@ Streaming: ${formatBoolean(streaming)}`
   }
 }
 
+const formatDate = (timeZone: string): FormatDate => {
+  const format = new Intl.DateTimeFormat('en-AU', {
+    dateStyle: 'short',
+    timeStyle: 'short',
+    timeZone
+  })
+  return (date): string => {
+    const parts = format.formatToParts(date)
+    const part = (type: Intl.DateTimeFormatPartTypes): string | undefined =>
+      parts.find(p => p.type === type)?.value
+    return `${part('day')}/${part('month')}/${part('year')}, ${part(
+      'hour'
+    )}:${part('minute')} ${part('dayPeriod')!.toLowerCase()} ${
+      part('timeZoneName') ?? 'GMT'
+    }`
+  }
+}
+
 const command: Command = {
   name: 'profile',
   aliases: ['pr', 'pro', 'u', 'user'],
@@ -189,11 +209,14 @@ const command: Command = {
   usage: `\`user\` (optional)
 The user to display information about. If omitted, defaults to you.
 You can mention the user or use their tag (for example \`Username#1234\`).`,
-  async execute(message, {input}) {
+  async execute(message, {input}, database) {
     const user = await resolveUser(message, input)
     if (!user) return
 
-    const embed = getUserInfo(user)
+    const _formatDate = formatDate(
+      await fetchTimeZone(database, message.author)
+    )
+    const embed = getUserInfo(user, _formatDate)
       .setFooter(
         `Requested by ${message.author.tag}`,
         message.author.displayAvatarURL()
@@ -201,7 +224,7 @@ You can mention the user or use their tag (for example \`Username#1234\`).`,
       .setTimestamp()
 
     const member = message.guild?.member(user)
-    if (member) addMemberInfo(embed, member)
+    if (member) addMemberInfo(embed, member, _formatDate)
 
     await message.channel.send(embed)
   }

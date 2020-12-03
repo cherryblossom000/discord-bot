@@ -1,5 +1,5 @@
 import {MongoClient} from 'mongodb'
-import {defaultPrefix} from './constants'
+import {defaultPrefix, defaultTimeZone} from './constants'
 import type {Snowflake, User as DiscordUser} from 'discord.js'
 import type {
   Collection as MongoCollection,
@@ -36,7 +36,6 @@ export interface Guild {
   volume?: number
   rejoinFlags?: MemberRejoinFlags
   members?: readonly Member[]
-  timeZone?: string
 }
 
 // eslint-disable-next-line import/no-unused-modules -- imported as a type in trivia
@@ -49,7 +48,8 @@ export interface Question {
 
 interface User {
   _id: string
-  questionsAnswered: readonly Question[]
+  questionsAnswered?: readonly Question[]
+  timeZone?: string
 }
 
 // #endregion
@@ -279,6 +279,13 @@ export const fetchPrefix = async (
     ? defaultPrefix
     : (await fetchValue(database, 'guilds', guild, 'prefix')) ?? defaultPrefix
 
+/** Gets the timezone for a guild. Defaults to UTC. */
+export const fetchTimeZone = async (
+  database: Db,
+  user: Snowflake | DiscordUser
+): Promise<string> =>
+  (await fetchValue(database, 'users', user, 'timeZone')) ?? defaultTimeZone
+
 // Rejoin
 
 export const disableRejoin = async (
@@ -403,7 +410,7 @@ export const triviaUsersCountQuery = async (
   guild: Discord.Guild
 ): Promise<FilterQuery<User>> => ({
   _id: {$in: (await guild.members.fetch()).keyArray()},
-  questionsAnswered: {$not: {$size: 0}}
+  questionsAnswered: {$exists: true, $not: {$size: 0}}
 })
 
 export const triviaUsersCount = async (
