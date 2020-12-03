@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.12.1](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.12.0...@comrade-pingu/bot@2.12.1) (2020-12-03)
+
+
+### Bug Fixes
+
+* **bot/profile:** fix time zone text ([1724da6](https://github.com/cherryblossom000/comrade-pingu/commit/1724da66f12e32ffc927cf7a7855958a5f998b14))
+
 # [2.12.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.11.0...@comrade-pingu/bot@2.12.0) (2020-12-03)
 
 
