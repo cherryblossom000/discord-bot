@@ -1,5 +1,5 @@
 language: node_js
-node_js: v12.16.1
+node_js: v12.18.3
 branches:
   except: repl
 before_install: npm i -g pnpm
