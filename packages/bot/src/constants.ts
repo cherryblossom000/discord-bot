@@ -41,3 +41,40 @@ export const emojis = {
 } as const
 
 export const defaultTimeZone = 'UTC'
+
+// #region Angry Noot Noot
+
+export const pinguNouns = ['bots?', 'pingu', 'communism', 'communists?']
+export const copulas = ['is', 'are']
+export const articles = ['an?', 'the']
+export const adverbs = ['very', 'much', 'so', 'too', 'really', 'big(?:gest)?']
+export const badAdjectives = [
+  'down',
+  'not working',
+  'offline',
+  'stupid',
+  'sto{2,}pid',
+  'dumb',
+  'annoying',
+  'bad',
+  'worst',
+  'frustrating',
+  'sucks?',
+  'flawed',
+  'shit',
+  'stinke?y',
+  'po{2,}(?:p(?:ie)?)?',
+  'crap',
+  'fu+ck(?: (?:yo)?u)?'
+]
+export const negative = ['not?', 'never']
+export const goodAdjectives = [
+  'good',
+  'amazing',
+  'great',
+  'lovely',
+  'fast',
+  'awesome'
+]
+
+// #endregion
