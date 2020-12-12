@@ -1,5 +1,13 @@
 # Changelog
 
+# [2.13.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.12.1...@comrade-pingu/bot@2.13.0) (2020-12-12)
+
+
+### Features
+
+* **bot:** add cummunsim thing ([703d629](https://github.com/cherryblossom000/comrade-pingu/commit/703d629d273e4f887e0f32b2b9999983ed8499cb))
+* **bot/angry-noot-noot:** support Stalin and USSR ([7aeaca8](https://github.com/cherryblossom000/comrade-pingu/commit/7aeaca8a9ae8d1e8c87eb846b3b48921fbecf845))
+
 ## [2.12.1](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.12.0...@comrade-pingu/bot@2.12.1) (2020-12-03)
 
 
