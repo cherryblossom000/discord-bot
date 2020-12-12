@@ -37,7 +37,8 @@ export const emojis = {
   letters: ['🇦', '🇧', '🇨', '🇩'],
   tick: '✅',
   cross: '❌',
-  clock: '🕒'
+  clock: '🕒',
+  smirk: '😏'
 } as const
 
 export const defaultTimeZone = 'UTC'
