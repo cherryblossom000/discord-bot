@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.13.1](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.13.0...@comrade-pingu/bot@2.13.1) (2020-12-12)
+
+
+### Bug Fixes
+
+* **bot/cummunism:** support cummunist ([89af94c](https://github.com/cherryblossom000/comrade-pingu/commit/89af94cf7abbe451d9dfaf3e0f3bb915463ef584))
+
 # [2.13.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.12.1...@comrade-pingu/bot@2.13.0) (2020-12-12)
 
 
