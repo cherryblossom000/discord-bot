@@ -44,7 +44,16 @@ export const defaultTimeZone = 'UTC'
 
 // #region Angry Noot Noot
 
-export const pinguNouns = ['bots?', 'pingu', 'communism', 'communists?']
+export const pinguNouns = [
+  'bots?',
+  'pingu',
+  'communism',
+  'communists?',
+  'stalin',
+  'ussr',
+  'union of soviet socialist republics',
+  'soviet(?: union)?'
+]
 export const copulas = ['is', 'are']
 export const articles = ['an?', 'the']
 export const adverbs = ['very', 'much', 'so', 'too', 'really', 'big(?:gest)?']

@@ -29,7 +29,11 @@ testRegexCommand(
     'fuck you pingu',
     'fuck u pingu',
     'pingu sucks',
-    'pingu  really  sucks'
+    'pingu  really  sucks',
+    'USSR is BaD',
+    'PINGU SUCKS',
+    'Stalin stinky',
+    'the soviet union sucks'
   ],
   [
     'good pingu',
