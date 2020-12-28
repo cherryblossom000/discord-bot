@@ -15,7 +15,7 @@ export const verifyConditions: Plugin = async (pluginConfig, context) => {
   verifyChangelog(pluginConfig)
   changelogVerified = true
 
-  // https://github.com/semantic-release/github/blob/v7.0.7/index.js#L27
+  // https://github.com/semantic-release/github/blob/v7.2.0/index.js#L27
   await verifyGithub(pluginConfig, context)
   githubVerified = true
 }
@@ -29,7 +29,7 @@ export const prepare: PluginWithNextRelease = async (pluginConfig, context) => {
   await prepareChangelog(pluginConfig, context)
 }
 
-// https://github.com/semantic-release/github/blob/v7.0.7/index.js#L31-L47
+// https://github.com/semantic-release/github/blob/v7.2.0/index.js#L31-L65
 export const publish: PublishPlugin = async (pluginConfig, context) => {
   if (!githubVerified) {
     await verifyGithub(pluginConfig, context)

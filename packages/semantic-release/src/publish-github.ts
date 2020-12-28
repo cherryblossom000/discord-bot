@@ -1,4 +1,5 @@
-import {basename, extname, resolve} from 'path'
+// https://github.com/semantic-release/github/blob/v7.2.0/lib/publish.js#L1
+import path from 'path'
 import {RELEASE_NAME} from '@semantic-release/github/lib/definitions/constants'
 import getClient from '@semantic-release/github/lib/get-client'
 import globAssets from '@semantic-release/github/lib/glob-assets'
@@ -6,6 +7,7 @@ import isPrerelease from '@semantic-release/github/lib/is-prerelease'
 import parseGithubUrl from '@semantic-release/github/lib/parse-github-url'
 import resolveConfig from '@semantic-release/github/lib/resolve-config'
 import _debug from 'debug'
+// https://github.com/semantic-release/github/blob/v7.2.0/lib/publish.js#L2-L4
 import {readFile, stat} from 'fs-extra'
 import {isPlainObject, template} from 'lodash'
 import mime from 'mime'
@@ -14,9 +16,10 @@ import type {Octokit} from '@octokit/rest'
 // eslint-disable-next-line import/max-dependencies -- types
 import type {PublishPlugin} from './types'
 
+// https://github.com/semantic-release/github/blob/v7.2.0/lib/publish.js#L5
 const debug = _debug('semantic-release:comrade-pingu:github')
 
-// https://github.com/semantic-release/github/blob/v7.0.7/lib/publish.js#L13-L98
+// https://github.com/semantic-release/github/blob/v7.2.0/lib/publish.js#L13-L106
 const publishGithub: PublishPlugin = async (pluginConfig, context) => {
   const {
     cwd,
@@ -40,8 +43,10 @@ const publishGithub: PublishPlugin = async (pluginConfig, context) => {
   const release = {
     owner,
     repo,
-    // eslint-disable-next-line @typescript-eslint/naming-convention -- required
+    /* eslint-disable @typescript-eslint/naming-convention -- required */
     tag_name: gitTag,
+    target_commitish: branch.name,
+    /* eslint-enable @typescript-eslint/naming-convention -- required */
     name,
     body: editNotes(notes),
     prerelease: isPrerelease(branch)
@@ -51,10 +56,10 @@ const publishGithub: PublishPlugin = async (pluginConfig, context) => {
 
   if (!assets || !assets.length) {
     const {
-      data: {html_url: url}
+      data: {html_url: url, id: releaseId}
     } = await github.repos.createRelease(release)
     logger.log('Published GitHub release: %s', url)
-    return {url, name: RELEASE_NAME}
+    return {url, name: RELEASE_NAME, id: releaseId}
   }
 
   const draftRelease = {...release, draft: true}
@@ -76,7 +81,7 @@ const publishGithub: PublishPlugin = async (pluginConfig, context) => {
       let file
 
       try {
-        file = await stat(resolve(cwd, filePath))
+        file = await stat(path.resolve(cwd, filePath))
       } catch {
         logger.error(
           'The asset %s cannot be read, and will be ignored.',
@@ -94,14 +99,14 @@ const publishGithub: PublishPlugin = async (pluginConfig, context) => {
       }
 
       const fileName = template(
-        typeof asset === 'string' ? basename(filePath) : asset.name
+        typeof asset === 'string' ? path.basename(filePath) : asset.name
       )(context)
       const upload = ({
         url: uploadUrl,
-        data: await readFile(resolve(cwd, filePath)),
+        data: await readFile(path.resolve(cwd, filePath)),
         name: fileName,
         headers: {
-          'content-type': mime.getType(extname(fileName)) ?? 'text/plain',
+          'content-type': mime.getType(path.extname(fileName)) ?? 'text/plain',
           'content-length': file.size
         }
       } as unknown) as NonNullable<
@@ -137,6 +142,6 @@ const publishGithub: PublishPlugin = async (pluginConfig, context) => {
   })
 
   logger.log('Published GitHub release %s', url)
-  return {url, name: RELEASE_NAME}
+  return {url, name: RELEASE_NAME, id: releaseId}
 }
 export default publishGithub
