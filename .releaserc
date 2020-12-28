@@ -1,11 +1,30 @@
+# Steps order:
+# verifyConditions, analyseCommits, verifyRelease,
+# generateNotes, prepare, publish, addChannel, success, fail
 plugins:
-- - '@semantic-release/commit-analyzer'
-  - preset: conventionalcommits
+
+# Increment version number
+# verifyConditions, prepare (addChannel, publish)
+- '@semantic-release/npm'
+
+# Update changelog and publish GitHub release
+# verifyConditions, prepare, publish, addChannel, success, fail
 - - '@comrade-pingu/semantic-release'
   - changelogTitle: '# Changelog'
-- '@semantic-release/npm'
+
+# Commit updated package.json (@semantic-release/npm) and changelog
+# (@comrade-pingu/semantic-release)
+# verifyConditions, prepare
 - - '@semantic-release/git'
   - assets:
     - package.json
     - CHANGELOG.md
+
+# Analyse commits
+# analyseCommits
+- - '@semantic-release/commit-analyzer'
+  - preset: conventionalcommits
+
+# Generate release notes
+# generateNotes
 - '@semantic-release/release-notes-generator'
