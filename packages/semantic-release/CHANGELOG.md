@@ -1,5 +1,12 @@
 # Changelog
 
+# [1.2.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/semantic-release@1.1.0...@comrade-pingu/semantic-release@1.2.0) (2020-12-28)
+
+
+### Features
+
+* update to match `@semantic-release/github@7.2.0` ([130d5da](https://github.com/cherryblossom000/comrade-pingu/commit/130d5dacd03e43357150aef8d8da3800ea1efc1e))
+
 # [1.1.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/semantic-release@1.0.2...@comrade-pingu/semantic-release@1.1.0) (2020-10-30)
 
 
