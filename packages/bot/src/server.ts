@@ -1,4 +1,4 @@
-import {promises} from 'fs'
+import fs from 'fs'
 import {join} from 'path'
 import express from 'express'
 import Client from './Client'
@@ -9,7 +9,7 @@ import type {AddressInfo} from 'net'
 import type {ClientEvents, EventListener} from './Client'
 import type {Command, RegexCommand} from './types'
 
-const {readdir} = promises
+const {readdir} = fs.promises
 const resolve = createResolve(__dirname)
 
 const dev = process.env.NODE_ENV !== 'production'
