@@ -1,4 +1,10 @@
 {
+  "[javascript]": {
+    "editor.formatOnSave": true
+  },
+  "[typescript]": {
+    "editor.formatOnSave": true
+  },
   "jest.pathToConfig": "./packages/bot/jest.config.dev.js",
   "typescript.tsc.autoDetect": "off",
   "typescript.tsdk": "./node_modules/typescript/lib",
