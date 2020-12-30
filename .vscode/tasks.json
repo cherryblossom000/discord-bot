@@ -10,10 +10,7 @@
       "presentation": {
         "reveal": "never"
       },
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      }
+      "group": "build"
     },
     {
       "label": "Watch (bot)",
@@ -27,7 +24,10 @@
       "presentation": {
         "reveal": "never"
       },
-      "group": "build"
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
     },
     {
       "label": "Watch (commitlint-plugin)",
