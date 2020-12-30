@@ -1,5 +1,6 @@
 import {Collection} from 'discord.js'
 import escapeRegex from 'escape-string-regexp'
+import {dev} from '../constants'
 import {fetchPrefix} from '../database'
 import {handleError, ignoreError} from '../utils'
 import type {Snowflake} from 'discord.js'
@@ -94,7 +95,7 @@ The syntax is: \`${prefix}${command.name}${
       client.commands.find(({aliases = []}) => aliases.includes(commandName))
     if (!(await checkCommand(command))) return
 
-    if (process.env.NODE_ENV === 'production') {
+    if (!dev) {
       const checkCooldowns = async (): Promise<boolean> => {
         if (!cooldowns.has(command!.name))
           cooldowns.set(command!.name, new Collection())

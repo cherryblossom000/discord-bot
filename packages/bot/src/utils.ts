@@ -1,6 +1,6 @@
 import {join} from 'path'
 import {homedir} from 'os'
-import cleanStack from 'clean-stack'
+import _cleanStack from 'clean-stack'
 import {
   Constants,
   DiscordAPIError,
@@ -8,7 +8,7 @@ import {
   MessageEmbed
 } from 'discord.js'
 import yts from 'yt-search'
-import {emojis, me} from './constants'
+import {dev, emojis, me} from './constants'
 import type {
   MessageReaction,
   PermissionResolvable,
@@ -25,28 +25,27 @@ import type {
   Video
 } from './types'
 
-const dev = process.env.NODE_ENV !== 'production'
-
 /** Creates a function to easily resolve paths relative to the `__dirname`. */
-export const createResolve = (dirname: string) => (p: string): string =>
-  join(dirname, p)
+export const createResolve = (dirname: string) => (
+  ...paths: readonly string[]
+): string => join(dirname, ...paths)
+
+const stackBasePath = join(
+  homedir(),
+  ...(dev
+    ? ['dev', 'node', 'comrade-pingu', 'packages', 'bot']
+    : ['comrade-pingu'])
+)
+
+/** Cleans up an error stack. */
+export const cleanStack = (stack: string): string =>
+  _cleanStack(stack, {basePath: stackBasePath})
 
 /** Cleans up the error stack on an error. */
-const _cleanStack = <T extends Error>(error: T): T & {stack: string} => {
-  error.stack =
-    error.stack === undefined
-      ? ''
-      : cleanStack(error.stack, {
-          basePath: join(
-            homedir(),
-            ...(dev
-              ? ['dev', 'node', 'comrade-pingu', 'packages', 'bot']
-              : ['comrade-pingu'])
-          )
-        })
+const cleanErrorsStack = <T extends Error>(error: T): T & {stack: string} => {
+  error.stack = error.stack === undefined ? '' : cleanStack(error.stack)
   return error as T & {stack: string}
 }
-export {_cleanStack as cleanStack}
 
 /** Creates a `catch` handler that ignores `DiscordAPIError`s. */
 export const ignoreError = (key: keyof typeof Constants.APIErrors) => (
@@ -68,7 +67,7 @@ export const ignoreError = (key: keyof typeof Constants.APIErrors) => (
  * @param response The response in the message reply.
  */
 // explicit type annotation needed for declaration (otherwise can't find name
-// TextChanel etc)
+// TextChannel etc)
 export const handleError: (
   client: Client,
   error: unknown,
@@ -83,7 +82,7 @@ export const handleError: (
   response = 'unfortunately, there was an error trying to execute that command. Noot noot.'
 ): void => {
   const errorHandler = (_error: unknown): void => {
-    if (_error instanceof Error) _cleanStack(_error)
+    if (_error instanceof Error) cleanErrorsStack(_error)
     console.error(
       'The error',
       _error,
@@ -94,7 +93,7 @@ export const handleError: (
   // only error that will be thrown is if it's in development mode, which is
   // eslint-disable-next-line @typescript-eslint/no-floating-promises -- intended
   ;(async (): Promise<void> => {
-    if (error instanceof Error) _cleanStack(error)
+    if (error instanceof Error) cleanErrorsStack(error)
     if (messageOrChannel) {
       await ((messageOrChannel instanceof DiscordMessage
         ? messageOrChannel.reply(response)

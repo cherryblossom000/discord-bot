@@ -3,6 +3,7 @@ import {join} from 'path'
 import express from 'express'
 import Client from './Client'
 import {addListeners} from './commands/rejoin'
+import {dev} from './constants'
 import {connect, fetchRejoinGuilds} from './database'
 import {cleanStack, createResolve, handleError} from './utils'
 import type {AddressInfo} from 'net'
@@ -11,8 +12,6 @@ import type {Command, RegexCommand} from './types'
 
 const {readdir} = fs.promises
 const resolve = createResolve(__dirname)
-
-const dev = process.env.NODE_ENV !== 'production'
 
 ;(async (): Promise<void> => {
   if (dev) {

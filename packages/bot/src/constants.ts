@@ -1,5 +1,8 @@
 import type {PermissionString} from 'discord.js'
 
+/** Whether this is a development environment. */
+export const dev = process.env.NODE_ENV !== 'production'
+
 /** The prefix for the bot. */
 export const defaultPrefix = '.'
 
