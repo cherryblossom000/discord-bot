@@ -5,7 +5,7 @@ const config = {
   extends: ['plugin:@comrade-pingu/recommended'],
   plugins: ['@comrade-pingu'],
   parserOptions: {
-    project: './tsconfig.eslint.json',
+    project: 'tsconfig.eslint.json',
     tsconfigRootDir: __dirname
   },
 

@@ -7,7 +7,7 @@ const config = {
   reportUnusedDisableDirectives: true,
   ignorePatterns: ['.history/', 'dist/', 'tests/coverage/'],
   parserOptions: {
-    project: './tsconfig.eslint.json',
+    project: 'tsconfig.eslint.json',
     tsconfigRootDir: __dirname,
     EXPERIMENTAL_useSourceOfProjectReferenceRedirect: true
   },
