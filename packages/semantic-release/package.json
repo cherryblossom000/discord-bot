@@ -32,7 +32,7 @@
     "@octokit/rest": "^18.0.12",
     "@types/debug": "^4.1.5",
     "@types/fs-extra": "^9.0.6",
-    "@types/lodash": "^4.14.166",
+    "@types/lodash": "^4.14.167",
     "@types/mime": "^2.0.3",
     "@types/node": "~12.12.70",
     "@types/semantic-release": "^17.2.0"
