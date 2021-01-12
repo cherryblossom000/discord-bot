@@ -3,8 +3,8 @@
   "tasks": [
     {
       "label": "Watch (all)",
-      "type": "shell",
-      "command": "pnpm watch",
+      "command": "pnpm",
+      "args": ["watch"],
       "problemMatcher": "$tsc-watch",
       "isBackground": true,
       "presentation": {
@@ -14,8 +14,8 @@
     },
     {
       "label": "Watch (bot)",
-      "type": "shell",
-      "command": "pnpm -C packages/bot watch",
+      "command": "pnpm",
+      "args": ["-C", "packages/bot", "watch"],
       "problemMatcher": {
         "base": "$tsc-watch",
         "fileLocation": ["relative", "${workspaceFolder}/packages/bot"]
@@ -31,8 +31,8 @@
     },
     {
       "label": "Watch (commitlint-plugin)",
-      "type": "shell",
-      "command": "pnpm -C packages/commitlint-plugin watch",
+      "command": "pnpm",
+      "args": ["-C", "packages/commitlint-plugin", "watch"],
       "problemMatcher": {
         "base": "$tsc-watch",
         "fileLocation": ["relative", "${workspaceFolder}/packages/commitlint-plugin"]
@@ -45,8 +45,8 @@
     },
     {
       "label": "Watch (eslint-plugin)",
-      "type": "shell",
-      "command": "pnpm -C packages/eslint-plugin watch",
+      "command": "pnpm",
+      "args": ["-C", "packages/eslint-plugin", "watch"],
       "problemMatcher": {
         "base": "$tsc-watch",
         "fileLocation": ["relative", "${workspaceFolder}/packages/eslint-plugin"]
@@ -59,8 +59,8 @@
     },
     {
       "label": "Watch (semantic-release)",
-      "type": "shell",
-      "command": "pnpm -C packages/semantic-release watch",
+      "command": "pnpm",
+      "args": ["-C", "packages/semantic-release", "watch"],
       "problemMatcher": {
         "base": "$tsc-watch",
         "fileLocation": ["relative", "${workspaceFolder}/packages/semantic-release"]
