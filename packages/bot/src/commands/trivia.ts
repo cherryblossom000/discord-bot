@@ -87,7 +87,7 @@ const statsCommand = async (
       ...reduceQuestions('difficulty')
         .sorted((_, __, a, b) => a - b)
         .map(([correct, total], difficulty) => ({
-          name: `Correct answers (${Difficulty[difficulty].toLowerCase()})`,
+          name: `Correct answers (${Difficulty[difficulty]!.toLowerCase()})`,
           value: formatPercentage(correct, total),
           inline: true
         })),
@@ -212,7 +212,9 @@ Gets the trivia statistics for a user. If no user is specified, it will get the 
 Gets the leaderboard for this server.`,
   async execute(message, {input}, database) {
     // eslint-disable-next-line unicorn/no-unsafe-regex -- don't know how else to do it
-    const match = /^s(?:tats?)?\s*/iu.exec(input)
+    const match = /^s(?:tats?)?\s*/iu.exec(input) as
+      | (RegExpExecArray & [string])
+      | null
     if (match) {
       await statsCommand(message, input.slice(match[0].length), database)
       return
@@ -339,7 +341,7 @@ Gets the leaderboard for this server.`,
           value: escapeMarkdown(a)
         })),
         emojis.letters,
-        emoji => answers[(emojis.letters as readonly string[]).indexOf(emoji)]
+        emoji => answers[(emojis.letters as readonly string[]).indexOf(emoji)]!
       )
     }
   }

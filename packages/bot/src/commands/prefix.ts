@@ -20,7 +20,7 @@ The default prefix is \`${defaultPrefix}\`.`,
       return
     }
 
-    if (!newPrefix) {
+    if (!(newPrefix ?? '')) {
       await channel.send(
         `The prefix is \`${await fetchPrefix(database, guild)}\`. Noot noot.`
       )

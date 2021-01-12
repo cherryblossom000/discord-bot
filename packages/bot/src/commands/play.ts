@@ -43,7 +43,7 @@ The query to search on YouTube for.`,
     let queue = client.queues.get(id)
 
     // Resume music if possible
-    if (!url) {
+    if (!(url ?? '')) {
       if (queue) {
         const {
           connection: {dispatcher}
@@ -139,9 +139,9 @@ The query to search on YouTube for.`,
     }
 
     // Play url
-    if (validateURL(url)) {
+    if (validateURL(url!)) {
       const {title, videoId, author} = (
-        await getBasicInfo(url)
+        await getBasicInfo(url!)
       ).player_response.videoDetails
       await play({title, id: videoId, author})
       return
@@ -150,7 +150,7 @@ The query to search on YouTube for.`,
     // Search and play first result
     const query = args.join(' ')
     const {videos} = await yts(query)
-    if (videos.length) await play(searchToVideo(videos[0]))
+    if (videos.length) await play(searchToVideo(videos[0]!))
     else {
       await channel.send(
         `No results were found for ${query}. Try using a YouTube link instead.`

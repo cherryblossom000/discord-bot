@@ -66,7 +66,7 @@ Do you have DMs disabled?`
     }
 
     // Specific command
-    const commandName = args[0].toLowerCase()
+    const commandName = args[0]!.toLowerCase()
     const _command =
       commands.get(commandName) ??
       commands.find(({aliases = []}) => aliases.includes(commandName))

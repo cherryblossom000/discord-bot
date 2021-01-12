@@ -29,11 +29,12 @@ The ID of the message to pin. Defaults to the last message (excluding the one to
       ?.flatMap(c => c.messages.cache)
       .filter(m => m.author.id === message.author.id)
 
-    const id = (args[0] ??
+    const id =
+      args[0] ??
       (
         allGuildMessages?.keyArray() ??
         message.channel.messages.cache.keyArray()
-      ).sort((a, b) => Number(b) - Number(a))[1]) as string | undefined
+      ).sort((a, b) => Number(b) - Number(a))[1]
 
     if (id === undefined) {
       await message.reply(

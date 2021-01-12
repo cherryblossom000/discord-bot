@@ -5,14 +5,14 @@ export const shuffle = <T>(collection: readonly T[]): readonly T[] => {
   while (++i < length) {
     const rand = i + Math.floor(Math.random() * (length - i))
     const value = array[rand]
-    array[rand] = array[i]
-    array[i] = value
+    array[rand] = array[i]!
+    array[i] = value!
   }
   return array
 }
 
 export const upperFirst = (string: string): string =>
-  string[0].toUpperCase() + string.slice(1)
+  string && string[0]!.toUpperCase() + string.slice(1)
 
 /**
  * **NOTE:** This only splits the words based on underscores, which is all that

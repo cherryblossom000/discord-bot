@@ -7,7 +7,7 @@ const command: Command<true> = {
   description: 'Gets the song currently playing.',
   guildOnly: true,
   async execute(message) {
-    const queue = await getQueue(message)
+    const queue = await getQueue(message, true)
     if (!queue) return
 
     const [{title, author, id}] = queue.songs

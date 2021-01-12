@@ -210,15 +210,33 @@ export const resolveUser = async (
   return null
 }
 
+type NonEmptyArray<T> = [T, ...T[]]
+
 /** Gets the queue and sends a message no music is playing. */
-export const getQueue = async ({
-  channel,
-  client: {queues},
-  guild
-}: GuildMessage): Promise<Queue | void> => {
+export const getQueue = (async (
+  {channel, client: {queues}, guild}: GuildMessage,
+  errorOnEmpty = false
+): Promise<Queue | void> => {
   const queue = queues.get(guild.id)
-  if (queue) return queue
+  if (errorOnEmpty ? !!(queue?.songs.length ?? 0) : !!queue) return queue
   await channel.send('No music is playing!')
+}) as {
+  (
+    {
+      channel,
+      client: {queues},
+      guild
+    }: GuildMessage,
+    errorOnEmpty: true
+  ): Promise<(Queue & {songs: NonEmptyArray<Video>}) | undefined>
+  (
+    {
+      channel,
+      client: {queues},
+      guild
+    }: GuildMessage,
+    errorOnEmpty?: false
+  ): Promise<Queue | undefined>
 }
 
 /** Converts a `yts.VideoSearchResult` into a `Video`. */
@@ -283,7 +301,7 @@ export const searchYoutube = async (
   const reactNumbers = async (): Promise<void> => {
     for (let i = 1; i <= current.length; i++)
       // eslint-disable-next-line no-await-in-loop -- loop is necessary for the numbers to be in order
-      await embedMessage.react(emojis.numbers[i])
+      await embedMessage.react(emojis.numbers[i]!)
   }
 
   if (videos.length <= 10) return

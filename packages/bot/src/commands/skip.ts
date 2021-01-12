@@ -7,7 +7,7 @@ const command: Command<true> = {
   description: 'Skips the current song.',
   guildOnly: true,
   async execute(message) {
-    const queue = await getQueue(message)
+    const queue = await getQueue(message, true)
     if (!queue) return
 
     queue.connection.dispatcher.end()

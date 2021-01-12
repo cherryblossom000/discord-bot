@@ -23,14 +23,16 @@ interface Response {
 }
 
 interface FetchQuestionResponse extends Response {
-  results: (QuestionResponseBase &
-    (
-      | {type: 'multiple'; incorrect_answers: readonly string[]}
-      | ({type: 'boolean'} & (
-          | {correct_answer: 'True'; incorrect_answers: ['False']}
-          | {correct_answer: 'False'; incorrect_answers: ['True']}
-        ))
-    ))[]
+  results: [
+    QuestionResponseBase &
+      (
+        | {type: 'multiple'; incorrect_answers: readonly string[]}
+        | ({type: 'boolean'} & (
+            | {correct_answer: 'True'; incorrect_answers: ['False']}
+            | {correct_answer: 'False'; incorrect_answers: ['True']}
+          ))
+      )
+  ]
 }
 
 interface TokenResponse extends Response {
