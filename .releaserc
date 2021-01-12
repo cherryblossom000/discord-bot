@@ -1,3 +1,6 @@
+branches:
+- main
+
 # Steps order:
 # verifyConditions, analyseCommits, verifyRelease,
 # generateNotes, prepare, publish, addChannel, success, fail
