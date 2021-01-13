@@ -120,7 +120,7 @@ The syntax is: \`${prefix}${command.name}${
           }
         }
         timestamps.set(author.id, now)
-        setTimeout(() => timestamps.delete(author.id), cooldownAmount)
+        client.setTimeout(() => timestamps.delete(author.id), cooldownAmount)
         return true
       }
       if (!(await checkCooldowns())) return
