@@ -59,7 +59,7 @@ export default <T extends Record<string, unknown> | undefined = undefined>(
         }
 
         if (extraValidation)
-          extraValidation(typeAnnotation.typeAnnotation, report, _data)
+          extraValidation(typeAnnotation.typeAnnotation, report, _data!)
       }
     }
   }
