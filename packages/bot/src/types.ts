@@ -102,7 +102,7 @@ export type SendArgs =
   | [StringResolvable, MessageAdditions | MessageOptions]
 
 /** A message from this client. */
-interface BaseMessage extends DiscordMessage {
+export interface BaseMessage extends DiscordMessage {
   client: Client
   guild: Guild | null
   awaitReactions(

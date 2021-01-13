@@ -21,6 +21,7 @@ import type {
 } from 'discord.js'
 import type {Db} from './database'
 import type {
+  BaseMessage,
   Command,
   Guild,
   GuildMessage,
@@ -100,8 +101,10 @@ export default class Client extends Discord.Client {
       'Message',
       // eslint-disable-next-line @typescript-eslint/naming-convention -- Message is a class
       _Message =>
-        class extends _Message {
+        class extends _Message implements BaseMessage {
+          declare client: Client
           declare channel: TextBasedChannel
+          declare guild: Guild | null
 
           async reply(content: OptionsWithSplit): Promise<this[]>
           async reply(
