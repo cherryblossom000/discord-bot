@@ -1,3 +1,4 @@
+import path from 'path'
 import type {PermissionString} from 'discord.js'
 
 /** Whether this is a development environment. */
@@ -45,6 +46,8 @@ export const emojis = {
 } as const
 
 export const defaultTimeZone = 'UTC'
+
+export const imagesFolder = path.join(path.dirname(__dirname), 'assets', 'img')
 
 // #region Angry Noot Noot
 

@@ -1,7 +1,9 @@
-import {join} from 'path'
-import {MessageAttachment} from 'discord.js'
+import path from 'path'
+import {imagesFolder} from '../constants'
 import {checkPermissions} from '../utils'
 import type {Command} from '../types'
+
+const filePath = path.join(imagesFolder, 'iwmelc.jpg')
 
 const command: Command = {
   name: 'iwmelc',
@@ -11,9 +13,7 @@ const command: Command = {
   async execute(message) {
     if (message.guild && !(await checkPermissions(message, 'ATTACH_FILES')))
       return
-    await message.channel.send(
-      new MessageAttachment(join(__dirname, '../../assets/img/iwmelc.jpg'))
-    )
+    await message.channel.send({files: [filePath]})
   }
 }
 export default command
