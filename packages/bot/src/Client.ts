@@ -92,7 +92,7 @@ export default class Client extends Discord.Client {
   /** The music queue for each guild. */
   readonly queues: Collection<Snowflake, Queue>
 
-  /** The about the rejoining listeners, mapped by a guild's ID. */
+  /** The rejoining listeners, mapped by a guild's ID. */
   readonly rejoinListeners: Collection<Snowflake, RejoinListeners>
 
   constructor(...args: ConstructorParameters<typeof Discord.Client>) {
