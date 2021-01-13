@@ -20,21 +20,21 @@ The command that you want to get info about. If omitted, all the commands will b
       client: {commands},
       guild
     } = message
-    const data = []
 
     // All commands
     if (!args.length) {
-      data.push(
-        'Here’s a list of all my commands:',
-        ...commands
-          .filter(({hidden = false}) => !hidden)
-          .map(({name, description}) => `\`${name}\`: ${description}`),
-        `
-You can send \`${defaultPrefix}help [command name]\` to get info on a specific command. Noot noot.`
-      )
-
       try {
-        await author.send(data, {split: true})
+        await author.send(
+          [
+            'Here’s a list of all my commands:',
+            ...commands
+              .filter(({hidden = false}) => !hidden)
+              .map(({name, description}) => `\`${name}\`: ${description}`),
+            `
+You can send \`${defaultPrefix}help [command name]\` to get info on a specific command. Noot noot.`
+          ],
+          {split: true}
+        )
         if (message.channel.type !== 'dm') {
           await message.reply(
             'I’ve sent you a DM with all my commands. Noot noot.'
@@ -77,21 +77,19 @@ Do you have DMs disabled?`
       return
     }
 
-    // Gets info of command
     const {name, aliases, description, syntax, usage, cooldown} = _command
-    data.push(`**Name:** ${name}`)
-    if (aliases) data.push(`**Aliases:** ${aliases.join(', ')}`)
-    if (description) data.push(`**Description:** ${description}`)
-    data.push(
-      `**Usage:** \`${await fetchPrefix(database, guild)}${name} ${
-        syntax ?? ''
-      }\`${usage === undefined ? '' : `\n${usage}`}`
+    await message.channel.send(
+      [
+        `**Name:** ${name}`,
+        ...(aliases ? [`**Aliases:** ${aliases.join(', ')}`] : []),
+        ...(description ? [`**Description:** ${description}`] : []),
+        `**Usage:** \`${await fetchPrefix(database, guild)}${name} ${
+          syntax ?? ''
+        }\`${usage === undefined ? '' : `\n${usage}`}`,
+        `**Cooldown:** ${cooldown ?? 3} second${cooldown === 1 ? '' : 's'}`
+      ],
+      {split: true}
     )
-    data.push(
-      `**Cooldown:** ${cooldown ?? 3} second${cooldown === 1 ? '' : 's'}`
-    )
-
-    await message.channel.send(data, {split: true})
   }
 }
 export default command
