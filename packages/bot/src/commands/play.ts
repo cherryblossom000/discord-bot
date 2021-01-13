@@ -70,18 +70,36 @@ The query to search on YouTube for.`,
         client.queues.delete(id)
       }
 
+      const _errorHandler = (
+        internalMessage: string,
+        userMessage: string
+      ) => async (error: unknown): Promise<void> => {
+        handleError(client, error, internalMessage)
+        // eslint-disable-next-line promise/no-promise-in-callback -- not a callback
+        await queue!.textChannel
+          .send(userMessage)
+          .catch(_error =>
+            handleError(
+              client,
+              _error,
+              `Error sending message to ${queue!.textChannel.id} (#${
+                queue!.textChannel.name
+              }) about error in play command`
+            )
+          )
+        cleanup()
+      }
+
       const playSong = async (_song?: Video): Promise<void> => {
         if (!_song) {
           cleanup()
           return
         }
 
-        const errorHandler = (error: unknown): void =>
-          handleError(
-            client,
-            error,
-            `Error playing song: https://youtu.be/${_song.id}`
-          )
+        const errorHandler = _errorHandler(
+          `Error playing song: https://youtu.be/${_song.id}`,
+          `Unfortunately, there was an error playing **${_song.title}** (link: https://youtub.be/${_song.id}). Noot noot.`
+        )
 
         const dispatcher = queue!.connection
           .play(ytdl(_song.id, {filter: 'audioonly', quality: 'highestaudio'}))
@@ -89,24 +107,7 @@ The query to search on YouTube for.`,
             queue!.songs.shift()
             playSong(queue!.songs[0]).catch(errorHandler)
           })
-          .on('error', async error => {
-            errorHandler(error)
-            // eslint-disable-next-line promise/no-promise-in-callback -- not callback (event listener)
-            await queue!.textChannel
-              .send(
-                `Unfortunately, there was an error playing **${_song.title}** (link: https://youtub.be/${_song.id}). Noot noot.`
-              )
-              .catch(_error =>
-                handleError(
-                  client,
-                  _error,
-                  `Error sending error message to channel with ID ${
-                    queue!.textChannel.id
-                  } about song https://youtu.be/${_song.id} failing to play:`
-                )
-              )
-            cleanup()
-          })
+          .on('error', errorHandler)
         const storedVolume = await fetchValue(database, 'guilds', id, 'volume')
         if (storedVolume !== undefined && dispatcher.volume !== storedVolume)
           dispatcher.setVolume(storedVolume)
@@ -119,11 +120,29 @@ The query to search on YouTube for.`,
         queue.songs.push(song)
         await channel.send(`**${song.title}** has been added to the queue.`)
       } else {
+        const internalErrorMessage = (event: string): string =>
+          `\`${event}\` event connecting to voice channel ${voiceChannel.id} (${voiceChannel.name})`
+        const errorMessage = `Unfortunately, there was an error playing connecting to the voice channel **${voiceChannel.name}**. Noot noot.`
         // eslint-disable-next-line require-atomic-updates -- queue will not cause a race condition
         queue = {
           textChannel: channel,
           voiceChannel,
-          connection: await voiceChannel.join(),
+          connection: (await voiceChannel.join())
+            .on(
+              'failed',
+              _errorHandler(internalErrorMessage('failed'), errorMessage)
+            )
+            .on(
+              'error',
+              _errorHandler(internalErrorMessage('error'), errorMessage)
+            )
+            .on('warn', error =>
+              handleError(
+                client,
+                typeof error == 'string' ? new Error(error) : error,
+                internalErrorMessage('warn')
+              )
+            ),
           songs: [song]
         }
         client.queues.set(id, queue)
