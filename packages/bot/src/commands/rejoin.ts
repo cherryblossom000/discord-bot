@@ -193,6 +193,7 @@ const disable = async (message: GuildMessage, database: Db): Promise<void> => {
   await disableRejoin(database, guild)
   client.off('guildMemberAdd', listeners.guildMemberAdd)
   client.off('guildMemberRemove', listeners.guildMemberRemove)
+  client.rejoinListeners.delete(guild.id)
 }
 
 const command: Command<true> = {
