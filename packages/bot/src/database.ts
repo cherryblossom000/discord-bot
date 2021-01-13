@@ -279,7 +279,7 @@ export const fetchPrefix = async (
     ? defaultPrefix
     : (await fetchValue(database, 'guilds', guild, 'prefix')) ?? defaultPrefix
 
-/** Gets the timezone for a guild. Defaults to UTC. */
+/** Gets the timezone for a user. Defaults to UTC. */
 export const fetchTimeZone = async (
   database: Db,
   user: DiscordUser | Snowflake
