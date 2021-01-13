@@ -2,7 +2,7 @@ import {AST_NODE_TYPES} from '@typescript-eslint/experimental-utils'
 import type {TSESLint, TSESTree} from '@typescript-eslint/experimental-utils'
 
 type ReportFn = (
-  node: TSESTree.Node | TSESTree.Comment | TSESTree.Token
+  node: TSESTree.Comment | TSESTree.Node | TSESTree.Token
 ) => void
 
 export default <T extends Record<string, unknown> | undefined = undefined>(
@@ -13,7 +13,7 @@ export default <T extends Record<string, unknown> | undefined = undefined>(
   extraValidation?: (
     typeAnnotation: TSESTree.TSTypeReference,
     report: ReportFn,
-    _data: T
+    data: T
   ) => void
 ): TSESLint.RuleModule<'incorrectType', []> => ({
   meta: {
@@ -24,7 +24,7 @@ export default <T extends Record<string, unknown> | undefined = undefined>(
     schema: []
   },
   create(context): TSESLint.RuleListener {
-    const _data = data?.(context) as T
+    const _data = data?.(context)
     const report: ReportFn = node =>
       context.report({
         node,

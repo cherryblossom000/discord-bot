@@ -72,7 +72,7 @@ declare module 'mathjax' {
     constructor(message: string, name: string)
   }
 
-  type Components = 'input/tex-base' | 'output/svg' | '[tex]/ams'
+  type Components = '[tex]/ams' | 'input/tex-base' | 'output/svg'
 
   interface LoaderOptions<T extends Components = Components>
     extends NonNullable<Loader.MathJaxConfig['loader']> {
@@ -92,7 +92,7 @@ declare module 'mathjax' {
     mathmlSpacing?: boolean
     skipAttributes?: Record<string, boolean>
     exFactor?: string
-    displayAlign?: 'center' | 'auto'
+    displayAlign?: 'auto' | 'center'
     displayIndent?: 'auto' | (string & {_?: never})
   }
 
@@ -112,7 +112,7 @@ declare module 'mathjax' {
           processEnvironments?: boolean
           processRefs?: boolean
           digits?: RegExp
-          tags?: 'none' | 'ams' | 'all'
+          tags?: 'all' | 'ams' | 'none'
           tagSide?: 'left' | 'right'
           tagIndent?: string
           useLabelIds?: boolean
@@ -125,7 +125,7 @@ declare module 'mathjax' {
       : never
     svg?: T extends 'output/svg'
       ? OutputOptions & {
-          fontCache?: 'none' | 'local' | 'global'
+          fontCache?: 'global' | 'local' | 'none'
           internalSpeechTitles?: boolean
           localID?: string | null
           titleID?: number

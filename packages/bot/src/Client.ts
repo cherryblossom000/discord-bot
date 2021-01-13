@@ -36,7 +36,7 @@ import type {
 
 declare global {
   interface ArrayConstructor {
-    isArray(arg: readonly unknown[] | unknown): arg is readonly unknown[]
+    isArray(arg: unknown | readonly unknown[]): arg is readonly unknown[]
   }
 }
 
@@ -107,8 +107,8 @@ export default class Client extends Discord.Client {
           async reply(
             options:
               | APIMessageContentResolvable
-              | OptionsNoSplit
               | MessageAdditions
+              | OptionsNoSplit
           ): Promise<this>
           async reply(
             content: StringResolvable,
@@ -116,16 +116,16 @@ export default class Client extends Discord.Client {
           ): Promise<this[]>
           async reply(
             content: StringResolvable,
-            options: OptionsNoSplit | MessageAdditions
+            options: MessageAdditions | OptionsNoSplit
           ): Promise<this>
-          async reply(...[content, options]: SendArgs): Promise<this | this[]>
+          async reply(...[content, options]: SendArgs): Promise<this[] | this>
           async reply(
             content: unknown,
-            options?: MessageOptions | MessageAdditions
-          ): Promise<this | this[]> {
+            options?: MessageAdditions | MessageOptions
+          ): Promise<this[] | this> {
             return (super.reply as (
               ...[_content, _options]: SendArgs
-            ) => Promise<this | this[]>)(
+            ) => Promise<this[] | this>)(
               ...(this.guild
                 ? ([content, options] as Readonly<SendArgs>)
                 : Array.isArray(content) &&
@@ -143,7 +143,7 @@ export default class Client extends Discord.Client {
                     options
                   ]
                 : typeof content == 'object' && content && !options
-                ? [content as MessageAdditions | APIMessage]
+                ? [content as APIMessage | MessageAdditions]
                 : [upperFirst(Util.resolveString(content)), options])
             )
           }
@@ -154,13 +154,13 @@ export default class Client extends Discord.Client {
           }: {
             reply?: boolean
             content:
-              | MessageOptions
-              | MessageEmbed
               | MessageAttachment
+              | MessageEmbed
+              | MessageOptions
               | string
               | readonly [
                   string | readonly string[],
-                  (MessageOptions | MessageAdditions)?
+                  (MessageAdditions | MessageOptions)?
                 ]
           }): Promise<void> {
             if (

@@ -195,7 +195,7 @@ const leaderboardCommand = async (
 }
 
 /** Formats a trivia answer. */
-const format = (answer: string | boolean): string =>
+const format = (answer: boolean | string): string =>
   typeof answer === 'boolean' ? (answer ? 'True' : 'False') : answer
 
 const command: Command = {
@@ -250,7 +250,7 @@ Gets the leaderboard for this server.`,
     const execute = async (
       fields: readonly EmbedFieldData[],
       _emojis: readonly string[],
-      getSelectedAnswer: (emoji: string) => string | boolean,
+      getSelectedAnswer: (emoji: string) => boolean | string,
       questionPrefix = ''
     ): Promise<void> => {
       const msg = await channel.send(author, {
@@ -273,7 +273,7 @@ Gets the leaderboard for this server.`,
         }
       })
 
-      // eslint-disable-next-line no-await-in-loop, no-restricted-syntax -- need to react individually
+      // eslint-disable-next-line no-await-in-loop -- need to react individually
       for (const emoji of _emojis) await msg.react(emoji)
 
       const correctAnswer = format(question.correctAnswer)

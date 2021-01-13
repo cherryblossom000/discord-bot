@@ -59,7 +59,7 @@ declare module '@semantic-release/github/lib/get-client' {
     proxy
   }: Pick<
     ReturnType<typeof resolveConfig>,
-    'githubToken' | 'githubUrl' | 'githubApiPathPrefix' | 'proxy'
+    'githubApiPathPrefix' | 'githubToken' | 'githubUrl' | 'proxy'
   >) => Octokit
   export = getClient
 }
@@ -80,7 +80,7 @@ declare module '@semantic-release/github/lib/glob-assets' {
     assets: Assets
   ) => Promise<
     (
-      | RequiredPick<Exclude<ArrayType<Assets>, string>, 'path' | 'name'>
+      | RequiredPick<Exclude<ArrayType<Assets>, string>, 'name' | 'path'>
       | string
     )[]
   >
@@ -98,7 +98,7 @@ declare module '@semantic-release/github/lib/parse-github-url' {
   const parseGithubUrl: (
     repositoryUrl: string
     // eslint-disable-next-line @typescript-eslint/ban-types -- it could return {}
-  ) => {owner: string; repo: string} | {}
+  ) => {} | {owner: string; repo: string}
   export = parseGithubUrl
 }
 
@@ -128,12 +128,12 @@ declare module '@semantic-release/github/lib/resolve-config' {
       releasedLabels
     }: PluginConfig,
     {env}: Context
-  ) => {githubToken: string} & Override<
+  ) => Override<
     PluginConfig,
     {[K in 'assets' | 'assignees']?: CastArray<K>} &
       {[K in 'labels' | 'releasedLabels']: CastArray<K> | false}
   > &
-    RequiredPick<PluginConfig, 'failTitle'>
+    RequiredPick<PluginConfig, 'failTitle'> & {githubToken: string}
   export = resolveConfig
 }
 

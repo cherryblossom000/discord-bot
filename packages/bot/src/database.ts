@@ -134,7 +134,7 @@ export const collection = <C extends CollectionsKeys>(
 
 // #region Documents Cache
 
-const resolveID = (id: string | DiscordType<CollectionsKeys>): string =>
+const resolveID = (id: DiscordType<CollectionsKeys> | string): string =>
   typeof id == 'string' ? id : id.id
 
 type Cached<C extends CollectionsKeys> = Omit<DatabaseType<C>, '_id'>
@@ -166,7 +166,7 @@ const getCache = <C extends CollectionsKeys>(
 
 const updateCache = <C extends CollectionsKeys>(
   col: Collection<C>,
-  id: string | DiscordType<C>,
+  id: DiscordType<C> | string,
   value: Cached<C> | ((cached?: Cached<C>) => Cached<C> | undefined)
 ): void => {
   const cache = getCache(col)
@@ -187,7 +187,7 @@ type FindOneResult<C extends CollectionsKeys, K extends keyof Cached<C>> = Pick<
 const findOne = <C extends CollectionsKeys>(col: Collection<C>) => async <
   K extends keyof Cached<C>
 >(
-  id: string | DiscordType<C>,
+  id: DiscordType<C> | string,
   keys: readonly K[],
   filter?: Omit<FilterQuery<DatabaseType<C>>, '_id'>,
   options?: Omit<FindOneOptions<DatabaseType<C>>, 'projection'>
@@ -226,7 +226,7 @@ const findOne = <C extends CollectionsKeys>(col: Collection<C>) => async <
 const fetchValueC = <C extends CollectionsKeys>(col: Collection<C>) => async <
   K extends keyof Cached<C>
 >(
-  _id: Snowflake | DiscordType<C>,
+  _id: DiscordType<C> | Snowflake,
   key: K
 ): Promise<DatabaseType<C>[K] | undefined> =>
   (await findOne(col)(_id, [key]))?.[key]
@@ -237,7 +237,7 @@ export const fetchValue = async <
 >(
   database: Db,
   name: C,
-  _id: Snowflake | DiscordType<C>,
+  _id: DiscordType<C> | Snowflake,
   key: K
 ): Promise<DatabaseType<C>[K] | undefined> =>
   fetchValueC(collection(database, name))(_id, key)
@@ -248,7 +248,7 @@ export const setValue = async <
 >(
   database: Db,
   name: C,
-  id: string | DiscordType<C>,
+  id: DiscordType<C> | string,
   key: K,
   value: DatabaseType<C>[K]
 ): Promise<void> => {
@@ -257,7 +257,7 @@ export const setValue = async <
   await (col as {
     updateOne(
       filter: FilterQuery<DatabaseType<C>>,
-      update: UpdateQuery<DatabaseType<C>> | Partial<DatabaseType<C>>,
+      update: Partial<DatabaseType<C>> | UpdateQuery<DatabaseType<C>>,
       options?: UpdateOneOptions
     ): Promise<UpdateWriteOpResult>
   }).updateOne(
@@ -273,7 +273,7 @@ export const setValue = async <
 /** Gets the prefix for a guild. */
 export const fetchPrefix = async (
   database: Db,
-  guild: Snowflake | Discord.Guild | null
+  guild: Discord.Guild | Snowflake | null
 ): Promise<string> =>
   guild === null
     ? defaultPrefix
@@ -282,7 +282,7 @@ export const fetchPrefix = async (
 /** Gets the timezone for a guild. Defaults to UTC. */
 export const fetchTimeZone = async (
   database: Db,
-  user: Snowflake | DiscordUser
+  user: DiscordUser | Snowflake
 ): Promise<string> =>
   (await fetchValue(database, 'users', user, 'timeZone')) ?? defaultTimeZone
 
@@ -304,7 +304,7 @@ export const disableRejoin = async (
 export const fetchMemberRejoinInfo = async (
   guilds: Collection<'guilds'>,
   member: Discord.GuildMember
-): Promise<Pick<Member, 'roles' | 'nickname'>> => {
+): Promise<Pick<Member, 'nickname' | 'roles'>> => {
   const {roles, nickname} =
     (
       await guilds
@@ -342,7 +342,7 @@ export const fetchMemberRejoinInfo = async (
 const removeMemberArgs = ({
   guild,
   id
-}: Pick<Discord.GuildMember, 'id' | 'guild'>): {
+}: Pick<Discord.GuildMember, 'guild' | 'id'>): {
   filter: FilterQuery<Guild>
   update: UpdateQuery<Guild>
 } => ({filter: {_id: guild.id}, update: {$pull: {members: {_id: id}}}})

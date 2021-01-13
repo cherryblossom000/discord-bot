@@ -32,7 +32,7 @@ import type Client from './Client'
 interface TextChannel extends DiscordTextChannel {
   send(content: OptionsWithSplit): Promise<GuildMessage[]>
   send(
-    options: APIMessageContentResolvable | OptionsNoSplit | MessageAdditions
+    options: APIMessageContentResolvable | MessageAdditions | OptionsNoSplit
   ): Promise<GuildMessage>
   send(
     content: StringResolvable,
@@ -40,7 +40,7 @@ interface TextChannel extends DiscordTextChannel {
   ): Promise<GuildMessage[]>
   send(
     content: StringResolvable,
-    options: OptionsNoSplit | MessageAdditions
+    options: MessageAdditions | OptionsNoSplit
   ): Promise<GuildMessage>
   send(...[content, options]: SendArgs): Promise<GuildMessage | GuildMessage[]>
 }
@@ -48,7 +48,7 @@ interface TextChannel extends DiscordTextChannel {
 interface NewsChannel extends DiscordNewsChannel {
   send(content: OptionsWithSplit): Promise<GuildMessage[]>
   send(
-    options: APIMessageContentResolvable | OptionsNoSplit | MessageAdditions
+    options: APIMessageContentResolvable | MessageAdditions | OptionsNoSplit
   ): Promise<GuildMessage>
   send(
     content: StringResolvable,
@@ -56,7 +56,7 @@ interface NewsChannel extends DiscordNewsChannel {
   ): Promise<GuildMessage[]>
   send(
     content: StringResolvable,
-    options: OptionsNoSplit | MessageAdditions
+    options: MessageAdditions | OptionsNoSplit
   ): Promise<GuildMessage>
   send(...[content, options]: SendArgs): Promise<GuildMessage | GuildMessage[]>
 }
@@ -64,7 +64,7 @@ interface NewsChannel extends DiscordNewsChannel {
 interface DMChannel extends DiscordDMChannel {
   send(content: OptionsWithSplit): Promise<DMMessage[]>
   send(
-    options: APIMessageContentResolvable | OptionsNoSplit | MessageAdditions
+    options: APIMessageContentResolvable | MessageAdditions | OptionsNoSplit
   ): Promise<DMMessage>
   send(
     content: StringResolvable,
@@ -72,14 +72,14 @@ interface DMChannel extends DiscordDMChannel {
   ): Promise<DMMessage[]>
   send(
     content: StringResolvable,
-    options: OptionsNoSplit | MessageAdditions
+    options: MessageAdditions | OptionsNoSplit
   ): Promise<DMMessage>
   send(...[content, options]: SendArgs): Promise<DMMessage | DMMessage[]>
 }
 
 /** Any text-based guild channel. */
-export type TextBasedGuildChannel = TextChannel | NewsChannel
-export type TextBasedChannel = TextBasedGuildChannel | DMChannel
+export type TextBasedGuildChannel = NewsChannel | TextChannel
+export type TextBasedChannel = DMChannel | TextBasedGuildChannel
 
 /** A guild from this client. */
 export interface Guild extends DiscordGuild {
@@ -89,17 +89,17 @@ export interface Guild extends DiscordGuild {
 }
 
 export type OptionsNoSplit = MessageOptions & {split?: false}
-export type OptionsWithSplit = MessageOptions & {split: true | SplitOptions}
+export type OptionsWithSplit = MessageOptions & {split: SplitOptions | true}
 
 export type SendArgs =
   | [
-      | APIMessageContentResolvable
-      | MessageOptions
-      | MessageAdditions
       | APIMessage
+      | APIMessageContentResolvable
+      | MessageAdditions
+      | MessageOptions
     ]
-  | [APIMessageContentResolvable, (MessageOptions | MessageAdditions)?]
-  | [StringResolvable, MessageOptions | MessageAdditions]
+  | [APIMessageContentResolvable, (MessageAdditions | MessageOptions)?]
+  | [StringResolvable, MessageAdditions | MessageOptions]
 
 /** A message from this client. */
 interface BaseMessage extends DiscordMessage {
@@ -115,26 +115,26 @@ interface BaseMessage extends DiscordMessage {
   ): Promise<Collection<Snowflake, MessageReaction>>
   reply(content: OptionsWithSplit): Promise<this[]>
   reply(
-    options: APIMessageContentResolvable | OptionsNoSplit | MessageAdditions
+    options: APIMessageContentResolvable | MessageAdditions | OptionsNoSplit
   ): Promise<this>
   reply(content: StringResolvable, options: OptionsWithSplit): Promise<this[]>
   reply(
     content: StringResolvable,
-    options: OptionsNoSplit | MessageAdditions
+    options: MessageAdditions | OptionsNoSplit
   ): Promise<this>
-  reply(...[content, options]: SendArgs): Promise<this | this[]>
+  reply(...[content, options]: SendArgs): Promise<this[] | this>
   sendDeletableMessage({
     content,
     reply
   }: {
     content:
-      | MessageOptions
-      | MessageEmbed
       | MessageAttachment
+      | MessageEmbed
+      | MessageOptions
       | string
       | readonly [
           string | readonly string[],
-          (MessageOptions | MessageAdditions)?
+          (MessageAdditions | MessageOptions)?
         ]
     reply?: boolean
   }): Promise<void>
@@ -164,7 +164,7 @@ interface DMMessage extends BaseMessage {
 }
 
 /** A message from this client. */
-export type Message = GuildMessage | DMMessage
+export type Message = DMMessage | GuildMessage
 
 // #endregion
 
@@ -211,7 +211,7 @@ interface CommandBase<T extends Message> {
     message: T,
     input: {args: readonly string[]; input: string},
     database: Db
-  ): void | Promise<void>
+  ): Promise<void> | void
 }
 
 /**
@@ -220,7 +220,7 @@ interface CommandBase<T extends Message> {
  */
 export type Command<T extends boolean = false> = T extends true
   ? CommandBase<GuildMessage> & {guildOnly: true}
-  : CommandBase<GuildMessage | DMMessage> & {guildOnly?: false}
+  : CommandBase<DMMessage | GuildMessage> & {guildOnly?: false}
 
 /** A command that is triggered based on a regular expression. */
 export interface RegexCommand {

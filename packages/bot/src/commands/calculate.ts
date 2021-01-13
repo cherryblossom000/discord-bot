@@ -5,7 +5,7 @@ interface _MathResult {
   toString: () => string
 }
 
-type MathResult = ResultSet<_MathResult> | _MathResult
+type MathResult = _MathResult | ResultSet<_MathResult>
 
 const command: Command = {
   name: 'calculate',

@@ -13,7 +13,7 @@ const enum ResponseCode {
 
 interface QuestionResponseBase {
   category: string
-  difficulty: 'easy' | 'medium' | 'hard'
+  difficulty: 'easy' | 'hard' | 'medium'
   question: string
   correct_answer: string
 }
@@ -28,8 +28,8 @@ interface FetchQuestionResponse extends Response {
       (
         | {type: 'multiple'; incorrect_answers: readonly string[]}
         | ({type: 'boolean'} & (
-            | {correct_answer: 'True'; incorrect_answers: ['False']}
             | {correct_answer: 'False'; incorrect_answers: ['True']}
+            | {correct_answer: 'True'; incorrect_answers: ['False']}
           ))
       )
   ]

@@ -2,9 +2,9 @@ import type Changelog from '@semantic-release/changelog'
 import type Github from '@semantic-release/github'
 import type {BranchSpec, Context} from 'semantic-release'
 
-type Promisable<T> = T | Promise<T>
+type Promisable<T> = Promise<T> | T
 // eslint-disable-next-line import/no-unused-modules -- it is used
-export type RequiredPick<T, K extends keyof T> = T & Required<Pick<T, K>>
+export type RequiredPick<T, K extends keyof T> = Required<Pick<T, K>> & T
 
 // eslint-disable-next-line import/no-unused-modules -- it is used
 export type Branch = Exclude<BranchSpec, string> & {
@@ -18,14 +18,14 @@ export type Branch = Exclude<BranchSpec, string> & {
         mergeRange: string
       }
     | {
+        type: 'prerelease'
+        prerelease: string
+      }
+    | {
         type: 'release'
         range: string
         accept: string[]
         main: boolean
-      }
-    | {
-        type: 'prerelease'
-        prerelease: string
       }
   )
 
