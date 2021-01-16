@@ -1,6 +1,7 @@
 import fs from 'fs'
-import {join} from 'path'
-import express from 'express'
+import path from 'path'
+import Koa from 'koa'
+import serve from 'koa-static'
 import Client from './Client'
 import {addListeners} from './commands/rejoin'
 import {dev} from './constants'
@@ -8,10 +9,13 @@ import {connect, fetchRejoinGuilds} from './database'
 import {cleanStack, createResolve, handleError} from './utils'
 import type {AddressInfo} from 'net'
 import type {ClientEvents, EventListener} from './Client'
+// eslint-disable-next-line import/max-dependencies -- type imports
 import type {Command, RegexCommand} from './types'
 
 const {readdir} = fs.promises
 const resolve = createResolve(__dirname)
+
+const assetsFolder = path.join(path.dirname(__dirname), 'assets')
 
 ;(async (): Promise<void> => {
   if (dev) {
@@ -21,12 +25,31 @@ const resolve = createResolve(__dirname)
   }
 
   // Routing
-  const app = express()
-
-  app.get('/', (_, res) => res.sendFile(resolve('../assets/html/index.html')))
-  app.use(express.static(resolve('../assets/html'), {extensions: ['html']}))
-  app.use(express.static(resolve('../assets/css')))
-  app.use(express.static(resolve('../assets/img')))
+  const app = new Koa()
+  app
+    .use(async (ctx, next) => {
+      const _path = ctx.path.replace(/^\/|\/$/gu, '')
+      let redirected: string
+      switch (_path) {
+        case 'index':
+        case 'index.html':
+          redirected = '/'
+          break
+        case 'changelog.html':
+          redirected = '/changelog'
+          break
+        case 'license.html':
+          redirected = '/license'
+          break
+        default:
+          return next()
+      }
+      ctx.status = 301
+      ctx.redirect(redirected)
+    })
+    .use(serve(path.join(assetsFolder, 'html'), {extensions: ['html']}))
+    .use(serve(path.join(assetsFolder, 'css')))
+    .use(serve(path.join(assetsFolder, 'img')))
 
   const client = new Client({
     disableMentions: 'everyone',
@@ -81,18 +104,18 @@ const resolve = createResolve(__dirname)
   )
 
   const importFolder = async <T>(
-    path: string,
+    _path: string,
     // eslint-disable-next-line promise/prefer-await-to-callbacks -- easier to handle errors in one spot
     callback: (command: T, file: string) => void
   ): Promise<void> => {
     try {
       await Promise.all(
-        (await readdir(resolve(path)))
+        (await readdir(resolve(_path)))
           .filter(file => file.endsWith('.js'))
           .map(async file =>
             // eslint-disable-next-line promise/prefer-await-to-callbacks -- see above
             callback(
-              ((await import(join(resolve(path), file))) as {default: T})
+              ((await import(path.join(resolve(_path), file))) as {default: T})
                 .default,
               file.slice(0, -3)
             )
@@ -102,7 +125,7 @@ const resolve = createResolve(__dirname)
       handleError(
         client,
         error,
-        `\`importFolder\` failed with path \`${path}\`.`
+        `\`importFolder\` failed with path \`${_path}\`.`
       )
     }
   }
@@ -141,7 +164,7 @@ const resolve = createResolve(__dirname)
       client.regexCommands.set(c.regex, c.regexMessage)
     )
   ])
-  const listener = app.listen(process.env.PORT, () => {
+  const listener = app.listen(Number(process.env.PORT), () => {
     if (dev) {
       console.log(
         `http://localhost:${(listener.address() as AddressInfo).port}`
