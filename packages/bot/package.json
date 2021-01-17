@@ -1,6 +1,6 @@
 {
   "name": "@comrade-pingu/bot",
-  "version": "2.13.2",
+  "version": "2.13.3",
   "private": true,
   "publishConfig": {
     "access": "restricted"

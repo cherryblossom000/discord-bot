@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.13.3](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.13.2...@comrade-pingu/bot@2.13.3) (2021-01-17)
+
+
+### Bug Fixes
+
+* **bot:** fix error handler for main function ([525cef4](https://github.com/cherryblossom000/comrade-pingu/commit/525cef4bd5b7c553f06565377336df1a5af09a1c))
+
 ## [2.13.2](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.13.1...@comrade-pingu/bot@2.13.2) (2021-01-17)
 
 
