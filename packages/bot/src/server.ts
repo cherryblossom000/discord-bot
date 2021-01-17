@@ -6,7 +6,7 @@ import Client from './Client'
 import {addListeners} from './commands/rejoin'
 import {dev} from './constants'
 import {connect, fetchRejoinGuilds} from './database'
-import {cleanStack, createResolve, handleError} from './utils'
+import {cleanErrorsStack, createResolve, handleError} from './utils'
 import type {AddressInfo} from 'net'
 import type {ClientEvents, EventListener} from './Client'
 // eslint-disable-next-line import/max-dependencies -- type imports
@@ -172,4 +172,9 @@ const assetsFolder = path.join(path.dirname(__dirname), 'assets')
     }
   })
   await client.login(process.env.TOKEN)
-})().catch(error => console.error('Error in main function:', cleanStack(error)))
+})().catch((error: unknown) =>
+  console.error(
+    'Error in main function:',
+    error instanceof Error ? cleanErrorsStack(error) : error
+  )
+)

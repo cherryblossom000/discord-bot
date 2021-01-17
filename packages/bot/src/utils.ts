@@ -38,11 +38,13 @@ const stackBasePath = join(
 )
 
 /** Cleans up an error stack. */
-export const cleanStack = (stack: string): string =>
+const cleanStack = (stack: string): string =>
   _cleanStack(stack, {basePath: stackBasePath})
 
 /** Cleans up the error stack on an error. */
-const cleanErrorsStack = <T extends Error>(error: T): T & {stack: string} => {
+export const cleanErrorsStack = <T extends Error>(
+  error: T
+): T & {stack: string} => {
   error.stack = error.stack === undefined ? '' : cleanStack(error.stack)
   return error as T & {stack: string}
 }
