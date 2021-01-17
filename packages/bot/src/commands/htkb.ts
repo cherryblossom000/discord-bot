@@ -3,7 +3,7 @@ import {imagesFolder} from '../constants'
 import {checkPermissions} from '../utils'
 import type {Command} from '../types'
 
-const filePath = path.join(imagesFolder, 'htkb.png')
+const filePath = path.join(imagesFolder, 'htkb.jpg')
 
 const command: Command = {
   name: 'htkb',

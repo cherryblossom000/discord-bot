@@ -39,7 +39,7 @@ const readme = join(rootFolder, 'README.md')
         name === 'iwmelc'
           ? `${description}<br>![i will murder every last capitalist](./assets/img/iwmelc.jpg)`
           : name === 'htkb'
-          ? `${description}<br>![how to kiss boy](./assets/img/htkb.png)`
+          ? `${description}<br>![how to kiss boy](./assets/img/htkb.jpg)`
           : description,
         `\`.${name}${
           syntax === undefined ? '' : ` ${syntax.replace(/\|/gu, '\\|')}`
