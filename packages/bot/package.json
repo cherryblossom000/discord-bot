@@ -24,6 +24,7 @@
     "postbuild": "pnpm copy && pnpm run docs",
     "build:all": "tsc -b && pnpm postbuild",
     "watch": "tsc -b -w",
+    "start": "node .",
     "test": "jest",
     "test:dev": "jest -c jest.config.dev.js"
   },
