@@ -1,5 +1,24 @@
 # Changelog
 
+## [2.13.2](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.13.1...@comrade-pingu/bot@2.13.2) (2021-01-17)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** fix TS error ([bf2db85](https://github.com/cherryblossom000/comrade-pingu/commit/bf2db85e9d0fdc1c5e72b076cc31075344b5b56a))
+
+
+### Features
+
+* update to match `@semantic-release/github@7.2.0` ([130d5da](https://github.com/cherryblossom000/comrade-pingu/commit/130d5dacd03e43357150aef8d8da3800ea1efc1e))
+
+
+### Performance Improvements
+
+* **bot:** use Koa instead of Express ([d8da42f](https://github.com/cherryblossom000/comrade-pingu/commit/d8da42f7ef6055a110fedb8284322783d2ffec6d))
+* **bot/htkb,iwmelc:** evaluate file path once instead of on every command ([9dbb8a6](https://github.com/cherryblossom000/comrade-pingu/commit/9dbb8a66804922c2e66e46cde73ba7641ccb4f49))
+* **bot/rejoin:** remove `rejoinListeners` entry for guild once disabled ([b5a778e](https://github.com/cherryblossom000/comrade-pingu/commit/b5a778e8be268c1ece2a5ecf16e9bfed7b09c244))
+
 ## [2.13.1](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.13.0...@comrade-pingu/bot@2.13.1) (2020-12-12)
 
 
