@@ -80,13 +80,15 @@ const readme = join(rootFolder, 'README.md')
     p: string,
     title: string,
     description: string,
+    path: string,
     md: string
   ): Promise<void> =>
     writeFile(
       join(htmlFolder, `${p}.html`),
       template
-        .replace('[title]', title)
+        .replace(/\[title\]/gu, title)
         .replace('[description]', description)
+        .replace('[path]', path)
         .replace('[content]', htmlMarkdownIt.render(md))
     )
 
@@ -99,6 +101,7 @@ const readme = join(rootFolder, 'README.md')
       htmlPath,
       `${title} - Comrade Pingu`,
       `${title} for Comrade Pingu`,
+      `/${htmlPath}`,
       `${(await readFile(join(rootFolder, mdPath))).toString()}
 #### [← back](/)`
     )
@@ -109,6 +112,7 @@ const readme = join(rootFolder, 'README.md')
     'index',
     'Comrade Pingu',
     'Kill all the capitalist scum!',
+    '',
     newReadme
       // Replace the escaped pipe in play but not in volume
       .replace('\\|', '|')
