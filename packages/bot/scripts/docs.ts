@@ -87,7 +87,7 @@ const readme = join(rootFolder, 'README.md')
       join(htmlFolder, `${p}.html`),
       template
         .replace(/\[title\]/gu, title)
-        .replace('[description]', description)
+        .replace(/\[description\]/gu, description)
         .replace('[path]', path)
         .replace('[content]', htmlMarkdownIt.render(md))
     )
