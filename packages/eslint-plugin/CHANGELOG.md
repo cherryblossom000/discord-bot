@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/eslint-plugin@1.1.0...@comrade-pingu/eslint-plugin@1.1.1) (2021-01-17)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** fix TS error ([bf2db85](https://github.com/cherryblossom000/comrade-pingu/commit/bf2db85e9d0fdc1c5e72b076cc31075344b5b56a))
+
 # [1.1.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/eslint-plugin@1.0.1...@comrade-pingu/eslint-plugin@1.1.0) (2020-10-24)
 
 
