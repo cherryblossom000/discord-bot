@@ -16,4 +16,4 @@ jobs:
   - provider: script
     skip_cleanup: true
     script: chmod +x scripts/deploy.sh && scripts/deploy.sh
-    on: master
+    on: main
