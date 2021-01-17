@@ -26,7 +26,8 @@
     "watch": "tsc -b -w",
     "test": "pnpm m run test",
     "test:dev": "pnpm m run test:dev",
-    "docs": "pnpm m run docs"
+    "docs": "pnpm m run docs",
+    "start": "pnpm -C packages/bot start"
   },
   "husky": {
     "hooks": {
