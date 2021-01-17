@@ -1,16 +1,16 @@
 import {readdirSync} from 'fs'
-import {join} from 'path'
+import * as path from 'path'
 import type {Linter, Rule} from 'eslint'
 
-const rulesFolder = join(__dirname, 'rules')
+const rulesFolder = path.join(__dirname, 'rules')
 
 export const rules = Object.fromEntries(
-  readdirSync(join(__dirname, 'rules'))
+  readdirSync(path.join(__dirname, 'rules'))
     .filter(file => file.endsWith('.js'))
     .map(file => [
       file.slice(0, -3),
       // eslint-disable-next-line @typescript-eslint/no-require-imports -- needs to be synchronous
-      require(join(rulesFolder, file)) as Rule.RuleModule
+      require(path.join(rulesFolder, file)) as Rule.RuleModule
     ])
 )
 

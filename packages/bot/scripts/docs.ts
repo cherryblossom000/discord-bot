@@ -1,5 +1,5 @@
-import {promises, readdirSync} from 'fs'
-import {join} from 'path'
+import {promises} from 'fs'
+import path from 'path'
 import {Permissions} from 'discord.js'
 import MarkdownIt from 'markdown-it'
 import table from 'markdown-table'
@@ -10,22 +10,22 @@ import type {Command} from '../src/types'
 
 exitOnError()
 
-const {mkdir, readFile, writeFile} = promises
-const resolve = (...paths: string[]): string => join(__dirname, ...paths)
+const {mkdir, readFile, readdir, writeFile} = promises
+const resolve = (...paths: string[]): string => path.join(__dirname, ...paths)
 
-const rootFolder = resolve('..')
-const dist = join(rootFolder, 'dist')
-const commandsFolder = join(dist, 'src', 'commands')
-const htmlFolder = join(dist, 'assets', 'html')
-const readme = join(rootFolder, 'README.md')
+const rootFolder = path.dirname(__dirname)
+const dist = path.join(rootFolder, 'dist')
+const commandsFolder = path.join(dist, 'src', 'commands')
+const htmlFolder = path.join(dist, 'assets', 'html')
+const readme = path.join(rootFolder, 'README.md')
 
 ;(async (): Promise<void> => {
   // Update readme
-  const files = readdirSync(commandsFolder)
+  const files = await readdir(commandsFolder)
   const modules = await Promise.all(
     files
       .filter(f => f.endsWith('.js'))
-      .map(async f => import(join(commandsFolder, f)))
+      .map(async f => import(path.join(commandsFolder, f)))
   )
   const commands = modules.map(m => (m as {default: Command<boolean>}).default)
   const usageMarkdownIt = new MarkdownIt({html: true, breaks: true})
@@ -80,15 +80,15 @@ const readme = join(rootFolder, 'README.md')
     p: string,
     title: string,
     description: string,
-    path: string,
+    _path: string,
     md: string
   ): Promise<void> =>
     writeFile(
-      join(htmlFolder, `${p}.html`),
+      path.join(htmlFolder, `${p}.html`),
       template
         .replace(/\[title\]/gu, title)
         .replace(/\[description\]/gu, description)
-        .replace('[path]', path)
+        .replace('[path]', _path)
         .replace('[content]', htmlMarkdownIt.render(md))
     )
 
@@ -102,7 +102,7 @@ const readme = join(rootFolder, 'README.md')
       `${title} - Comrade Pingu`,
       `${title} for Comrade Pingu`,
       `/${htmlPath}`,
-      `${(await readFile(join(rootFolder, mdPath))).toString()}
+      `${(await readFile(path.join(rootFolder, mdPath))).toString()}
 #### [← back](/)`
     )
   }
@@ -121,6 +121,6 @@ const readme = join(rootFolder, 'README.md')
       .replace('CHANGELOG.md', 'changelog')
   )
   // Update license.html and changelog.html
-  await writeOtherPage('license', join('..', '..', 'LICENSE'))
+  await writeOtherPage('license', path.join('..', '..', 'LICENSE'))
   await writeOtherPage('changelog', 'CHANGELOG.md')
 })().catch(exit)

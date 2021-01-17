@@ -1,4 +1,4 @@
-import {join} from 'path'
+import path from 'path'
 import {homedir} from 'os'
 import _cleanStack from 'clean-stack'
 import {
@@ -28,9 +28,9 @@ import type {
 /** Creates a function to easily resolve paths relative to the `__dirname`. */
 export const createResolve = (dirname: string) => (
   ...paths: readonly string[]
-): string => join(dirname, ...paths)
+): string => path.join(dirname, ...paths)
 
-const stackBasePath = join(
+const stackBasePath = path.join(
   homedir(),
   ...(dev
     ? ['dev', 'node', 'comrade-pingu', 'packages', 'bot']

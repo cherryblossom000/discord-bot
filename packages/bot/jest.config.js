@@ -1,8 +1,7 @@
 'use strict'
 
-const {readFileSync} = require('fs')
-const {join} = require('path')
 const base = require('../../jest.config')
+const tsConfig = require('../../tsconfig.settings.json')
 
 /** @type {import('@jest/types').Config.InitialOptions} */
 const config = {
@@ -13,12 +12,7 @@ const config = {
       // tsconfig: '<rootDir>/tests/tsconfig.json',
       // hack to get around https://github.com/kulshekhar/ts-jest/issues/1648
       tsconfig: {
-        ...JSON.parse(
-          readFileSync(
-            join(__dirname, '..', '..', 'tsconfig.settings.json'),
-            'utf8'
-          )
-        ).compilerOptions,
+        ...tsConfig.compilerOptions,
         esModuleInterop: true
       }
     }
