@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.13.4](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.13.3...@comrade-pingu/bot@2.13.4) (2021-02-17)
+
+
+### Bug Fixes
+
+* **bot:** trigger on 'soviets' ([72e357e](https://github.com/cherryblossom000/comrade-pingu/commit/72e357e8bef686a30b44ebb3829baa2cf761abfe))
+
 ## [2.13.3](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.13.2...@comrade-pingu/bot@2.13.3) (2021-01-17)
 
 
