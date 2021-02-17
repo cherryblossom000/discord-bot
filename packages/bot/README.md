@@ -1,18 +1,10 @@
 # Comrade Pingu
 
-[![Build Status](https://api.travis-ci.com/cherryblossom000/comrade-pingu.svg?token=HuQX1k5oVBvh691pweEv&branch=master)](https://travis-ci.com/cherryblossom000/comrade-pingu)
+[![Build Status](https://api.travis-ci.com/cherryblossom000/comrade-pingu.svg?token=HuQX1k5oVBvh691pweEv&branch=main)](https://travis-ci.com/cherryblossom000/comrade-pingu)
 
 *You may be looking for the [other website](http://comradepingu.glitch.me).*
 
 A fun Discord bot created on the 3<sup>rd</sup> of March 2019 with [discord.js](https://discord.js.org). Kill all the capitalist scum!
-
-## [Status](https://stats.uptimerobot.com/49G6NHJB7W/782979270)
-
-![Uptime Robot status](https://badgen.net/uptime-robot/status/m782979270-993a8ab6deaa2937e9ced07a)
-![Uptime Robot ratio (7 days)](https://badgen.net/uptime-robot/day/m782979270-993a8ab6deaa2937e9ced07a)
-![Uptime Robot ratio (7 days)](https://badgen.net/uptime-robot/week/m782979270-993a8ab6deaa2937e9ced07a)
-![Uptime Robot ratio (30 days)](https://badgen.net/uptime-robot/month/m782979270-993a8ab6deaa2937e9ced07a)
-![Uptime Robot response time](https://badgen.net/uptime-robot/response/m782979270-993a8ab6deaa2937e9ced07a)
 
 ## Inviting
 
