@@ -1,7 +1,8 @@
 {
   "extends": "./tsconfig.settings.json",
-  "include": ["**/*.config*.js", "**/.eslintrc.js"],
+  "include": ["**/*.config*.js", "**/.eslintrc.js", "tsconfig.settings.json"],
   "compilerOptions": {
+    "resolveJsonModule": true,
     "types": ["node"],
     "noEmit": true,
     "allowJs": true,

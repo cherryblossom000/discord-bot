@@ -12,7 +12,7 @@ const config = {
       // tsconfig: '<rootDir>/tests/tsconfig.json',
       // hack to get around https://github.com/kulshekhar/ts-jest/issues/1648
       tsconfig: {
-        ...tsConfig.compilerOptions,
+        .../** @type {any} */ (tsConfig.compilerOptions),
         esModuleInterop: true
       }
     }
