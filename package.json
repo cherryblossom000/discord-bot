@@ -17,6 +17,7 @@
   },
   "main": "packages/bot/dist/src/server",
   "scripts": {
+    "prepare": "husky install",
     "lint:config": "eslint --max-warnings 0 **/*.config*.js **/.eslintrc.js",
     "lint:config:dev": "pnpm lint:config -- --cache",
     "lint": "eslint --max-warnings 0 --ext ts,js .",
@@ -63,7 +64,7 @@
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-promise": "^4.3.1",
     "eslint-plugin-unicorn": "^28.0.1",
-    "husky": "^4.3.8",
+    "husky": "^5.0.9",
     "jest": "^26.6.3",
     "markdown-it": "^12.0.4",
     "markdown-table": "^2.0.0",
