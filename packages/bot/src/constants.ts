@@ -59,7 +59,7 @@ export const pinguNouns = [
   'stalin',
   'ussr',
   'union of soviet socialist republics',
-  'soviet(?: union)?'
+  'soviet(?:s)?(?: union)?'
 ]
 export const copulas = ['is', 'are']
 export const articles = ['an?', 'the']
