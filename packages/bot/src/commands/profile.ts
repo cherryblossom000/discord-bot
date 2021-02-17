@@ -2,14 +2,15 @@ import {MessageEmbed} from 'discord.js'
 import {fetchTimeZone} from '../database'
 import {startCase, upperFirst} from '../lodash'
 import {resolveUser} from '../utils'
-import type {PresenceStatus, User} from 'discord.js'
+import type {
+  ClientPresenceStatus,
+  ClientPresenceStatusData,
+  PresenceStatus,
+  User
+} from 'discord.js'
 import type {Command, GuildMember} from '../types'
 
 declare global {
-  interface ObjectConstructor {
-    entries<K extends PropertyKey, V>(o: Partial<Record<K, V>>): [K, V][]
-  }
-
   namespace Intl {
     interface DateTimeFormatOptions {
       dateStyle?: 'full' | 'long' | 'medium' | 'short'
@@ -30,7 +31,10 @@ const getUserInfo = (user: User, formatDate: FormatDate): MessageEmbed => {
   const avatar = user.displayAvatarURL()
   const {bot, createdAt, id, presence, tag} = user
   const clientStatuses = presence.clientStatus
-    ? Object.entries(presence.clientStatus)
+    ? (Object.entries(presence.clientStatus) as readonly (readonly [
+        keyof ClientPresenceStatusData,
+        ClientPresenceStatus
+      ])[])
     : null
 
   const embed = new MessageEmbed()
