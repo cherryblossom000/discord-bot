@@ -26,6 +26,15 @@ import type {
   Video
 } from './types'
 
+declare global {
+  namespace Intl {
+    interface DateTimeFormatOptions {
+      dateStyle?: 'full' | 'long' | 'medium' | 'short'
+      timeStyle?: 'full' | 'long' | 'medium' | 'short'
+    }
+  }
+}
+
 /** Creates a function to easily resolve paths relative to the `__dirname`. */
 export const createResolve = (dirname: string) => (
   ...paths: readonly string[]
@@ -213,6 +222,7 @@ export const resolveUser = async (
   return null
 }
 
+// eslint-disable-next-line import/no-unused-modules -- it is used
 export type DateFormatter = (date: Date) => string
 
 export const createDateFormatter = (timeZone: string): DateFormatter => {

@@ -17,15 +17,6 @@ import type {
 import type {Command, GuildMember} from '../types'
 import type {DateFormatter} from '../utils'
 
-declare global {
-  namespace Intl {
-    interface DateTimeFormatOptions {
-      dateStyle?: 'full' | 'long' | 'medium' | 'short'
-      timeStyle?: 'full' | 'long' | 'medium' | 'short'
-    }
-  }
-}
-
 const formatStatus = (status: PresenceStatus): string =>
   status === 'dnd' ? 'Do Not Disturb' : upperFirst(status)
 

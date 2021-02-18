@@ -105,7 +105,6 @@ const assetsFolder = path.join(path.dirname(__dirname), 'assets')
 
   const importFolder = async <T>(
     _path: string,
-    // eslint-disable-next-line promise/prefer-await-to-callbacks -- easier to handle errors in one spot
     callback: (command: T, file: string) => void
   ): Promise<void> => {
     try {
@@ -113,7 +112,6 @@ const assetsFolder = path.join(path.dirname(__dirname), 'assets')
         (await readdir(resolve(_path)))
           .filter(file => file.endsWith('.js'))
           .map(async file =>
-            // eslint-disable-next-line promise/prefer-await-to-callbacks -- see above
             callback(
               ((await import(path.join(resolve(_path), file))) as {default: T})
                 .default,
