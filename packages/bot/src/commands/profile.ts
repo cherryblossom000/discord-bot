@@ -1,7 +1,13 @@
 import {MessageEmbed} from 'discord.js'
 import {fetchTimeZone} from '../database'
 import {startCase, upperFirst} from '../lodash'
-import {resolveUser} from '../utils'
+import {
+  checkPermissions,
+  createDateFormatter,
+  formatBoolean,
+  imageField,
+  resolveUser
+} from '../utils'
 import type {
   ClientPresenceStatus,
   ClientPresenceStatusData,
@@ -9,6 +15,7 @@ import type {
   User
 } from 'discord.js'
 import type {Command, GuildMember} from '../types'
+import type {DateFormatter} from '../utils'
 
 declare global {
   namespace Intl {
@@ -19,15 +26,11 @@ declare global {
   }
 }
 
-const formatBoolean = (boolean: boolean | null): string =>
-  boolean === true ? 'Yes' : 'No'
 const formatStatus = (status: PresenceStatus): string =>
   status === 'dnd' ? 'Do Not Disturb' : upperFirst(status)
 
-type FormatDate = (date: Date) => string
-
 /** Creates an embed with information about a user. */
-const getUserInfo = (user: User, formatDate: FormatDate): MessageEmbed => {
+const getUserInfo = (user: User, formatDate: DateFormatter): MessageEmbed => {
   const avatar = user.displayAvatarURL()
   const {bot, createdAt, id, presence, tag} = user
   const clientStatuses = presence.clientStatus
@@ -45,30 +48,24 @@ const getUserInfo = (user: User, formatDate: FormatDate): MessageEmbed => {
       {
         name: 'Status',
         value: `**${formatStatus(presence.status)}**${
-          // if I explicitly use clientStatuses && clientStatuses.length @typescript-eslint/prefer-optional-chain
-          // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions -- triggers
-          clientStatuses?.length
-            ? `\n${clientStatuses
+          clientStatuses?.length ?? 0
+            ? `\n${clientStatuses!
                 .map(([k, v]) => `${upperFirst(k)}: ${formatStatus(v)}`)
                 .join('\n')}`
             : ''
         }`
       },
       {name: 'Joined Discord', value: formatDate(createdAt)},
-      {
-        name: `Avatar${user.avatar == null ? ' (Default)' : ''}`,
-        value: `[Link](${avatar})`
-      }
+      imageField(`Avatar${user.avatar == null ? ' (Default)' : ''}`, avatar)
     )
 
   const flags = user.flags?.toArray()
-  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions -- otherwise prefer-optional-chain
-  if (flags?.length) {
+  if (flags?.length ?? 0) {
     embed.addField(
       'Flags',
-      flags
-        .map(f =>
-          startCase(f.toLowerCase())
+      flags!
+        .map(flag =>
+          startCase(flag)
             .replace('Hypesquad', 'HypeSquad')
             .replace('Bughunter', 'Bug Hunter')
         )
@@ -80,60 +77,64 @@ const getUserInfo = (user: User, formatDate: FormatDate): MessageEmbed => {
   const {activities} = presence
   if (activities.length) {
     embed.addFields(
-      activities.map(a => ({
+      activities.map(activity => ({
         name:
-          startCase(a.type.toLowerCase()) +
-          (a.type === 'LISTENING' ? ' to' : ''),
+          startCase(activity.type) +
+          (activity.type === 'LISTENING' ? ' to' : ''),
         value:
-          a.type === 'CUSTOM_STATUS'
-            ? (a.emoji
-                ? `${a.emoji.id == null ? a.emoji.name : `:${a.emoji.name}:`} `
-                : '') + a.state!
-            : `${a.name}${
-                a.state == null
+          activity.type === 'CUSTOM_STATUS'
+            ? (activity.emoji
+                ? `${
+                    activity.emoji.id == null
+                      ? activity.emoji.name
+                      : `:${activity.emoji.name}:`
+                  } `
+                : '') + activity.state!
+            : `${activity.name}${
+                activity.state == null
                   ? ''
                   : `
-State: ${a.state}`
+State: ${activity.state}`
               }${
-                a.details == null
+                activity.details == null
                   ? ''
                   : `
-Details: ${a.details}`
+Details: ${activity.details}`
               }${
-                a.url == null
+                activity.url == null
                   ? ''
                   : `
-[URL](${a.url})`
+[URL](${activity.url})`
               }${
-                Number.isNaN(a.createdAt.getTime())
+                Number.isNaN(activity.createdAt.getTime())
                   ? ''
                   : `
-Start: ${formatDate(a.createdAt)}`
+Start: ${formatDate(activity.createdAt)}`
               }${
-                a.timestamps?.end
+                activity.timestamps?.end
                   ? `
-End: ${formatDate(a.timestamps.end)}`
+End: ${formatDate(activity.timestamps.end)}`
                   : ''
               }${
-                a.assets?.largeText == null
+                activity.assets?.largeText == null
                   ? ''
                   : `
-Large Text: ${a.assets.largeText}`
+Large Text: ${activity.assets.largeText}`
               }${
-                a.assets?.largeImage == null
+                activity.assets?.largeImage == null
                   ? ''
                   : `
-[Large Image URL](${a.assets.largeImageURL()!})`
+[Large Image URL](${activity.assets.largeImageURL()!})`
               }${
-                a.assets?.smallText == null
+                activity.assets?.smallText == null
                   ? ''
                   : `
-Small Text: ${a.assets.smallText}`
+Small Text: ${activity.assets.smallText}`
               }${
-                a.assets?.smallImage == null
+                activity.assets?.smallImage == null
                   ? ''
                   : `
-[Small Image URL](${a.assets.smallImageURL()!})`
+[Small Image URL](${activity.assets.smallImageURL()!})`
               }`
       }))
     )
@@ -161,7 +162,7 @@ const addMemberInfo = (
       streaming
     }
   }: GuildMember,
-  formatDate: FormatDate
+  formatDate: DateFormatter
 ): void => {
   if (joinedAt) embed.addField('Joined this Server', formatDate(joinedAt))
   if (premiumSince) embed.addField('Boosting this server since', premiumSince)
@@ -187,24 +188,6 @@ Streaming: ${formatBoolean(streaming)}`
   }
 }
 
-const formatDate = (timeZone: string): FormatDate => {
-  const format = new Intl.DateTimeFormat('en-AU', {
-    dateStyle: 'short',
-    timeStyle: 'long',
-    timeZone
-  })
-  return (date): string => {
-    const parts = format.formatToParts(date)
-    const part = (type: Intl.DateTimeFormatPartTypes): string | undefined =>
-      parts.find(p => p.type === type)?.value
-    return `${part('day')}/${part('month')}/${part('year')}, ${part(
-      'hour'
-    )}:${part('minute')} ${part('dayPeriod')!.toLowerCase()} ${
-      part('timeZoneName') ?? 'GMT'
-    }`
-  }
-}
-
 const command: Command = {
   name: 'profile',
   aliases: ['pr', 'pro', 'u', 'user'],
@@ -214,13 +197,16 @@ const command: Command = {
 The user to display information about. If omitted, defaults to you.
 You can mention the user or use their tag (for example \`Username#1234\`).`,
   async execute(message, {input}, database) {
+    if (message.guild && !(await checkPermissions(message, 'EMBED_LINKS')))
+      return
+
     const user = await resolveUser(message, input)
     if (!user) return
 
-    const _formatDate = formatDate(
+    const formatDate = createDateFormatter(
       await fetchTimeZone(database, message.author)
     )
-    const embed = getUserInfo(user, _formatDate)
+    const embed = getUserInfo(user, formatDate)
       .setFooter(
         `Requested by ${message.author.tag}`,
         message.author.displayAvatarURL()
@@ -228,7 +214,7 @@ You can mention the user or use their tag (for example \`Username#1234\`).`,
       .setTimestamp()
 
     const member = message.guild?.member(user)
-    if (member) addMemberInfo(embed, member, _formatDate)
+    if (member) addMemberInfo(embed, member, formatDate)
 
     await message.channel.send(embed)
   }

@@ -10,6 +10,7 @@ import {
 import yts from 'yt-search'
 import {dev, emojis, me} from './constants'
 import type {
+  EmbedFieldData,
   MessageReaction,
   PermissionResolvable,
   PermissionString,
@@ -211,6 +212,34 @@ export const resolveUser = async (
   await message.reply(`‘${input}’ is not a valid user tag or ID!`)
   return null
 }
+
+export type DateFormatter = (date: Date) => string
+
+export const createDateFormatter = (timeZone: string): DateFormatter => {
+  const format = new Intl.DateTimeFormat('en-AU', {
+    dateStyle: 'short',
+    timeStyle: 'long',
+    timeZone
+  })
+  return (date): string => {
+    const parts = format.formatToParts(date)
+    const part = (type: Intl.DateTimeFormatPartTypes): string | undefined =>
+      parts.find(p => p.type === type)?.value
+    return `${part('day')}/${part('month')}/${part('year')}, ${part(
+      'hour'
+    )}:${part('minute')} ${part('dayPeriod')!.toLowerCase()} ${
+      part('timeZoneName') ?? 'GMT'
+    }`
+  }
+}
+
+export const formatBoolean = (boolean: boolean | null): string =>
+  boolean === true ? 'Yes' : 'No'
+
+export const imageField = (name: string, url: string): EmbedFieldData => ({
+  name,
+  value: `[Link](${url})`
+})
 
 type NonEmptyArray<T> = [T, ...T[]]
 

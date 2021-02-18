@@ -20,6 +20,7 @@ export const upperFirst = (string: string): string =>
  */
 export const startCase = (string: string): string =>
   string
+    .toLowerCase()
     .split('_')
     .reduce(
       (result, word, index) => result + (index ? ' ' : '') + upperFirst(word),
