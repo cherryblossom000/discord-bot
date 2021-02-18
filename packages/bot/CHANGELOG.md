@@ -1,5 +1,12 @@
 # Changelog
 
+# [2.14.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.13.4...@comrade-pingu/bot@2.14.0) (2021-02-18)
+
+
+### Features
+
+* add icon and server commands ([214c0e7](https://github.com/cherryblossom000/comrade-pingu/commit/214c0e768bafa739ca1d18a9573b8e7bd86864ee))
+
 ## [2.13.4](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.13.3...@comrade-pingu/bot@2.13.4) (2021-02-17)
 
 
