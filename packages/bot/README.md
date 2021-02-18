@@ -23,6 +23,7 @@ Comrade Pingu’s default prefix is `.`.
 | `emoji` | `em` | Gets the image for an emoji. | `.emoji <emoji>`<br>`emoji`<br>The emoji to get the image of. | 3 |
 | `help` | `commands`, `h` | Lists all my commands or gets info about a specific command. | `.help [command]`<br>`command` (optional)<br>The command that you want to get info about. If omitted, all the commands will be listed. | 5 |
 | `htkb` | `howtokissboy` | Gets the image that shows how to kiss a boy.<br>![how to kiss boy](./assets/img/htkb.jpg) | `.htkb` | 3 |
+| `icon` | `i` | Gets the server icon. | `.icon` | 3 |
 | `info` | `in` | Gets info about me. | `.info` | 3 |
 | `invite` | `add`, `inv`, `link` | Gets my invite link. | `.invite` | 3 |
 | `iwmelc` | `iwillmurdereverylastcapitalist` | Gets the meme that shows that ‘noot noot’ in Pingu means ‘i will murder every last capitalist’ in English.<br>![i will murder every last capitalist](./assets/img/iwmelc.jpg) | `.iwmelc` | 3 |
@@ -37,6 +38,7 @@ Comrade Pingu’s default prefix is `.`.
 | `queue` | `q` | Views the music queue. | `.queue` | 3 |
 | `rejoin` | `re`, `rj` | Manages settings for what to do when a member rejoins this server. | `.rejoin [e(nable) [r(oles)\|n(ickname)\|a(ll)]]\|[d(isable)]`<br>This command has 3 subcommands.<br>`rejoin`<br>See this server’s rejoining configuration.<br><br>`rejoin e(nable) [r(oles)|n(ickname)|a(ll)]`<br>Enables adding a member’s past roles, nickname, or both of these. Defaults to `all`.<br><br>`rejoin d(isable)`<br>Stops doing anything when a member rejoins this server. | 10 |
 | `resume` | `r`, `unpause` | Resumes the song currently playing. | `.resume` | 3 |
+| `server` | `sv`, `guild`, `g` | Gets information on this server. | `.server` | 3 |
 | `skip` | `sk` | Skips the current song. | `.skip` | 3 |
 | `stats` | `statistics` | Gets my stats. | `.stats` | 3 |
 | `stop` | `s` | Stops playing music. | `.stop` | 3 |
