@@ -1,5 +1,20 @@
 # Changelog
 
+# [3.0.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.14.0...@comrade-pingu/bot@3.0.0) (2021-02-26)
+
+
+### Features
+
+* **bot:** add rotate command ([597acbf](https://github.com/cherryblossom000/comrade-pingu/commit/597acbf1a2fcca7a93b01e8694a79e0ffc7895b3))
+
+
+* fix(bot)!: remove pin command ([f9cfaae](https://github.com/cherryblossom000/comrade-pingu/commit/f9cfaae2f0931f9a92f8b9e36d73b8915f5d53e4))
+
+
+### BREAKING CHANGES
+
+* The `pin` command has been removed.
+
 # [2.14.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.13.4...@comrade-pingu/bot@2.14.0) (2021-02-18)
 
 
