@@ -255,6 +255,8 @@ export const resolveUser = async (
 const errorHandler = (): null => null
 
 /** Resolves a message based on user input. */
+// TODO: refactor
+// eslint-disable-next-line max-statements -- can't be bothered lol
 export const resolveMessage = async (
   message: Message,
   messageInput: string | undefined,
