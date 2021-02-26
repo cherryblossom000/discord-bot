@@ -1,7 +1,7 @@
 import {permissions} from '../constants'
-import type {Command} from '../types'
+import type {AnyCommand} from '../types'
 
-const command: Command = {
+const command: AnyCommand = {
   name: 'invite',
   aliases: ['add', 'inv', 'link'],
   description: 'Gets my invite link.',

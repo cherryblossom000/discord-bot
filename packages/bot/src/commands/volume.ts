@@ -1,8 +1,8 @@
 import {setValue} from '../database'
 import {getQueue} from '../utils'
-import type {Command} from '../types'
+import type {GuildOnlyCommand} from '../types'
 
-const command: Command<true> = {
+const command: GuildOnlyCommand = {
   name: 'volume',
   aliases: ['v'],
   description: 'Changes or gets the volume of the music playing.',

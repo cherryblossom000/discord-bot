@@ -1,8 +1,8 @@
 import {emojis} from '../constants'
 import {getQueue, hasPermissions} from '../utils'
-import type {Command} from '../types'
+import type {GuildOnlyCommand} from '../types'
 
-const command: Command<true> = {
+const command: GuildOnlyCommand = {
   name: 'stop',
   aliases: ['s'],
   description: 'Stops playing music.',

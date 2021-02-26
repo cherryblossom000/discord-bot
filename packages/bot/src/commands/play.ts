@@ -3,7 +3,7 @@ import yts from 'yt-search'
 import {fetchValue} from '../database'
 import {checkPermissions, handleError, searchYoutube} from '../utils'
 import {resume} from './resume'
-import type {Command, Video} from '../types'
+import type {GuildOnlyCommand, Video} from '../types'
 
 /** Converts a `yts.VideoSearchResult` into a `Video`. */
 const searchToVideo = ({
@@ -12,7 +12,7 @@ const searchToVideo = ({
   author: {name}
 }: yts.VideoSearchResult): Video => ({title, id, author: name})
 
-const command: Command<true> = {
+const command: GuildOnlyCommand = {
   name: 'play',
   aliases: ['pl'],
   description: 'Plays a song from YouTube.',

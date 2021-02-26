@@ -1,7 +1,7 @@
 import {checkPermissions} from '../utils'
-import type {Command} from '../types'
+import type {GuildOnlyCommand} from '../types'
 
-const command: Command<true> = {
+const command: GuildOnlyCommand = {
   name: 'icon',
   aliases: ['i'],
   description: 'Gets the server icon.',

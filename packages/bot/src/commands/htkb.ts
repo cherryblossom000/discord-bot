@@ -1,11 +1,11 @@
 import path from 'path'
 import {imagesFolder} from '../constants'
 import {checkPermissions} from '../utils'
-import type {Command} from '../types'
+import type {AnyCommand} from '../types'
 
 const filePath = path.join(imagesFolder, 'htkb.jpg')
 
-const command: Command = {
+const command: AnyCommand = {
   name: 'htkb',
   aliases: ['howtokissboy'],
   description: 'Gets the image that shows how to kiss a boy.',

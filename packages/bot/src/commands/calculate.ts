@@ -1,5 +1,5 @@
 import {ResultSet, evaluate, simplify} from 'mathjs'
-import type {Command} from '../types'
+import type {AnyCommand} from '../types'
 
 interface _MathResult {
   toString: () => string
@@ -7,7 +7,7 @@ interface _MathResult {
 
 type MathResult = _MathResult | ResultSet<_MathResult>
 
-const command: Command = {
+const command: AnyCommand = {
   name: 'calculate',
   aliases: ['c', 'calculator'],
   description: 'Calculates a maths expression',

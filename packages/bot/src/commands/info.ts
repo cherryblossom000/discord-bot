@@ -1,7 +1,7 @@
 import {version} from '../../package.json'
-import type {Command} from '../types'
+import type {AnyCommand} from '../types'
 
-const command: Command = {
+const command: AnyCommand = {
   name: 'info',
   aliases: ['in'],
   description: 'Gets info about me.',

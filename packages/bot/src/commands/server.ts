@@ -7,9 +7,9 @@ import {
   imageField
 } from '../utils'
 import type {Channel, EmbedFieldData, VoiceChannel} from 'discord.js'
-import type {Command} from '../types'
+import type {GuildOnlyCommand} from '../types'
 
-const command: Command<true> = {
+const command: GuildOnlyCommand = {
   name: 'server',
   aliases: ['sv', 'guild', 'g'],
   description: 'Gets information on this server.',

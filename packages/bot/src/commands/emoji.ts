@@ -1,6 +1,6 @@
-import type {Command} from '../types'
+import type {GuildOnlyCommand} from '../types'
 
-const command: Command<true> = {
+const command: GuildOnlyCommand = {
   name: 'emoji',
   aliases: ['em'],
   description: 'Gets the image for an emoji.',

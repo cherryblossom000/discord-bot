@@ -1,10 +1,10 @@
 import fetch from 'node-fetch'
 import {checkPermissions} from '../utils'
-import type {Command} from '../types'
+import type {AnyCommand} from '../types'
 
 const randomDog = 'https://random.dog/'
 
-const command: Command = {
+const command: AnyCommand = {
   name: 'dog',
   aliases: ['d', 'randomdog'],
   description: 'Gets a random image of a dog from random.dog.',

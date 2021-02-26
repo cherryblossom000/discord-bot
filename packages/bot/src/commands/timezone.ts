@@ -1,7 +1,7 @@
 import {fetchTimeZone, setValue} from '../database'
-import type {Command} from '../types'
+import type {AnyCommand} from '../types'
 
-const command: Command = {
+const command: AnyCommand = {
   name: 'timezone',
   aliases: ['tz'],
   description: 'Manages time zone preferences.',

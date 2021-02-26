@@ -3,17 +3,17 @@ import {checkPermissions, handleError} from '../utils'
 import type {MathJax} from 'mathjax'
 import type {LiteElement} from 'mathjax-full/js/adaptors/lite/Element'
 import type {LiteText} from 'mathjax-full/js/adaptors/lite/Text'
-import type {Command} from '../types'
+import type {AnyCommand} from '../types'
 
 const PADDING = 20
 const WHITE = '#ffffff'
 let mathJax: MathJax | undefined
 
-const command: Command = {
+const command: AnyCommand = {
   name: 'maths',
   aliases: ['m', 'math', 'mathsimage', 'latex'],
   description: 'Convert LaTeX into an image.',
-  args: true,
+  args: 1,
   syntax: '<LaTeX>',
   usage: `\`LaTeX\`
 The LaTeX to convert. See http://docs.mathjax.org/en/latest/input/tex/macros/index.html for supported tags (ams is the only package loaded).`,

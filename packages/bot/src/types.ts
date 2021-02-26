@@ -189,10 +189,10 @@ interface CommandBase<T extends Message> {
   hidden?: boolean
 
   /**
-   * Whether or nor the command requires arguments.
-   * @default false
+   * The minimum number of arguments required.
+   * @default 0
    */
-  args?: boolean
+  args?: number
 
   /** The syntax. */
   syntax?: string
@@ -214,13 +214,16 @@ interface CommandBase<T extends Message> {
   ): Promise<void> | void
 }
 
-/**
- * A command.
- * @template T Whether the command is guild only or not.
- */
-export type Command<T extends boolean = false> = T extends true
-  ? CommandBase<GuildMessage> & {guildOnly: true}
-  : CommandBase<DMMessage | GuildMessage> & {guildOnly?: false}
+export interface GuildOnlyCommand extends CommandBase<GuildMessage> {
+  guildOnly: true
+}
+
+export interface AnyCommand extends CommandBase<DMMessage | GuildMessage> {
+  guildOnly?: false
+}
+
+/** A command. */
+export type Command = AnyCommand | GuildOnlyCommand
 
 /** A command that is triggered based on a regular expression. */
 export interface RegexCommand {

@@ -5,7 +5,7 @@ import createTypeRule from '../create-type-rule'
 export = createTypeRule(
   'listener',
   'EventListener',
-  "EventListener<'{{event}}'>",
+  "`EventListener<'{{event}}'>`",
   context => ({event: basename(context.getFilename().slice(0, -3))}),
   (typeAnnotation, report, {event}) => {
     const {typeParameters} = typeAnnotation

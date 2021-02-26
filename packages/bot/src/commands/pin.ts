@@ -1,9 +1,9 @@
 import {me} from '../constants'
 import {checkPermissions} from '../utils'
 import type {Collection, Snowflake} from 'discord.js'
-import type {Command, TextBasedGuildChannel} from '../types'
+import type {AnyCommand, TextBasedGuildChannel} from '../types'
 
-const command: Command = {
+const command: AnyCommand = {
   name: 'pin',
   description: 'Pins a message.',
   syntax: '[message]',

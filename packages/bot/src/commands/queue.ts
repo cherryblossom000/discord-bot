@@ -1,7 +1,7 @@
 import {getQueue} from '../utils'
-import type {Command} from '../types'
+import type {GuildOnlyCommand} from '../types'
 
-const command: Command<true> = {
+const command: GuildOnlyCommand = {
   name: 'queue',
   aliases: ['q'],
   description: 'Views the music queue.',

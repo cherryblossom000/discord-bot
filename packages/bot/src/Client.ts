@@ -85,7 +85,7 @@ export default class Client extends Discord.Client {
   ) => this
 
   /** The commands. */
-  readonly commands: Collection<string, Command<boolean>>
+  readonly commands: Collection<string, Command>
 
   /** The regex commands. */
   readonly regexCommands: Collection<RegExp, RegexCommand['regexMessage']>
@@ -196,10 +196,10 @@ export default class Client extends Discord.Client {
     )
     super(...args)
     // These can't be stored properties otherwise I can't extend structures before calling super
-    this.commands = new Collection<string, Command<boolean>>()
-    this.regexCommands = new Collection<RegExp, RegexCommand['regexMessage']>()
-    this.queues = new Collection<Snowflake, Queue>()
-    this.rejoinListeners = new Collection<Snowflake, RejoinListeners>()
+    this.commands = new Collection()
+    this.regexCommands = new Collection()
+    this.queues = new Collection()
+    this.rejoinListeners = new Collection()
   }
 
   /** Set the activity. */

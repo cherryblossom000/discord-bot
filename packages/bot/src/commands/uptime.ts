@@ -1,7 +1,7 @@
 import ms from 'ms'
-import type {Command} from '../types'
+import type {AnyCommand} from '../types'
 
-const command: Command = {
+const command: AnyCommand = {
   name: 'uptime',
   aliases: ['up'],
   description: 'Gets my uptime.',

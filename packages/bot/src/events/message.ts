@@ -58,16 +58,14 @@ My prefix is \`${prefix}\`. Run \`${prefix}help\` for a list of commands.`)
     const args = input.split(/\s+/u)
     const commandName = args.shift()!.toLowerCase()
 
-    const checkCommand = async (
-      command?: Command<boolean>
-    ): Promise<boolean> => {
+    const checkCommand = async (command?: Command): Promise<boolean> => {
       // If command doesn't exist exit or execute regex commands
       if (!command) {
         if (!message.guild) executeRegexCommands(message)
         return false
       }
 
-      const {args: commandArgs = false, guildOnly = false} = command
+      const {args: noArgs = 0, guildOnly = false} = command
       // Guild only
       if (guildOnly && channel.type !== 'text') {
         await message.sendDeletableMessage({
@@ -78,10 +76,10 @@ My prefix is \`${prefix}\`. Run \`${prefix}help\` for a list of commands.`)
       }
 
       // If no args
-      if (commandArgs && !args.length) {
+      if (args.length < noArgs) {
         await message.sendDeletableMessage({
           reply: true,
-          content: `you didn’t provide any arguments. Noot noot.
+          content: `you didn’t provide enough arguments. Noot noot.
 The syntax is: \`${prefix}${command.name}${
             command.syntax === undefined ? '' : ` ${command.syntax}`
           }\`. Noot noot.`

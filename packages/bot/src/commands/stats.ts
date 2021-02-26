@@ -1,6 +1,6 @@
-import type {Command} from '../types'
+import type {AnyCommand} from '../types'
 
-const command: Command = {
+const command: AnyCommand = {
   name: 'stats',
   aliases: ['statistics'],
   description: 'Gets my stats.',

@@ -13,7 +13,7 @@ import {checkPermissions, handleError} from '../utils'
 // eslint-disable-next-line import/no-named-default -- can't because type import
 import type {default as Client, Listener} from '../Client'
 import type {Db} from '../database'
-import type {Command, Guild, GuildMessage} from '../types'
+import type {GuildOnlyCommand, Guild, GuildMessage} from '../types'
 
 export const addListeners = (
   client: Client,
@@ -196,7 +196,7 @@ const disable = async (message: GuildMessage, database: Db): Promise<void> => {
   client.rejoinListeners.delete(guild.id)
 }
 
-const command: Command<true> = {
+const command: GuildOnlyCommand = {
   name: 'rejoin',
   aliases: ['re', 'rj'],
   description:

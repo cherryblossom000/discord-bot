@@ -12,7 +12,7 @@ import {checkPermissions, ignoreError, resolveUser} from '../utils'
 import {Difficulty, Type, fetchQuestion} from '../opentdb'
 import type {EmbedFieldData} from 'discord.js'
 import type {AggregatedTriviaUser, Db, Question} from '../database'
-import type {Command, Message} from '../types'
+import type {AnyCommand, Message} from '../types'
 
 /** Formats a percentage, with the percentage already calculated. */
 const _formatPercentage = (
@@ -198,7 +198,7 @@ const leaderboardCommand = async (
 const format = (answer: boolean | string): string =>
   typeof answer === 'boolean' ? (answer ? 'True' : 'False') : answer
 
-const command: Command = {
+const command: AnyCommand = {
   name: 'trivia',
   aliases: ['t'],
   description: 'Asks a trivia question.',

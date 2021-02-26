@@ -1,8 +1,8 @@
 import {defaultPrefix} from '../constants'
 import {fetchPrefix, setValue} from '../database'
-import type {Command} from '../types'
+import type {GuildOnlyCommand} from '../types'
 
-const command: Command<true> = {
+const command: GuildOnlyCommand = {
   name: 'prefix',
   aliases: ['pre'],
   description: 'Gets or sets the prefix.',

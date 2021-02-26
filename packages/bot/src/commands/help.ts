@@ -2,9 +2,9 @@ import {Constants, DiscordAPIError} from 'discord.js'
 import {defaultPrefix} from '../constants'
 import {fetchPrefix} from '../database'
 import {handleError} from '../utils'
-import type {Command} from '../types'
+import type {AnyCommand} from '../types'
 
-const command: Command = {
+const command: AnyCommand = {
   name: 'help',
   aliases: ['commands', 'h'],
   description: 'Lists all my commands or gets info about a specific command.',

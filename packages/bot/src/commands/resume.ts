@@ -1,7 +1,7 @@
 import {emojis} from '../constants'
 import {getQueue, hasPermissions} from '../utils'
 import type {StreamDispatcher} from 'discord.js'
-import type {Command, GuildMessage} from '../types'
+import type {GuildOnlyCommand, GuildMessage} from '../types'
 
 export const resume = async (
   dispatcher: StreamDispatcher,
@@ -16,7 +16,7 @@ I can react on your message instead if you enable the READ_MESSAGE_HISTORY permi
   }
 }
 
-const command: Command<true> = {
+const command: GuildOnlyCommand = {
   name: 'resume',
   aliases: ['r', 'unpause'],
   description: 'Resumes the song currently playing.',

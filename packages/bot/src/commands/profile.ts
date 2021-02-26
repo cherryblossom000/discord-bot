@@ -14,7 +14,7 @@ import type {
   PresenceStatus,
   User
 } from 'discord.js'
-import type {Command, GuildMember} from '../types'
+import type {AnyCommand, GuildMember} from '../types'
 import type {DateFormatter} from '../utils'
 
 const formatStatus = (status: PresenceStatus): string =>
@@ -179,7 +179,7 @@ Streaming: ${formatBoolean(streaming)}`
   }
 }
 
-const command: Command = {
+const command: AnyCommand = {
   name: 'profile',
   aliases: ['pr', 'pro', 'u', 'user'],
   description: 'Gets information on a user.',

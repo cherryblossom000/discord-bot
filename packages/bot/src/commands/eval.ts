@@ -2,7 +2,7 @@ import {inspect} from 'util'
 import Discord from 'discord.js'
 import escapeRegex from 'escape-string-regexp'
 import {me} from '../constants'
-import type {Command} from '../types'
+import type {AnyCommand} from '../types'
 
 const kDiscardResult = Symbol('discard result')
 
@@ -26,12 +26,12 @@ declare global {
 const AsyncFunction = (async (): Promise<void> => {})
   .constructor as AsyncFunctionConstructor
 
-const command: Command = {
+const command: AnyCommand = {
   name: 'eval',
   aliases: ['e'],
   cooldown: 0,
   description: 'Evaluates some JS.',
-  args: true,
+  args: 1,
   syntax: '<javascript>',
   usage: `\`javascript\`
 The code to execute. The following variables are available:

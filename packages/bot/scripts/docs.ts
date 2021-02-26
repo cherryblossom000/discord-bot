@@ -25,9 +25,9 @@ const readme = path.join(rootFolder, 'README.md')
   const modules = await Promise.all(
     files
       .filter(f => f.endsWith('.js'))
-      .map(async f => import(path.join(commandsFolder, f)))
+      .map<Promise<unknown>>(async f => import(path.join(commandsFolder, f)))
   )
-  const commands = modules.map(m => (m as {default: Command<boolean>}).default)
+  const commands = modules.map(m => (m as {default: Command}).default)
   const usageMarkdownIt = new MarkdownIt({html: true, breaks: true})
   const docs = [
     ['Command', 'Aliases', 'Description', 'Usage', 'Cooldown (s)'],
