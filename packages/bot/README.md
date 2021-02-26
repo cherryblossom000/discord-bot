@@ -30,7 +30,6 @@ Comrade Pingu’s default prefix is `.`.
 | `maths` | `m`, `math`, `mathsimage`, `latex` | Convert LaTeX into an image. | `.maths <LaTeX>`<br>`LaTeX`<br>The LaTeX to convert. See http://docs.mathjax.org/en/latest/input/tex/macros/index.html for supported tags (ams is the only package loaded). | 3 |
 | `nowplaying` | `np` | Gets the song currently playing. | `.nowplaying` | 3 |
 | `pause` | `pa` | Pauses the song currently playing. | `.pause` | 3 |
-| `pin` | - | Pins a message. | `.pin [message]`<br>`message` (optional)<br>The ID of the message to pin. Defaults to the last message (excluding the one to execute this command) you sent in this server. | 3 |
 | `ping` | `p` | Gets my current latency. | `.ping` | 5 |
 | `play` | `pl` | Plays a song from YouTube. | `.play [song]\|search [query]`<br><code>[song]</code><br><code>song</code> (optional)<br>The video that you want to play. If it’s:<ul><li>a YouTube link or ID: plays the YouTube video</li><li>anything else: searches YouTube and plays the first result</li><li>omitted: resumes the music (if it’s paused) (the same as <code>resume</code>)</li></ul><code>search [query]</code><br><code>query</code><br>The query to search on YouTube for. | 3 |
 | `prefix` | `pre` | Gets or sets the prefix. | `.prefix [new prefix]`<br>`new prefix` (optional)<br>The text that you want to set the prefix to. If omitted, displays the current prefix.<br>The default prefix is `.`. | 3 |
@@ -38,6 +37,7 @@ Comrade Pingu’s default prefix is `.`.
 | `queue` | `q` | Views the music queue. | `.queue` | 3 |
 | `rejoin` | `re`, `rj` | Manages settings for what to do when a member rejoins this server. | `.rejoin [e(nable) [r(oles)\|n(ickname)\|a(ll)]]\|[d(isable)]`<br>This command has 3 subcommands.<br>`rejoin`<br>See this server’s rejoining configuration.<br><br>`rejoin e(nable) [r(oles)|n(ickname)|a(ll)]`<br>Enables adding a member’s past roles, nickname, or both of these. Defaults to `all`.<br><br>`rejoin d(isable)`<br>Stops doing anything when a member rejoins this server. | 10 |
 | `resume` | `r`, `unpause` | Resumes the song currently playing. | `.resume` | 3 |
+| `rotate` | `rt` | Rotates an image. | `.rotate <message> [channel] <rotation>`<br>`message`<br>The ID or message link of the message to rotate.<br><br>`channel` (optional)<br>The channel of the message. This is required if the message is not in this channel.<br><br>`rotation`<br>The amount (in degrees) to rotate the image clockwise. Negative values work as well. | 3 |
 | `server` | `sv`, `guild`, `g` | Gets information on this server. | `.server` | 3 |
 | `skip` | `sk` | Skips the current song. | `.skip` | 3 |
 | `stats` | `statistics` | Gets my stats. | `.stats` | 3 |
