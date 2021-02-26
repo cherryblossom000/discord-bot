@@ -11,6 +11,7 @@ import {checkPermissions} from './utils'
 import type {Db} from './database'
 import type {
   BaseMessage,
+  Channel,
   Command,
   Guild,
   GuildMessage,
@@ -52,14 +53,21 @@ interface RejoinListeners {
   guildMemberAdd: Listener<'guildMemberAdd'>
   guildMemberRemove: Listener<'guildMemberRemove'>
 }
+
+interface ChannelManager
+  extends D.BaseManager<D.Snowflake, Channel, D.ChannelResolvable> {
+  fetch(...args: Parameters<D.ChannelManager['fetch']>): Promise<Channel>
+}
+
 interface GuildManager
   extends D.BaseManager<D.Snowflake, Guild, D.GuildResolvable> {
   create(...args: Parameters<D.GuildManager['create']>): Promise<Guild>
-  fetch(id: D.Snowflake, cache?: boolean, force?: boolean): Promise<Guild>
+  fetch(...args: Parameters<D.GuildManager['fetch']>): Promise<Guild>
 }
 
 /** The Discord client for this bot. */
 export default class Client extends D.Client {
+  declare channels: ChannelManager
   declare guilds: GuildManager
 
   declare on: <K extends keyof ClientEvents>(

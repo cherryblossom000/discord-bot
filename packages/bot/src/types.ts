@@ -4,8 +4,25 @@ import type Client from './Client'
 
 // #region Discord Extensions
 
-// Make send return custom Message
+export type Snowflake = `${bigint}`
+
+// Custom Message
+
+interface MessageManager extends D.MessageManager {
+  fetch(
+    message: D.Snowflake,
+    cache?: boolean,
+    force?: boolean
+  ): Promise<Message>
+  fetch(
+    options?: D.ChannelLogsQueryOptions,
+    cache?: boolean,
+    force?: boolean
+  ): Promise<D.Collection<D.Snowflake, Message>>
+}
+
 interface TextChannel extends D.TextChannel {
+  messages: MessageManager
   send(content: OptionsWithSplit): Promise<GuildMessage[]>
   send(
     options: D.APIMessageContentResolvable | D.MessageAdditions | OptionsNoSplit
@@ -22,6 +39,7 @@ interface TextChannel extends D.TextChannel {
 }
 
 interface NewsChannel extends D.NewsChannel {
+  messages: MessageManager
   send(content: OptionsWithSplit): Promise<GuildMessage[]>
   send(
     options: D.APIMessageContentResolvable | D.MessageAdditions | OptionsNoSplit
@@ -38,6 +56,7 @@ interface NewsChannel extends D.NewsChannel {
 }
 
 interface DMChannel extends D.DMChannel {
+  messages: MessageManager
   send(content: OptionsWithSplit): Promise<DMMessage[]>
   send(
     options: D.APIMessageContentResolvable | D.MessageAdditions | OptionsNoSplit
@@ -57,9 +76,12 @@ interface DMChannel extends D.DMChannel {
 export type TextBasedGuildChannel = NewsChannel | TextChannel
 export type TextBasedChannel = DMChannel | TextBasedGuildChannel
 
+export type Channel = D.StoreChannel | D.VoiceChannel | TextBasedChannel
+
 /** A guild from this client. */
 export interface Guild extends D.Guild {
   client: Client
+  id: Snowflake
   systemChannel: TextChannel | null
   member(user: D.UserResolvable): GuildMember | null
 }

@@ -2,6 +2,7 @@ import path from 'path'
 import {homedir} from 'os'
 import _cleanStack from 'clean-stack'
 import {
+  Channel as DiscordChannel,
   Constants,
   DiscordAPIError,
   Message as DiscordMessage,
@@ -19,9 +20,11 @@ import type {
 import type {VideoSearchResult} from 'yt-search'
 import type Client from './Client'
 import type {
+  Channel,
   GuildMessage,
   Message,
   Queue,
+  Snowflake,
   TextBasedChannel,
   Video
 } from './types'
@@ -177,6 +180,33 @@ export const checkPermissions = async (
   return true
 }
 
+const idRegex = (/^\d{17,19}$/u as unknown) as Omit<RegExp, 'test'> & {
+  test(string: string): string is Snowflake
+}
+const userTagRegex = /^.{2,}#\d{4}$/u
+const messageLinkRegex = /https?:\/\/.*?discord(?:app)?\.com\/channels\/(\d+|@me)\/(\d+)\/(\d+)/u as Omit<
+  RegExp,
+  'exec'
+> & {
+  exec(
+    string: string
+    // Using the RegExpExecArray means TS doesn't know spreading the type will result in 3 args
+  ): [string, Snowflake | '@me', Snowflake, Snowflake] | null
+}
+// Not using MessageMentions.CHANNELS_PATTERN because it's not anchored
+const channelMentionRegex = /^<#(\d{17,19})>$/gu as Omit<RegExp, 'exec'> & {
+  exec(string: string): [string, Snowflake] | null
+}
+
+const execOnce = <T extends readonly string[] | null>(
+  regex: Omit<RegExp, 'exec'> & {exec(string: string): T},
+  string: string
+): T => {
+  const result = regex.exec(string)
+  regex.lastIndex = 0
+  return result
+}
+
 /** Resolves a user based on user input. */
 export const resolveUser = async (
   message: Message,
@@ -216,10 +246,117 @@ export const resolveUser = async (
     return user
   }
 
-  if (/^.{2,}#\d{4}$/u.test(input)) return getUser('tag')
-  if (/^\d{17,19}$/u.test(input)) return getUser('id')
+  if (userTagRegex.test(input)) return getUser('tag')
+  if (idRegex.test(input)) return getUser('id')
   await message.reply(`‘${input}’ is not a valid user tag or ID!`)
   return null
+}
+
+const errorHandler = (): null => null
+
+/** Resolves a message based on user input. */
+export const resolveMessage = async (
+  message: Message,
+  messageInput: string | undefined,
+  channelInput: string | undefined
+): Promise<Message | null> => {
+  const {channel, client, flags, guild, reference} = message
+
+  const resolve = async (
+    guildID: Snowflake | '@me',
+    channelOrID: Channel | Snowflake,
+    messageID: Snowflake
+  ): Promise<Message | null> => {
+    const channelID =
+      channelOrID instanceof DiscordChannel ? channelOrID.id : channelOrID
+    if (
+      (guild && guildID !== guild.id) ||
+      (!guild && (guildID !== '@me' || channelID !== channel.id))
+    ) {
+      await message.reply(
+        'that message is from another server or DM! Noot noot.'
+      )
+      return null
+    }
+
+    const resolvedChannel =
+      channelOrID instanceof DiscordChannel
+        ? channelOrID
+        : await client.channels.fetch(channelOrID).catch(errorHandler)
+    if (!resolvedChannel) {
+      await message.reply(
+        `channel with ID ${channelID} doesn’t exist or I don’t have permissions to view it!`
+      )
+      return null
+    }
+    if (resolvedChannel.type === 'voice' || resolvedChannel.type === 'store') {
+      await message.reply(
+        `channel ${resolvedChannel.name} is a ${resolvedChannel.type} channel!`
+      )
+      return null
+    }
+
+    const resolvedMessage = await resolvedChannel.messages
+      .fetch(messageID)
+      .catch(errorHandler)
+    if (!resolvedMessage) {
+      await message.reply(
+        `message with ID ${messageID} in ${
+          resolvedChannel.type === 'dm'
+            ? 'this channel'
+            : // TODO: fix typescript-eslint thinking that resolvedChannel has no toString method
+              (resolvedChannel as {toString: () => string})
+        } doesn’t exist or I don’t have permissions to view it!`
+      )
+      return null
+    }
+
+    return resolvedMessage
+  }
+
+  // Check for referenced message (inline replies)
+  const referencedMessage =
+    // TODO [discord.js@>=13]: change to check if type == 19 (inline reply)
+    reference?.messageID != null && !flags.has('IS_CROSSPOST')
+      ? // All messages replied to must be in the same channel
+        await channel.messages.fetch(reference.messageID).catch(errorHandler)
+      : null
+  if (referencedMessage) return referencedMessage
+
+  if (messageInput === undefined) {
+    await message.reply(
+      'you must provide a message link or ID if you aren’t replying to a message!'
+    )
+    return null
+  }
+
+  let result: Message | null
+  const messageLinkResult = execOnce(messageLinkRegex, messageInput)
+  if (messageLinkResult) {
+    const [, guildID, channelID, messageID] = messageLinkResult
+    result = await resolve(guildID, channelID, messageID)
+  } else if (idRegex.test(messageInput)) {
+    let channelOrID: Channel | Snowflake
+    if (channelInput === undefined) channelOrID = channel
+    else {
+      const channelMentionResult = execOnce(channelMentionRegex, channelInput)
+      if (!channelMentionResult) {
+        await message.reply(`${channelInput} is not a valid channel!`)
+        return null
+      }
+      ;[, channelOrID] = channelMentionResult
+    }
+    result = await resolve(guild?.id ?? '@me', channelOrID, messageInput)
+  } else {
+    await message.reply(
+      `‘${messageInput}${
+        channelInput === undefined ? '' : ` ${channelInput}`
+      }’ is not a valid message link or ID!`
+    )
+    return null
+  }
+
+  return result
 }
 
 // eslint-disable-next-line import/no-unused-modules -- it is used

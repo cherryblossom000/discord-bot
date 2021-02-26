@@ -79,7 +79,7 @@ My prefix is \`${prefix}\`. Run \`${prefix}help\` for a list of commands.`)
       if (args.length < noArgs) {
         await message.sendDeletableMessage({
           reply: true,
-          content: `you didn’t provide enough arguments. Noot noot.
+          content: `you didn’t provide enough arguments.
 The syntax is: \`${prefix}${command.name}${
             command.syntax === undefined ? '' : ` ${command.syntax}`
           }\`. Noot noot.`
