@@ -1,78 +1,54 @@
-import type {
-  APIMessage,
-  APIMessageContentResolvable,
-  AwaitReactionsOptions,
-  Collection,
-  DMChannel as DiscordDMChannel,
-  Guild as DiscordGuild,
-  GuildMember as DiscordGuildMember,
-  MessageAdditions,
-  Message as DiscordMessage,
-  MessageAttachment,
-  MessageEmbed,
-  MessageMentions,
-  MessageOptions,
-  MessageReaction,
-  NewsChannel as DiscordNewsChannel,
-  Snowflake,
-  SplitOptions,
-  StringResolvable,
-  TextChannel as DiscordTextChannel,
-  User,
-  UserResolvable,
-  VoiceChannel,
-  VoiceConnection
-} from 'discord.js'
+import type * as D from 'discord.js'
 import type {Db} from './database'
 import type Client from './Client'
 
 // #region Discord Extensions
 
 // Make send return custom Message
-interface TextChannel extends DiscordTextChannel {
+interface TextChannel extends D.TextChannel {
   send(content: OptionsWithSplit): Promise<GuildMessage[]>
   send(
-    options: APIMessageContentResolvable | MessageAdditions | OptionsNoSplit
+    options: D.APIMessageContentResolvable | D.MessageAdditions | OptionsNoSplit
   ): Promise<GuildMessage>
   send(
-    content: StringResolvable,
+    content: D.StringResolvable,
     options: OptionsWithSplit
   ): Promise<GuildMessage[]>
   send(
-    content: StringResolvable,
-    options: MessageAdditions | OptionsNoSplit
+    content: D.StringResolvable,
+    options: D.MessageAdditions | OptionsNoSplit
   ): Promise<GuildMessage>
   send(...[content, options]: SendArgs): Promise<GuildMessage | GuildMessage[]>
 }
 
-interface NewsChannel extends DiscordNewsChannel {
+interface NewsChannel extends D.NewsChannel {
   send(content: OptionsWithSplit): Promise<GuildMessage[]>
   send(
-    options: APIMessageContentResolvable | MessageAdditions | OptionsNoSplit
+    options: D.APIMessageContentResolvable | D.MessageAdditions | OptionsNoSplit
   ): Promise<GuildMessage>
   send(
-    content: StringResolvable,
+    content: D.StringResolvable,
     options: OptionsWithSplit
   ): Promise<GuildMessage[]>
   send(
-    content: StringResolvable,
-    options: MessageAdditions | OptionsNoSplit
+    content: D.StringResolvable,
+    options: D.MessageAdditions | OptionsNoSplit
   ): Promise<GuildMessage>
   send(...[content, options]: SendArgs): Promise<GuildMessage | GuildMessage[]>
 }
 
-interface DMChannel extends DiscordDMChannel {
+interface DMChannel extends D.DMChannel {
   send(content: OptionsWithSplit): Promise<DMMessage[]>
   send(
-    options: APIMessageContentResolvable | MessageAdditions | OptionsNoSplit
+    options: D.APIMessageContentResolvable | D.MessageAdditions | OptionsNoSplit
   ): Promise<DMMessage>
   send(
-    content: StringResolvable,
+    content: D.StringResolvable,
     options: OptionsWithSplit
   ): Promise<DMMessage[]>
   send(
-    content: StringResolvable,
-    options: MessageAdditions | OptionsNoSplit
+    content: D.StringResolvable,
+    options: D.MessageAdditions | OptionsNoSplit
   ): Promise<DMMessage>
   send(...[content, options]: SendArgs): Promise<DMMessage | DMMessage[]>
 }
@@ -82,45 +58,45 @@ export type TextBasedGuildChannel = NewsChannel | TextChannel
 export type TextBasedChannel = DMChannel | TextBasedGuildChannel
 
 /** A guild from this client. */
-export interface Guild extends DiscordGuild {
+export interface Guild extends D.Guild {
   client: Client
   systemChannel: TextChannel | null
-  member(user: UserResolvable): GuildMember | null
+  member(user: D.UserResolvable): GuildMember | null
 }
 
-export type OptionsNoSplit = MessageOptions & {split?: false}
-export type OptionsWithSplit = MessageOptions & {split: SplitOptions | true}
+export type OptionsNoSplit = D.MessageOptions & {split?: false}
+export type OptionsWithSplit = D.MessageOptions & {split: D.SplitOptions | true}
 
 export type SendArgs =
   | [
-      | APIMessage
-      | APIMessageContentResolvable
-      | MessageAdditions
-      | MessageOptions
+      | D.APIMessage
+      | D.APIMessageContentResolvable
+      | D.MessageAdditions
+      | D.MessageOptions
     ]
-  | [APIMessageContentResolvable, (MessageAdditions | MessageOptions)?]
-  | [StringResolvable, MessageAdditions | MessageOptions]
+  | [D.APIMessageContentResolvable, (D.MessageAdditions | D.MessageOptions)?]
+  | [D.StringResolvable, D.MessageAdditions | D.MessageOptions]
 
 /** A message from this client. */
-export interface BaseMessage extends DiscordMessage {
+export interface BaseMessage extends D.Message {
   client: Client
   guild: Guild | null
   awaitReactions(
     filter: (
-      reaction: MessageReaction,
-      user: User,
-      collected?: Collection<Snowflake, MessageReaction>
+      reaction: D.MessageReaction,
+      user: D.User,
+      collected?: D.Collection<D.Snowflake, D.MessageReaction>
     ) => boolean,
-    options?: AwaitReactionsOptions
-  ): Promise<Collection<Snowflake, MessageReaction>>
+    options?: D.AwaitReactionsOptions
+  ): Promise<D.Collection<D.Snowflake, D.MessageReaction>>
   reply(content: OptionsWithSplit): Promise<this[]>
   reply(
-    options: APIMessageContentResolvable | MessageAdditions | OptionsNoSplit
+    options: D.APIMessageContentResolvable | D.MessageAdditions | OptionsNoSplit
   ): Promise<this>
-  reply(content: StringResolvable, options: OptionsWithSplit): Promise<this[]>
+  reply(content: D.StringResolvable, options: OptionsWithSplit): Promise<this[]>
   reply(
-    content: StringResolvable,
-    options: MessageAdditions | OptionsNoSplit
+    content: D.StringResolvable,
+    options: D.MessageAdditions | OptionsNoSplit
   ): Promise<this>
   reply(...[content, options]: SendArgs): Promise<this[] | this>
   sendDeletableMessage({
@@ -128,19 +104,19 @@ export interface BaseMessage extends DiscordMessage {
     reply
   }: {
     content:
-      | MessageAttachment
-      | MessageEmbed
-      | MessageOptions
+      | D.MessageAttachment
+      | D.MessageEmbed
+      | D.MessageOptions
       | string
       | readonly [
           string | readonly string[],
-          (MessageAdditions | MessageOptions)?
+          (D.MessageAdditions | D.MessageOptions)?
         ]
     reply?: boolean
   }): Promise<void>
 }
 
-export interface GuildMember extends DiscordGuildMember {
+export interface GuildMember extends D.GuildMember {
   guild: Guild
   // TODO: Fix Discord.js' types (nickname is nullable)
   setNickname(nickname: string | null, reason?: string): Promise<GuildMember>
@@ -151,8 +127,8 @@ export interface GuildMessage extends BaseMessage {
   channel: TextBasedGuildChannel
   guild: Guild
   member: GuildMember
-  mentions: MessageMentions & {
-    readonly members: Collection<Snowflake, GuildMember>
+  mentions: D.MessageMentions & {
+    readonly members: D.Collection<D.Snowflake, GuildMember>
   }
 }
 
@@ -243,7 +219,7 @@ export interface Video {
 /** A music queue. */
 export interface Queue {
   textChannel: TextBasedGuildChannel
-  voiceChannel: VoiceChannel
-  connection: VoiceConnection
+  voiceChannel: D.VoiceChannel
+  connection: D.VoiceConnection
   songs: Video[]
 }

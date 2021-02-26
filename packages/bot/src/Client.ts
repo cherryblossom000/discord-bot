@@ -1,4 +1,4 @@
-import Discord, {
+import D, {
   Collection,
   MessageAttachment,
   MessageEmbed,
@@ -8,17 +8,6 @@ import Discord, {
 import {emojis} from './constants'
 import {upperFirst} from './lodash'
 import {checkPermissions} from './utils'
-import type {
-  APIMessage,
-  APIMessageContentResolvable,
-  GuildResolvable,
-  MessageAdditions,
-  MessageOptions,
-  MessageReaction,
-  Snowflake,
-  StringResolvable,
-  User
-} from 'discord.js'
 import type {Db} from './database'
 import type {
   BaseMessage,
@@ -42,7 +31,7 @@ declare global {
 }
 
 // eslint-disable-next-line import/no-unused-modules -- it is used
-export interface ClientEvents extends Discord.ClientEvents {
+export interface ClientEvents extends D.ClientEvents {
   guildMemberAdd: [GuildMember]
   // Not using partials
   guildMemberRemove: [GuildMember]
@@ -63,15 +52,14 @@ interface RejoinListeners {
   guildMemberAdd: Listener<'guildMemberAdd'>
   guildMemberRemove: Listener<'guildMemberRemove'>
 }
-
 interface GuildManager
-  extends Discord.BaseManager<Snowflake, Guild, GuildResolvable> {
-  create(...args: Parameters<Discord.GuildManager['create']>): Promise<Guild>
-  fetch(id: Snowflake, cache?: boolean, force?: boolean): Promise<Guild>
+  extends D.BaseManager<D.Snowflake, Guild, D.GuildResolvable> {
+  create(...args: Parameters<D.GuildManager['create']>): Promise<Guild>
+  fetch(id: D.Snowflake, cache?: boolean, force?: boolean): Promise<Guild>
 }
 
 /** The Discord client for this bot. */
-export default class Client extends Discord.Client {
+export default class Client extends D.Client {
   declare guilds: GuildManager
 
   declare on: <K extends keyof ClientEvents>(
@@ -91,12 +79,12 @@ export default class Client extends Discord.Client {
   readonly regexCommands: Collection<RegExp, RegexCommand['regexMessage']>
 
   /** The music queue for each guild. */
-  readonly queues: Collection<Snowflake, Queue>
+  readonly queues: Collection<D.Snowflake, Queue>
 
   /** The rejoining listeners, mapped by a guild's ID. */
-  readonly rejoinListeners: Collection<Snowflake, RejoinListeners>
+  readonly rejoinListeners: Collection<D.Snowflake, RejoinListeners>
 
-  constructor(...args: ConstructorParameters<typeof Discord.Client>) {
+  constructor(...args: ConstructorParameters<typeof D.Client>) {
     Structures.extend(
       'Message',
       // eslint-disable-next-line @typescript-eslint/naming-convention -- Message is a class
@@ -109,22 +97,22 @@ export default class Client extends Discord.Client {
           async reply(content: OptionsWithSplit): Promise<this[]>
           async reply(
             options:
-              | APIMessageContentResolvable
-              | MessageAdditions
+              | D.APIMessageContentResolvable
+              | D.MessageAdditions
               | OptionsNoSplit
           ): Promise<this>
           async reply(
-            content: StringResolvable,
+            content: D.StringResolvable,
             options: OptionsWithSplit
           ): Promise<this[]>
           async reply(
-            content: StringResolvable,
-            options: MessageAdditions | OptionsNoSplit
+            content: D.StringResolvable,
+            options: D.MessageAdditions | OptionsNoSplit
           ): Promise<this>
           async reply(...[content, options]: SendArgs): Promise<this[] | this>
           async reply(
             content: unknown,
-            options?: MessageAdditions | MessageOptions
+            options?: D.MessageAdditions | D.MessageOptions
           ): Promise<this[] | this> {
             return (super.reply as (
               ...[_content, _options]: SendArgs
@@ -146,7 +134,7 @@ export default class Client extends Discord.Client {
                     options
                   ]
                 : typeof content == 'object' && content && !options
-                ? [content as APIMessage | MessageAdditions]
+                ? [content as D.APIMessage | D.MessageAdditions]
                 : [upperFirst(Util.resolveString(content)), options])
             )
           }
@@ -157,13 +145,13 @@ export default class Client extends Discord.Client {
           }: {
             reply?: boolean
             content:
+              | D.MessageOptions
               | MessageAttachment
               | MessageEmbed
-              | MessageOptions
               | string
               | readonly [
                   string | readonly string[],
-                  (MessageAdditions | MessageOptions)?
+                  (D.MessageAdditions | D.MessageOptions)?
                 ]
           }): Promise<void> {
             if (
@@ -184,7 +172,7 @@ export default class Client extends Discord.Client {
               (Array.isArray(msg) ? msg : [msg]).map(async m => {
                 await m.react(emojis.delete)
                 await m.awaitReactions(
-                  ({emoji}: MessageReaction, {id}: User) =>
+                  ({emoji}: D.MessageReaction, {id}: D.User) =>
                     emoji.name === emojis.delete && id === this.author.id,
                   {max: 1}
                 )
