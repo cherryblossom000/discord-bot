@@ -21,6 +21,6 @@
     "watch": "pnpm build -- -w"
   },
   "devDependencies": {
-    "@commitlint/types": "^11.0.0"
+    "@commitlint/types": "^12.0.0"
   }
 }
