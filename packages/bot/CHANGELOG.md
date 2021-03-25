@@ -1,5 +1,12 @@
 # Changelog
 
+# [3.1.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@3.0.0...@comrade-pingu/bot@3.1.0) (2021-03-25)
+
+
+### Features
+
+* **bot/emoji:** add support for emojis outside of the server ([e23e085](https://github.com/cherryblossom000/comrade-pingu/commit/e23e0853e87c5400c9b5cb8f7f77407dcbed7a8e))
+
 # [3.0.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@2.14.0...@comrade-pingu/bot@3.0.0) (2021-02-26)
 
 
