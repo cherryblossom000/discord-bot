@@ -2,7 +2,7 @@ import {promises} from 'fs'
 import path from 'path'
 import {Permissions} from 'discord.js'
 import MarkdownIt from 'markdown-it'
-import table from 'markdown-table'
+import {markdownTable} from 'markdown-table'
 import exitOnError, {exit} from '../../../scripts/exit-on-error'
 import {permissions} from '../src/constants'
 import {upperFirst} from '../src/lodash'
@@ -63,7 +63,7 @@ const readme = path.join(rootFolder, 'README.md')
     .toString()
     .replace(
       /(?<=## Documentation\n\n)[\s\S]+(?=\n\n## Links)/u,
-      table(docs, {alignDelimiters: false})
+      markdownTable(docs, {alignDelimiters: false})
     )
     .replace(
       /(?<=permissions=)\d+/u,
