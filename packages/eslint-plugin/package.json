@@ -28,6 +28,6 @@
   },
   "devDependencies": {
     "@types/eslint": "^7.2.10",
-    "eslint-plugin-eslint-plugin": "^2.3.0"
+    "eslint-plugin-eslint-plugin": "^3.0.2"
   }
 }
