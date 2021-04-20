@@ -22,7 +22,7 @@
     "lint:config:dev": "pnpm lint:config -- --cache",
     "lint": "eslint --max-warnings 0 --ext ts,js .",
     "lint:dev": "pnpm lint -- --cache",
-    "build": "tsc -b",
+    "build": "tsc -b && pnpm postbuild",
     "postbuild": "pnpm m run postbuild",
     "watch": "tsc -b -w",
     "test": "pnpm m run test",
