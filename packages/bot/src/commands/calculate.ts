@@ -19,9 +19,10 @@ The expression to calculate. See https://mathjs.org/docs/expressions/syntax.html
       await message.reply(`\`${error}\``)
     }
 
-    let result: MathResult
+    let result: MathResult | undefined
     try {
-      result = evaluate(input) as MathResult
+      // Could be undefined if input is empty
+      result = evaluate(input) as MathResult | undefined
     } catch (error: unknown) {
       if (
         error instanceof Error &&
@@ -39,14 +40,16 @@ The expression to calculate. See https://mathjs.org/docs/expressions/syntax.html
         return
       }
     }
-    await message.channel.send(
-      result instanceof ResultSet
-        ? result.entries.length === 1
-          ? (result.entries[0] as MathResult).toString()
-          : result.entries.map(e => e.toString()).join('\n')
-        : result.toString(),
-      {code: true}
-    )
+    if (result) {
+      await message.channel.send(
+        result instanceof ResultSet
+          ? result.entries.length === 1
+            ? (result.entries[0] as MathResult).toString()
+            : result.entries.map(e => e.toString()).join('\n')
+          : result.toString(),
+        {code: true}
+      )
+    } else await message.reply('please provide an expression to calculate!')
   }
 }
 export default command
