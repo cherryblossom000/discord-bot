@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import dotenv from 'dotenv'
 import Koa from 'koa'
 import serve from 'koa-static'
 import Client from './Client'
@@ -9,7 +10,10 @@ import {connect, fetchRejoinGuilds} from './database'
 import {cleanErrorsStack, createResolve, handleError} from './utils'
 import type {AddressInfo} from 'net'
 import type {ClientEvents, EventListener} from './Client'
+// eslint-disable-next-line import/max-dependencies -- type imports
 import type {Command, RegexCommand} from './types'
+
+dotenv.config()
 
 const {readdir} = fs.promises
 const resolve = createResolve(__dirname)
@@ -17,13 +21,6 @@ const resolve = createResolve(__dirname)
 const assetsFolder = path.join(path.dirname(__dirname), 'assets')
 
 ;(async (): Promise<void> => {
-  if (dev) {
-    // type imports, dotenv is only needed to be imported in development
-    // eslint-disable-next-line import/max-dependencies, node/no-unpublished-import -- ^
-    const dotenv = await import('dotenv')
-    dotenv.config()
-  }
-
   // Routing
   const app = new Koa()
   app
