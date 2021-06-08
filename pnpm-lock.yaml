@@ -29,7 +29,7 @@ importers:
       eslint-plugin-jsdoc: ^35.1.3
       eslint-plugin-node: ^11.1.0
       eslint-plugin-prettier: ^3.4.0
-      eslint-plugin-promise: ^4.3.1
+      eslint-plugin-promise: ^5.1.0
       eslint-plugin-unicorn: ^33.0.1
       husky: ^6.0.0
       jest: ^27.0.4
@@ -44,7 +44,7 @@ importers:
       type-fest: ^1.2.0
       typescript: ^4.3.2
     devDependencies:
-      '@cherryblossom/eslint-config': 14.3.0_6cf6bcffb8ae447eebce858934b1e838
+      '@cherryblossom/eslint-config': 14.3.0_96ce2478350e341643d6a4400d2436ff
       '@commitlint/config-conventional': 12.1.4
       '@commitlint/travis-cli': 12.1.4
       '@commitlint/types': 12.1.4
@@ -69,7 +69,7 @@ importers:
       eslint-plugin-jsdoc: 35.1.3_eslint@7.28.0
       eslint-plugin-node: 11.1.0_eslint@7.28.0
       eslint-plugin-prettier: 3.4.0_eslint@7.28.0+prettier@2.3.1
-      eslint-plugin-promise: 4.3.1
+      eslint-plugin-promise: 5.1.0_eslint@7.28.0
       eslint-plugin-unicorn: 33.0.1_eslint@7.28.0
       husky: 6.0.0
       jest: 27.0.4_ts-node@10.0.0
@@ -526,7 +526,7 @@ packages:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
 
-  /@cherryblossom/eslint-config/14.3.0_6cf6bcffb8ae447eebce858934b1e838:
+  /@cherryblossom/eslint-config/14.3.0_96ce2478350e341643d6a4400d2436ff:
     resolution: {integrity: sha512-hFZ3l6mK9HC6TrLx/jo1ydHO80OQapLiKo+o3zV8gQI0hRNuMhDCdqJ0/j2rCxD0ZW71yTvg3MH+OGHJ0EBYPA==}
     engines: {node: ^10.13.0 || >=11.10.1}
     peerDependencies:
@@ -573,7 +573,7 @@ packages:
       eslint-plugin-jsdoc: 35.1.3_eslint@7.28.0
       eslint-plugin-node: 11.1.0_eslint@7.28.0
       eslint-plugin-prettier: 3.4.0_eslint@7.28.0+prettier@2.3.1
-      eslint-plugin-promise: 4.3.1
+      eslint-plugin-promise: 5.1.0_eslint@7.28.0
       eslint-plugin-unicorn: 33.0.1_eslint@7.28.0
       typescript: 4.3.2
     transitivePeerDependencies:
@@ -3336,9 +3336,13 @@ packages:
       prettier-linter-helpers: 1.0.0
     dev: true
 
-  /eslint-plugin-promise/4.3.1:
-    resolution: {integrity: sha512-bY2sGqyptzFBDLh/GMbAxfdJC+b0f23ME63FOE4+Jao0oZ3E1LEwFtWJX/1pGMJLiTtrSSern2CRM/g+dfc0eQ==}
-    engines: {node: '>=6'}
+  /eslint-plugin-promise/5.1.0_eslint@7.28.0:
+    resolution: {integrity: sha512-NGmI6BH5L12pl7ScQHbg7tvtk4wPxxj8yPHH47NvSmMtFneC077PSeY3huFj06ZWZvtbfxSPt3RuOQD5XcR4ng==}
+    engines: {node: ^10.12.0 || >=12.0.0}
+    peerDependencies:
+      eslint: ^7.0.0
+    dependencies:
+      eslint: 7.28.0
     dev: true
 
   /eslint-plugin-unicorn/33.0.1_eslint@7.28.0:
