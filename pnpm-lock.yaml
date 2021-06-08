@@ -4,7 +4,7 @@ importers:
 
   .:
     specifiers:
-      '@cherryblossom/eslint-config': ^14.2.0
+      '@cherryblossom/eslint-config': ^14.3.0
       '@commitlint/config-conventional': ^12.1.4
       '@commitlint/travis-cli': ^12.1.4
       '@commitlint/types': ^12.1.4
@@ -44,7 +44,7 @@ importers:
       type-fest: ^1.2.0
       typescript: ^4.3.2
     devDependencies:
-      '@cherryblossom/eslint-config': 14.2.0_6cf6bcffb8ae447eebce858934b1e838
+      '@cherryblossom/eslint-config': 14.3.0_6cf6bcffb8ae447eebce858934b1e838
       '@commitlint/config-conventional': 12.1.4
       '@commitlint/travis-cli': 12.1.4
       '@commitlint/types': 12.1.4
@@ -517,8 +517,8 @@ packages:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
 
-  /@cherryblossom/eslint-config/14.2.0_6cf6bcffb8ae447eebce858934b1e838:
-    resolution: {integrity: sha512-aIXPO7bAMSAKoRPDr65+JYwYsONr0gjpWIMmz6osF+OwliVnsmCUR11GnzAPN2D1VIo2wXC7d1B5pQdCVgQgUQ==}
+  /@cherryblossom/eslint-config/14.3.0_6cf6bcffb8ae447eebce858934b1e838:
+    resolution: {integrity: sha512-hFZ3l6mK9HC6TrLx/jo1ydHO80OQapLiKo+o3zV8gQI0hRNuMhDCdqJ0/j2rCxD0ZW71yTvg3MH+OGHJ0EBYPA==}
     engines: {node: ^10.13.0 || >=11.10.1}
     peerDependencies:
       '@typescript-eslint/eslint-plugin': ^4.21
@@ -528,7 +528,7 @@ packages:
       eslint-plugin-html: ^6
       eslint-plugin-import: ^2.21
       eslint-plugin-jest: ^24.3
-      eslint-plugin-jsdoc: '>=31.2 <34'
+      eslint-plugin-jsdoc: '>=31.2 <36'
       eslint-plugin-markdown: ^2
       eslint-plugin-node: ^11.1
       eslint-plugin-prettier: ^3

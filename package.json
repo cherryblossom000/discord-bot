@@ -36,7 +36,7 @@
     }
   },
   "devDependencies": {
-    "@cherryblossom/eslint-config": "^14.2.0",
+    "@cherryblossom/eslint-config": "^14.3.0",
     "@commitlint/config-conventional": "^12.1.4",
     "@commitlint/travis-cli": "^12.1.4",
     "@commitlint/types": "^12.1.4",
