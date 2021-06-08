@@ -10,9 +10,13 @@ const command: GuildOnlyCommand = {
 The emoji to get the image of.`,
   async execute(message) {
     const {channel, content} = message
-    const match = (/<(a?):[\w]+:(\d+)>/u as {
-      exec(string: string): (RegExpExecArray & [string, string, string]) | null
-    }).exec(content)
+    const match = (
+      /<(a?):[\w]+:(\d+)>/u as {
+        exec(
+          string: string
+        ): (RegExpExecArray & [string, string, string]) | null
+      }
+    ).exec(content)
     if (!match) {
       await message.reply('please provide an emoji!')
       return

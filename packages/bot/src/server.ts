@@ -9,7 +9,6 @@ import {connect, fetchRejoinGuilds} from './database'
 import {cleanErrorsStack, createResolve, handleError} from './utils'
 import type {AddressInfo} from 'net'
 import type {ClientEvents, EventListener} from './Client'
-// eslint-disable-next-line import/max-dependencies -- type imports
 import type {Command, RegexCommand} from './types'
 
 const {readdir} = fs.promises
@@ -19,7 +18,8 @@ const assetsFolder = path.join(path.dirname(__dirname), 'assets')
 
 ;(async (): Promise<void> => {
   if (dev) {
-    // eslint-disable-next-line node/no-unpublished-import -- dotenv is only needed to be imported in development
+    // type imports, dotenv is only needed to be imported in development
+    // eslint-disable-next-line import/max-dependencies, node/no-unpublished-import -- see above
     const dotenv = await import('dotenv')
     dotenv.config()
   }
@@ -133,6 +133,7 @@ const assetsFolder = path.join(path.dirname(__dirname), 'assets')
     await client.setActivity()
 
     // Initialise rejoin listeners
+    // eslint-disable-next-line unicorn/no-array-for-each -- not array
     await fetchRejoinGuilds(database).forEach(({_id, rejoinFlags}) =>
       addListeners(
         client,

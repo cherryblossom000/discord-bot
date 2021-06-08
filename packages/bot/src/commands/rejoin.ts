@@ -184,10 +184,10 @@ Valid options: roles, nickname, all`)
 
 const disable = async (message: GuildMessage, database: Db): Promise<void> => {
   if (!(await checkIfAdmin(message))) return
-  const {client, guild} = message
+  const {channel, client, guild} = message
   const listeners = client.rejoinListeners.get(guild.id)
   if (!listeners) {
-    await message.channel.send('Already disabled! Noot noot.')
+    await channel.send('Already disabled! Noot noot.')
     return
   }
   await disableRejoin(database, guild)

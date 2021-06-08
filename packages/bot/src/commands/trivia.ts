@@ -156,7 +156,9 @@ const leaderboardCommand = async (
       await Promise.all(
         users.map(async ({_id, correct, total, percentage}, i) => ({
           name: `${i + skip + 1}. ${
-            (await message.guild.members.fetch(_id)).user.tag
+            (
+              await message.guild.members.fetch(_id)
+            ).user.tag
           }`,
           value: _formatPercentage(correct, total, percentage)
         }))
@@ -227,6 +229,7 @@ Gets the leaderboard for this server.`,
 
     const {author, channel} = message
     if (
+      // eslint-disable-next-line unicorn/consistent-destructuring -- message.guild confirms it's a GuildMessage
       message.guild &&
       !(await checkPermissions(message, ['EMBED_LINKS', 'ADD_REACTIONS']))
     )

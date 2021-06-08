@@ -31,7 +31,6 @@ declare global {
   }
 }
 
-// eslint-disable-next-line import/no-unused-modules -- it is used
 export interface ClientEvents extends D.ClientEvents {
   guildMemberAdd: [GuildMember]
   // Not using partials
@@ -39,11 +38,9 @@ export interface ClientEvents extends D.ClientEvents {
   message: [Message]
 }
 
-// eslint-disable-next-line import/no-unused-modules -- it is used
 export type Listener<K extends keyof ClientEvents> = (
   ...args: ClientEvents[K]
 ) => void
-// eslint-disable-next-line import/no-unused-modules -- it is used
 export type EventListener<K extends keyof ClientEvents> = (
   client: Client,
   database: Db
@@ -122,9 +119,11 @@ export default class Client extends D.Client {
             content: unknown,
             options?: D.MessageAdditions | D.MessageOptions
           ): Promise<this[] | this> {
-            return (super.reply as (
-              ...[_content, _options]: SendArgs
-            ) => Promise<this[] | this>)(
+            return (
+              super.reply as (
+                ...[_content, _options]: SendArgs
+              ) => Promise<this[] | this>
+            )(
               ...(this.guild
                 ? ([content, options] as Readonly<SendArgs>)
                 : Array.isArray(content) &&
@@ -164,7 +163,7 @@ export default class Client extends D.Client {
           }): Promise<void> {
             if (
               this.guild &&
-              !(await checkPermissions((this as unknown) as GuildMessage, [
+              !(await checkPermissions(this as unknown as GuildMessage, [
                 'ADD_REACTIONS',
                 'READ_MESSAGE_HISTORY'
               ]))

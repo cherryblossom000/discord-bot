@@ -120,7 +120,8 @@ let token: string | undefined
 /** Fetches a question from the Open Trivia Database. */
 export const fetchQuestion = async (): Promise<Question | null> => {
   // eslint-disable-next-line require-atomic-updates -- token not reassigned based on outdated value
-  const path = `api.php?amount=1&encode=url3986&token=${(token ??= await fetchToken())}`
+  const path = `api.php?amount=1&encode=url3986&token=${(token ??=
+    await fetchToken())}`
   const {
     code,
     results: [question]
@@ -154,9 +155,9 @@ export const fetchQuestion = async (): Promise<Question | null> => {
             : question.correct_answer === 'True',
         ...(type === Type.MultipleChoice
           ? {
-              incorrectAnswers: (question.incorrect_answers as readonly string[]).map(
-                decodeURIComponent
-              )
+              incorrectAnswers: (
+                question.incorrect_answers as readonly string[]
+              ).map(decodeURIComponent)
             }
           : {})
       } as Question

@@ -14,10 +14,12 @@ export const shuffle = <T>(collection: readonly T[]): readonly T[] => {
 export const upperFirst = (string: string): string =>
   string && string[0]!.toUpperCase() + string.slice(1)
 
+/* eslint-disable jsdoc/no-multi-asterisks -- bold */
 /**
  * **NOTE:** This only splits the words based on underscores, which is all that
  * is currently needed.
  */
+/* eslint-enable jsdoc/no-multi-asterisks */
 export const startCase = (string: string): string =>
   string
     .toLowerCase()

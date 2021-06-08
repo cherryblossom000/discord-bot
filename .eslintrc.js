@@ -38,6 +38,10 @@ const config = {
         'node/no-unpublished-import': 0
       }
     }
-  ]
+  ],
+  rules: {
+    // TODO: migrate scripts to modules
+    'unicorn/prefer-module': 0
+  }
 }
 module.exports = config

@@ -8,16 +8,16 @@ const kDiscardResult = Symbol('discard result')
 
 declare global {
   interface AsyncFunction extends Function {
+    (...args: readonly unknown[]): Promise<unknown>
     // eslint-disable-next-line @typescript-eslint/no-use-before-define -- circular
     readonly constructor: AsyncFunctionConstructor
     readonly [Symbol.toStringTag]: string
-    (...args: readonly unknown[]): Promise<unknown>
   }
 
   interface AsyncFunctionConstructor extends FunctionConstructor {
+    (...args: readonly string[]): AsyncFunction
     readonly prototype: AsyncFunction
     new (...args: readonly string[]): AsyncFunction
-    (...args: readonly string[]): AsyncFunction
   }
 }
 

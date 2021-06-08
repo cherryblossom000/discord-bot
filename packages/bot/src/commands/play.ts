@@ -70,25 +70,24 @@ The query to search on YouTube for.`,
         client.queues.delete(id)
       }
 
-      const _errorHandler = (
-        internalMessage: string,
-        userMessage: string
-      ) => async (error: unknown): Promise<void> => {
-        handleError(client, error, internalMessage)
-        // eslint-disable-next-line promise/no-promise-in-callback -- not a callback
-        await queue!.textChannel
-          .send(userMessage)
-          .catch(_error =>
-            handleError(
-              client,
-              _error,
-              `Error sending message to ${queue!.textChannel.id} (#${
-                queue!.textChannel.name
-              }) about error in play command`
+      const _errorHandler =
+        (internalMessage: string, userMessage: string) =>
+        async (error: unknown): Promise<void> => {
+          handleError(client, error, internalMessage)
+          // eslint-disable-next-line promise/no-promise-in-callback -- not a callback
+          await queue!.textChannel
+            .send(userMessage)
+            .catch(_error =>
+              handleError(
+                client,
+                _error,
+                `Error sending message to ${queue!.textChannel.id} (#${
+                  queue!.textChannel.name
+                }) about error in play command`
+              )
             )
-          )
-        cleanup()
-      }
+          cleanup()
+        }
 
       const playSong = async (_song?: Video): Promise<void> => {
         if (!_song) {
@@ -159,9 +158,8 @@ The query to search on YouTube for.`,
 
     // Play url
     if (validateURL(url!)) {
-      const {title, videoId, author} = (
-        await getBasicInfo(url!)
-      ).player_response.videoDetails
+      const {title, videoId, author} = (await getBasicInfo(url!))
+        .player_response.videoDetails
       await play({title, id: videoId, author})
       return
     }

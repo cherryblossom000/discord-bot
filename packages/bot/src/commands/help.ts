@@ -16,6 +16,7 @@ The command that you want to get info about. If omitted, all the commands will b
     // constants
     const {
       author,
+      channel,
       client,
       client: {commands},
       guild
@@ -35,7 +36,7 @@ You can send \`${defaultPrefix}help [command name]\` to get info on a specific c
           ],
           {split: true}
         )
-        if (message.channel.type !== 'dm') {
+        if (channel.type !== 'dm') {
           await message.reply(
             'I’ve sent you a DM with all my commands. Noot noot.'
           )
@@ -78,7 +79,7 @@ Do you have DMs disabled?`
     }
 
     const {name, aliases, description, syntax, usage, cooldown} = _command
-    await message.channel.send(
+    await channel.send(
       [
         `**Name:** ${name}`,
         ...(aliases ? [`**Aliases:** ${aliases.join(', ')}`] : []),

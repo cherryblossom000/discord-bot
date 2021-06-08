@@ -39,9 +39,10 @@ declare global {
 }
 
 /** Creates a function to easily resolve paths relative to the `__dirname`. */
-export const createResolve = (dirname: string) => (
-  ...paths: readonly string[]
-): string => path.join(dirname, ...paths)
+export const createResolve =
+  (dirname: string) =>
+  (...paths: readonly string[]): string =>
+    path.join(dirname, ...paths)
 
 const stackBasePath = path.join(
   homedir(),
@@ -63,17 +64,17 @@ export const cleanErrorsStack = <T extends Error>(
 }
 
 /** Creates a `catch` handler that ignores `DiscordAPIError`s. */
-export const ignoreError = (key: keyof typeof Constants.APIErrors) => (
-  error: unknown
-): void => {
-  if (
-    !(
-      error instanceof DiscordAPIError &&
-      error.code === Constants.APIErrors[key]
+export const ignoreError =
+  (key: keyof typeof Constants.APIErrors) =>
+  (error: unknown): void => {
+    if (
+      !(
+        error instanceof DiscordAPIError &&
+        error.code === Constants.APIErrors[key]
+      )
     )
-  )
-    throw error
-}
+      throw error
+  }
 
 /**
  * Replies to a message causing an error and either logs it or DMs me it depending on `NODE_ENV`.
@@ -110,15 +111,17 @@ export const handleError: (
   ;(async (): Promise<void> => {
     if (error instanceof Error) cleanErrorsStack(error)
     if (messageOrChannel) {
-      await ((messageOrChannel instanceof DiscordMessage
-        ? messageOrChannel.reply(response)
-        : messageOrChannel.send(response)) as Promise<Message>).catch(
-        errorHandler
-      )
+      await (
+        (messageOrChannel instanceof DiscordMessage
+          ? messageOrChannel.reply(response)
+          : messageOrChannel.send(response)) as Promise<Message>
+      ).catch(errorHandler)
     }
     if (dev) throw error
     try {
-      await (await client.users.fetch(me)!).send(`${info}
+      await (
+        await client.users.fetch(me)!
+      ).send(`${info}
 **Error at ${new Date().toLocaleString()}**${
         error instanceof Error
           ? error.stack!
@@ -180,19 +183,20 @@ export const checkPermissions = async (
   return true
 }
 
-const idRegex = (/^\d{17,19}$/u as unknown) as Omit<RegExp, 'test'> & {
+const idRegex = /^\d{17,19}$/u as unknown as Omit<RegExp, 'test'> & {
   test(string: string): string is Snowflake
 }
 const userTagRegex = /^.{2,}#\d{4}$/u
-const messageLinkRegex = /https?:\/\/.*?discord(?:app)?\.com\/channels\/(\d+|@me)\/(\d+)\/(\d+)/u as Omit<
-  RegExp,
-  'exec'
-> & {
-  exec(
-    string: string
-    // Using the RegExpExecArray means TS doesn't know spreading the type will result in 3 args
-  ): [string, Snowflake | '@me', Snowflake, Snowflake] | null
-}
+const messageLinkRegex =
+  /https?:\/\/.*?discord(?:app)?\.com\/channels\/(\d+|@me)\/(\d+)\/(\d+)/u as Omit<
+    RegExp,
+    'exec'
+  > & {
+    exec(
+      string: string
+      // Using the RegExpExecArray means TS doesn't know spreading the type will result in 3 args
+    ): [string, Snowflake | '@me', Snowflake, Snowflake] | null
+  }
 // Not using MessageMentions.CHANNELS_PATTERN because it's not anchored
 const channelMentionRegex = /^<#(\d{17,19})>$/gu as Omit<RegExp, 'exec'> & {
   exec(string: string): [string, Snowflake] | null
@@ -361,7 +365,6 @@ export const resolveMessage = async (
   return result
 }
 
-// eslint-disable-next-line import/no-unused-modules -- it is used
 export type DateFormatter = (date: Date) => string
 
 export const createDateFormatter = (timeZone: string): DateFormatter => {
@@ -465,14 +468,15 @@ export const searchYoutube = async (
       }`
     ).setDescription(`Click on the title for the YouTube link.
   If you can’t be bothered to wait for the reactions you can just add the reaction yourself.`)
-    current.forEach((v, i) =>
+    for (const [i, v] of current.entries()) {
       embed.addField(
         `${i + skip + 1}. ${v.author.name}
   ${emojis.numbers[i + 1]}`,
         `[${v.title}](${v.url})`,
         true
       )
-    )
+    }
+
     return ['**Which song would you like to play?**', embed]
   }
 

@@ -28,13 +28,8 @@ const publishGithub: PublishPlugin = async (pluginConfig, context) => {
     nextRelease: {name, gitTag, notes},
     logger
   } = context
-  const {
-    githubToken,
-    githubUrl,
-    githubApiPathPrefix,
-    proxy,
-    assets
-  } = resolveConfig(pluginConfig, context)
+  const {githubToken, githubUrl, githubApiPathPrefix, proxy, assets} =
+    resolveConfig(pluginConfig, context)
   const {owner, repo} = parseGithubUrl(repositoryUrl) as {
     owner: string
     repo: string
@@ -101,7 +96,7 @@ const publishGithub: PublishPlugin = async (pluginConfig, context) => {
       const fileName = template(
         typeof asset === 'string' ? path.basename(filePath) : asset.name
       )(context)
-      const upload = ({
+      const upload = {
         url: uploadUrl,
         data: await readFile(path.resolve(cwd, filePath)),
         name: fileName,
@@ -109,7 +104,7 @@ const publishGithub: PublishPlugin = async (pluginConfig, context) => {
           'content-type': mime.getType(path.extname(fileName)) ?? 'text/plain',
           'content-length': file.size
         }
-      } as unknown) as NonNullable<
+      } as unknown as NonNullable<
         Parameters<Octokit['repos']['uploadReleaseAsset']>[0]
       >
 

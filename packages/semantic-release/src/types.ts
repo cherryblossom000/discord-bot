@@ -46,7 +46,6 @@ declare module 'semantic-release' {
 
 interface PluginConfig extends Changelog.PluginConfig, Github.PluginConfig {}
 
-// eslint-disable-next-line import/no-unused-modules -- it is used
 export type Plugin = (
   pluginConfig: PluginConfig,
   context: Context

@@ -23,7 +23,9 @@ The LaTeX to convert. See http://docs.mathjax.org/en/latest/input/tex/macros/ind
 
     if (!mathJax) {
       // eslint-disable-next-line require-atomic-updates -- not a race condition
-      mathJax = await (await import('mathjax')).init({
+      mathJax = await (
+        await import('mathjax')
+      ).init({
         loader: {
           load: ['input/tex-base', '[tex]/ams', 'output/svg'],
           failed: (error): void =>
@@ -43,8 +45,12 @@ The LaTeX to convert. See http://docs.mathjax.org/en/latest/input/tex/macros/ind
     if (maybeErrorG.attributes['data-mml-node'] === 'merror') {
       await message.reply(
         `there was a syntax error: ${
-          (((maybeErrorG.children[1] as LiteElement).children[0] as LiteElement)
-            .children[0] as LiteText).value
+          (
+            (
+              (maybeErrorG.children[1] as LiteElement)
+                .children[0] as LiteElement
+            ).children[0] as LiteText
+          ).value
         }`
       )
       return

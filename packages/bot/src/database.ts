@@ -38,7 +38,6 @@ export interface Guild {
   members?: readonly Member[]
 }
 
-// eslint-disable-next-line import/no-unused-modules -- imported as a type in trivia
 export interface Question {
   category: string
   type: Type
@@ -184,52 +183,56 @@ type FindOneResult<C extends CollectionsKeys, K extends keyof Cached<C>> = Pick<
   K | '_id'
 >
 
-const findOne = <C extends CollectionsKeys>(col: Collection<C>) => async <
-  K extends keyof Cached<C>
->(
-  id: DiscordType<C> | string,
-  keys: readonly K[],
-  filter?: Omit<FilterQuery<DatabaseType<C>>, '_id'>,
-  options?: Omit<FindOneOptions<DatabaseType<C>>, 'projection'>
-): Promise<FindOneResult<C, K> | undefined> => {
-  const _id = resolveID(id)
-  const cache = getCache(col)
-  const cached = cache.get(_id)
-  const cachedKeys = cached ? Object.keys(cached) : []
-  const keysToFetch = keys.filter(key => !cachedKeys.includes(key))
-  if (!keysToFetch.length) return cached as FindOneResult<C, K> | undefined
+const findOne =
+  <C extends CollectionsKeys>(col: Collection<C>) =>
+  async <K extends keyof Cached<C>>(
+    id: DiscordType<C> | string,
+    keys: readonly K[],
+    filter?: Omit<FilterQuery<DatabaseType<C>>, '_id'>,
+    options?: Omit<FindOneOptions<DatabaseType<C>>, 'projection'>
+  ): Promise<FindOneResult<C, K> | undefined> => {
+    const _id = resolveID(id)
+    const cache = getCache(col)
+    const cached = cache.get(_id)
+    const cachedKeys = cached ? Object.keys(cached) : []
+    const keysToFetch = keys.filter(key => !cachedKeys.includes(key))
+    if (!keysToFetch.length) return cached as FindOneResult<C, K> | undefined
 
-  const result = await (col as {
-    findOne<U = DatabaseType<C>>(
-      filter: FilterQuery<DatabaseType<C>>,
-      options?: FindOneOptions<U extends DatabaseType<C> ? DatabaseType<C> : U>
-    ): Promise<U | null>
-  }).findOne(
-    {...filter, _id} as FilterQuery<DatabaseType<C>>,
-    {
-      ...options,
-      projection: Object.fromEntries(keysToFetch.map(key => [key, 1]))
-    } as FindOneOptions<
-      FindOneResult<C, K> extends DatabaseType<C>
-        ? DatabaseType<C>
-        : FindOneResult<C, K>
-    >
-  )
-  if (result) {
-    const {_id: _, ...rest} = result
-    cache.set(_id, {...cached, ...rest} as Cached<C>)
-  } else cache.delete(_id)
-  return result ? {...cached, ...result} : undefined
-}
+    const result = await (
+      col as {
+        findOne<U = DatabaseType<C>>(
+          filter: FilterQuery<DatabaseType<C>>,
+          options?: FindOneOptions<
+            U extends DatabaseType<C> ? DatabaseType<C> : U
+          >
+        ): Promise<U | null>
+      }
+    ).findOne(
+      {...filter, _id} as FilterQuery<DatabaseType<C>>,
+      {
+        ...options,
+        projection: Object.fromEntries(keysToFetch.map(key => [key, 1]))
+      } as FindOneOptions<
+        FindOneResult<C, K> extends DatabaseType<C>
+          ? DatabaseType<C>
+          : FindOneResult<C, K>
+      >
+    )
+    if (result) {
+      const {_id: _, ...rest} = result
+      cache.set(_id, {...cached, ...rest} as Cached<C>)
+    } else cache.delete(_id)
+    return result ? {...cached, ...result} : undefined
+  }
 
 // TODO: Uncurry if partial type inference is ever added: https://github.com/microsoft/TypeScript/issues/26242
-const fetchValueC = <C extends CollectionsKeys>(col: Collection<C>) => async <
-  K extends keyof Cached<C>
->(
-  _id: DiscordType<C> | Snowflake,
-  key: K
-): Promise<DatabaseType<C>[K] | undefined> =>
-  (await findOne(col)(_id, [key]))?.[key]
+const fetchValueC =
+  <C extends CollectionsKeys>(col: Collection<C>) =>
+  async <K extends keyof Cached<C>>(
+    _id: DiscordType<C> | Snowflake,
+    key: K
+  ): Promise<DatabaseType<C>[K] | undefined> =>
+    (await findOne(col)(_id, [key]))?.[key]
 
 export const fetchValue = async <
   C extends CollectionsKeys,
@@ -254,13 +257,15 @@ export const setValue = async <
 ): Promise<void> => {
   const col = collection(database, name)
   const _id = resolveID(id)
-  await (col as {
-    updateOne(
-      filter: FilterQuery<DatabaseType<C>>,
-      update: Partial<DatabaseType<C>> | UpdateQuery<DatabaseType<C>>,
-      options?: UpdateOneOptions
-    ): Promise<UpdateWriteOpResult>
-  }).updateOne(
+  await (
+    col as {
+      updateOne(
+        filter: FilterQuery<DatabaseType<C>>,
+        update: Partial<DatabaseType<C>> | UpdateQuery<DatabaseType<C>>,
+        options?: UpdateOneOptions
+      ): Promise<UpdateWriteOpResult>
+    }
+  ).updateOne(
     {_id} as FilterQuery<DatabaseType<C>>,
     {$set: {[key]: value} as MatchKeysAndValues<DatabaseType<C>>},
     {upsert: true}
@@ -418,7 +423,6 @@ export const triviaUsersCount = async (
   query: FilterQuery<User>
 ): Promise<number> => users.countDocuments(query)
 
-// eslint-disable-next-line import/no-unused-modules -- it is used
 export interface AggregatedTriviaUser {
   _id: Snowflake
   correct: number
