@@ -1,5 +1,5 @@
 export const exit = (error: unknown): never => {
-  console.log(error)
+  console.error(error)
   process.exit(1)
 }
 
