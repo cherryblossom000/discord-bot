@@ -30,11 +30,6 @@
     "docs": "pnpm m run docs",
     "start": "pnpm -C packages/bot start"
   },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
   "devDependencies": {
     "@cherryblossom/eslint-config": "^14.3.1",
     "@commitlint/config-conventional": "^12.1.4",
