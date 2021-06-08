@@ -1,4 +1,4 @@
-import {promises} from 'fs'
+import fs from 'fs'
 import path from 'path'
 import {Permissions} from 'discord.js'
 import MarkdownIt from 'markdown-it'
@@ -10,7 +10,7 @@ import type {Command} from '../src/types'
 
 exitOnError()
 
-const {mkdir, readFile, readdir, writeFile} = promises
+const {mkdir, readFile, readdir, writeFile} = fs.promises
 const resolve = (...paths: string[]): string => path.join(__dirname, ...paths)
 
 const rootFolder = path.dirname(__dirname)

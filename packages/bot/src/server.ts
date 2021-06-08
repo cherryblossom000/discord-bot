@@ -19,7 +19,7 @@ const assetsFolder = path.join(path.dirname(__dirname), 'assets')
 ;(async (): Promise<void> => {
   if (dev) {
     // type imports, dotenv is only needed to be imported in development
-    // eslint-disable-next-line import/max-dependencies, node/no-unpublished-import -- see above
+    // eslint-disable-next-line import/max-dependencies, node/no-unpublished-import -- ^
     const dotenv = await import('dotenv')
     dotenv.config()
   }

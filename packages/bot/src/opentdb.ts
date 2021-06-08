@@ -46,7 +46,7 @@ interface FetchTokenResponse extends TokenResponse {
 interface ResetTokenResponse extends TokenResponse {
   token: string
 }
-/* eslint-enable @typescript-eslint/naming-convention -- see above */
+/* eslint-enable @typescript-eslint/naming-convention */
 // #endregion
 
 class OpenTDBError extends Error {
