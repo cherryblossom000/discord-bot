@@ -114,6 +114,7 @@ importers:
       '@discordjs/opus': 0.5.0
       clean-stack: 3.0.1
       discord.js: 12.5.3_@discordjs+opus@0.5.0
+      dotenv: 10.0.0
       escape-string-regexp: 4.0.0
       koa: 2.13.1
       koa-static: 5.0.0
@@ -136,7 +137,6 @@ importers:
       '@types/node-fetch': 2.5.10
       '@types/sharp': 0.28.3
       '@types/yt-search': 2.3.0
-      dotenv: 10.0.0
       mathjax-full: 3.1.4
 
   packages/commitlint-plugin:
@@ -3012,7 +3012,6 @@ packages:
   /dotenv/10.0.0:
     resolution: {integrity: sha512-rlBi9d8jpv9Sf1klPjNfFAuWDjKLwTIJJ/VxtoTwIR6hnZxcEOQCZg2oIL3MWBYw5GpUDKOEnND7LXTbIpQ03Q==}
     engines: {node: '>=10'}
-    dev: true
 
   /duplexer2/0.1.4:
     resolution: {integrity: sha1-ixLauHjA1p4+eJEFFmKjL8a93ME=}
