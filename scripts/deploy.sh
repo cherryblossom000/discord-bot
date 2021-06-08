@@ -6,7 +6,7 @@ pnpx multi-semantic-release
 
 # Update package.json (could have changed due to semantic-release) and remove
 # devDependencies so thhey aren't installed on Repl.it
-pnpx ts-node -P scripts/tsconfig.json -T scripts/update-package
+node scripts/dist/update-package
 
 (
   cd packages/bot/dist
