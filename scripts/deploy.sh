@@ -1,4 +1,5 @@
-set -e
+#! /bin/bash
+set -xeuo pipefail
 
 # semantic-release
 pnpx multi-semantic-release
