@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.2](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@3.1.1...@comrade-pingu/bot@3.1.2) (2021-06-08)
+
+
+### Reverts
+
+* revert 'chore(package.json): remove unnecessary `run`' ([74a5f63](https://github.com/cherryblossom000/comrade-pingu/commit/74a5f633ac1785152306063b350dd053d0e71567))
+
 ## [3.1.1](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@3.1.0...@comrade-pingu/bot@3.1.1) (2021-04-20)
 
 
