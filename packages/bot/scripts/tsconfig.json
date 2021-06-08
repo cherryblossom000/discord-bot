@@ -2,7 +2,7 @@
   "extends": "../../../tsconfig.settings.json",
   "include": ["**/*.ts"],
   "compilerOptions": {
-    "noEmit": true,
+    "outDir": "dist",
     "types": ["node"],
     "esModuleInterop": true
   },
