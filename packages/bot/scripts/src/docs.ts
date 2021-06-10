@@ -4,13 +4,19 @@ import {Permissions} from 'discord.js'
 import MarkdownIt from 'markdown-it'
 import {markdownTable} from 'markdown-table'
 import exitOnError, {exit} from '../../../../scripts/dist/exit-on-error.js'
-import * as constants from '../../dist/src/constants.js'
-import * as lodash from '../../dist/src/lodash.js'
+// TODO: fix this
+// @ts-ignore CommonJS module, default export is the module.exports
+import _constants from '../../dist/src/constants.js'
+// @ts-ignore see ^^
+import _lodash from '../../dist/src/lodash.js'
+import type * as constants from '../../src/constants'
+import type * as lodash from '../../src/lodash'
 import type {Command} from '../../src/types'
+// eslint-disable-next-line import/max-dependencies -- due to hack for TS
 import type {} from '../../../../scripts/src/url'
 
-const {permissions} = constants
-const {upperFirst} = lodash
+const {permissions} = _constants as typeof constants
+const {upperFirst} = _lodash as typeof lodash
 
 exitOnError()
 
