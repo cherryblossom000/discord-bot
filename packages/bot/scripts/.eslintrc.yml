@@ -1,3 +1,3 @@
-rules:
-  import/no-extraneous-dependencies: 0
-  node/no-unpublished-import: 0
+overrides:
+- files: src/**/*.ts
+  extends: ../../../scripts/.eslintrc.js

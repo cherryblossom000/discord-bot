@@ -6,7 +6,7 @@ pnpx multi-semantic-release
 
 # Update package.json (could have changed due to semantic-release) and remove
 # devDependencies so thhey aren't installed on Repl.it
-node scripts/dist/update-package
+node --experimental-modules scripts/dist/update-package
 
 (
   cd packages/bot/dist

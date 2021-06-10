@@ -1,9 +1,9 @@
 {
-  "extends": "../../../tsconfig.settings.json",
+  "extends": "../../../scripts/tsconfig.json",
   "include": ["**/*.ts"],
   "compilerOptions": {
+    "rootDir": "src",
     "outDir": "dist",
-    "types": ["node"],
     "esModuleInterop": true
   },
   "references": [
