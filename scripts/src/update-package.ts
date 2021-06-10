@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import type {PackageJson} from 'type-fest'
-import exitOnError, {exit} from './exit-on-error'
+import exitOnError, {exit} from './exit-on-error.js'
 import type {} from './url'
 
 exitOnError()
