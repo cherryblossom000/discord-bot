@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import {fileURLToPath} from 'url'
 import {Permissions} from 'discord.js'
 import MarkdownIt from 'markdown-it'
 import {markdownTable} from 'markdown-table'
@@ -11,9 +12,8 @@ import _constants from '../../dist/src/constants.js'
 import _lodash from '../../dist/src/lodash.js'
 import type * as constants from '../../src/constants'
 import type * as lodash from '../../src/lodash'
-import type {Command} from '../../src/types'
 // eslint-disable-next-line import/max-dependencies -- due to hack for TS
-import type {} from '../../../../scripts/src/url'
+import type {Command} from '../../src/types'
 
 const {permissions} = _constants as typeof constants
 const {upperFirst} = _lodash as typeof lodash
@@ -22,16 +22,16 @@ exitOnError()
 
 const {mkdir, readFile, readdir, writeFile} = fs.promises
 
-const scriptsFolder = path.dirname(path.dirname(import.meta.url))
+const scriptsFolder = path.join(fileURLToPath(import.meta.url), '..', '..')
 const rootFolder = path.dirname(scriptsFolder)
 const dist = path.join(rootFolder, 'dist')
 const commandsFolder = path.join(dist, 'src', 'commands')
 const htmlFolder = path.join(dist, 'assets', 'html')
-const readmeURL = new URL(path.join(rootFolder, 'README.md'))
+const readme = path.join(rootFolder, 'README.md')
 
 ;(async (): Promise<void> => {
   // Update readme
-  const files = await readdir(new URL(commandsFolder))
+  const files = await readdir(commandsFolder)
   const commands = await Promise.all(
     files
       .filter(f => f.endsWith('.js'))
@@ -75,7 +75,7 @@ const readmeURL = new URL(path.join(rootFolder, 'README.md'))
       ])
   ]
 
-  const newReadme = (await readFile(readmeURL))
+  const newReadme = (await readFile(readme))
     .toString()
     .replace(
       /(?<=## Documentation\n\n)[\s\S]+(?=\n\n## Links)/u,
@@ -86,11 +86,11 @@ const readmeURL = new URL(path.join(rootFolder, 'README.md'))
       new Permissions(permissions).bitfield.toString()
     )
 
-  await writeFile(readmeURL, newReadme)
+  await writeFile(readme, newReadme)
 
-  await mkdir(new URL(htmlFolder), {recursive: true})
+  await mkdir(htmlFolder, {recursive: true})
   const template = (
-    await readFile(new URL(path.join(scriptsFolder, 'template.html')))
+    await readFile(path.join(scriptsFolder, 'template.html'))
   ).toString()
 
   const htmlMarkdownIt = new MarkdownIt({html: true})
@@ -102,7 +102,7 @@ const readmeURL = new URL(path.join(rootFolder, 'README.md'))
     md: string
   ): Promise<void> =>
     writeFile(
-      new URL(path.join(htmlFolder, `${p}.html`)),
+      path.join(htmlFolder, `${p}.html`),
       template
         .replace(/\[title\]/gu, title)
         .replace(/\[description\]/gu, description)
@@ -120,7 +120,7 @@ const readmeURL = new URL(path.join(rootFolder, 'README.md'))
       `${title} - Comrade Pingu`,
       `${title} for Comrade Pingu`,
       `/${htmlPath}`,
-      `${(await readFile(new URL(path.join(rootFolder, mdPath)))).toString()}
+      `${(await readFile(path.join(rootFolder, mdPath))).toString()}
 #### [← back](/)`
     )
   }
