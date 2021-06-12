@@ -2,7 +2,7 @@
 name: Bug report (Other)
 about: Create a bug report for another package in this repo
 title: ''
-labels: bug
+labels: bug, infra
 assignees: ''
 
 ---
