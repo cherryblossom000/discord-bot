@@ -11,9 +11,9 @@ jobs:
   - pnpm build
   - pnpm lint
   - pnpm test
-  after_success: chmod +x scripts/push-docs.sh && scripts/push-docs.sh
+  after_success: scripts/push-docs.sh
   deploy:
   - provider: script
     skip_cleanup: true
-    script: chmod +x scripts/deploy.sh && scripts/deploy.sh
+    script: scripts/deploy.sh
     on: main
