@@ -44,7 +44,8 @@ const createTypeRule: {
   const isCorrectTypeName: (name: string) => boolean =
     typeof typeNames == 'string'
       ? (name): boolean => name === typeNames
-      : typeNames.has.bind(typeNames)
+      : // eslint-disable-next-line unicorn/prefer-prototype-methods -- not borrowing prototype method
+        typeNames.has.bind(typeNames)
   return {
     meta: {
       type: 'problem',

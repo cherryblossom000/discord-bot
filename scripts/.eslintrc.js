@@ -7,14 +7,22 @@ const config = {
   overrides: [
     {
       files: 'src/**/*.ts',
+      extends: '@cherryblossom/eslint-config/ts/node/esm',
       rules: {
         'import/no-extraneous-dependencies': 0,
         'import/no-unassigned-import': [
           1,
           {allow: [path.join(__dirname, 'src', 'url')]}
         ],
-        'node/no-unpublished-import': 0,
-        'unicorn/prefer-module': 2
+        'node/no-unpublished-import': 0
+      }
+    },
+    {
+      files: 'src/exit-on-error.ts',
+      rules: {
+        // haven't figured out how to have import resolver for relative files
+        // other scripts import this file but as dist/exit-on-error.js
+        'import/no-unused-modules': 0
       }
     }
   ]

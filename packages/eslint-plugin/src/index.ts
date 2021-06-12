@@ -9,7 +9,7 @@ export const rules = Object.fromEntries(
     .filter(file => file.endsWith('.js'))
     .map(file => [
       file.slice(0, -3),
-      // eslint-disable-next-line @typescript-eslint/no-require-imports, node/global-require -- needs to be synchronous
+      // eslint-disable-next-line @typescript-eslint/no-require-imports -- needs to be synchronous
       require(path.join(rulesFolder, file)) as Rule.RuleModule
     ])
 )
