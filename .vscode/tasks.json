@@ -70,6 +70,13 @@
         "reveal": "never"
       },
       "group": "build"
-    }
+    },
+    {
+      "label": "Build (all)",
+      "command": "pnpm",
+      "args": ["build"],
+      "problemMatcher": "$tsc",
+      "group": "build"
+    },
   ]
 }
