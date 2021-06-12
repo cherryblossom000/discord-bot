@@ -2,6 +2,10 @@
 
 This is the monorepo for the Comrade Pingu Discord bot.
 
+## Disclaimer
+
+This started as a joke and does not represent my actual political views.
+
 ## Packages
 
 - [`bot`](./packages/bot): The Discord bot.
