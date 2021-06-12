@@ -1,6 +1,6 @@
 ---
-name: Bug report
-about: Create a report to help us improve
+name: Bug report (Other)
+about: Create a bug report for another package in this repo
 title: ''
 labels: bug
 assignees: ''
@@ -13,6 +13,15 @@ Remember to provide as much information as possible to help us reproduce,
 diagnose, and fix the issue.
 -->
 
+**Package**
+<!--
+Choose one of:
+commitlint-plugin
+eslint-plugin
+semantic-release
+>
+
+**Description**
 <!-- A clear and concise description of what the bug is. -->
 
 **To Reproduce**
@@ -29,18 +38,6 @@ Steps to reproduce the behaviour, including the commands used:
 
 **Actual behaviour**
 <!-- A clear and concise description of what actually happened. -->
-
-**Guild (Server) Information**
-<!--
-Include relevant information about the guild (‘server’ in the Discord client), such as:
-- permissions of Comrade Pingu
-- permissions of the user invoking the command
-- configured timezone
-- guild rejoin settings
--->
-
-**Screenshots**
-<!-- If applicable, add screenshots to help explain your problem. -->
 
 **Additional context**
 <!-- Add any other context about the problem here. -->
