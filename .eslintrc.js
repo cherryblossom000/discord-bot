@@ -40,7 +40,6 @@ const config = {
     }
   ],
   rules: {
-    // TODO: migrate scripts to modules
     'unicorn/prefer-module': 0
   }
 }
