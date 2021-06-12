@@ -12,8 +12,9 @@ import _constants from '../../dist/src/constants.js'
 import _lodash from '../../dist/src/lodash.js'
 import type * as constants from '../../src/constants'
 import type * as lodash from '../../src/lodash'
-// eslint-disable-next-line import/max-dependencies -- due to hack for TS
 import type {Command} from '../../src/types'
+// eslint-disable-next-line import/max-dependencies -- due to hack for TS
+import type {} from '../../../../scripts/src/url'
 
 const {permissions} = _constants as typeof constants
 const {upperFirst} = _lodash as typeof lodash
@@ -22,12 +23,12 @@ exitOnError()
 
 const {mkdir, readFile, readdir, writeFile} = fs.promises
 
-const scriptsFolder = path.join(fileURLToPath(import.meta.url), '..', '..')
-const rootFolder = path.dirname(scriptsFolder)
-const dist = path.join(rootFolder, 'dist')
-const commandsFolder = path.join(dist, 'src', 'commands')
-const htmlFolder = path.join(dist, 'assets', 'html')
-const readme = path.join(rootFolder, 'README.md')
+const scriptsFolder = new URL('..', import.meta.url)
+const rootFolder = new URL('..', scriptsFolder)
+const distFolder = new URL('dist/', rootFolder)
+const commandsFolder = new URL('src/commands/', distFolder)
+const htmlFolder = new URL('assets/html/', distFolder)
+const readmeFile = new URL('README.md', rootFolder)
 
 ;(async (): Promise<void> => {
   // Update readme
@@ -38,7 +39,9 @@ const readme = path.join(rootFolder, 'README.md')
       .map(
         async f =>
           (
-            await ((await import(path.join(commandsFolder, f))) as Promise<{
+            await ((await import(
+              fileURLToPath(new URL(f, commandsFolder))
+            )) as Promise<{
               default: {default: Command}
             }>)
           ).default.default
@@ -75,7 +78,7 @@ const readme = path.join(rootFolder, 'README.md')
       ])
   ]
 
-  const newReadme = (await readFile(readme))
+  const newReadme = (await readFile(readmeFile))
     .toString()
     .replace(
       /(?<=## Documentation\n\n)[\s\S]+(?=\n\n## Links)/u,
@@ -86,11 +89,11 @@ const readme = path.join(rootFolder, 'README.md')
       new Permissions(permissions).bitfield.toString()
     )
 
-  await writeFile(readme, newReadme)
+  await writeFile(readmeFile, newReadme)
 
   await mkdir(htmlFolder, {recursive: true})
   const template = (
-    await readFile(path.join(scriptsFolder, 'template.html'))
+    await readFile(new URL('template.html', scriptsFolder))
   ).toString()
 
   const htmlMarkdownIt = new MarkdownIt({html: true})
@@ -102,7 +105,7 @@ const readme = path.join(rootFolder, 'README.md')
     md: string
   ): Promise<void> =>
     writeFile(
-      path.join(htmlFolder, `${p}.html`),
+      new URL(`${p}.html`, htmlFolder),
       template
         .replace(/\[title\]/gu, title)
         .replace(/\[description\]/gu, description)
@@ -120,7 +123,7 @@ const readme = path.join(rootFolder, 'README.md')
       `${title} - Comrade Pingu`,
       `${title} for Comrade Pingu`,
       `/${htmlPath}`,
-      `${(await readFile(path.join(rootFolder, mdPath))).toString()}
+      `${(await readFile(new URL(mdPath, rootFolder))).toString()}
 #### [← back](/)`
     )
   }
