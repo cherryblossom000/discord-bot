@@ -11,3 +11,7 @@ internally.
 internally.
 - [`semantic-release`](./packages/semantic-release): A semantic-release plugin
 used internally.
+
+## License
+
+[MIT](LICENSE) © 2020–2021 cherryblossom000
