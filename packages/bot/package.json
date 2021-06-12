@@ -18,7 +18,7 @@
   "scripts": {
     "lint": "eslint --max-warnings 0 --ext ts .",
     "lint:dev": "pnpm lint -- --cache",
-    "copy": "cd dist && (mkdir assets; rm -r assets/img; cp -r ../assets/img assets/img)",
+    "copy": "cd dist && (mkdir assets; trash assets/img; cp -r ../assets/img assets/img)",
     "docs": "node --experimental-modules scripts/dist/docs && (mkdir -p dist/assets/css; purgecss -c purgecss.config.js -o dist/assets/css)",
     "_postbuild": "pnpm copy && pnpm run docs",
     "build": "tsc -b src && pnpm _postbuild",
