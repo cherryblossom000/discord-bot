@@ -18,4 +18,4 @@ used internally.
 
 ## License
 
-[MIT](LICENSE) © 2020–2021 cherryblossom000
+[MIT](LICENSE) © 2019–2021 cherryblossom000
