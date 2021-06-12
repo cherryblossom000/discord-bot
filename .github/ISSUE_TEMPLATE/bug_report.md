@@ -9,7 +9,8 @@ assignees: ''
 
 <!--
 Thank you for submitting a bug report!
-Remember to provide as much information as possible to help us reproduce, diagnose, and fix the issue.
+Remember to provide as much information as possible to help us reproduce,
+diagnose, and fix the issue.
 -->
 
 <!-- A clear and concise description of what the bug is. -->
