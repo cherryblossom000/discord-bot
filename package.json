@@ -23,7 +23,7 @@
     "lint": "eslint --max-warnings 0 --ext ts,js .",
     "lint:dev": "pnpm lint -- --cache",
     "build": "tsc -b && pnpm _postbuild",
-    "_postbuild": "echo '{\"type\": \"module\"}' | tee {,packages/bot/}scripts/dist/package.json > /dev/null && pnpm m run _postbuild",
+    "_postbuild": "echo '{\"type\": \"module\"}' | tee scripts/dist/package.json > packages/bot/scripts/dist/package.json && pnpm m run _postbuild",
     "watch": "tsc -b -w",
     "clean": "trash '**/{*.tsbuildinfo,dist}' '!**/node_modules/**'",
     "test": "pnpm m run test",
