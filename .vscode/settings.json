@@ -5,7 +5,7 @@
   "[typescript]": {
     "editor.formatOnSave": true
   },
-  "jest.pathToConfig": "./packages/bot/jest.config.dev.js",
+  "jest.jestCommandLine": "pnpx jest -c ./packages/bot/jest.config.dev.js",
   "typescript.tsc.autoDetect": "off",
   "typescript.tsdk": "./node_modules/typescript/lib",
   "search.exclude": {
