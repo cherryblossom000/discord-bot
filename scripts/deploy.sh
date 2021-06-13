@@ -1,11 +1,11 @@
-#! /bin/bash
+#!/bin/bash
 set -xeuo pipefail
 
 # semantic-release
 pnpx multi-semantic-release
 
 # Update package.json (could have changed due to semantic-release) and remove
-# devDependencies so thhey aren't installed on Repl.it
+# devDependencies so they aren't installed on Repl.it
 node --experimental-modules scripts/dist/update-package
 
 (

@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 set -xeuo pipefail
 
 git commit -m "docs: update from travis build #$TRAVIS_BUILD_NUMBER [skip ci]" packages/bot/README.md
