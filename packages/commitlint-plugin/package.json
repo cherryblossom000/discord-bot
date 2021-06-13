@@ -20,6 +20,9 @@
     "build": "tsc -b",
     "watch": "pnpm build -- -w"
   },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
   "devDependencies": {
     "@commitlint/types": "^12.1.4"
   }

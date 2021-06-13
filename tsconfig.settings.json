@@ -9,6 +9,7 @@
     "module": "commonjs",
     "declarationMap": true,
     "sourceMap": true,
+    "importHelpers": true,
     "removeComments": true,
 
     "allowUnreachableCode": false,
