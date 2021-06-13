@@ -1,8 +1,0 @@
-use('db')
-
-const members = [{_id: '21', roles: 'def', nickname: 'asfd', x: 7}]
-db.guilds.insertOne({_id: '2', members})
-// db.guilds.updateOne({_id: '2'}, {members})
-
-db.guilds.updateOne({_id: '2'}, {$pull: {members: {_id: '21'}}})
-db.guilds.find()
