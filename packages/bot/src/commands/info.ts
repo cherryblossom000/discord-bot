@@ -8,7 +8,7 @@ const command: AnyCommand = {
   async execute({channel}) {
     await channel.send(`Version: \`${version}\`
 I am comrade Pingu. Noot noot.
-Kill all the capitalist scum!.
+Kill all the capitalist scum!
 I was created by cherryblossom#2661.`)
   }
 }
