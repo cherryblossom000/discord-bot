@@ -95,9 +95,10 @@ const readmeFile = new URL('README.md', rootFolder)
   await writeFile(readmeFile, newReadme)
 
   await mkdir(htmlFolder, {recursive: true})
-  const template = (
-    await readFile(new URL('template.html', scriptsFolder))
-  ).toString()
+  const template = await readFile(
+    new URL('template.html', scriptsFolder),
+    'utf8'
+  )
 
   const htmlMarkdownIt = new MarkdownIt({html: true})
   const writeHtml = async (
@@ -126,7 +127,7 @@ const readmeFile = new URL('README.md', rootFolder)
       `${title} - Comrade Pingu`,
       `${title} for Comrade Pingu`,
       `/${htmlPath}`,
-      `${(await readFile(new URL(mdPath, rootFolder))).toString()}
+      `${await readFile(new URL(mdPath, rootFolder), 'utf8')}
 #### [← back](/)`
     )
   }
