@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.3](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@3.1.2...@comrade-pingu/bot@3.1.3) (2021-06-17)
+
+
+### Bug Fixes
+
+* **bot:** fix typo in `info` command ([04042d7](https://github.com/cherryblossom000/comrade-pingu/commit/04042d7cf8ded53c087a0c65e90953d493132ccf))
+
 ## [3.1.2](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@3.1.1...@comrade-pingu/bot@3.1.2) (2021-06-08)
 
 
