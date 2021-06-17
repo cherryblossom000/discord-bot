@@ -16,9 +16,11 @@ Comrade Pingu’s default prefix is `.`.
 
 ## Documentation
 
+<!-- DOCS START -->
+
 | Command | Aliases | Description | Usage | Cooldown (s) |
 | - | - | - | - | - |
-| `calculate` | `c`, `calculator` | Calculates a maths expression | `.calculate <expression>`<br>`expression`<br>The expression to calculate. See https://mathjs.org/docs/expressions/syntax.html for more information. | 3 |
+| `calculate` | `c`, `calculator` | Calculates a maths expression. | `.calculate <expression>`<br>`expression`<br>The expression to calculate. See https://mathjs.org/docs/expressions/syntax.html for more information. | 3 |
 | `dog` | `d`, `randomdog` | Gets a random image of a dog from random.dog. | `.dog` | 3 |
 | `emoji` | `em` | Gets the image for an emoji. | `.emoji <emoji>`<br>`emoji`<br>The emoji to get the image of. | 3 |
 | `help` | `commands`, `h` | Lists all my commands or gets info about a specific command. | `.help [command]`<br>`command` (optional)<br>The command that you want to get info about. If omitted, all the commands will be listed. | 5 |
@@ -47,6 +49,8 @@ Comrade Pingu’s default prefix is `.`.
 | `uptime` | `up` | Gets my uptime. | `.uptime` | 3 |
 | `volume` | `v` | Changes or gets the volume of the music playing. | `.volume [volume]`<br><code>volume</code> (optional)<br>The new volume as a percentage to set it to. If omitted, the current volume will be shown. Can be one of the following:<ul><li><code>&lt;number&gt;[%]</code> Sets the current volume.</li><li><code>&lt;+\|-&gt;&lt;number&gt;[%]</code> Increments/decrements the volume.</li><li><code>reset</code> (or anything starting with <code>r</code>) Resets the volume to 100%.</li></ul> | 3 |
 | `website` | `site`, `w`, `web` | Sends my website. | `.website` | 3 |
+
+<!-- DOCS END -->
 
 ## Links
 

@@ -16,7 +16,7 @@ import type {Command} from '../../src/types'
 // eslint-disable-next-line import/max-dependencies -- due to hack for TS
 import type {} from '../../../../scripts/src/url'
 
-const {permissions} = _constants as typeof constants
+const {defaultPrefix, permissions} = _constants as typeof constants
 const {upperFirst} = _lodash as typeof lodash
 
 exitOnError()
@@ -47,7 +47,11 @@ const readmeFile = new URL('README.md', rootFolder)
           ).default.default
       )
   )
-  const usageMarkdownIt = new MarkdownIt({html: true, breaks: true})
+  const usageMarkdownIt = new MarkdownIt({
+    html: true,
+    breaks: true,
+    linkify: true
+  })
   const docs = [
     ['Command', 'Aliases', 'Description', 'Usage', 'Cooldown (s)'],
     ...commands
@@ -60,7 +64,7 @@ const readmeFile = new URL('README.md', rootFolder)
           : name === 'htkb'
           ? `${description}<br>![how to kiss boy](./assets/img/htkb.jpg)`
           : description,
-        `\`.${name}${
+        `\`${defaultPrefix}${name}${
           syntax === undefined ? '' : ` ${syntax.replace(/\|/gu, '\\|')}`
         }\`${
           usage === undefined
@@ -78,10 +82,9 @@ const readmeFile = new URL('README.md', rootFolder)
       ])
   ]
 
-  const newReadme = (await readFile(readmeFile))
-    .toString()
+  const newReadme = (await readFile(readmeFile, 'utf8'))
     .replace(
-      /(?<=## Documentation\n\n)[\s\S]+(?=\n\n## Links)/u,
+      /(?<=<!-- DOCS START -->\n\n)[\s\S]*(?=\n\n<!-- DOCS END -->)/u,
       markdownTable(docs, {alignDelimiters: false})
     )
     .replace(
@@ -135,8 +138,6 @@ const readmeFile = new URL('README.md', rootFolder)
     'Kill all the capitalist scum!',
     '',
     newReadme
-      // Replace the escaped pipe in play but not in volume
-      .replace('\\|', '|')
       .replace(/\.\/assets\/img/gu, '')
       .replace('LICENSE', 'license')
       .replace('CHANGELOG.md', 'changelog')

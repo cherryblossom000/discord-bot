@@ -10,7 +10,7 @@ type MathResult = _MathResult | ResultSet<_MathResult>
 const command: AnyCommand = {
   name: 'calculate',
   aliases: ['c', 'calculator'],
-  description: 'Calculates a maths expression',
+  description: 'Calculates a maths expression.',
   syntax: '<expression>',
   usage: `\`expression\`
 The expression to calculate. See https://mathjs.org/docs/expressions/syntax.html for more information.`,
