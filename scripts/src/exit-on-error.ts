@@ -1,6 +1,6 @@
-export const exit = (error: unknown): void => {
-  console.error(error)
+export const exit = (error: unknown): never => {
   process.exitCode = 1
+  throw error
 }
 
 export default (): void => {
