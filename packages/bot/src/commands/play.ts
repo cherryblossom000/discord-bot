@@ -48,8 +48,9 @@ The query to search on YouTube for.`,
         const {
           connection: {dispatcher}
         } = queue
-        if (dispatcher.paused) await resume(dispatcher, message)
-        else await channel.send('The music is already playing!')
+        await (dispatcher.paused
+          ? resume(dispatcher, message)
+          : channel.send('The music is already playing!'))
       } else {
         await message.reply(
           'you must specify a valid YouTube URL to play! Noot noot.'
@@ -167,12 +168,11 @@ The query to search on YouTube for.`,
     // Search and play first result
     const query = args.join(' ')
     const {videos} = await yts(query)
-    if (videos.length) await play(searchToVideo(videos[0]!))
-    else {
-      await channel.send(
-        `No results were found for ${query}. Try using a YouTube link instead.`
-      )
-    }
+    await (videos.length
+      ? play(searchToVideo(videos[0]!))
+      : channel.send(
+          `No results were found for ${query}. Try using a YouTube link instead.`
+        ))
   }
 }
 export default command

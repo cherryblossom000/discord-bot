@@ -8,12 +8,10 @@ export const resume = async (
   message: GuildMessage
 ): Promise<void> => {
   dispatcher.resume()
-  if (hasPermissions(message, 'READ_MESSAGE_HISTORY'))
-    await message.react(emojis.resume)
-  else {
-    await message.channel.send(`Resumed the music.
-I can react on your message instead if you enable the READ_MESSAGE_HISTORY permission.`)
-  }
+  await (hasPermissions(message, 'READ_MESSAGE_HISTORY')
+    ? message.react(emojis.resume)
+    : message.channel.send(`Resumed the music.
+I can react on your message instead if you enable the READ_MESSAGE_HISTORY permission.`))
 }
 
 const command: GuildOnlyCommand = {

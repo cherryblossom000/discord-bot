@@ -4,7 +4,7 @@ importers:
 
   .:
     specifiers:
-      '@cherryblossom/eslint-config': 15.0.0-beta.6
+      '@cherryblossom/eslint-config': 15.0.0-beta.10
       '@commitlint/config-conventional': ^12.1.4
       '@commitlint/travis-cli': ^12.1.4
       '@commitlint/types': ^12.1.4
@@ -44,7 +44,7 @@ importers:
       type-fest: ^1.2.2
       typescript: ^4.3.5
     devDependencies:
-      '@cherryblossom/eslint-config': 15.0.0-beta.6_aa635364254c490605b171eafa895ce7
+      '@cherryblossom/eslint-config': 15.0.0-beta.10_aa635364254c490605b171eafa895ce7
       '@commitlint/config-conventional': 12.1.4
       '@commitlint/travis-cli': 12.1.4
       '@commitlint/types': 12.1.4
@@ -543,8 +543,8 @@ packages:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
 
-  /@cherryblossom/eslint-config/15.0.0-beta.6_aa635364254c490605b171eafa895ce7:
-    resolution: {integrity: sha512-gS/+GeEcxuCc+/asyjizRtOHw+fhC5aNBfBXnnAv1RIz9Ns/Gs1oJ6q4/BPBWyG7Q5UaP/sqU53+vxed4ay03Q==}
+  /@cherryblossom/eslint-config/15.0.0-beta.10_aa635364254c490605b171eafa895ce7:
+    resolution: {integrity: sha512-/iDn5C7Pl0DW+USnSRUXCK9HiF+gpDclmKtUM/euMW8ydSxTgcOM4mk7YtN3JAbIIOWajhCdS4Seq5muU3vLQw==}
     engines: {node: '>=12'}
     peerDependencies:
       '@typescript-eslint/eslint-plugin': ^4.21
@@ -560,7 +560,7 @@ packages:
       eslint-plugin-prettier: ^3
       eslint-plugin-promise: '>=4 <6'
       eslint-plugin-react-hooks: ^4
-      eslint-plugin-unicorn: ^33
+      eslint-plugin-unicorn: ^34
       typescript: ^4.1.2
     peerDependenciesMeta:
       '@typescript-eslint/eslint-plugin':

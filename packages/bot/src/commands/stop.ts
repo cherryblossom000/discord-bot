@@ -13,12 +13,10 @@ const command: GuildOnlyCommand = {
 
     queue.voiceChannel.leave()
     message.client.queues.delete(message.guild.id)
-    if (hasPermissions(message, 'READ_MESSAGE_HISTORY'))
-      await message.react(emojis.stop)
-    else {
-      await message.channel.send(`Stopped the music.
-I can react on your message instead if you enable the READ_MESSAGE_HISTORY permission.`)
-    }
+    await (hasPermissions(message, 'READ_MESSAGE_HISTORY')
+      ? message.react(emojis.stop)
+      : message.channel.send(`Stopped the music.
+I can react on your message instead if you enable the READ_MESSAGE_HISTORY permission.`))
   }
 }
 export default command

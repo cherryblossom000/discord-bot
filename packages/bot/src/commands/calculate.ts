@@ -40,16 +40,16 @@ The expression to calculate. See https://mathjs.org/docs/expressions/syntax.html
         return
       }
     }
-    if (result) {
-      await message.channel.send(
-        result instanceof ResultSet
-          ? result.entries.length === 1
-            ? (result.entries[0] as MathResult).toString()
-            : result.entries.map(e => e.toString()).join('\n')
-          : result.toString(),
-        {code: true}
-      )
-    } else await message.reply('please provide an expression to calculate!')
+    await (result
+      ? message.channel.send(
+          result instanceof ResultSet
+            ? result.entries.length === 1
+              ? (result.entries[0] as MathResult).toString()
+              : result.entries.map(e => e.toString()).join('\n')
+            : result.toString(),
+          {code: true}
+        )
+      : message.reply('please provide an expression to calculate!'))
   }
 }
 export default command

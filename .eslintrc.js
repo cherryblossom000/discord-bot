@@ -3,7 +3,10 @@
 /** @type {import('eslint').Linter.Config & {parserOptions?: import('@typescript-eslint/parser').ParserOptions}} */
 const config = {
   root: true,
-  extends: ['@cherryblossom/eslint-config/node'],
+  extends: [
+    '@cherryblossom/eslint-config/node',
+    '@cherryblossom/eslint-config/node/12'
+  ],
   reportUnusedDisableDirectives: true,
   ignorePatterns: ['.history/', 'dist/', 'tests/coverage/'],
   parserOptions: {
@@ -31,16 +34,17 @@ const config = {
       }
     },
     {
-      files: ['scripts/**', 'packages/*/scripts/**'],
+      files: ['scripts/**/*.ts', 'packages/*/scripts/**/*.ts'],
+      extends: [
+        '@cherryblossom/eslint-config/ts/node/esm',
+        '@cherryblossom/eslint-config/node/12'
+      ],
       rules: {
         'node/no-extraneous-import': 0,
         'node/no-process-exit': 0,
         'node/no-unpublished-import': 0
       }
     }
-  ],
-  rules: {
-    'unicorn/prefer-module': 0
-  }
+  ]
 }
 module.exports = config

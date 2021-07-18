@@ -7,7 +7,6 @@ const config = {
   overrides: [
     {
       files: 'src/**/*.ts',
-      extends: '@cherryblossom/eslint-config/ts/node/esm',
       rules: {
         'import/no-extraneous-dependencies': 0,
         'import/no-unassigned-import': [
