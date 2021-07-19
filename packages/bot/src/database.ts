@@ -13,7 +13,7 @@ import type {
   UpdateOptions,
   UpdateResult
 } from 'mongodb'
-import type {Difficulty, Type} from './opentdb'
+import type {Difficulty, Type, Question as TriviaQuestion} from './opentdb'
 import type * as Discord from './types'
 
 type Override<T, U> = Omit<T, keyof U> & U
@@ -69,8 +69,7 @@ type DatabaseType<C extends CollectionsKeys> = Collections[C][0]
 type DiscordType<C extends CollectionsKeys> = Collections[C][1]
 
 /** A collection for this client. */
-// eslint-disable-next-line import/no-unused-modules -- it is used
-export type Collection<C extends CollectionsKeys> = C extends unknown
+type Collection<C extends CollectionsKeys> = C extends unknown
   ? MongoCollection<DatabaseType<C>>
   : never
 
@@ -163,9 +162,10 @@ const updateCache = <C extends CollectionsKeys>(
   value: Cached<C> | ((cached?: Cached<C>) => Cached<C> | undefined)
 ): void => {
   const cache = getCache(col)
-  const _id = resolveID(id)
-  const result = typeof value == 'function' ? value(cache.get(_id)) : value
-  result ? cache.set(_id, result) : cache.delete(_id)
+  const resolvedID = resolveID(id)
+  const result =
+    typeof value == 'function' ? value(cache.get(resolvedID)) : value
+  result ? cache.set(resolvedID, result) : cache.delete(resolvedID)
 }
 
 // #endregion
@@ -293,46 +293,34 @@ export const disableRejoin = async (
 ): Promise<void> => {
   const col = collection(database, 'guilds')
   await col.updateOne({_id: guild.id}, {$unset: {members: 1, rejoinFlags: 1}})
-  updateCache<'guilds'>(col, guild, cached => {
-    if (!cached) return
-    const {members, rejoinFlags, ...rest} = cached
-    return rest
-  })
 }
 
 export const fetchMemberRejoinInfo = async (
   guilds: Collection<'guilds'>,
   member: Discord.GuildMember
-): Promise<Pick<Member, 'nickname' | 'roles'>> => {
-  const {roles, nickname} =
-    (
-      await guilds
-        .aggregate<{member?: Member}>([
-          {$match: {_id: member.guild.id}},
-          {$limit: 1},
-          {
-            $project: {
-              _id: 0,
-              member: {
-                $first: {
-                  $filter: {
-                    input: '$members',
-                    cond: {$eq: ['$$this._id', member.id]}
-                  }
+): Promise<Pick<Member, 'nickname' | 'roles'>> =>
+  (
+    await guilds
+      .aggregate<{member?: Pick<Member, 'nickname' | 'roles'>}>([
+        {$match: {_id: member.guild.id}},
+        {$limit: 1},
+        {
+          $project: {
+            _id: 0,
+            member: {
+              $first: {
+                $filter: {
+                  input: '$members',
+                  cond: {$eq: ['$$this._id', member.id]}
                 }
               }
             }
-          },
-          {$project: {member: {roles: 1, nickname: 1}}}
-        ])
-        .next()
-    )?.member ?? {}
-  updateCache<'guilds'>(guilds, member.guild, cached => ({
-    ...cached,
-    members: [...(cached?.members ?? []), {_id: member.id, roles, nickname}]
-  }))
-  return {roles, nickname}
-}
+          }
+        },
+        {$project: {member: {roles: 1, nickname: 1}}}
+      ])
+      .next()
+  )?.member ?? {}
 
 const removeMemberArgs = ({
   guild,
@@ -348,12 +336,6 @@ export const removeMember = async (
 ): Promise<void> => {
   const {filter, update} = removeMemberArgs(member)
   await guilds.updateOne(filter, update)
-  updateCache<'guilds'>(guilds, member.guild, cached => ({
-    ...cached,
-    ...(cached?.members
-      ? {members: cached.members.filter(({_id}) => _id !== member.id)}
-      : {})
-  }))
 }
 
 export const addMemberRejoinInfo = async (
@@ -385,10 +367,6 @@ export const addMemberRejoinInfo = async (
       }
     }
   ])
-  updateCache<'guilds'>(guilds, guild, cached => ({
-    ...cached,
-    members: [...(cached?.members ?? []), member]
-  }))
 }
 
 export const fetchRejoinGuilds = (
@@ -400,6 +378,31 @@ export const fetchRejoinGuilds = (
   )
 
 // Trivia
+
+export const addTriviaQuestion = async (
+  database: Db,
+  user: DiscordUser | Snowflake,
+  {category, type, difficulty}: TriviaQuestion,
+  correct?: boolean
+): Promise<void> => {
+  const id = resolveID(user)
+  const users = collection(database, 'users')
+  const dbQuestion: Question = {
+    category,
+    type,
+    difficulty,
+    correct
+  }
+  await users.updateOne(
+    {_id: id},
+    {
+      $push: {
+        questionsAnswered: dbQuestion
+      }
+    },
+    {upsert: true}
+  )
+}
 
 export const triviaUsersCountQuery = async (
   guild: Discord.Guild

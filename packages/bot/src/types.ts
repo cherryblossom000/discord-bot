@@ -21,6 +21,19 @@ interface MessageManager extends D.MessageManager {
   ): Promise<D.Collection<D.Snowflake, Message>>
 }
 
+export type OptionsNoSplit = D.MessageOptions & {split?: false}
+export type OptionsWithSplit = D.MessageOptions & {split: D.SplitOptions | true}
+
+export type SendArgs =
+  | [
+      | D.APIMessage
+      | D.APIMessageContentResolvable
+      | D.MessageAdditions
+      | D.MessageOptions
+    ]
+  | [D.APIMessageContentResolvable, (D.MessageAdditions | D.MessageOptions)?]
+  | [D.StringResolvable, D.MessageAdditions | D.MessageOptions]
+
 interface TextChannel extends D.TextChannel {
   messages: MessageManager
   send(content: OptionsWithSplit): Promise<GuildMessage[]>
@@ -85,19 +98,6 @@ export interface Guild extends D.Guild {
   systemChannel: TextChannel | null
   member(user: D.UserResolvable): GuildMember | null
 }
-
-export type OptionsNoSplit = D.MessageOptions & {split?: false}
-export type OptionsWithSplit = D.MessageOptions & {split: D.SplitOptions | true}
-
-export type SendArgs =
-  | [
-      | D.APIMessage
-      | D.APIMessageContentResolvable
-      | D.MessageAdditions
-      | D.MessageOptions
-    ]
-  | [D.APIMessageContentResolvable, (D.MessageAdditions | D.MessageOptions)?]
-  | [D.StringResolvable, D.MessageAdditions | D.MessageOptions]
 
 /** A message from this client. */
 export interface BaseMessage extends D.Message {

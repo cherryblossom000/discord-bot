@@ -1,4 +1,3 @@
-import {MessageEmbed} from 'discord.js'
 import {fetchTimeZone} from '../database'
 import {startCase, upperFirst} from '../lodash'
 import {
@@ -11,6 +10,7 @@ import {
 import type {
   ClientPresenceStatus,
   ClientPresenceStatusData,
+  EmbedFieldData,
   PresenceStatus,
   User
 } from 'discord.js'
@@ -20,10 +20,12 @@ import type {DateFormatter} from '../utils'
 const formatStatus = (status: PresenceStatus): string =>
   status === 'dnd' ? 'Do Not Disturb' : upperFirst(status)
 
-/** Creates an embed with information about a user. */
-const getUserInfo = (user: User, formatDate: DateFormatter): MessageEmbed => {
-  const avatar = user.displayAvatarURL()
-  const {bot, createdAt, id, presence, tag} = user
+const userInfoFields = (
+  user: User,
+  avatarURL: string,
+  formatDate: DateFormatter
+): readonly EmbedFieldData[] => {
+  const {avatar, createdAt, id, presence} = user
   const clientStatuses = presence.clientStatus
     ? (Object.entries(presence.clientStatus) as readonly (readonly [
         keyof ClientPresenceStatusData,
@@ -31,112 +33,81 @@ const getUserInfo = (user: User, formatDate: DateFormatter): MessageEmbed => {
       ])[])
     : null
 
-  const embed = new MessageEmbed()
-    .setTitle(tag + (bot ? ' (Bot)' : ''))
-    .setThumbnail(avatar)
-    .addFields(
-      {name: 'ID', value: id},
-      {
-        name: 'Status',
-        value: `**${formatStatus(presence.status)}**${
-          clientStatuses?.length ?? 0
-            ? `\n${clientStatuses!
-                .map(([k, v]) => `${upperFirst(k)}: ${formatStatus(v)}`)
-                .join('\n')}`
-            : ''
-        }`
-      },
-      {name: 'Joined Discord', value: formatDate(createdAt)},
-      imageField(`Avatar${user.avatar == null ? ' (Default)' : ''}`, avatar)
-    )
-
   const flags = user.flags?.toArray()
-  if (flags?.length ?? 0) {
-    embed.addField(
-      'Flags',
-      flags!
-        .map(flag =>
-          startCase(flag)
-            .replace('Hypesquad', 'HypeSquad')
-            .replace('Bughunter', 'Bug Hunter')
-        )
-        .join('\n'),
-      false
-    )
-  }
+  const {activities, status} = presence
 
-  const {activities} = presence
-  if (activities.length) {
-    embed.addFields(
-      activities.map(activity => ({
-        name:
-          startCase(activity.type) +
-          (activity.type === 'LISTENING' ? ' to' : ''),
-        value:
-          activity.type === 'CUSTOM_STATUS'
-            ? (activity.emoji
-                ? `${
-                    activity.emoji.id == null
-                      ? activity.emoji.name
-                      : `:${activity.emoji.name}:`
-                  } `
-                : '') + activity.state!
-            : `${activity.name}${
-                activity.state == null
+  return [
+    {name: 'ID', value: id},
+    {
+      name: 'Status',
+      value: `**${formatStatus(status)}**${
+        clientStatuses?.length ?? 0
+          ? `\n${clientStatuses!
+              .map(([k, v]) => `${upperFirst(k)}: ${formatStatus(v)}`)
+              .join('\n')}`
+          : ''
+      }`
+    },
+    {name: 'Joined Discord', value: formatDate(createdAt)},
+    imageField(`Avatar${avatar == null ? ' (Default)' : ''}`, avatarURL),
+    ...(flags?.length ?? 0
+      ? [
+          {
+            name: 'Flags',
+            value: flags!
+              .map(flag =>
+                startCase(flag)
+                  .replace('Hypesquad', 'HypeSquad')
+                  .replace('Bughunter', 'Bug Hunter')
+              )
+              .join('\n')
+          }
+        ]
+      : []),
+    ...(activities.length
+      ? activities.map(activity => ({
+          name:
+            startCase(activity.type) +
+            (activity.type === 'LISTENING' ? ' to' : ''),
+          value:
+            activity.type === 'CUSTOM_STATUS'
+              ? (activity.emoji
+                  ? `${
+                      activity.emoji.id == null
+                        ? activity.emoji.name
+                        : `:${activity.emoji.name}:`
+                    } `
+                  : '') + activity.state!
+              : activity.name +
+                (activity.state == null ? '' : `\nState: ${activity.state}`) +
+                (activity.details == null
                   ? ''
-                  : `
-State: ${activity.state}`
-              }${
-                activity.details == null
+                  : `\nDetails: ${activity.details}`) +
+                (activity.url == null ? '' : `\n[URL](${activity.url})`) +
+                (Number.isNaN(activity.createdAt.getTime())
                   ? ''
-                  : `
-Details: ${activity.details}`
-              }${
-                activity.url == null
+                  : `\nStart: ${formatDate(activity.createdAt)}`) +
+                (activity.timestamps?.end
+                  ? `\nEnd: ${formatDate(activity.timestamps.end)}`
+                  : '') +
+                (activity.assets?.largeText == null
                   ? ''
-                  : `
-[URL](${activity.url})`
-              }${
-                Number.isNaN(activity.createdAt.getTime())
+                  : `\nLarge Text: ${activity.assets.largeText}`) +
+                (activity.assets?.largeImage == null
                   ? ''
-                  : `
-Start: ${formatDate(activity.createdAt)}`
-              }${
-                activity.timestamps?.end
-                  ? `
-End: ${formatDate(activity.timestamps.end)}`
-                  : ''
-              }${
-                activity.assets?.largeText == null
+                  : `\n[Large Image URL](${activity.assets.largeImageURL()!})`) +
+                (activity.assets?.smallText == null
                   ? ''
-                  : `
-Large Text: ${activity.assets.largeText}`
-              }${
-                activity.assets?.largeImage == null
+                  : `\nSmall Text: ${activity.assets.smallText}`) +
+                (activity.assets?.smallImage == null
                   ? ''
-                  : `
-[Large Image URL](${activity.assets.largeImageURL()!})`
-              }${
-                activity.assets?.smallText == null
-                  ? ''
-                  : `
-Small Text: ${activity.assets.smallText}`
-              }${
-                activity.assets?.smallImage == null
-                  ? ''
-                  : `
-[Small Image URL](${activity.assets.smallImageURL()!})`
-              }`
-      }))
-    )
-  }
-
-  return embed
+                  : `\n[Small Image URL](${activity.assets.smallImageURL()!})`)
+        }))
+      : [])
+  ]
 }
 
-/** Updates an embed with information about a guild member. */
-const addMemberInfo = (
-  embed: MessageEmbed,
+const memberInfoFields = (
   {
     displayColor,
     displayHexColor,
@@ -154,30 +125,38 @@ const addMemberInfo = (
     }
   }: GuildMember,
   formatDate: DateFormatter
-): void => {
-  if (joinedAt) embed.addField('Joined this Server', formatDate(joinedAt))
-  if (premiumSince) embed.addField('Boosting this server since', premiumSince)
-  if (nickname != null) embed.addField('Nickname', nickname)
-  if (roles.cache.size > 1) {
-    embed.addField(
-      'Roles',
-      roles.cache
-        .filter(r => r.name !== '@everyone')
-        .map(r => r.name)
-        .join('\n')
-    )
-    if (displayColor) embed.addField('Colour', displayHexColor)
-  }
-  if (channel) {
-    embed.addField(
-      'Voice',
-      `Channel: ${channel.name}
+): readonly EmbedFieldData[] => [
+  ...(joinedAt
+    ? [{name: 'Joined this Server', value: formatDate(joinedAt)}]
+    : []),
+  ...(premiumSince
+    ? [{name: 'Boosting this server since', value: premiumSince}]
+    : []),
+  ...(nickname === null ? [] : [{name: 'Nickname', value: nickname}]),
+  ...(roles.cache.size > 1
+    ? [
+        {
+          name: 'Roles',
+          value: roles.cache
+            .filter(r => r.name !== '@everyone')
+            .map(r => r.name)
+            .join('\n')
+        }
+      ]
+    : []),
+  ...(displayColor ? [{name: 'Colour', value: displayHexColor}] : []),
+  ...(channel
+    ? [
+        {
+          name: 'Voice',
+          value: `Channel: ${channel.name}
 Muted: ${formatBoolean(mute)}${serverMute === true ? ' (server)' : ''}
 Deafened: ${formatBoolean(deaf)}${serverDeaf === true ? ' (server)' : ''}
 Streaming: ${formatBoolean(streaming)}`
-    )
-  }
-}
+        }
+      ]
+    : [])
+]
 
 const command: AnyCommand = {
   name: 'profile',
@@ -197,17 +176,24 @@ You can mention the user or use their tag (for example \`Username#1234\`).`,
     const formatDate = createDateFormatter(
       await fetchTimeZone(database, message.author)
     )
-    const embed = getUserInfo(user, formatDate)
-      .setFooter(
-        `Requested by ${message.author.tag}`,
-        message.author.displayAvatarURL()
-      )
-      .setTimestamp()
-
+    const {bot, tag} = user
+    const avatarURL = user.displayAvatarURL()
     const member = message.guild?.member(user)
-    if (member) addMemberInfo(embed, member, formatDate)
-
-    await message.channel.send(embed)
+    await message.channel.send({
+      embed: {
+        title: tag + (bot ? ' (Bot)' : ''),
+        thumbnail: {url: avatarURL},
+        fields: [
+          ...userInfoFields(user, avatarURL, formatDate),
+          ...(member ? memberInfoFields(member, formatDate) : [])
+        ],
+        footer: {
+          text: `Requested by ${message.author.tag}`,
+          iconURL: message.author.displayAvatarURL()
+        },
+        timestamp: Date.now()
+      }
+    })
   }
 }
 export default command

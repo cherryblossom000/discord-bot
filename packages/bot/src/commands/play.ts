@@ -65,57 +65,57 @@ The query to search on YouTube for.`,
       return
     }
 
-    const play = async (song: Video): Promise<void> => {
-      const cleanup = (): void => {
-        queue!.voiceChannel.leave()
-        client.queues.delete(id)
-      }
+    const cleanup = (): void => {
+      queue!.voiceChannel.leave()
+      client.queues.delete(id)
+    }
 
-      const _errorHandler =
-        (internalMessage: string, userMessage: string) =>
-        async (error: unknown): Promise<void> => {
-          handleError(client, error, internalMessage)
-          // eslint-disable-next-line promise/no-promise-in-callback -- not a callback
-          await queue!.textChannel
-            .send(userMessage)
-            .catch(_error =>
-              handleError(
-                client,
-                _error,
-                `Error sending message to ${queue!.textChannel.id} (#${
-                  queue!.textChannel.name
-                }) about error in play command`
-              )
+    const mkErrorHandler =
+      (internalMessage: string, userMessage: string) =>
+      async (error: unknown): Promise<void> => {
+        handleError(client, error, internalMessage)
+        // eslint-disable-next-line promise/no-promise-in-callback -- not a callback
+        await queue!.textChannel
+          .send(userMessage)
+          .catch(innerError =>
+            handleError(
+              client,
+              innerError,
+              `Error sending message to ${queue!.textChannel.id} (#${
+                queue!.textChannel.name
+              }) about error in play command: ${internalMessage}`
             )
-          cleanup()
-        }
-
-      const playSong = async (_song?: Video): Promise<void> => {
-        if (!_song) {
-          cleanup()
-          return
-        }
-
-        const errorHandler = _errorHandler(
-          `Error playing song: https://youtu.be/${_song.id}`,
-          `Unfortunately, there was an error playing **${_song.title}** (link: https://youtub.be/${_song.id}). Noot noot.`
-        )
-
-        const dispatcher = queue!.connection
-          .play(ytdl(_song.id, {filter: 'audioonly', quality: 'highestaudio'}))
-          .on('finish', () => {
-            queue!.songs.shift()
-            playSong(queue!.songs[0]).catch(errorHandler)
-          })
-          .on('error', errorHandler)
-        const storedVolume = await fetchValue(database, 'guilds', id, 'volume')
-        if (storedVolume !== undefined && dispatcher.volume !== storedVolume)
-          dispatcher.setVolume(storedVolume)
-        await queue!.textChannel.send(
-          `Playing **${_song.title}** by ${_song.author}.`
-        )
+          )
+        cleanup()
       }
 
+    const playSong = async (song?: Video): Promise<void> => {
+      if (!song) {
+        cleanup()
+        return
+      }
+
+      const errorHandler = mkErrorHandler(
+        `Error playing song: https://youtu.be/${song.id}`,
+        `Unfortunately, there was an error playing **${song.title}** (link: https://youtub.be/${song.id}). Noot noot.`
+      )
+
+      const dispatcher = queue!.connection
+        .play(ytdl(song.id, {filter: 'audioonly', quality: 'highestaudio'}))
+        .on('finish', () => {
+          queue!.songs.shift()
+          playSong(queue!.songs[0]).catch(errorHandler)
+        })
+        .on('error', errorHandler)
+      const storedVolume = await fetchValue(database, 'guilds', id, 'volume')
+      if (storedVolume !== undefined && dispatcher.volume !== storedVolume)
+        dispatcher.setVolume(storedVolume)
+      await queue!.textChannel.send(
+        `Playing **${song.title}** by ${song.author}.`
+      )
+    }
+
+    const play = async (song: Video): Promise<void> => {
       if (queue) {
         queue.songs.push(song)
         await channel.send(`**${song.title}** has been added to the queue.`)
@@ -130,11 +130,11 @@ The query to search on YouTube for.`,
           connection: (await voiceChannel.join())
             .on(
               'failed',
-              _errorHandler(internalErrorMessage('failed'), errorMessage)
+              mkErrorHandler(internalErrorMessage('failed'), errorMessage)
             )
             .on(
               'error',
-              _errorHandler(internalErrorMessage('error'), errorMessage)
+              mkErrorHandler(internalErrorMessage('error'), errorMessage)
             )
             .on('warn', error =>
               handleError(

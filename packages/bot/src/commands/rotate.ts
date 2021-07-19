@@ -1,6 +1,6 @@
 import fetch from 'node-fetch'
 import sharp from 'sharp'
-import {checkPermissions, resolveMessage} from '../utils'
+import {checkPermissions, handleError, resolveMessage} from '../utils'
 import type {AnyCommand} from '../types'
 
 const command: AnyCommand = {
@@ -49,8 +49,14 @@ The amount (in degrees) to rotate the image clockwise. Negative values work as w
       buffer = await sharp(await (await fetch(attachment.url)).buffer())
         .rotate(rotation)
         .toBuffer()
-    } catch {
-      await message.reply('there was an error rotating the image!')
+    } catch (error: unknown) {
+      handleError(
+        message.client,
+        error,
+        `Error rotating image ${attachment.url}`,
+        message,
+        'there was an error rotating the image!'
+      )
       return
     }
 

@@ -1,6 +1,7 @@
 import {Collection, MessageEmbed, escapeMarkdown} from 'discord.js'
 import {emojis} from '../constants'
 import {
+  addTriviaQuestion,
   aggregateTriviaUsers,
   collection,
   fetchValue,
@@ -148,23 +149,22 @@ const leaderboardCommand = async (
 
   const generateEmbed = async (skip: number): Promise<MessageEmbed> => {
     const users = await getUsers(skip)
-
-    const embed = new MessageEmbed().setTitle(
-      `Showing users ${skip + 1}-${skip + users.length} out of ${totalUsers}`
-    )
-    embed.addFields(
-      await Promise.all(
-        users.map(async ({_id, correct, total, percentage}, i) => ({
-          name: `${i + skip + 1}. ${
-            (
-              await message.guild.members.fetch(_id)
-            ).user.tag
-          }`,
-          value: _formatPercentage(correct, total, percentage)
-        }))
+    return new MessageEmbed()
+      .setTitle(
+        `Showing users ${skip + 1}-${skip + users.length} out of ${totalUsers}`
       )
-    )
-    return embed
+      .addFields(
+        await Promise.all(
+          users.map(async ({_id, correct, total, percentage}, i) => ({
+            name: `${i + skip + 1}. ${
+              (
+                await message.guild.members.fetch(_id)
+              ).user.tag
+            }`,
+            value: _formatPercentage(correct, total, percentage)
+          }))
+        )
+      )
   }
 
   const embedMessage = await message.channel.send(await generateEmbed(0))
@@ -287,7 +287,7 @@ Gets the leaderboard for this server.`,
           {max: 1, time: 15_000}
         )
       ).first()
-      let correct
+      let correct: boolean | undefined
       if (collected) {
         const selectedAnswer = getSelectedAnswer(collected.emoji.name)
         correct = selectedAnswer === question.correctAnswer
@@ -307,20 +307,7 @@ Gets the leaderboard for this server.`,
         )
       }
 
-      await collection(database, 'users').updateOne(
-        {_id: author.id},
-        {
-          $push: {
-            questionsAnswered: {
-              category: question.category,
-              type: question.type,
-              difficulty: question.difficulty,
-              correct
-            }
-          }
-        },
-        {upsert: true}
-      )
+      await addTriviaQuestion(database, author, question, correct)
     }
 
     if (question.type === Type.TrueFalse) {

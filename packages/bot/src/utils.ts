@@ -1,12 +1,11 @@
 import path from 'path'
 import {homedir} from 'os'
-import _cleanStack from 'clean-stack'
+import originalCleanStack from 'clean-stack'
 import {
   Channel as DiscordChannel,
   Constants,
   DiscordAPIError,
-  Message as DiscordMessage,
-  MessageEmbed
+  Message as DiscordMessage
 } from 'discord.js'
 import yts from 'yt-search'
 import {dev, emojis, me} from './constants'
@@ -23,6 +22,7 @@ import type {
   Channel,
   GuildMessage,
   Message,
+  OptionsNoSplit,
   Queue,
   Snowflake,
   TextBasedChannel,
@@ -53,7 +53,7 @@ const stackBasePath = path.join(
 
 /** Cleans up an error stack. */
 const cleanStack = (stack: string): string =>
-  _cleanStack(stack, {basePath: stackBasePath})
+  originalCleanStack(stack, {basePath: stackBasePath})
 
 /** Cleans up the error stack on an error. */
 export const cleanErrorsStack = <T extends Error>(
@@ -256,7 +256,7 @@ export const resolveUser = async (
   return null
 }
 
-const errorHandler = (): null => null
+const constNull = (): null => null
 
 /** Resolves a message based on user input. */
 // TODO: refactor
@@ -288,7 +288,7 @@ export const resolveMessage = async (
     const resolvedChannel =
       channelOrID instanceof DiscordChannel
         ? channelOrID
-        : await client.channels.fetch(channelOrID).catch(errorHandler)
+        : await client.channels.fetch(channelOrID).catch(constNull)
     if (!resolvedChannel) {
       await message.reply(
         `channel with ID ${channelID} doesn’t exist or I don’t have permissions to view it!`
@@ -304,7 +304,7 @@ export const resolveMessage = async (
 
     const resolvedMessage = await resolvedChannel.messages
       .fetch(messageID)
-      .catch(errorHandler)
+      .catch(constNull)
     if (!resolvedMessage) {
       await message.reply(
         `message with ID ${messageID} in ${
@@ -325,7 +325,7 @@ export const resolveMessage = async (
     // TODO [discord.js@>=13]: change to check if type == 19 (inline reply)
     reference?.messageID != null && !flags.has('IS_CROSSPOST')
       ? // All messages replied to must be in the same channel
-        await channel.messages.fetch(reference.messageID).catch(errorHandler)
+        await channel.messages.fetch(reference.messageID).catch(constNull)
       : null
   if (referencedMessage) return referencedMessage
 
@@ -459,25 +459,26 @@ export const searchYoutube = async (
    * Generates the embed with videos and message content.
    * @param skip The index to start from.
    */
-  const generateEmbed = (skip: number): readonly [string, MessageEmbed] => {
+  const generateEmbed = (skip: number): readonly [string, OptionsNoSplit] => {
     current = videos.slice(skip, skip + 10)
-
-    const embed = new MessageEmbed().setTitle(
-      `Showing songs ${skip + 1}-${skip + current.length} out of ${
-        videos.length
-      }`
-    ).setDescription(`Click on the title for the YouTube link.
-  If you can’t be bothered to wait for the reactions you can just add the reaction yourself.`)
-    for (const [i, v] of current.entries()) {
-      embed.addField(
-        `${i + skip + 1}. ${v.author.name}
-  ${emojis.numbers[i + 1]}`,
-        `[${v.title}](${v.url})`,
-        true
-      )
-    }
-
-    return ['**Which song would you like to play?**', embed]
+    return [
+      '**Which song would you like to play?**',
+      {
+        embed: {
+          title: `Showing songs ${skip + 1}-${skip + current.length} out of ${
+            videos.length
+          }`,
+          description: `Click on the title for the YouTube link.
+If you can’t be bothered to wait for the reactions you can just add the reaction yourself.`,
+          fields: current.map((v, i) => ({
+            name: `${i + skip + 1}. ${v.author.name}
+${emojis.numbers[i + 1]}`,
+            value: `[${v.title}](${v.url})`,
+            inline: true
+          }))
+        }
+      }
+    ]
   }
 
   const embedMessage = await channel.send(...generateEmbed(0))

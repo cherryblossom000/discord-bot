@@ -34,8 +34,8 @@ const createTypeRule: {
   variableName: string,
   typeNames: Set<string> | string,
   typeMessage = `\`${typeNames as string}\``,
-  data?: (context: Readonly<TSESLint.RuleContext<'incorrectType', []>>) => T,
-  extraValidation?: (
+  getData?: (context: Readonly<TSESLint.RuleContext<'incorrectType', []>>) => T,
+  validate?: (
     typeAnnotation: TSESTree.TSTypeReference,
     report: ReportFn,
     data: T
@@ -54,12 +54,12 @@ const createTypeRule: {
       schema: []
     },
     create(context): TSESLint.RuleListener {
-      const _data = data?.(context)
+      const data = getData?.(context)
       const report: ReportFn = node =>
         context.report({
           node,
           messageId: 'incorrectType',
-          ...(data ? {data: _data} : {})
+          ...(getData ? {data} : {})
         })
 
       return {
@@ -89,8 +89,7 @@ const createTypeRule: {
             return
           }
 
-          if (extraValidation)
-            extraValidation(typeAnnotation.typeAnnotation, report, _data!)
+          if (validate) validate(typeAnnotation.typeAnnotation, report, data!)
         }
       }
     }

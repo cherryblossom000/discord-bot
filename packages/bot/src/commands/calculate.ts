@@ -1,11 +1,11 @@
 import {ResultSet, evaluate, simplify} from 'mathjs'
 import type {AnyCommand} from '../types'
 
-interface _MathResult {
+interface BaseMathResult {
   toString: () => string
 }
 
-type MathResult = _MathResult | ResultSet<_MathResult>
+type MathResult = BaseMathResult | ResultSet<BaseMathResult>
 
 const command: AnyCommand = {
   name: 'calculate',

@@ -86,8 +86,6 @@ const resetToken = async (token: string): Promise<string> => {
   return newToken
 }
 
-// d0a44779a366a59c29e8e102e5c882ec392bc7518fb22686c114869655fb81a5
-
 export const enum Type {
   MultipleChoice,
   TrueFalse
@@ -105,7 +103,7 @@ interface QuestionBase {
   question: string
 }
 
-type Question = QuestionBase &
+export type Question = QuestionBase &
   (
     | {
         type: Type.MultipleChoice

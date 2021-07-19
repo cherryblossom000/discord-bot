@@ -67,18 +67,18 @@ Do you have DMs disabled?`
     }
 
     // Specific command
-    const commandName = args[0]!.toLowerCase()
-    const _command =
-      commands.get(commandName) ??
-      commands.find(({aliases = []}) => aliases.includes(commandName))
+    const cmdName = args[0]!.toLowerCase()
+    const cmd =
+      commands.get(cmdName) ??
+      commands.find(({aliases = []}) => aliases.includes(cmdName))
 
     // Invalid command
-    if (!_command) {
+    if (!cmd) {
       await message.reply('that’s not a valid command. Noot noot.')
       return
     }
 
-    const {name, aliases, description, syntax, usage, cooldown} = _command
+    const {name, aliases, description, syntax, usage, cooldown} = cmd
     await channel.send(
       [
         `**Name:** ${name}`,
