@@ -314,16 +314,12 @@ export const fetchMemberRejoinInfo = async (
             $project: {
               _id: 0,
               member: {
-                // TODO: change to $first when server can be upgraded to 4.4
-                $arrayElemAt: [
-                  {
-                    $filter: {
-                      input: '$members',
-                      cond: {$eq: ['$$this._id', member.id]}
-                    }
-                  },
-                  0
-                ]
+                $first: {
+                  $filter: {
+                    input: '$members',
+                    cond: {$eq: ['$$this._id', member.id]}
+                  }
+                }
               }
             }
           },
