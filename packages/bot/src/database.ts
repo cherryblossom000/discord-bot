@@ -3,17 +3,20 @@ import {defaultPrefix, defaultTimeZone} from './constants'
 import type {Snowflake, User as DiscordUser} from 'discord.js'
 import type {
   Collection as MongoCollection,
-  Cursor,
+  Document,
   Db as MongoDb,
-  FilterQuery,
-  FindOneOptions,
+  Filter,
+  FindCursor,
+  FindOptions,
   MatchKeysAndValues,
-  UpdateOneOptions,
-  UpdateQuery,
-  UpdateWriteOpResult
+  UpdateFilter,
+  UpdateOptions,
+  UpdateResult
 } from 'mongodb'
 import type {Difficulty, Type} from './opentdb'
 import type * as Discord from './types'
+
+type Override<T, U> = Omit<T, keyof U> & U
 
 // #region Models
 
@@ -53,18 +56,6 @@ interface User {
 
 // #endregion
 
-// #region Utils
-
-type Override<T, U> = Omit<T, keyof U> & U
-
-declare global {
-  interface ObjectConstructor {
-    keys<K extends PropertyKey>(o: Record<K, unknown>): K[]
-  }
-}
-
-// #endregion
-
 // #region Collection
 
 /** A mapping of collection names to `[databaseType, discordType]`. */
@@ -85,9 +76,12 @@ export type Collection<C extends CollectionsKeys> = C extends unknown
 
 type AnyCollection = Collection<CollectionsKeys>
 
-export interface Db extends MongoDb {
-  collection<C extends CollectionsKeys>(name: C): Collection<C>
-}
+export type Db = Override<
+  MongoDb,
+  {
+    collection<C extends CollectionsKeys>(name: C): Collection<C>
+  }
+>
 
 type CollectionsCacheEntry = Override<
   Map<CollectionsKeys, AnyCollection>,
@@ -188,31 +182,31 @@ const findOne =
   async <K extends keyof Cached<C>>(
     id: DiscordType<C> | string,
     keys: readonly K[],
-    filter?: Omit<FilterQuery<DatabaseType<C>>, '_id'>,
-    options?: Omit<FindOneOptions<DatabaseType<C>>, 'projection'>
+    filter?: Omit<Filter<DatabaseType<C>>, '_id'>,
+    options?: Omit<FindOptions<DatabaseType<C>>, 'projection'>
   ): Promise<FindOneResult<C, K> | undefined> => {
     const _id = resolveID(id)
     const cache = getCache(col)
     const cached = cache.get(_id)
     const cachedKeys = cached ? Object.keys(cached) : []
-    const keysToFetch = keys.filter(key => !cachedKeys.includes(key))
+    const keysToFetch = keys.filter(
+      key => !(cachedKeys as readonly PropertyKey[]).includes(key)
+    )
     if (!keysToFetch.length) return cached as FindOneResult<C, K> | undefined
 
     const result = await (
       col as {
         findOne<U = DatabaseType<C>>(
-          filter: FilterQuery<DatabaseType<C>>,
-          options?: FindOneOptions<
-            U extends DatabaseType<C> ? DatabaseType<C> : U
-          >
+          filter: Filter<DatabaseType<C>>,
+          options?: FindOptions<U extends DatabaseType<C> ? DatabaseType<C> : U>
         ): Promise<U | null>
       }
     ).findOne(
-      {...filter, _id} as FilterQuery<DatabaseType<C>>,
+      {...filter, _id} as Filter<DatabaseType<C>>,
       {
         ...options,
         projection: Object.fromEntries(keysToFetch.map(key => [key, 1]))
-      } as FindOneOptions<
+      } as FindOptions<
         FindOneResult<C, K> extends DatabaseType<C>
           ? DatabaseType<C>
           : FindOneResult<C, K>
@@ -260,13 +254,13 @@ export const setValue = async <
   await (
     col as {
       updateOne(
-        filter: FilterQuery<DatabaseType<C>>,
-        update: Partial<DatabaseType<C>> | UpdateQuery<DatabaseType<C>>,
-        options?: UpdateOneOptions
-      ): Promise<UpdateWriteOpResult>
+        filter: Filter<DatabaseType<C>>,
+        update: Partial<DatabaseType<C>> | UpdateFilter<DatabaseType<C>>,
+        options?: UpdateOptions
+      ): Promise<Document | UpdateResult>
     }
   ).updateOne(
-    {_id} as FilterQuery<DatabaseType<C>>,
+    {_id} as Filter<DatabaseType<C>>,
     {$set: {[key]: value} as MatchKeysAndValues<DatabaseType<C>>},
     {upsert: true}
   )
@@ -348,8 +342,8 @@ const removeMemberArgs = ({
   guild,
   id
 }: Pick<Discord.GuildMember, 'guild' | 'id'>): {
-  filter: FilterQuery<Guild>
-  update: UpdateQuery<Guild>
+  filter: Filter<Guild>
+  update: UpdateFilter<Guild>
 } => ({filter: {_id: guild.id}, update: {$pull: {members: {_id: id}}}})
 
 export const removeMember = async (
@@ -403,7 +397,7 @@ export const addMemberRejoinInfo = async (
 
 export const fetchRejoinGuilds = (
   database: Db
-): Cursor<Pick<Guild, '_id' | 'rejoinFlags'>> =>
+): FindCursor<Pick<Guild, '_id' | 'rejoinFlags'>> =>
   collection(database, 'guilds').find(
     {rejoinFlags: {$exists: true}},
     {projection: {rejoinFlags: 1}}
@@ -413,14 +407,14 @@ export const fetchRejoinGuilds = (
 
 export const triviaUsersCountQuery = async (
   guild: Discord.Guild
-): Promise<FilterQuery<User>> => ({
+): Promise<Filter<User>> => ({
   _id: {$in: (await guild.members.fetch()).keyArray()},
   questionsAnswered: {$exists: true, $not: {$size: 0}}
 })
 
 export const triviaUsersCount = async (
   users: Collection<'users'>,
-  query: FilterQuery<User>
+  query: Filter<User>
 ): Promise<number> => users.countDocuments(query)
 
 export interface AggregatedTriviaUser {
@@ -432,7 +426,7 @@ export interface AggregatedTriviaUser {
 
 export const aggregateTriviaUsers = async (
   users: Collection<'users'>,
-  query: FilterQuery<User>,
+  query: Filter<User>,
   skip: number
 ): Promise<readonly AggregatedTriviaUser[]> =>
   users
@@ -470,12 +464,13 @@ export const aggregateTriviaUsers = async (
 
 /** Connects to the database. */
 export const connect = async (
-  user: string,
+  username: string,
   password: string,
   name: string
 ): Promise<Db> =>
   (
     await new MongoClient(
-      `mongodb+srv://${user}:${password}@comrade-pingu.vnvdt.mongodb.net/${name}?retryWrites=true&w=majority&useNewUrlParser=true&useUnifiedTopology=true`
+      `mongodb+srv://comrade-pingu.vnvdt.mongodb.net/${name}`,
+      {auth: {username, password}, retryWrites: true, w: 'majority'}
     ).connect()
   ).db(name)
