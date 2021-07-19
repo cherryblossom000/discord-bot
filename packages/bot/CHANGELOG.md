@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.4](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@3.1.3...@comrade-pingu/bot@3.1.4) (2021-07-19)
+
+
+### Bug Fixes
+
+* **bot/profile:** use correct grammar for competing status ([e13c0fe](https://github.com/cherryblossom000/comrade-pingu/commit/e13c0fe2fe74c58f277f4f3ba1c51e5a2bce30ef))
+
 ## [3.1.3](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@3.1.2...@comrade-pingu/bot@3.1.3) (2021-06-17)
 
 
