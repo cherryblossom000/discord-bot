@@ -68,7 +68,11 @@ const userInfoFields = (
       ? activities.map(activity => ({
           name:
             startCase(activity.type) +
-            (activity.type === 'LISTENING' ? ' to' : ''),
+            (activity.type === 'LISTENING'
+              ? ' to'
+              : activity.type === 'COMPETING'
+              ? ' in'
+              : ''),
           value:
             activity.type === 'CUSTOM_STATUS'
               ? (activity.emoji
