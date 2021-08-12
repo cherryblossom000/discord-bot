@@ -1,5 +1,12 @@
 # Changelog
 
+# [3.2.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@3.1.4...@comrade-pingu/bot@3.2.0) (2021-08-12)
+
+
+### Features
+
+* **bot/profile:** improve quality of avatar URL ([f36fd8d](https://github.com/cherryblossom000/comrade-pingu/commit/f36fd8d4c7877b5c02d8094bf102cc551f9d8d91))
+
 ## [3.1.4](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@3.1.3...@comrade-pingu/bot@3.1.4) (2021-07-19)
 
 
