@@ -181,7 +181,7 @@ You can mention the user or use their tag (for example \`Username#1234\`).`,
       await fetchTimeZone(database, message.author)
     )
     const {bot, tag} = user
-    const avatarURL = user.displayAvatarURL()
+    const avatarURL = user.displayAvatarURL({size: 4096})
     const member = message.guild?.member(user)
     await message.channel.send({
       embed: {
