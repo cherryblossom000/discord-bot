@@ -1,5 +1,12 @@
 # Changelog
 
+# [3.3.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@3.2.0...@comrade-pingu/bot@3.3.0) (2021-08-30)
+
+
+### Features
+
+* **bot/capitalist-scum:** trigger on `bourgeois` ([f145266](https://github.com/cherryblossom000/comrade-pingu/commit/f145266f66a15116492d491ad9b2427414b5d5d0))
+
 # [3.2.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@3.1.4...@comrade-pingu/bot@3.2.0) (2021-08-12)
 
 
