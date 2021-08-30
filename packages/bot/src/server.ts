@@ -10,7 +10,6 @@ import {connect, fetchRejoinGuilds} from './database'
 import {cleanErrorsStack, createResolve, handleError} from './utils'
 import type {AddressInfo} from 'net'
 import type {ClientEvents, EventListener} from './Client'
-// eslint-disable-next-line import/max-dependencies -- type imports
 import type {Command, RegexCommand} from './types'
 
 dotenv.config()

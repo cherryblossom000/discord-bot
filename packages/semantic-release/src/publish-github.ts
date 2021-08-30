@@ -13,7 +13,6 @@ import {isPlainObject, template} from 'lodash'
 import mime from 'mime'
 import editNotes from './edit-notes'
 import type {Octokit} from '@octokit/rest'
-// eslint-disable-next-line import/max-dependencies -- types
 import type {PublishPlugin} from './types'
 
 // https://github.com/semantic-release/github/blob/v7.2.0/lib/publish.js#L5

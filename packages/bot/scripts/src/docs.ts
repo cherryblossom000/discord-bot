@@ -13,7 +13,6 @@ import _lodash from '../../dist/src/lodash.js'
 import type * as constants from '../../src/constants'
 import type * as lodash from '../../src/lodash'
 import type {Command} from '../../src/types'
-// eslint-disable-next-line import/max-dependencies -- due to hack for TS
 import type {} from '../../../../scripts/src/url'
 
 exitOnError()
