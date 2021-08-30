@@ -12,7 +12,9 @@ testRegexCommand(
     'elonsss',
     'melon',
     'watermelon',
-    'musk'
+    'musk',
+    'bourgeois',
+    'bourgeoisie'
   ],
   ['capital', 'belong']
 )
