@@ -130,8 +130,9 @@ declare module '@semantic-release/github/lib/resolve-config' {
     {env}: Context
   ) => Override<
     PluginConfig,
-    {[K in 'assets' | 'assignees']?: CastArray<K>} &
-      {[K in 'labels' | 'releasedLabels']: CastArray<K> | false}
+    {
+      [K in 'labels' | 'releasedLabels']: CastArray<K> | false
+    } & {[K in 'assets' | 'assignees']?: CastArray<K>}
   > &
     RequiredPick<PluginConfig, 'failTitle'> & {githubToken: string}
   export = resolveConfig

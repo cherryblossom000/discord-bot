@@ -1,5 +1,3 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair -- for entire file
-/* eslint-disable @typescript-eslint/naming-convention -- declaration */
 declare module 'mathjax' {
   import type {LiteAdaptor} from 'mathjax-full/js/adaptors/liteAdaptor'
   import type {LiteElement} from 'mathjax-full/js/adaptors/lite/Element'

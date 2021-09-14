@@ -4,7 +4,7 @@ importers:
 
   .:
     specifiers:
-      '@cherryblossom/eslint-config': 15.0.0-beta.19
+      '@cherryblossom/eslint-config': 15.0.0-beta.21
       '@commitlint/config-conventional': ^13.1.0
       '@commitlint/travis-cli': ^13.1.0
       '@commitlint/types': ^13.1.0
@@ -43,7 +43,7 @@ importers:
       type-fest: ^1.4.0
       typescript: ^4.4.3
     devDependencies:
-      '@cherryblossom/eslint-config': 15.0.0-beta.19_08ae856cf0322e9e3f881d697dc63c1b
+      '@cherryblossom/eslint-config': 15.0.0-beta.21_08ae856cf0322e9e3f881d697dc63c1b
       '@commitlint/config-conventional': 13.1.0
       '@commitlint/travis-cli': 13.1.0
       '@commitlint/types': 13.1.0
@@ -563,8 +563,8 @@ packages:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
 
-  /@cherryblossom/eslint-config/15.0.0-beta.19_08ae856cf0322e9e3f881d697dc63c1b:
-    resolution: {integrity: sha512-ypQUm8OnKDeQgm2KqIyL5WDcMSqkeXNTYri/qErjyubknToTfZFssP+09KroMnO8YoDRZgRaYWLZ20ra6fEqoA==}
+  /@cherryblossom/eslint-config/15.0.0-beta.21_08ae856cf0322e9e3f881d697dc63c1b:
+    resolution: {integrity: sha512-GKLPoQUyLG5Ii/kliP1HvxH93rzrqkFMjczKeykjezq8Wjus9KUYz4zv9hynlYdSwDkQu+pn3qQJxqqO2hq21w==}
     engines: {node: '>=12'}
     peerDependencies:
       '@typescript-eslint/eslint-plugin': ^4.21

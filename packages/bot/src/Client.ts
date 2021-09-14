@@ -99,23 +99,25 @@ export default class Client extends D.Client {
           declare channel: TextBasedChannel
           declare guild: Guild | null
 
-          async reply(content: OptionsWithSplit): Promise<this[]>
-          async reply(
+          override async reply(content: OptionsWithSplit): Promise<this[]>
+          override async reply(
             options:
               | D.APIMessageContentResolvable
               | D.MessageAdditions
               | OptionsNoSplit
           ): Promise<this>
-          async reply(
+          override async reply(
             content: D.StringResolvable,
             options: OptionsWithSplit
           ): Promise<this[]>
-          async reply(
+          override async reply(
             content: D.StringResolvable,
             options: D.MessageAdditions | OptionsNoSplit
           ): Promise<this>
-          async reply(...[content, options]: SendArgs): Promise<this[] | this>
-          async reply(
+          override async reply(
+            ...[content, options]: SendArgs
+          ): Promise<this[] | this>
+          override async reply(
             content: unknown,
             options?: D.MessageAdditions | D.MessageOptions
           ): Promise<this[] | this> {
@@ -169,12 +171,12 @@ export default class Client extends D.Client {
               ]))
             )
               return
-            const _content: Readonly<SendArgs> = Array.isArray(content)
+            const contentArgs: Readonly<SendArgs> = Array.isArray(content)
               ? content
               : [content]
             const msg = await (reply
-              ? this.reply(..._content)
-              : this.channel.send(..._content))
+              ? this.reply(...contentArgs)
+              : this.channel.send(...contentArgs))
             await Promise.all(
               (Array.isArray(msg) ? msg : [msg]).map(async m => {
                 await m.react(emojis.delete)

@@ -1,5 +1,12 @@
 'use strict'
 
+// eslint-disable-next-line jsdoc/no-undefined-types -- unknown types
+const [, ...originalNamingConventionRules] =
+  /** @type {{rules: {'@typescript-eslint/naming-convention': [number, ...unknown[]]}}} */ (
+    // @ts-expect-error
+    require('@cherryblossom/eslint-config/ts/index')
+  ).rules['@typescript-eslint/naming-convention']
+
 /** @type {import('eslint').Linter.Config & {parserOptions?: import('@typescript-eslint/parser').ParserOptions}} */
 const config = {
   extends: ['plugin:@comrade-pingu/recommended'],
@@ -28,6 +35,26 @@ const config = {
       ],
       rules: {
         'import/no-unused-modules': 0
+      }
+    },
+    {
+      files: '**/*.ts',
+      rules: {
+        '@typescript-eslint/naming-convention': [
+          1,
+          ...originalNamingConventionRules,
+          {
+            selector: ['variable', 'parameter'],
+            filter: '^_id$',
+            format: null
+          }
+        ]
+      }
+    },
+    {
+      files: '**/*.d.ts',
+      rules: {
+        '@typescript-eslint/naming-convention': 0
       }
     }
   ]

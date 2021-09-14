@@ -48,17 +48,17 @@ const listener: EventListener<'message'> =
       'u'
     ).exec(content)?.[0]
     if (matchedPrefix !== undefined || !guild) {
-      const input = content.slice(matchedPrefix?.length ?? 0).trim()
+      const rawInput = content.slice(matchedPrefix?.length ?? 0).trim()
 
       // Exits if there is no input and the bot was mentioned
-      if (!input.length && matchedPrefix !== prefix) {
+      if (!rawInput.length && matchedPrefix !== prefix) {
         await channel.send(`Hi, I am Comrade Pingu. Noot noot.
 My prefix is \`${prefix}\`. Run \`${prefix}help\` for a list of commands.`)
         return
       }
 
       // Get args and command
-      const args = input.split(/\s+/u)
+      const args = rawInput.split(/\s+/u)
       const commandName = args.shift()!.toLowerCase()
 
       const checkCommand = async (command?: Command): Promise<boolean> => {
@@ -129,19 +129,15 @@ The syntax is: \`${prefix}${name}${
       }
 
       // Execute command
-      const _input = input.replace(new RegExp(`^${commandName}\\s*`, 'u'), '')
+      const input = rawInput.replace(new RegExp(`^${commandName}\\s*`, 'u'), '')
       try {
-        await command!.execute(
-          message as GuildMessage,
-          {args, input: _input},
-          database
-        )
+        await command!.execute(message as GuildMessage, {args, input}, database)
       } catch (error: unknown) {
         handleError(
           client,
           error,
           `Command \`${command!.name}\` failed${
-            _input ? ` with input ${_input}` : ''
+            input ? ` with input ${input}` : ''
           }.`,
           message
         )

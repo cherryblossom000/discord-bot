@@ -22,7 +22,8 @@ const config = {
       },
       rules: {
         camelcase: 0,
-        'id-length': 0
+        'id-length': 0,
+        'import/no-extraneous-dependencies': 0
       }
     },
     {

@@ -97,11 +97,11 @@ export const handleError: (
   messageOrChannel,
   response = 'unfortunately, there was an error trying to execute that command. Noot noot.'
 ): void => {
-  const errorHandler = (_error: unknown): void => {
-    if (_error instanceof Error) cleanErrorsStack(_error)
+  const errorHandler = (err: unknown): void => {
+    if (err instanceof Error) cleanErrorsStack(err)
     console.error(
       'The error',
-      _error,
+      err,
       'occurred when trying to handle the error',
       error
     )

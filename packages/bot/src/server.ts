@@ -24,9 +24,9 @@ const assetsFolder = path.join(path.dirname(__dirname), 'assets')
   const app = new Koa()
   app
     .use(async (ctx, next) => {
-      const _path = ctx.path.replace(/^\/|\/$/gu, '')
+      const cleanedPath = ctx.path.replace(/^\/|\/$/gu, '')
       let redirected: string
-      switch (_path) {
+      switch (cleanedPath) {
         case 'index':
         case 'index.html':
           redirected = '/'
@@ -100,17 +100,22 @@ const assetsFolder = path.join(path.dirname(__dirname), 'assets')
   )
 
   const importFolder = async <T>(
-    _path: string,
+    folderPath: string,
     callback: (command: T, file: string) => void
   ): Promise<void> => {
     try {
       await Promise.all(
-        (await readdir(resolve(_path)))
+        (
+          await readdir(resolve(folderPath))
+        )
           .filter(file => file.endsWith('.js'))
           .map(async file =>
             callback(
-              ((await import(path.join(resolve(_path), file))) as {default: T})
-                .default,
+              (
+                (await import(path.join(resolve(folderPath), file))) as {
+                  default: T
+                }
+              ).default,
               file.slice(0, -3)
             )
           )
@@ -119,7 +124,7 @@ const assetsFolder = path.join(path.dirname(__dirname), 'assets')
       handleError(
         client,
         error,
-        `\`importFolder\` failed with path \`${_path}\`.`
+        `\`importFolder\` failed with path \`${folderPath}\`.`
       )
     }
   }

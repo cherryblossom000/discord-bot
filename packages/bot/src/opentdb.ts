@@ -51,7 +51,7 @@ interface ResetTokenResponse extends TokenResponse {
 
 class OpenTDBError extends Error {
   static INVALID_PARAMETER = 'Invalid parameter'
-  name = 'OpenTDBError'
+  override name = 'OpenTDBError'
 
   constructor(message: string, public path: string) {
     super(message)

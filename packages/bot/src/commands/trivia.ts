@@ -16,15 +16,11 @@ import type {AggregatedTriviaUser, Db, Question} from '../database'
 import type {AnyCommand, Message} from '../types'
 
 /** Formats a percentage, with the percentage already calculated. */
-const _formatPercentage = (
+const formatPercentage = (
   numerator: number,
   denominator: number,
-  percentage: number
+  percentage: number = numerator / denominator
 ): string => `${numerator}/${denominator} (${(percentage * 100).toFixed(2)}%)`
-
-/** Formats a percentage. */
-const formatPercentage = (numerator: number, denominator: number): string =>
-  _formatPercentage(numerator, denominator, numerator / denominator)
 
 const statsCommand = async (
   message: Message,
@@ -51,9 +47,9 @@ const statsCommand = async (
     const reduceQuestions = <T extends keyof Question>(
       key: T
     ): Collection<Question[T], readonly [number, number]> =>
-      questions.reduce((result, {[key]: _key, correct}) => {
-        const [existingCorrect, total] = result.get(_key) ?? [0, 0]
-        return result.set(_key, [
+      questions.reduce((result, {[key]: value, correct}) => {
+        const [existingCorrect, total] = result.get(value) ?? [0, 0]
+        return result.set(value, [
           existingCorrect + (correct === true ? 1 : 0),
           total + 1
         ])
@@ -94,14 +90,14 @@ const statsCommand = async (
         })),
       {
         name: 'Best category',
-        value: `${categoriesMatching(bestCategory)}: ${_formatPercentage(
+        value: `${categoriesMatching(bestCategory)}: ${formatPercentage(
           ...bestCategory
         )}`,
         inline: true
       },
       {
         name: 'Worst category',
-        value: `${categoriesMatching(worstCategory)}: ${_formatPercentage(
+        value: `${categoriesMatching(worstCategory)}: ${formatPercentage(
           ...worstCategory
         )}`,
         inline: true
@@ -155,13 +151,13 @@ const leaderboardCommand = async (
       )
       .addFields(
         await Promise.all(
-          users.map(async ({_id, correct, total, percentage}, i) => ({
+          users.map(async ({_id: id, correct, total, percentage}, i) => ({
             name: `${i + skip + 1}. ${
               (
-                await message.guild.members.fetch(_id)
+                await message.guild.members.fetch(id)
               ).user.tag
             }`,
-            value: _formatPercentage(correct, total, percentage)
+            value: formatPercentage(correct, total, percentage)
           }))
         )
       )
@@ -246,13 +242,13 @@ Gets the leaderboard for this server.`,
     /**
      * Asks the question and handles the response.
      * @param fields The embed fields representing the answers.
-     * @param _emojis The emojis to react with.
+     * @param reactEmojis The emojis to react with.
      * @param getSelectedAnswer How to get the selected answer. This function takes the emoji as a parameter.
      * @param questionPrefix A prefix to put at the beginning of the question on the embed title.
      */
     const execute = async (
       fields: readonly EmbedFieldData[],
-      _emojis: readonly string[],
+      reactEmojis: readonly string[],
       getSelectedAnswer: (emoji: string) => boolean | string,
       questionPrefix = ''
     ): Promise<void> => {
@@ -277,13 +273,14 @@ Gets the leaderboard for this server.`,
       })
 
       // eslint-disable-next-line no-await-in-loop -- need to react individually
-      for (const emoji of _emojis) await msg.react(emoji)
+      for (const emoji of reactEmojis) await msg.react(emoji)
 
       const correctAnswer = format(question.correctAnswer)
 
       const collected = (
         await msg.awaitReactions(
-          ({emoji}, {id}) => _emojis.includes(emoji.name) && id === author.id,
+          ({emoji}, {id}) =>
+            reactEmojis.includes(emoji.name) && id === author.id,
           {max: 1, time: 15_000}
         )
       ).first()
