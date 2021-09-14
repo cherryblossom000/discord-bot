@@ -37,6 +37,11 @@ jobs:
       run: pnpm test
     - name: Update docs
       run: scripts/push-docs.sh
+      env:
+        GIT_AUTHOR_NAME: Github Actions
+        GIT_COMMITTER_NAME: Github Actions
+        GIT_AUTHOR_EMAIL: actions@github.com
+        GIT_COMMITTER_EMAIL: actions@github.com
 
     - name: Upload build data
       if: success() && github.event_name == 'push' && github.ref == 'refs/heads/main'
