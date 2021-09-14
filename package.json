@@ -8,7 +8,8 @@
     "packages/bot",
     "packages/commitlint-plugin",
     "packages/eslint-plugin",
-    "packages/semantic-release"
+    "packages/semantic-release",
+    "packages/url-shim"
   ],
   "homepage": "https://comrade-pingu--cherryblossom00.repl.co",
   "repository": "github:cherryblossom000/comrade-pingu",
