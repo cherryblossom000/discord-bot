@@ -4,7 +4,7 @@
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "dist",
-    "esModuleInterop": true
+    "module": "ESNext"
   },
   "references": [
     {"path": "../src"},

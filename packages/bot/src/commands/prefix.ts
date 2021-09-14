@@ -1,5 +1,5 @@
-import {defaultPrefix} from '../constants'
-import {fetchPrefix, setValue} from '../database'
+import {defaultPrefix} from '../constants.js'
+import {fetchPrefix, setValue} from '../database.js'
 import type {GuildOnlyCommand} from '../types'
 
 const command: GuildOnlyCommand = {

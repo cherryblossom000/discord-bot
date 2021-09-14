@@ -1,5 +1,5 @@
 import {Collection, MessageEmbed, escapeMarkdown} from 'discord.js'
-import {emojis} from '../constants'
+import {emojis} from '../constants.js'
 import {
   addTriviaQuestion,
   aggregateTriviaUsers,
@@ -7,10 +7,10 @@ import {
   fetchValue,
   triviaUsersCount,
   triviaUsersCountQuery
-} from '../database'
-import {shuffle} from '../lodash'
-import {checkPermissions, ignoreError, resolveUser} from '../utils'
-import {Difficulty, Type, fetchQuestion} from '../opentdb'
+} from '../database.js'
+import {shuffle} from '../lodash.js'
+import {Difficulty, Type, fetchQuestion} from '../opentdb.js'
+import {checkPermissions, ignoreError, resolveUser} from '../utils.js'
 import type {EmbedFieldData} from 'discord.js'
 import type {AggregatedTriviaUser, Db, Question} from '../database'
 import type {AnyCommand, Message} from '../types'

@@ -1,4 +1,4 @@
-import {me} from '../constants'
+import {me} from '../constants.js'
 import {
   MemberRejoinFlags,
   addMemberRejoinInfo,
@@ -8,8 +8,8 @@ import {
   removeMember,
   setValue,
   disableRejoin
-} from '../database'
-import {checkPermissions, handleError} from '../utils'
+} from '../database.js'
+import {checkPermissions, handleError} from '../utils.js'
 // eslint-disable-next-line import/no-named-default -- can't because type import
 import type {default as Client, Listener} from '../Client'
 import type {Db} from '../database'

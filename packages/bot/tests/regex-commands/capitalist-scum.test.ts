@@ -1,4 +1,4 @@
-import CapitalistScum from '../../src/regex-commands/capitalist-scum'
+import CapitalistScum from '../../src/regex-commands/capitalist-scum.js'
 import testRegexCommand from './test-regex-command'
 
 testRegexCommand(

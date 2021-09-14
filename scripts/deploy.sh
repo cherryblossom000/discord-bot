@@ -6,14 +6,17 @@ pnpx multi-semantic-release
 
 # Update package.json (could have changed due to semantic-release) and remove
 # devDependencies so they aren't installed on Repl.it
-node --experimental-modules scripts/dist/update-package
+node scripts/dist/update-package
 
 (
   cd packages/bot/dist
 
   # Add .replit
-  echo "language = 'nodejs'" > .replit
-  echo "run = 'node src/server'" >> .replit
+  echo "language = 'nodejs'
+run = 'node src/server'" > .replit
+
+  # Add replit.nix
+  echo '{ pkgs }: { deps = [ pkgs.nodejs-16_x ]; }' > replit.nix
 
   # Init repo
   git init

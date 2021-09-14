@@ -1,4 +1,4 @@
-import NootNoot from '../../src/regex-commands/noot-noot'
+import NootNoot from '../../src/regex-commands/noot-noot.js'
 import testRegexCommand from './test-regex-command'
 
 testRegexCommand(

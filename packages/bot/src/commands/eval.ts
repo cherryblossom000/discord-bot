@@ -1,7 +1,8 @@
-import {inspect} from 'util'
+import {createRequire} from 'node:module'
+import {inspect} from 'node:util'
 import Discord from 'discord.js'
 import escapeRegex from 'escape-string-regexp'
-import {me} from '../constants'
+import {me} from '../constants.js'
 import type {AnyCommand} from '../types'
 
 const kDiscardResult = Symbol('discard result')
@@ -49,7 +50,6 @@ The code to execute. The following variables are available:
 
     let result
     try {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports -- passing through require to eval
       result = await AsyncFunction(
         'message',
         'input',
@@ -58,7 +58,14 @@ The code to execute. The following variables are available:
         'require',
         '_',
         `return (${input.input})`
-      )(message, input, database, Discord, require, kDiscardResult)
+      )(
+        message,
+        input,
+        database,
+        Discord,
+        createRequire(import.meta.url),
+        kDiscardResult
+      )
     } catch (error: unknown) {
       await message.sendDeletableMessage({content: [`${error}`, {code: true}]})
       return

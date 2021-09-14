@@ -1,7 +1,7 @@
 'use strict'
 
 /** @type {import('eslint').Linter.Config & {parserOptions?: import('@typescript-eslint/parser').ParserOptions}} */
-const config = {
+module.exports = {
   parserOptions: {
     project: './tsconfig.json',
     tsconfigRootDir: __dirname
@@ -21,4 +21,3 @@ const config = {
     }
   ]
 }
-module.exports = config

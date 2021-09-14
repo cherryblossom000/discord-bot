@@ -6,7 +6,7 @@ import {
   goodAdjectives,
   negative,
   pinguNouns
-} from '../constants'
+} from '../constants.js'
 import type {RegexCommand} from '../types'
 
 const alternate = (strings: readonly string[]): string =>

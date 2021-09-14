@@ -1,5 +1,5 @@
 import {MongoClient} from 'mongodb'
-import {defaultPrefix, defaultTimeZone} from './constants'
+import {defaultPrefix, defaultTimeZone} from './constants.js'
 import type {Snowflake, User as DiscordUser} from 'discord.js'
 import type {
   Collection as MongoCollection,
@@ -371,11 +371,10 @@ export const addMemberRejoinInfo = async (
 
 export const fetchRejoinGuilds = (
   database: Db
-): FindCursor<Pick<Guild, '_id' | 'rejoinFlags'>> =>
-  collection(database, 'guilds').find(
-    {rejoinFlags: {$exists: true}},
-    {projection: {rejoinFlags: 1}}
-  )
+): FindCursor<Required<Pick<Guild, '_id' | 'rejoinFlags'>>> =>
+  collection(database, 'guilds').find<
+    Required<Pick<Guild, '_id' | 'rejoinFlags'>>
+  >({rejoinFlags: {$exists: true}}, {projection: {rejoinFlags: 1}})
 
 // Trivia
 

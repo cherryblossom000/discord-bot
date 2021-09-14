@@ -1,7 +1,7 @@
 'use strict'
 
 /** @type {import('eslint').Linter.Config & {parserOptions?: import('@typescript-eslint/parser').ParserOptions}} */
-const config = {
+module.exports = {
   extends: ['plugin:eslint-plugin/recommended'],
   plugins: ['eslint-plugin'],
   parserOptions: {
@@ -77,4 +77,3 @@ const config = {
     }
   ]
 }
-module.exports = config

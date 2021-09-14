@@ -1,8 +1,8 @@
 language: node_js
-node_js: v12.16.1
+node_js: 16
 branches:
   except: repl
-before_install: npm i -g pnpm@5
+before_install: npm i -g pnpm
 install: pnpm i
 jobs:
   script:

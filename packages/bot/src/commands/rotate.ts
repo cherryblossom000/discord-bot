@@ -1,6 +1,6 @@
 import fetch from 'node-fetch'
 import sharp from 'sharp'
-import {checkPermissions, handleError, resolveMessage} from '../utils'
+import {checkPermissions, handleError, resolveMessage} from '../utils.js'
 import type {AnyCommand} from '../types'
 
 const command: AnyCommand = {

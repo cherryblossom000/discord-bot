@@ -1,4 +1,4 @@
-import {resolve} from 'path'
+import {resolve} from 'node:path'
 import resolveConfig from '@semantic-release/changelog/lib/resolve-config'
 import {ensureFile, readFile, writeFile} from 'fs-extra'
 import editNotes from './edit-notes'

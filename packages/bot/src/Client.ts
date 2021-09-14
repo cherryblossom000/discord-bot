@@ -5,10 +5,10 @@ import D, {
   Util,
   Structures
 } from 'discord.js'
-import {emojis} from './constants'
-import {upperFirst} from './lodash'
-import {checkPermissions} from './utils'
-import type {Db} from './database'
+import {emojis} from './constants.js'
+import {upperFirst} from './lodash.js'
+import {checkPermissions} from './utils.js'
+import type {Db} from './database.js'
 import type {
   BaseMessage,
   Channel,

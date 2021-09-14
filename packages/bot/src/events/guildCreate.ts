@@ -1,5 +1,5 @@
+import {handleError} from '../utils.js'
 import type {EventListener} from '../Client'
-import {handleError} from '../utils'
 
 const listener: EventListener<'guildCreate'> =
   client => async (): Promise<void> =>

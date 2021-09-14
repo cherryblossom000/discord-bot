@@ -1,4 +1,4 @@
-import {fetchTimeZone, setValue} from '../database'
+import {fetchTimeZone, setValue} from '../database.js'
 import type {AnyCommand} from '../types'
 
 const command: AnyCommand = {
@@ -20,7 +20,7 @@ If omitted, shows the currently set timezone.`,
       return
     }
 
-    const timeZone = input.replace(/ /gu, '_')
+    const timeZone = input.replaceAll(' ', '_')
     try {
       // Verify that it's a valid time zone
       new Date().toLocaleString(undefined, {timeZone})

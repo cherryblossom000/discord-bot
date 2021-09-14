@@ -1,4 +1,4 @@
-import {permissions} from '../constants'
+import {permissions} from '../constants.js'
 import type {AnyCommand} from '../types'
 
 const command: AnyCommand = {

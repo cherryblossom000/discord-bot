@@ -1,5 +1,5 @@
 import fetch from 'node-fetch'
-import {upperFirst} from './lodash'
+import {upperFirst} from './lodash.js'
 
 // #region Response
 /* eslint-disable @typescript-eslint/naming-convention -- raw API response */

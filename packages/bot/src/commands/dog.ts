@@ -1,5 +1,5 @@
 import fetch from 'node-fetch'
-import {checkPermissions} from '../utils'
+import {checkPermissions} from '../utils.js'
 import type {AnyCommand} from '../types'
 
 const randomDog = 'https://random.dog/'

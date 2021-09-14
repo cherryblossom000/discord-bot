@@ -13,17 +13,18 @@
   "homepage": "https://comrade-pingu--cherryblossom00.repl.co",
   "repository": "github:cherryblossom000/comrade-pingu",
   "engines": {
-    "node": ">=12"
+    "node": ">=16.6"
   },
-  "main": "packages/bot/dist/src/server",
+  "type": "module",
+  "main": "packages/bot/dist/src/server.js",
   "scripts": {
     "prepare": "husky install",
-    "lint:config": "eslint --max-warnings 0 **/*.config*.js **/.eslintrc.js",
+    "lint:config": "eslint --max-warnings 0 **/*.config*.cjs **/.eslintrc.cjs",
     "lint:config:dev": "pnpm lint:config -- --cache",
     "lint": "eslint --max-warnings 0 --ext ts,js .",
     "lint:dev": "pnpm lint -- --cache",
-    "build": "tsc -b && pnpm _postbuild",
-    "_postbuild": "echo '{\"type\": \"module\"}' | tee scripts/dist/package.json > packages/bot/scripts/dist/package.json && pnpm m run _postbuild",
+    "build": "tsc -b && pnpm postbuild",
+    "postbuild": "echo '{\"type\": \"module\"}' | tee scripts/dist/package.json > packages/bot/scripts/dist/package.json && pnpm m run postbuild",
     "watch": "tsc -b -w",
     "clean": "trash '**/{*.tsbuildinfo,dist}' '!**/node_modules/**'",
     "test": "pnpm m run test",
@@ -38,12 +39,10 @@
     "@commitlint/types": "^13.1.0",
     "@comrade-pingu/commitlint-plugin": "link:packages/commitlint-plugin",
     "@comrade-pingu/semantic-release": "link:packages/semantic-release",
-    "@jest/types": "^27.1.1",
     "@semantic-release/changelog": "^5.0.1",
     "@semantic-release/git": "^9.0.1",
-    "@types/jest": "^27.0.1",
     "@types/markdown-it": "^12.2.1",
-    "@types/node": "~12.12.70",
+    "@types/node": "~16.9.1",
     "@typescript-eslint/eslint-plugin": "^4.31.1",
     "@typescript-eslint/parser": "^4.31.1",
     "commitizen": "^4.2.4",
@@ -59,7 +58,6 @@
     "eslint-plugin-unicorn": "^36.0.0",
     "husky": "^7.0.2",
     "is-ci": "^3.0.0",
-    "jest": "^27.2.0",
     "markdown-it": "^12.2.0",
     "markdown-table": "^3.0.1",
     "multi-semantic-release": "^2.8.5",
@@ -67,7 +65,6 @@
     "purgecss": "^4.0.3",
     "semantic-release": "^17.4.7",
     "trash-cli": "^4.0.0",
-    "ts-jest": "^27.0.5",
     "type-fest": "^1.4.0",
     "typescript": "^4.4.3"
   }

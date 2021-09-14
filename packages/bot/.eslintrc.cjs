@@ -8,7 +8,7 @@ const [, ...originalNamingConventionRules] =
   ).rules['@typescript-eslint/naming-convention']
 
 /** @type {import('eslint').Linter.Config & {parserOptions?: import('@typescript-eslint/parser').ParserOptions}} */
-const config = {
+module.exports = {
   extends: ['plugin:@comrade-pingu/recommended'],
   plugins: ['@comrade-pingu'],
   parserOptions: {
@@ -59,4 +59,3 @@ const config = {
     }
   ]
 }
-module.exports = config

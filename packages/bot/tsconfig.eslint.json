@@ -1,9 +1,6 @@
 {
   "extends": "../../tsconfig.settings.json",
   "exclude": ["**/node_modules/", "**/dist/"],
-  "compilerOptions": {
-    "esModuleInterop": true
-  },
   "references": [
     {"path": "./src"},
     {"path": "./tests"},

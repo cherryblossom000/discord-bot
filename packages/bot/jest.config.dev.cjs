@@ -1,15 +1,20 @@
 'use strict'
 
-const base = require('./jest.config')
+const base = require('./jest.config.cjs')
+
+/** @typedef {import('@jest/types').Config.ConfigGlobals} ConfigGlobals */
 
 /** @type {import('@jest/types').Config.InitialOptions} */
-const config = {
+module.exports = {
   ...base,
   collectCoverage: true,
   coverageReporters: ['lcov'],
   coveragePathIgnorePatterns: ['node_modules/'],
+  collectCoverageFrom: ['src/**/*.ts'],
+  coverageDirectory: '<rootDir>/tests/coverage',
   globals: {
     'ts-jest': {
+      ...base.globals['ts-jest'],
       diagnostics: {
         ignoreCodes: [
           // Left side of comma operator is unused and has no side effects.
@@ -35,4 +40,3 @@ const config = {
     }
   }
 }
-module.exports = config

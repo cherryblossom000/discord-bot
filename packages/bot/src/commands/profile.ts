@@ -1,12 +1,12 @@
-import {fetchTimeZone} from '../database'
-import {startCase, upperFirst} from '../lodash'
+import {fetchTimeZone} from '../database.js'
+import {startCase, upperFirst} from '../lodash.js'
 import {
   checkPermissions,
   createDateFormatter,
   formatBoolean,
   imageField,
   resolveUser
-} from '../utils'
+} from '../utils.js'
 import type {
   ClientPresenceStatus,
   ClientPresenceStatusData,
@@ -31,7 +31,7 @@ const userInfoFields = (
         keyof ClientPresenceStatusData,
         ClientPresenceStatus
       ])[])
-    : null
+    : undefined
 
   const flags = user.flags?.toArray()
   const {activities, status} = presence

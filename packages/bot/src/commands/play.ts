@@ -1,9 +1,11 @@
-import ytdl, {getBasicInfo, validateURL} from 'ytdl-core'
+import ytdl from 'ytdl-core'
 import yts from 'yt-search'
-import {fetchValue} from '../database'
-import {checkPermissions, handleError, searchYoutube} from '../utils'
-import {resume} from './resume'
+import {fetchValue} from '../database.js'
+import {checkPermissions, handleError, searchYoutube} from '../utils.js'
+import {resume} from './resume.js'
 import type {GuildOnlyCommand, Video} from '../types'
+
+const {getBasicInfo, validateURL} = ytdl
 
 /** Converts a `yts.VideoSearchResult` into a `Video`. */
 const searchToVideo = ({

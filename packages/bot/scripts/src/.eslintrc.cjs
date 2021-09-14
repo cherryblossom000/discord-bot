@@ -4,8 +4,8 @@
 const config = {
   overrides: [
     {
-      files: 'src/**/*.ts',
-      extends: '../../../scripts/.eslintrc.js'
+      files: '**/*.ts',
+      extends: '../../../../scripts/src/.eslintrc.cjs'
     }
   ]
 }

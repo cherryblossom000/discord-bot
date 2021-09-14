@@ -1,4 +1,4 @@
-import Cummunism from '../../src/regex-commands/cummunism'
+import Cummunism from '../../src/regex-commands/cummunism.js'
 import testRegexCommand from './test-regex-command'
 
 testRegexCommand(

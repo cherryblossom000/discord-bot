@@ -1,9 +1,7 @@
-import {createResolve, searchToVideo} from '../src/utils'
+import {searchToVideo} from '../src/utils.js'
 import type {Video} from '../src/types'
 
 describe('Helpers', () => {
-  test('createResolve', () =>
-    expect(createResolve('dirname')('path')).toBe('dirname/path'))
   test('searchToVideo', () =>
     expect(
       searchToVideo({

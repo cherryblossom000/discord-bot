@@ -1,5 +1,5 @@
-import {emojis} from '../constants'
-import {getQueue, hasPermissions} from '../utils'
+import {emojis} from '../constants.js'
+import {getQueue, hasPermissions} from '../utils.js'
 import type {GuildOnlyCommand} from '../types'
 
 const command: GuildOnlyCommand = {

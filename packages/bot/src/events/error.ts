@@ -1,4 +1,4 @@
-import {handleError} from '../utils'
+import {handleError} from '../utils.js'
 import type {EventListener} from '../Client'
 
 const listener: EventListener<'error'> =

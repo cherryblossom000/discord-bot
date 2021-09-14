@@ -1,5 +1,5 @@
 import sharp from 'sharp'
-import {checkPermissions, handleError} from '../utils'
+import {checkPermissions, handleError} from '../utils.js'
 import type {MathJax} from 'mathjax'
 import type {LiteElement} from 'mathjax-full/js/adaptors/lite/Element'
 import type {LiteText} from 'mathjax-full/js/adaptors/lite/Text'

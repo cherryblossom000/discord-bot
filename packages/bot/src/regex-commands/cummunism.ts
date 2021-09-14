@@ -1,4 +1,4 @@
-import {emojis} from '../constants'
+import {emojis} from '../constants.js'
 import type {RegexCommand} from '../types'
 
 const command: RegexCommand = {

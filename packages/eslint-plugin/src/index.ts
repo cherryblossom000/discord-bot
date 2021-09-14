@@ -1,18 +1,39 @@
-import {readdirSync} from 'fs'
-import * as path from 'path'
-import type {Linter, Rule} from 'eslint'
+import {basename} from 'node:path'
+import {AST_NODE_TYPES} from '@typescript-eslint/experimental-utils'
+import type {Linter} from 'eslint'
+import createDefaultExportRule from './create-default-export-rule.js'
+import createTypeRule from './create-type-rule.js'
 
-const rulesFolder = path.join(__dirname, 'rules')
-
-export const rules = Object.fromEntries(
-  readdirSync(path.join(__dirname, 'rules'))
-    .filter(file => file.endsWith('.js'))
-    .map(file => [
-      file.slice(0, -3),
-      // eslint-disable-next-line @typescript-eslint/no-require-imports -- needs to be synchronous
-      require(path.join(rulesFolder, file)) as Rule.RuleModule
-    ])
-)
+export const rules = {
+  'command-export-name': createDefaultExportRule('command'),
+  'correct-command-type': createTypeRule(
+    'command',
+    new Set(['AnyCommand', 'GuildOnlyCommand']),
+    '`AnyCommand` or `GuildOnlyCommand`'
+  ),
+  'correct-event-type': createTypeRule(
+    'listener',
+    'EventListener',
+    "`EventListener<'{{event}}'>`",
+    context => ({event: basename(context.getFilename().slice(0, -3))}),
+    (typeAnnotation, report, {event}) => {
+      const {typeParameters} = typeAnnotation
+      const typeParam = typeParameters?.params[0]
+      if (!typeParam) {
+        report(typeAnnotation)
+        return
+      }
+      if (
+        typeParam.type !== AST_NODE_TYPES.TSLiteralType ||
+        typeParam.literal.type !== AST_NODE_TYPES.Literal ||
+        typeParam.literal.value !== event
+      )
+        report(typeParam)
+    }
+  ),
+  'correct-regex-command-type': createTypeRule('command', 'RegexCommand'),
+  'event-export-name': createDefaultExportRule('listener')
+}
 
 export const configs: Record<string, Linter.Config> = {
   recommended: {

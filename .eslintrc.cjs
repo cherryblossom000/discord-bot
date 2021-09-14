@@ -1,11 +1,11 @@
 'use strict'
 
 /** @type {import('eslint').Linter.Config & {parserOptions?: import('@typescript-eslint/parser').ParserOptions}} */
-const config = {
+module.exports = {
   root: true,
   extends: [
     '@cherryblossom/eslint-config/node',
-    '@cherryblossom/eslint-config/node/12'
+    '@cherryblossom/eslint-config/node/16'
   ],
   reportUnusedDisableDirectives: true,
   ignorePatterns: ['.history/', 'dist/', 'tests/coverage/'],
@@ -16,7 +16,7 @@ const config = {
   },
   overrides: [
     {
-      files: ['**/*.config*.js', '**/.eslintrc.js'],
+      files: ['**/*.config*.cjs', '**/.eslintrc.cjs'],
       settings: {
         jsdoc: {mode: 'typescript'}
       },
@@ -48,4 +48,3 @@ const config = {
     }
   ]
 }
-module.exports = config

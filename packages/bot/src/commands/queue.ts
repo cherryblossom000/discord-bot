@@ -1,4 +1,4 @@
-import {getQueue} from '../utils'
+import {getQueue} from '../utils.js'
 import type {GuildOnlyCommand} from '../types'
 
 const command: GuildOnlyCommand = {

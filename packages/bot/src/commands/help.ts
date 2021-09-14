@@ -1,7 +1,7 @@
 import {Constants, DiscordAPIError} from 'discord.js'
-import {defaultPrefix} from '../constants'
-import {fetchPrefix} from '../database'
-import {handleError} from '../utils'
+import {defaultPrefix} from '../constants.js'
+import {fetchPrefix} from '../database.js'
+import {handleError} from '../utils.js'
 import type {AnyCommand} from '../types'
 
 const command: AnyCommand = {

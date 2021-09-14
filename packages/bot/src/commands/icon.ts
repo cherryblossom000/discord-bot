@@ -1,4 +1,4 @@
-import {checkPermissions} from '../utils'
+import {checkPermissions} from '../utils.js'
 import type {GuildOnlyCommand} from '../types'
 
 const command: GuildOnlyCommand = {

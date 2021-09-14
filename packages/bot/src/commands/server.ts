@@ -1,11 +1,11 @@
-import {fetchTimeZone} from '../database'
-import {startCase} from '../lodash'
+import {fetchTimeZone} from '../database.js'
+import {startCase} from '../lodash.js'
 import {
   checkPermissions,
   createDateFormatter,
   formatBoolean,
   imageField
-} from '../utils'
+} from '../utils.js'
 import type {Channel, EmbedFieldData, VoiceChannel} from 'discord.js'
 import type {GuildOnlyCommand} from '../types'
 

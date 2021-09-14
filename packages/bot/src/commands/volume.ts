@@ -1,5 +1,5 @@
-import {setValue} from '../database'
-import {getQueue} from '../utils'
+import {setValue} from '../database.js'
+import {getQueue} from '../utils.js'
 import type {GuildOnlyCommand} from '../types'
 
 const command: GuildOnlyCommand = {

@@ -1,9 +1,8 @@
-import path from 'path'
-import {imagesFolder} from '../constants'
-import {checkPermissions} from '../utils'
+import {imagesFolder} from '../constants.js'
+import {checkPermissions} from '../utils.js'
 import type {AnyCommand} from '../types'
 
-const filePath = path.join(imagesFolder, 'iwmelc.jpg')
+const filePath = new URL('iwmelc.jpg', imagesFolder).pathname
 
 const command: AnyCommand = {
   name: 'iwmelc',

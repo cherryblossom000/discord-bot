@@ -1,5 +1,5 @@
 // https://github.com/semantic-release/github/blob/v7.2.0/lib/publish.js#L1
-import path from 'path'
+import path from 'node:path'
 import {RELEASE_NAME} from '@semantic-release/github/lib/definitions/constants'
 import getClient from '@semantic-release/github/lib/get-client'
 import globAssets from '@semantic-release/github/lib/glob-assets'

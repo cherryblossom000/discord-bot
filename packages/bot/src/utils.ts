@@ -1,5 +1,5 @@
-import path from 'path'
-import {homedir} from 'os'
+import path from 'node:path'
+import {homedir} from 'node:os'
 import originalCleanStack from 'clean-stack'
 import {
   Channel as DiscordChannel,
@@ -8,7 +8,7 @@ import {
   Message as DiscordMessage
 } from 'discord.js'
 import yts from 'yt-search'
-import {dev, emojis, me} from './constants'
+import {dev, emojis, me} from './constants.js'
 import type {
   EmbedFieldData,
   MessageReaction,
@@ -38,12 +38,6 @@ declare global {
   }
 }
 
-/** Creates a function to easily resolve paths relative to the `__dirname`. */
-export const createResolve =
-  (dirname: string) =>
-  (...paths: readonly string[]): string =>
-    path.join(dirname, ...paths)
-
 const stackBasePath = path.join(
   homedir(),
   ...(dev
@@ -56,9 +50,7 @@ const cleanStack = (stack: string): string =>
   originalCleanStack(stack, {basePath: stackBasePath})
 
 /** Cleans up the error stack on an error. */
-export const cleanErrorsStack = <T extends Error>(
-  error: T
-): T & {stack: string} => {
+const cleanErrorsStack = <T extends Error>(error: T): T & {stack: string} => {
   error.stack = error.stack === undefined ? '' : cleanStack(error.stack)
   return error as T & {stack: string}
 }
@@ -241,7 +233,7 @@ export const resolveUser = async (
 
     // Find user
     const user = client.users.cache.find(u => u[key] === input)
-    if (!user || !guild!.member(user)) {
+    if (!user || !guild?.member(user)) {
       await message.reply(
         `‘${input}’ is not a valid user or is not a member of this guild!`
       )
@@ -386,7 +378,7 @@ export const createDateFormatter = (timeZone: string): DateFormatter => {
 }
 
 export const formatBoolean = (boolean: boolean | null): string =>
-  boolean === true ? 'Yes' : 'No'
+  boolean ?? false ? 'Yes' : 'No'
 
 export const imageField = (name: string, url: string): EmbedFieldData => ({
   name,

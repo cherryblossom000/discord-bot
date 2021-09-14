@@ -1,19 +1,12 @@
 {
-  "[javascript]": {
-    "editor.formatOnSave": true
-  },
-  "[typescript]": {
-    "editor.formatOnSave": true
-  },
-  "jest.jestCommandLine": "pnpx jest -c ./packages/bot/jest.config.dev.js",
+  "jest.jestCommandLine": "pnpm -C packages/bot test:dev",
   "typescript.tsc.autoDetect": "off",
   "typescript.tsdk": "./node_modules/typescript/lib",
   "search.exclude": {
-    ".history/": true,
     "dist/": true,
     "node_modules/": true,
     "pnpm-lock.yaml": true,
-    "tests/coverage/": true
+    "packages/bot/tests/coverage/": true
   },
   "cSpell.words": [
     "Deletable",
