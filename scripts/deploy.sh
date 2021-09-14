@@ -9,11 +9,13 @@ node scripts/dist/update-package
   cd packages/bot/dist
 
   # Add .replit
-  echo "language = 'nodejs'
-run = 'node src/server'" > .replit
+  echo "run = 'pnpm install; pnpm install && node src/server'" > .replit
 
   # Add replit.nix
-  echo '{ pkgs }: { deps = [ pkgs.nodejs-16_x ]; }' > replit.nix
+  echo '{ pkgs }: { deps = [ pkgs.nodejs-16_x pkgs.nodePackages_latest.pnpm ]; }' > replit.nix
+
+  # Add .gitignore
+  echo '/node_modules/' > .gitignore
 
   # Init repo
   git init
