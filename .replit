@@ -1,2 +1,1 @@
-language = 'nodejs'
-run = 'node src/server'
+run = 'pnpm install; pnpm install && node src/server'
