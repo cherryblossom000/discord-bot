@@ -17,7 +17,7 @@ run = 'node src/server'" > .replit
 
   # Init repo
   git init
-  git remote add origin "https://$GITHUB_TOKEN@${GITHUB_SERVER_URL##https://}/$GITHUB_REPOSITORY"
+  git remote add origin "https://${GITHUB_REPOSITORY%%/*}:$GITHUB_TOKEN@${GITHUB_SERVER_URL##https://}/$GITHUB_REPOSITORY"
   git checkout -b repl
   # Push to repl branch
   git add *.js .replit  replit.nix package.json **/*.js assets
