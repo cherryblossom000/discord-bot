@@ -3,6 +3,12 @@ on:
   push:
     branches-ignore: [repl]
   pull_request:
+  workflow_dispatch:
+    inputs:
+      debug:
+        description: debug with tmate
+        default: 'false'
+        required: false
 
 jobs:
   test:
@@ -44,7 +50,7 @@ jobs:
         GIT_COMMITTER_EMAIL: actions@github.com
 
     - name: Upload build data
-      if: success() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+      if: success() && (github.event_name == 'push' && github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch')
       uses: actions/upload-artifact@v2.2.4
       with:
         name: build-data
@@ -56,7 +62,7 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: test
     env:
       GIT_COMMITTER_NAME: cherryblossom
@@ -98,6 +104,9 @@ jobs:
       run: pnpx multi-semantic-release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - uses: mxschmitt/action-tmate@v3
+      if: github.event.inputs.debug == 'true'
 
     - name: Deploy
       run: scripts/deploy.sh
