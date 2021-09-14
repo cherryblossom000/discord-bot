@@ -20,7 +20,7 @@ run = 'node src/server'" > .replit
   git remote add origin "https://$GITHUB_TOKEN@${GITHUB_SERVER_URL##https://}/$GITHUB_REPOSITORY"
   git checkout -b repl
   # Push to repl branch
-  git add *.js .replit package.json **/*.js assets
+  git add *.js .replit  replit.nix package.json **/*.js assets
   git commit -m "chore: update from workflow run #$GITHUB_RUN_NUMBER"
   git push -f origin repl
 )
