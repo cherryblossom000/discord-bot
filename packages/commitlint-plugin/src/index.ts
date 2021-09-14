@@ -6,11 +6,14 @@ const failure = (message: string): RuleOutcome => [false, message]
 const hasExclamationMark = (header: string): boolean =>
   /^\w*\(.*\)!: .*$/u.test(header)
 
+const isBreakingChange = (footer: string | null): boolean =>
+  footer?.startsWith('BREAKING CHANGE:') ?? false
+
 const plugin: Plugin = {
   rules: {
     'breaking-change-exclamation-mark'({header, footer}, when): RuleOutcome {
-      const hasExclMark = hasExclamationMark(header)
-      if (footer !== null) {
+      if (isBreakingChange(footer)) {
+        const hasExclMark = hasExclamationMark(header)
         if (when === 'always' && !hasExclMark) {
           return failure(
             'breaking changes must have an exclamation mark after the type/scope'
@@ -26,12 +29,13 @@ const plugin: Plugin = {
     },
     'breaking-change-footer'({header, footer}, when): RuleOutcome {
       if (hasExclamationMark(header)) {
-        if (when === 'always' && footer === null) {
+        const isBreaking = isBreakingChange(footer)
+        if (when === 'always' && !isBreaking) {
           return failure(
             'breaking changes must include a BREAKING CHANGE footer'
           )
         }
-        if (when === 'never' && footer !== null) {
+        if (when === 'never' && isBreaking) {
           return failure(
             'breaking changes must not include a BREAKING CHANGE footer'
           )
