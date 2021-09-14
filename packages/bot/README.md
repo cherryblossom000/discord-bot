@@ -1,6 +1,6 @@
 # Comrade Pingu
 
-[![Build Status](https://api.travis-ci.com/cherryblossom000/comrade-pingu.svg?token=HuQX1k5oVBvh691pweEv&branch=main)](https://travis-ci.com/cherryblossom000/comrade-pingu)
+![CI](https://github.com/cherryblossom000/comrade-pingu/workflows/CI/badge.svg)
 
 *You may be looking for the [other website](http://comradepingu.glitch.me).*
 

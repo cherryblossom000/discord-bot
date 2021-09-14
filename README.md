@@ -1,5 +1,7 @@
 # Comrade Pingu
 
+![CI](https://github.com/cherryblossom000/comrade-pingu/workflows/CI/badge.svg)
+
 This is the monorepo for the Comrade Pingu Discord bot.
 
 ## Disclaimer
