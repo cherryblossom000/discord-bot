@@ -5,6 +5,7 @@
     {"path": "./packages/commitlint-plugin"},
     {"path": "./packages/eslint-plugin"},
     {"path": "./packages/semantic-release"},
+    {"path": "./packages/url-shim"},
     {"path": "./scripts"}
   ]
 }
