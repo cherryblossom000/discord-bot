@@ -22,5 +22,5 @@ module.exports = {
     '^discord.js$': '<rootDir>/node_modules/discord.js/esm/discord.mjs'
   },
   modulePathIgnorePatterns: ['<rootDir>/dist'],
-  testMatch: ['<rootDir>/url.d.ts', '<rootDir>/tests/**/*.test.ts']
+  testMatch: ['<rootDir>/tests/**/*.test.ts']
 }

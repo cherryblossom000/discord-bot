@@ -3,9 +3,9 @@
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "dist",
-    "types": ["node", "url"]
+    "types": ["node", "url-shim"]
   },
   "references": [
-    {"path": "../packages/url/tsconfig.json"}
+    {"path": "../packages/url-shim/tsconfig.json"}
   ]
 }

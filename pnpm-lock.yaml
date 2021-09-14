@@ -4,7 +4,7 @@ importers:
 
   .:
     specifiers:
-      '@cherryblossom/eslint-config': 15.0.0-beta.21
+      '@cherryblossom/eslint-config': 15.0.0-beta.22
       '@commitlint/config-conventional': ^13.1.0
       '@commitlint/travis-cli': ^13.1.0
       '@commitlint/types': ^13.1.0
@@ -14,7 +14,7 @@ importers:
       '@semantic-release/git': ^9.0.1
       '@types/markdown-it': ^12.2.1
       '@types/node': ~16.9.1
-      '@types/url': link:packages/url
+      '@types/url-shim': link:packages/url-shim
       '@typescript-eslint/eslint-plugin': ^4.31.1
       '@typescript-eslint/parser': ^4.31.1
       commitizen: ^4.2.4
@@ -40,7 +40,7 @@ importers:
       type-fest: ^1.4.0
       typescript: ^4.4.3
     devDependencies:
-      '@cherryblossom/eslint-config': 15.0.0-beta.21_08ae856cf0322e9e3f881d697dc63c1b
+      '@cherryblossom/eslint-config': 15.0.0-beta.22_08ae856cf0322e9e3f881d697dc63c1b
       '@commitlint/config-conventional': 13.1.0
       '@commitlint/travis-cli': 13.1.0
       '@commitlint/types': 13.1.0
@@ -50,7 +50,7 @@ importers:
       '@semantic-release/git': 9.0.1_semantic-release@17.4.7
       '@types/markdown-it': 12.2.1
       '@types/node': 16.9.1
-      '@types/url': link:packages/url
+      '@types/url-shim': link:packages/url-shim
       '@typescript-eslint/eslint-plugin': 4.31.1_e2d3c88d378335c4183365c112128ce9
       '@typescript-eslint/parser': 4.31.1_eslint@7.32.0+typescript@4.4.3
       commitizen: 4.2.4
@@ -86,14 +86,13 @@ importers:
       '@types/mathjax': ^0.0.37
       '@types/ms': ^0.7.31
       '@types/node': ~16.9.1
-      '@types/node-fetch': ^2.5.12
       '@types/sharp': ^0.29.1
-      '@types/url': workspace:0.0.0-development
+      '@types/url-shim': workspace:0.0.0-development
       '@types/yt-search': ^2.3.2
-      clean-stack: ^3.0.1
+      clean-stack: ^4.1.0
       discord.js: ^12.5.3
       dotenv: ^10.0.0
-      escape-string-regexp: ^4.0.0
+      escape-string-regexp: ^5.0.0
       jest: ^27.2.0
       koa: ^2.13.1
       koa-static: ^5.0.0
@@ -102,26 +101,26 @@ importers:
       mathjs: ^9.4.4
       mongodb: ^4.1.1
       ms: ^2.1.3
-      node-fetch: ^2.6.2
+      node-fetch: ^3.0.0
       sharp: ^0.29.1
       ts-jest: ^27.0.5
       tslib: ^2.3.1
-      type-fest: ^1.4.0
+      type-fest: ^2.3.2
       yt-search: ^2.10.1
       ytdl-core: ^4.9.1
     dependencies:
       '@discordjs/opus': 0.6.0
-      clean-stack: 3.0.1
+      clean-stack: 4.1.0
       discord.js: 12.5.3_@discordjs+opus@0.6.0
       dotenv: 10.0.0
-      escape-string-regexp: 4.0.0
+      escape-string-regexp: 5.0.0
       koa: 2.13.1
       koa-static: 5.0.0
       mathjax: 3.2.0
       mathjs: 9.4.4
       mongodb: 4.1.1
       ms: 2.1.3
-      node-fetch: 2.6.2
+      node-fetch: 3.0.0
       sharp: 0.29.1
       tslib: 2.3.1
       yt-search: 2.10.1
@@ -134,14 +133,13 @@ importers:
       '@types/mathjax': 0.0.37
       '@types/ms': 0.7.31
       '@types/node': 16.9.1
-      '@types/node-fetch': 2.5.12
       '@types/sharp': 0.29.1
-      '@types/url': link:../url
+      '@types/url-shim': link:../url-shim
       '@types/yt-search': 2.3.2
       jest: 27.2.0
       mathjax-full: 3.2.0
       ts-jest: 27.0.5_77a678c07bcdbdfd88181ff63fe325b2
-      type-fest: 1.4.0
+      type-fest: 2.3.2
 
   packages/commitlint-plugin:
     specifiers:
@@ -198,7 +196,7 @@ importers:
       '@types/node': 16.9.1
       '@types/semantic-release': 17.2.1
 
-  packages/url:
+  packages/url-shim:
     specifiers:
       '@types/node': ~16.9.1
     devDependencies:
@@ -573,8 +571,8 @@ packages:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
 
-  /@cherryblossom/eslint-config/15.0.0-beta.21_08ae856cf0322e9e3f881d697dc63c1b:
-    resolution: {integrity: sha512-GKLPoQUyLG5Ii/kliP1HvxH93rzrqkFMjczKeykjezq8Wjus9KUYz4zv9hynlYdSwDkQu+pn3qQJxqqO2hq21w==}
+  /@cherryblossom/eslint-config/15.0.0-beta.22_08ae856cf0322e9e3f881d697dc63c1b:
+    resolution: {integrity: sha512-K5rHrg5Hvzd/z3ykE6PJ8eW0iBPlK8NNVzcBsW+pOucoNw0v/Or+LwFmS2b1W+VBGXx9mztghLhawsgNnXTf+w==}
     engines: {node: '>=12'}
     peerDependencies:
       '@typescript-eslint/eslint-plugin': ^4.21
@@ -1565,13 +1563,6 @@ packages:
     resolution: {integrity: sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==}
     dev: true
 
-  /@types/node-fetch/2.5.12:
-    resolution: {integrity: sha512-MKgC4dlq4kKNa/mYrwpKfzQMB5X3ee5U6fSprkKpToBqBmX4nFZL9cW5jl6sWn+xpRJ7ypWh2yyqqr8UUCstSw==}
-    dependencies:
-      '@types/node': 12.12.70
-      form-data: 3.0.1
-    dev: true
-
   /@types/node/12.12.70:
     resolution: {integrity: sha512-i5y7HTbvhonZQE+GnUM2rz1Bi8QkzxdQmEv1LKOv4nWyaQk/gdeiTApuQR3PDJHX7WomAbpx2wlWSEpxXGZ/UQ==}
 
@@ -2376,11 +2367,11 @@ packages:
     resolution: {integrity: sha512-4diC9HaTE+KRAMWhDhrGOECgWZxoevMc5TlkObMqNSsVU62PYzXZ/SMTjzyGAFF1YusgxGcSWTEXBhp0CPwQ1A==}
     engines: {node: '>=6'}
 
-  /clean-stack/3.0.1:
-    resolution: {integrity: sha512-lR9wNiMRcVQjSB3a7xXGLuz4cr4wJuuXlaAEbRutGowQTmlp7R72/DOgN21e8jdwblMWl9UOJMJXarX94pzKdg==}
-    engines: {node: '>=10'}
+  /clean-stack/4.1.0:
+    resolution: {integrity: sha512-dxXQYI7mfQVcaF12s6sjNFoZ6ZPDQuBBLp3QJ5156k9EvUFClUoZ11fo8HnLQO241DDVntHEug8MOuFO5PSfRg==}
+    engines: {node: '>=12'}
     dependencies:
-      escape-string-regexp: 4.0.0
+      escape-string-regexp: 5.0.0
     dev: false
 
   /cli-color/1.2.0:
@@ -2740,6 +2731,11 @@ packages:
 
   /dasu/0.4.2:
     resolution: {integrity: sha512-3iZKDAKqv0APFwpqP40gpro5msM+pwhQN7IhB42mjbL1W4M2V6A+MJy7RhA8y6lUM+1mQoLls3OePidmzVbncQ==}
+    dev: false
+
+  /data-uri-to-buffer/3.0.1:
+    resolution: {integrity: sha512-WboRycPNsVw3B3TL559F7kuBUM4d8CgMEvk6xEJlOp7OBPjt6G7z8WMWlD2rOFZLk6OYfFIUGsCOWzcQH9K2og==}
+    engines: {node: '>= 6'}
     dev: false
 
   /data-urls/2.0.0:
@@ -3157,6 +3153,12 @@ packages:
   /escape-string-regexp/4.0.0:
     resolution: {integrity: sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==}
     engines: {node: '>=10'}
+    dev: true
+
+  /escape-string-regexp/5.0.0:
+    resolution: {integrity: sha512-/veY75JbMK4j1yjvuUxuVsiS/hr/4iHs9FTT6cgTexxdE0Ly/glccBAkloH/DofkjRbZU3bnoj38mOmhkZ0lHw==}
+    engines: {node: '>=12'}
+    dev: false
 
   /escodegen/2.0.0:
     resolution: {integrity: sha512-mmHKys/C8BFUGI+MAWNcSYoORYLMdPzjrknd2Vc+bUsjN5bXcr8EhrNB+UTqfL1y3I9c4fw2ihgtMPQLBRiQxw==}
@@ -3604,6 +3606,13 @@ packages:
     dependencies:
       bser: 2.1.1
     dev: true
+
+  /fetch-blob/3.1.2:
+    resolution: {integrity: sha512-hunJbvy/6OLjCD0uuhLdp0mMPzP/yd2ssd1t2FCJsaA7wkWhpbp9xfuNVpv7Ll4jFhzp6T4LAupSiV9uOeg0VQ==}
+    engines: {node: ^12.20 || >= 14.13}
+    dependencies:
+      web-streams-polyfill: 3.1.1
+    dev: false
 
   /figures/2.0.0:
     resolution: {integrity: sha1-OrGi0qYsi/tDGgyUy3l6L84nyWI=}
@@ -5706,6 +5715,14 @@ packages:
     resolution: {integrity: sha512-aLoxToI6RfZ+0NOjmWAgn9+LEd30YCkJKFSyWacNZdEKTit/ZMcKjGkTRo8uWEsnIb/hfKecNPEbln02PdWbcA==}
     engines: {node: 4.x || >=6.0.0}
 
+  /node-fetch/3.0.0:
+    resolution: {integrity: sha512-bKMI+C7/T/SPU1lKnbQbwxptpCrG9ashG+VkytmXCPZyuM9jB6VU+hY0oi4lC8LxTtAeWdckNCTa3nrGsAdA3Q==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    dependencies:
+      data-uri-to-buffer: 3.0.1
+      fetch-blob: 3.1.2
+    dev: false
+
   /node-fzf/0.5.3:
     resolution: {integrity: sha512-crN8rRfApu/GUrtKq+zJ6LueUyNAOJpFHxoT2Ru1Q+OYRa/F/H7CXvzcMrFc7D964yakYZEZ9XR3YbdSHXgyCw==}
     hasBin: true
@@ -7397,6 +7414,11 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
+  /type-fest/2.3.2:
+    resolution: {integrity: sha512-cfvZ1nOC/VqAt8bVOIlFz8x+HdDASpiFYrSi0U0nzcAFlOnzzQ/gsPg2PP1uqjreO7sQCtraYJHMduXSewQsSA==}
+    engines: {node: '>=12.20'}
+    dev: true
+
   /type-is/1.6.18:
     resolution: {integrity: sha512-TkRKr9sUTxEH8MdfuCSP7VizJyzRNMjj2J2do2Jr3Kym598JVdEksuzPQCnlFPW4ky9Q+iA+ma9BGm06XQBy8g==}
     engines: {node: '>= 0.6'}
@@ -7536,6 +7558,11 @@ packages:
     dependencies:
       makeerror: 1.0.11
     dev: true
+
+  /web-streams-polyfill/3.1.1:
+    resolution: {integrity: sha512-Czi3fG883e96T4DLEPRvufrF2ydhOOW1+1a6c3gNjH2aIh50DNFBdfwh2AKoOf1rXvpvavAoA11Qdq9+BKjE0Q==}
+    engines: {node: '>= 8'}
+    dev: false
 
   /webidl-conversions/5.0.0:
     resolution: {integrity: sha512-VlZwKPCkYKxQgeSbH5EyngOmRp7Ww7I9rQLERETtf5ofd9pGeswWiOtogpEO850jziPRarreGxn5QIiTqpb2wA==}
