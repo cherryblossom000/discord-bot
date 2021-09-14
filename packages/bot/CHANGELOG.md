@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.3.1](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@3.3.0...@comrade-pingu/bot@3.3.1) (2021-09-14)
+
+
+### Bug Fixes
+
+* **commitlint-plugin:** properly detect breaking changes in the footer ([d38421d](https://github.com/cherryblossom000/comrade-pingu/commit/d38421dc4a855caf918f3319f0950a6ddd13b0ce))
+
+
+### Features
+
+* force initial release for url-shim ([5c441a1](https://github.com/cherryblossom000/comrade-pingu/commit/5c441a1fdc019577eb40a3c80f4776c18851bfea))
+* url package ([522e3cc](https://github.com/cherryblossom000/comrade-pingu/commit/522e3cca7f899c44913cfd73b540f4636984e6a6))
+
 # [3.3.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@3.2.0...@comrade-pingu/bot@3.3.0) (2021-08-30)
 
 
