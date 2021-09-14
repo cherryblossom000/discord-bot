@@ -5,7 +5,7 @@ node_modules/
 .DS_Store
 .eslintcache
 .env
-pnpm-debug.log
+.pnpm-debug.log
 *.tsbuildinfo
 
 db/

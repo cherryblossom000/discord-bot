@@ -3,8 +3,9 @@
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "dist",
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "types": ["node"]
-  }
+    "types": ["node", "url"]
+  },
+  "references": [
+    {"path": "../packages/url/tsconfig.json"}
+  ]
 }

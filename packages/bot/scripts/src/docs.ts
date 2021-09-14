@@ -8,7 +8,6 @@ import exitOnError from '../../../../scripts/dist/exit-on-error.js'
 import {defaultPrefix, permissions} from '../../dist/src/constants.js'
 import {upperFirst} from '../../dist/src/lodash.js'
 import type {Command} from '../../src/types'
-import type {} from '../../../../scripts/src/url'
 
 exitOnError()
 
