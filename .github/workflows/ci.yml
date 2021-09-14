@@ -50,7 +50,7 @@ jobs:
         name: build-data
         path: |
           scripts/dist
-          packages/bot/dist
+          packages/*/dist
         if-no-files-found: error
 
   release:
