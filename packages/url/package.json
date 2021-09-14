@@ -1,0 +1,26 @@
+{
+  "name": "@types/url",
+  "version": "0.0.0-development",
+  "private": true,
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cherryblossom000/comrade-pingu",
+    "directory": "packages/url"
+  },
+  "types": "index.d.ts",
+  "engines": {
+    "node": ">=16"
+  },
+  "scripts": {
+    "lint": "eslint --max-warnings 0 --ext ts .",
+    "lint:dev": "pnpm lint -- --cache",
+    "build": "tsc -b",
+    "watch": "pnpm build -- -w"
+  },
+  "devDependencies": {
+    "@types/node": "~16.9.1"
+  }
+}
