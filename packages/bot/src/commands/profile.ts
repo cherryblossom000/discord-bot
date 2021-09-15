@@ -11,6 +11,7 @@ import type {
   ClientPresenceStatus,
   ClientPresenceStatusData,
   EmbedFieldData,
+  Presence,
   PresenceStatus,
   User
 } from 'discord.js'
@@ -25,29 +26,12 @@ const userInfoFields = (
   avatarURL: string,
   formatDate: DateFormatter
 ): readonly EmbedFieldData[] => {
-  const {avatar, createdAt, id, presence} = user
-  const clientStatuses = presence.clientStatus
-    ? (Object.entries(presence.clientStatus) as readonly (readonly [
-        keyof ClientPresenceStatusData,
-        ClientPresenceStatus
-      ])[])
-    : undefined
+  const {avatar, createdAt, id} = user
 
   const flags = user.flags?.toArray()
-  const {activities, status} = presence
 
   return [
     {name: 'ID', value: id},
-    {
-      name: 'Status',
-      value: `**${formatStatus(status)}**${
-        clientStatuses?.length ?? 0
-          ? `\n${clientStatuses!
-              .map(([k, v]) => `${upperFirst(k)}: ${formatStatus(v)}`)
-              .join('\n')}`
-          : ''
-      }`
-    },
     {name: 'Joined Discord', value: formatDate(createdAt)},
     imageField(`Avatar${avatar == null ? ' (Default)' : ''}`, avatarURL),
     ...(flags?.length ?? 0
@@ -63,7 +47,32 @@ const userInfoFields = (
               .join('\n')
           }
         ]
-      : []),
+      : [])
+  ]
+}
+
+const presenceFields = (
+  {activities, clientStatus, status}: Presence,
+  formatDate: DateFormatter
+): readonly EmbedFieldData[] => {
+  const clientStatuses = clientStatus
+    ? (Object.entries(clientStatus) as readonly (readonly [
+        keyof ClientPresenceStatusData,
+        ClientPresenceStatus
+      ])[])
+    : undefined
+
+  return [
+    {
+      name: 'Status',
+      value: `**${formatStatus(status)}**${
+        clientStatuses?.length ?? 0
+          ? `\n${clientStatuses!
+              .map(([k, v]) => `${upperFirst(k)}: ${formatStatus(v)}`)
+              .join('\n')}`
+          : ''
+      }`
+    },
     ...(activities.length
       ? activities.map(activity => ({
           name:
@@ -74,7 +83,7 @@ const userInfoFields = (
               ? ' in'
               : ''),
           value:
-            activity.type === 'CUSTOM_STATUS'
+            activity.type === 'CUSTOM'
               ? (activity.emoji
                   ? `${
                       activity.emoji.id == null
@@ -118,6 +127,7 @@ const memberInfoFields = (
     joinedAt,
     nickname,
     premiumSince,
+    presence,
     roles,
     voice: {
       channel,
@@ -130,11 +140,12 @@ const memberInfoFields = (
   }: GuildMember,
   formatDate: DateFormatter
 ): readonly EmbedFieldData[] => [
+  ...(presence ? presenceFields(presence, formatDate) : []),
   ...(joinedAt
     ? [{name: 'Joined this Server', value: formatDate(joinedAt)}]
     : []),
   ...(premiumSince
-    ? [{name: 'Boosting this server since', value: premiumSince}]
+    ? [{name: 'Boosting this server since', value: formatDate(premiumSince)}]
     : []),
   ...(nickname === null ? [] : [{name: 'Nickname', value: nickname}]),
   ...(roles.cache.size > 1
@@ -180,23 +191,25 @@ You can mention the user or use their tag (for example \`Username#1234\`).`,
     const formatDate = createDateFormatter(
       await fetchTimeZone(database, message.author)
     )
-    const {bot, tag} = user
+    const {bot, id, tag} = user
     const avatarURL = user.displayAvatarURL({size: 4096})
-    const member = message.guild?.member(user)
+    const member = message.guild?.members.cache.get(id)
     await message.channel.send({
-      embed: {
-        title: tag + (bot ? ' (Bot)' : ''),
-        thumbnail: {url: avatarURL},
-        fields: [
-          ...userInfoFields(user, avatarURL, formatDate),
-          ...(member ? memberInfoFields(member, formatDate) : [])
-        ],
-        footer: {
-          text: `Requested by ${message.author.tag}`,
-          iconURL: message.author.displayAvatarURL()
-        },
-        timestamp: Date.now()
-      }
+      embeds: [
+        {
+          title: tag + (bot ? ' (Bot)' : ''),
+          thumbnail: {url: avatarURL},
+          fields: [
+            ...userInfoFields(user, avatarURL, formatDate),
+            ...(member ? memberInfoFields(member, formatDate) : [])
+          ],
+          footer: {
+            text: `Requested by ${message.author.tag}`,
+            iconURL: message.author.displayAvatarURL()
+          },
+          timestamp: Date.now()
+        }
+      ]
     })
   }
 }

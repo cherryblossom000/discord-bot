@@ -15,14 +15,16 @@ const command: AnyCommand = {
     )
       return
     await message.channel.send({
-      embed: {
-        image: {
-          url:
-            randomDog +
-            (await (await fetch(`${randomDog}woof?filter=mp4`)).text())
-        },
-        footer: {text: 'Provided by random.dog.'}
-      }
+      embeds: [
+        {
+          image: {
+            url:
+              randomDog +
+              (await (await fetch(`${randomDog}woof?filter=mp4`)).text())
+          },
+          footer: {text: 'Provided by random.dog.'}
+        }
+      ]
     })
   }
 }

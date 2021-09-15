@@ -6,7 +6,7 @@ const command: AnyCommand = {
   aliases: ['add', 'inv', 'link'],
   description: 'Gets my invite link.',
   async execute({client, channel}) {
-    await channel.send(await client.generateInvite(permissions))
+    await channel.send(client.generateInvite({scopes: ['bot'], permissions}))
   }
 }
 export default command

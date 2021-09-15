@@ -2,7 +2,7 @@ import {Collection} from 'discord.js'
 import escapeRegex from 'escape-string-regexp'
 import {dev} from '../constants.js'
 import {fetchPrefix} from '../database.js'
-import {handleError, ignoreError} from '../utils.js'
+import {handleError, ignoreError, sendDeletableMessage} from '../utils.js'
 import type {Snowflake} from 'discord.js'
 import type {EventListener} from '../Client'
 import type {Command, GuildMessage, Message} from '../types'
@@ -33,7 +33,7 @@ const executeRegexCommands = async (message: Message): Promise<void> => {
 
 const cooldowns = new Collection<string, Collection<Snowflake, number>>()
 
-const listener: EventListener<'message'> =
+const listener: EventListener<'messageCreate'> =
   (client, database) =>
   // eslint-disable-next-line max-statements -- don't know how to shorten and isn't a typical, simple function
   async (message): Promise<void> => {
@@ -70,24 +70,25 @@ My prefix is \`${prefix}\`. Run \`${prefix}help\` for a list of commands.`)
 
         const {name, args: noArgs = 0, syntax, guildOnly = false} = command
         // Guild only
-        if (guildOnly && channel.type !== 'text') {
-          await message.sendDeletableMessage({
-            reply: true,
-            content:
-              'sorry, I can’t execute that command inside DMs. Noot noot.'
-          })
+        if (guildOnly && channel.type !== 'GUILD_TEXT') {
+          await sendDeletableMessage(
+            message,
+            'sorry, I can’t execute that command inside DMs. Noot noot.',
+            true
+          )
           return false
         }
 
         // If no args
         if (args.length < noArgs) {
-          await message.sendDeletableMessage({
-            reply: true,
-            content: `you didn’t provide enough arguments.
+          await sendDeletableMessage(
+            message,
+            `you didn’t provide enough arguments.
 The syntax is: \`${prefix}${name}${
               syntax === undefined ? '' : ` ${syntax}`
-            }\`. Noot noot.`
-          })
+            }\`. Noot noot.`,
+            true
+          )
           return false
         }
         return true
@@ -114,7 +115,7 @@ The syntax is: \`${prefix}${name}${
                 } before using the \`${command!.name}\` command. Noot noot.`
               )
               // Can't use delete with timeout because I need to return false before waiting 10 seconds
-              client.setTimeout(async () => {
+              setTimeout(async () => {
                 await msg.delete()
                 await message.delete().catch(ignoreError('MISSING_PERMISSIONS'))
               }, 5000)
@@ -122,7 +123,7 @@ The syntax is: \`${prefix}${name}${
             }
           }
           timestamps.set(author.id, now)
-          client.setTimeout(() => timestamps.delete(author.id), cooldownAmount)
+          setTimeout(() => timestamps.delete(author.id), cooldownAmount)
           return true
         }
         if (!(await checkCooldowns())) return

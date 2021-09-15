@@ -15,6 +15,12 @@ import type {default as Client, Listener} from '../Client'
 import type {Db} from '../database'
 import type {GuildOnlyCommand, Guild, GuildMessage} from '../types'
 
+const undefinedIfRejected = async <T>(
+  promise: Promise<T>
+): Promise<T | undefined> =>
+  // eslint-disable-next-line unicorn/no-useless-undefined -- undefined not void
+  promise.catch(() => undefined)
+
 export const addListeners = (
   client: Client,
   guild: Guild,
@@ -44,11 +50,12 @@ export const addListeners = (
             : [])
         ])
       } catch (error: unknown) {
+        const owner = await undefinedIfRejected(guild.fetchOwner())
         handleError(
           client,
           error,
           `Rejoin guildMemberAdd failed (member ${member.id}, flags ${flags})`,
-          (!guild.systemChannelFlags.has('WELCOME_MESSAGE_DISABLED') &&
+          (!guild.systemChannelFlags.has('SUPPRESS_JOIN_NOTIFICATIONS') &&
             guild.systemChannel) ||
             undefined,
           `Welcome, ${member}! Unfortunately, there was an error trying to ${
@@ -56,9 +63,9 @@ export const addListeners = (
           }${enabledAll ? ' and/or ' : ''}${
             enabledNickname ? 'set your nickname' : ''
           }.${
-            guild.owner
+            owner
               ? `
-${guild.owner} sorry, but you have to do this yourself.`
+${owner} sorry, but you have to do this yourself.`
               : ''
           }`
         )
@@ -81,12 +88,13 @@ ${guild.owner} sorry, but you have to do this yourself.`
         enabledRoles,
         enabledNickname,
         member
-      ).catch(error =>
+      ).catch(async error => {
+        const owner = await undefinedIfRejected(guild.fetchOwner())
         handleError(
           client,
           error,
           `Rejoin guildMemberRemove failed (member ${member.id}, flags ${flags})`,
-          (!guild.systemChannelFlags.has('WELCOME_MESSAGE_DISABLED') &&
+          (!guild.systemChannelFlags.has('SUPPRESS_JOIN_NOTIFICATIONS') &&
             guild.systemChannel) ||
             undefined,
           `${
@@ -96,9 +104,9 @@ ${guild.owner} sorry, but you have to do this yourself.`
           }${enabledAll ? ' and/or ' : ''}${
             enabledNickname ? 'nickname' : ''
           }.${
-            guild.owner
+            owner
               ? `
-  ${guild.owner} sorry, but when they rejoin, you may have to manually ${
+  ${owner} sorry, but when they rejoin, you may have to manually ${
                   enabledRoles ? 'assign their roles' : ''
                 }${enabledAll ? ' and/or ' : ''}${
                   enabledNickname ? 'set their nickname' : ''
@@ -106,7 +114,7 @@ ${guild.owner} sorry, but you have to do this yourself.`
               : ''
           }`
         )
-      )
+      })
     }
   }
   client
@@ -135,7 +143,7 @@ const getRejoinStatus = async (
 
 const checkIfAdmin = async (message: GuildMessage): Promise<boolean> => {
   if (
-    message.member.hasPermission('ADMINISTRATOR') &&
+    message.member.permissions.has('ADMINISTRATOR') &&
     message.author.id !== me
   ) {
     await message.reply(

@@ -45,30 +45,28 @@ app
   .use(serve(new URL('img/', assetsFolder).pathname))
 
 const client = new Client({
-  disableMentions: 'everyone',
-  ws: {
-    intents: [
-      // Guild create (logging in, presence)
-      'GUILDS',
-      // Roles and nicknames changing, members leaving and joining (rejoin),
-      // fetching of members for trivia leaderboard
-      'GUILD_MEMBERS',
-      // Emoji command
-      'GUILD_EMOJIS',
-      // Guild reactions
-      'GUILD_MESSAGE_REACTIONS',
-      // Members joining voice channels
-      'GUILD_VOICE_STATES',
-      // Presences in profile
-      'GUILD_PRESENCES',
-      // Guild commands
-      'GUILD_MESSAGES',
-      // DM commands
-      'DIRECT_MESSAGES',
-      // DM reactions
-      'DIRECT_MESSAGE_REACTIONS'
-    ]
-  }
+  allowedMentions: {parse: ['roles', 'users']},
+  intents: [
+    // Guild create (logging in, presence)
+    'GUILDS',
+    // Roles and nicknames changing, members leaving and joining (rejoin),
+    // fetching of members for trivia leaderboard
+    'GUILD_MEMBERS',
+    // Emoji command
+    'GUILD_EMOJIS_AND_STICKERS',
+    // Guild reactions
+    'GUILD_MESSAGE_REACTIONS',
+    // Members joining voice channels
+    'GUILD_VOICE_STATES',
+    // Presences in profile
+    'GUILD_PRESENCES',
+    // Guild commands
+    'GUILD_MESSAGES',
+    // DM commands
+    'DIRECT_MESSAGES',
+    // DM reactions
+    'DIRECT_MESSAGE_REACTIONS'
+  ]
 })
 
 // Handle promise rejections and uncaught exceptions
@@ -130,7 +128,7 @@ const importFolder = async <T>(
 
 // Ready
 client.once('ready', async () => {
-  await client.setActivity()
+  client.setActivity()
 
   // Initialise rejoin listeners
   // eslint-disable-next-line unicorn/no-array-for-each -- not array

@@ -42,11 +42,13 @@ The amount (in degrees) to rotate the image clockwise. Negative values work as w
       return
     }
 
-    const typingPromise = message.channel.startTyping()
+    await message.channel.sendTyping()
 
     let buffer: Buffer
     try {
-      buffer = await sharp(await (await fetch(attachment.url)).buffer())
+      buffer = await sharp(
+        Buffer.from(await (await fetch(attachment.url)).arrayBuffer())
+      )
         .rotate(rotation)
         .toBuffer()
     } catch (error: unknown) {
@@ -59,9 +61,6 @@ The amount (in degrees) to rotate the image clockwise. Negative values work as w
       )
       return
     }
-
-    message.channel.stopTyping()
-    await typingPromise
 
     await message.channel.send({
       content:

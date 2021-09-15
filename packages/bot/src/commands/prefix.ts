@@ -13,7 +13,7 @@ The text that you want to set the prefix to. If omitted, displays the current pr
 The default prefix is \`${defaultPrefix}\`.`,
   async execute(message, {args: [newPrefix]}, database) {
     const {channel, member, guild} = message
-    if (!member.hasPermission('ADMINISTRATOR')) {
+    if (!member.permissions.has('ADMINISTRATOR')) {
       await message.reply(
         'you must be an admin to run this command. Noot noot.'
       )

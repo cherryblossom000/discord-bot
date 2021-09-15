@@ -1,4 +1,4 @@
-import {Collection, MessageEmbed, escapeMarkdown} from 'discord.js'
+import {Collection, MessageEmbed, Util} from 'discord.js'
 import {emojis} from '../constants.js'
 import {
   addTriviaQuestion,
@@ -10,7 +10,12 @@ import {
 } from '../database.js'
 import {shuffle} from '../lodash.js'
 import {Difficulty, Type, fetchQuestion} from '../opentdb.js'
-import {checkPermissions, ignoreError, resolveUser} from '../utils.js'
+import {
+  checkPermissions,
+  ignoreError,
+  resolveUser,
+  sendDeletableMessage
+} from '../utils.js'
 import type {EmbedFieldData} from 'discord.js'
 import type {AggregatedTriviaUser, Db, Question} from '../database'
 import type {AnyCommand, Message} from '../types'
@@ -67,10 +72,7 @@ const statsCommand = async (
       number,
       number
     ]): string =>
-      categories
-        .filter(([, , p]) => p === percentage)
-        .keyArray()
-        .join(', ')
+      [...categories.filter(([, , p]) => p === percentage).keys()].join(', ')
 
     embed.addFields(
       {
@@ -105,7 +107,7 @@ const statsCommand = async (
     )
   } else
     embed.setDescription(`${user.tag} has not attempted any trivia questions!`)
-  await message.channel.send(embed)
+  await message.channel.send({embeds: [embed]})
 }
 
 const leaderboardCommand = async (
@@ -113,10 +115,11 @@ const leaderboardCommand = async (
   database: Db
 ): Promise<void> => {
   if (!message.guild) {
-    await message.sendDeletableMessage({
-      reply: true,
-      content: 'sorry, I can’t execute that command inside DMs. Noot noot.'
-    })
+    await sendDeletableMessage(
+      message,
+      'sorry, I can’t execute that command inside DMs. Noot noot.',
+      true
+    )
     return
   }
   if (
@@ -163,19 +166,21 @@ const leaderboardCommand = async (
       )
   }
 
-  const embedMessage = await message.channel.send(await generateEmbed(0))
+  const embedMessage = await message.channel.send({
+    embeds: [await generateEmbed(0)]
+  })
 
   if (totalUsers <= 10) return
   await embedMessage.react(emojis.right)
 
   let currentIndex = 0
 
-  const collector = embedMessage.createReactionCollector(
-    ({emoji: {name}}, {id}) =>
+  const collector = embedMessage.createReactionCollector({
+    filter: ({emoji: {name}}, {id}) =>
       (name === emojis.left || name === emojis.right) &&
       id === message.author.id,
-    {idle: 60_000}
-  )
+    idle: 60_000
+  })
 
   collector.on('collect', async ({emoji: {name}}) => {
     let shouldReact = true
@@ -184,7 +189,7 @@ const leaderboardCommand = async (
       shouldReact = false
     })
     currentIndex += name === emojis.left ? -10 : 10
-    await embedMessage.edit(await generateEmbed(currentIndex))
+    await embedMessage.edit({embeds: [await generateEmbed(currentIndex)]})
     if (shouldReact as boolean) {
       if (currentIndex) await embedMessage.react(emojis.left)
       if (currentIndex + 10 < totalUsers) await embedMessage.react(emojis.right)
@@ -252,24 +257,27 @@ Gets the leaderboard for this server.`,
       getSelectedAnswer: (emoji: string) => boolean | string,
       questionPrefix = ''
     ): Promise<void> => {
-      const msg = await channel.send(author, {
-        embed: {
-          title: questionPrefix + escapeMarkdown(question.question),
-          description: 'You have 15 seconds to answer.',
-          fields: [
-            ...fields,
-            {
-              name: 'Category',
-              value: escapeMarkdown(question.category),
-              inline: true
-            },
-            {
-              name: 'Difficulty',
-              value: Difficulty[question.difficulty],
-              inline: true
-            }
-          ]
-        }
+      const msg = await channel.send({
+        content: String(author),
+        embeds: [
+          {
+            title: questionPrefix + Util.escapeMarkdown(question.question),
+            description: 'You have 15 seconds to answer.',
+            fields: [
+              ...fields,
+              {
+                name: 'Category',
+                value: Util.escapeMarkdown(question.category),
+                inline: true
+              },
+              {
+                name: 'Difficulty',
+                value: Difficulty[question.difficulty]!,
+                inline: true
+              }
+            ]
+          }
+        ]
       })
 
       // eslint-disable-next-line no-await-in-loop -- need to react individually
@@ -278,15 +286,17 @@ Gets the leaderboard for this server.`,
       const correctAnswer = format(question.correctAnswer)
 
       const collected = (
-        await msg.awaitReactions(
-          ({emoji}, {id}) =>
-            reactEmojis.includes(emoji.name) && id === author.id,
-          {max: 1, time: 15_000}
-        )
+        await msg.awaitReactions({
+          filter: ({emoji}, {id}) =>
+            (reactEmojis as readonly (string | null)[]).includes(emoji.name) &&
+            id === author.id,
+          max: 1,
+          time: 15_000
+        })
       ).first()
       let correct: boolean | undefined
       if (collected) {
-        const selectedAnswer = getSelectedAnswer(collected.emoji.name)
+        const selectedAnswer = getSelectedAnswer(collected.emoji.name!)
         correct = selectedAnswer === question.correctAnswer
 
         await channel.send(
@@ -325,7 +335,7 @@ Gets the leaderboard for this server.`,
       await execute(
         answers.map((a, i) => ({
           name: String.fromCharCode(i + 65),
-          value: escapeMarkdown(a)
+          value: Util.escapeMarkdown(a)
         })),
         emojis.letters,
         emoji => answers[(emojis.letters as readonly string[]).indexOf(emoji)]!

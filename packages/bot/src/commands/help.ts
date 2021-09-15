@@ -1,7 +1,7 @@
 import {Constants, DiscordAPIError} from 'discord.js'
 import {defaultPrefix} from '../constants.js'
 import {fetchPrefix} from '../database.js'
-import {handleError} from '../utils.js'
+import {handleError, sendDeletableMessage} from '../utils.js'
 import type {AnyCommand} from '../types'
 
 const command: AnyCommand = {
@@ -33,10 +33,9 @@ The command that you want to get info about. If omitted, all the commands will b
               .map(({name, description}) => `\`${name}\`: ${description}`),
             `
 You can send \`${defaultPrefix}help [command name]\` to get info on a specific command. Noot noot.`
-          ],
-          {split: true}
+          ].join('\n')
         )
-        if (channel.type !== 'dm') {
+        if (channel.type !== 'DM') {
           await message.reply(
             'I’ve sent you a DM with all my commands. Noot noot.'
           )
@@ -54,11 +53,12 @@ You can send \`${defaultPrefix}help [command name]\` to get info on a specific c
               error,
               `Could not send help DM to ${author.tag}:`
             ),
-            message.sendDeletableMessage({
-              reply: true,
-              content: `it seems like I can’t DM you. Noot noot.
-Do you have DMs disabled?`
-            })
+            sendDeletableMessage(
+              message,
+              `it seems like I can’t DM you. Noot noot.
+Do you have DMs disabled?`,
+              true
+            )
           ])
           return
         }
@@ -88,8 +88,7 @@ Do you have DMs disabled?`
           syntax ?? ''
         }\`${usage === undefined ? '' : `\n${usage}`}`,
         `**Cooldown:** ${cooldown ?? 3} second${cooldown === 1 ? '' : 's'}`
-      ],
-      {split: true}
+      ].join('\n')
     )
   }
 }

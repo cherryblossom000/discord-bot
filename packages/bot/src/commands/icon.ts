@@ -1,4 +1,4 @@
-import {checkPermissions} from '../utils.js'
+import {checkPermissions, sendDeletableMessage} from '../utils.js'
 import type {GuildOnlyCommand} from '../types'
 
 const command: GuildOnlyCommand = {
@@ -9,12 +9,12 @@ const command: GuildOnlyCommand = {
   async execute(message) {
     if (!(await checkPermissions(message, 'ATTACH_FILES'))) return
     const icon = message.guild.iconURL()
-    await message.sendDeletableMessage({
-      content:
-        icon === null
-          ? 'This server doesn’t have an icon! Noot noot.'
-          : {files: [icon]}
-    })
+    await sendDeletableMessage(
+      message,
+      icon === null
+        ? 'This server doesn’t have an icon! Noot noot.'
+        : {files: [icon]}
+    )
   }
 }
 export default command

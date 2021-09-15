@@ -347,7 +347,7 @@ export const addMemberRejoinInfo = async (
   const guilds = collection(database, 'guilds')
   const member: Member = {
     _id: id,
-    ...(enabledRoles ? {roles: roles.cache.keyArray()} : {}),
+    ...(enabledRoles ? {roles: [...roles.cache.keys()]} : {}),
     ...(enabledNickname ? {nickname} : {})
   }
   await guilds.bulkWrite([
@@ -406,7 +406,7 @@ export const addTriviaQuestion = async (
 export const triviaUsersCountQuery = async (
   guild: Discord.Guild
 ): Promise<Filter<User>> => ({
-  _id: {$in: (await guild.members.fetch()).keyArray()},
+  _id: {$in: [...(await guild.members.fetch()).keys()]},
   questionsAnswered: {$exists: true, $not: {$size: 0}}
 })
 

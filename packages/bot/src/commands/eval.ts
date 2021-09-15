@@ -1,8 +1,9 @@
 import {createRequire} from 'node:module'
 import {inspect} from 'node:util'
-import Discord from 'discord.js'
+import Discord, {Formatters, Util} from 'discord.js'
 import escapeRegex from 'escape-string-regexp'
 import {me} from '../constants.js'
+import {sendDeletableMessage} from '../utils.js'
 import type {AnyCommand} from '../types'
 
 const kDiscardResult = Symbol('discard result')
@@ -67,13 +68,13 @@ The code to execute. The following variables are available:
         kDiscardResult
       )
     } catch (error: unknown) {
-      await message.sendDeletableMessage({content: [`${error}`, {code: true}]})
+      await sendDeletableMessage(message, Formatters.codeBlock(`${error}`))
       return
     }
 
     if (result !== kDiscardResult) {
-      await message.sendDeletableMessage({
-        content: [
+      await Promise.all(
+        Util.splitMessage(
           ['TOKEN', 'DB_USER', 'DB_PASSWORD', 'REPLIT_DB_URL'].reduce(
             (acc, key) => {
               const value = process.env[key]
@@ -82,10 +83,11 @@ The code to execute. The following variables are available:
                 : acc.replace(new RegExp(escapeRegex(value), 'ug'), `<${key}>`)
             },
             inspect(result)
-          ),
-          {code: 'js', split: true}
-        ]
-      })
+          )
+        ).map(async text =>
+          sendDeletableMessage(message, Formatters.codeBlock('js', text))
+        )
+      )
     }
   }
 }

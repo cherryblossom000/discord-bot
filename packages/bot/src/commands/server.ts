@@ -24,9 +24,9 @@ const command: GuildOnlyCommand = {
     if (!(await checkPermissions(message, 'EMBED_LINKS'))) return
 
     const {
-      afkChannelID,
+      afkChannelId,
       afkTimeout,
-      applicationID,
+      applicationId,
       createdAt,
       defaultMessageNotifications,
       description,
@@ -37,20 +37,19 @@ const command: GuildOnlyCommand = {
       members,
       mfaLevel,
       name,
-      ownerID,
+      ownerId,
       partnered,
-      publicUpdatesChannelID,
+      publicUpdatesChannelId,
       preferredLocale,
       premiumSubscriptionCount,
       premiumTier,
-      region,
-      rulesChannelID,
+      rulesChannelId,
       systemChannelFlags,
-      systemChannelID,
+      systemChannelId,
       vanityURLCode,
       vanityURLUses,
       verificationLevel,
-      widgetChannelID,
+      widgetChannelId,
       widgetEnabled
     } = guild
     const formatDate = createDateFormatter(
@@ -82,125 +81,128 @@ const command: GuildOnlyCommand = {
     const icon = guild.iconURL()
     const banner = guild.bannerURL()
     await channel.send({
-      embed: {
-        title: name,
-        thumbnail: icon === null ? undefined : {url: icon},
-        image: banner === null ? undefined : {url: banner},
-        fields: [
-          {name: 'ID', value: id},
-          ...(description === null
-            ? []
-            : [{name: 'Description', value: description}]),
-          {name: 'Created At', value: formatDate(createdAt)},
-          {
-            name: 'Owner',
-            value: `${await members.fetch(ownerID)}`
-          },
-          ...(applicationID === null
-            ? []
-            : [{name: 'Application ID', value: applicationID}]),
-          ...(icon === null ? [] : [imageField('Icon', icon)]),
-          ...(banner === null ? [] : [imageField('Banner', banner)]),
-          ...(discoverySplash === null
-            ? []
-            : [imageField('Discovery Splash', guild.discoverySplashURL()!)]),
-          {name: 'Members', value: memberCount},
-          {name: 'Preferred Locale', value: preferredLocale},
-          {name: 'Region', value: region},
-          ...(features.length
-            ? [
-                {
-                  name: 'Features',
-                  value: features
-                    .map(feature =>
-                      feature === 'VIP_REGIONS'
-                        ? 'VIP Regions'
-                        : startCase(feature)
-                    )
-                    .join('\n')
-                }
-              ]
-            : []),
-          ...(vanityURLCode === null
-            ? []
-            : [
-                {
-                  name: 'Vanity URL',
-                  value: `https://discord.gg/${vanityURLCode} (${
-                    vanityURLUses ?? 0
-                  }) uses`
-                }
-              ]),
-          ...(await channelFieldData(
-            'AFK Channel',
-            afkChannelID,
-            () => {
-              let text: string
-              if (afkTimeout === 3600) text = '1 hour'
-              else {
-                const minutes = afkTimeout / 60
-                text = `${minutes} minute${minutes === 1 ? '' : 's'}`
-              }
-              return ` (timeout: ${text})`
+      embeds: [
+        {
+          title: name,
+          thumbnail: icon === null ? undefined : {url: icon},
+          image: banner === null ? undefined : {url: banner},
+          fields: [
+            {name: 'ID', value: id},
+            ...(description === null
+              ? []
+              : [{name: 'Description', value: description}]),
+            {name: 'Created At', value: formatDate(createdAt)},
+            {
+              name: 'Owner',
+              value: `${await members.fetch(ownerId)}`
             },
-            chan => (chan as VoiceChannel).name
-          )),
-          ...(systemChannelFlags.has([
-            'WELCOME_MESSAGE_DISABLED',
-            'BOOST_MESSAGE_DISABLED'
-          ])
-            ? []
-            : await channelFieldData(
-                'System Messages Channel',
-                systemChannelID,
-                () =>
-                  ` (${systemChannelFlags
-                    .missing([
-                      'WELCOME_MESSAGE_DISABLED',
-                      'BOOST_MESSAGE_DISABLED'
-                    ])
-                    .map(string => string.split('_')[0]!.toLowerCase())
-                    .join(', ')})`
-              )),
-          ...(widgetEnabled ?? false
-            ? await channelFieldData('Widget Channel', widgetChannelID)
-            : []),
-          ...(await channelFieldData(
-            'Community Updates Channel',
-            publicUpdatesChannelID
-          )),
-          ...(await channelFieldData('Rules Channel', rulesChannelID)),
-          ...(premiumSubscriptionCount ?? 0
-            ? [
-                {
-                  name: 'Sever Boost Status',
-                  value: `${
-                    premiumTier ? `Level ${premiumTier}` : 'No Server Boost'
-                  } (${premiumSubscriptionCount} boosts)`
+            ...(applicationId === null
+              ? []
+              : [{name: 'Application ID', value: applicationId}]),
+            ...(icon === null ? [] : [imageField('Icon', icon)]),
+            ...(banner === null ? [] : [imageField('Banner', banner)]),
+            ...(discoverySplash === null
+              ? []
+              : [imageField('Discovery Splash', guild.discoverySplashURL()!)]),
+            {name: 'Members', value: String(memberCount)},
+            {name: 'Preferred Locale', value: preferredLocale},
+            ...(features.length
+              ? [
+                  {
+                    name: 'Features',
+                    value: features
+                      .map(feature =>
+                        feature === 'VIP_REGIONS'
+                          ? 'VIP Regions'
+                          : startCase(feature)
+                      )
+                      .join('\n')
+                  }
+                ]
+              : []),
+            ...(vanityURLCode === null
+              ? []
+              : [
+                  {
+                    name: 'Vanity URL',
+                    value: `https://discord.gg/${vanityURLCode} (${
+                      vanityURLUses ?? 0
+                    }) uses`
+                  }
+                ]),
+            ...(await channelFieldData(
+              'AFK Channel',
+              afkChannelId,
+              () => {
+                let text: string
+                if (afkTimeout === 3600) text = '1 hour'
+                else {
+                  const minutes = afkTimeout / 60
+                  text = `${minutes} minute${minutes === 1 ? '' : 's'}`
                 }
-              ]
-            : []),
-          {
-            name: 'Default Notifications',
-            value:
-              defaultMessageNotifications === 'ALL'
-                ? 'All Messages'
-                : 'Only @mentions'
-          },
-          {
-            name: 'Verification Level',
-            value:
-              verificationLevel === 'VERY_HIGH'
-                ? 'Highest'
-                : startCase(verificationLevel)
-          },
-          {
-            name: 'Requires 2FA for moderation',
-            value: formatBoolean(!!mfaLevel)
-          },
-          {name: 'Partnered', value: formatBoolean(partnered)}
-        ]
-      }
+                return ` (timeout: ${text})`
+              },
+              chan => (chan as VoiceChannel).name
+            )),
+            ...(systemChannelFlags.has([
+              'SUPPRESS_JOIN_NOTIFICATIONS',
+              'SUPPRESS_PREMIUM_SUBSCRIPTIONS'
+            ])
+              ? []
+              : await channelFieldData(
+                  'System Messages Channel',
+                  systemChannelId,
+                  () =>
+                    ` (${systemChannelFlags
+                      .missing([
+                        'SUPPRESS_JOIN_NOTIFICATIONS',
+                        'SUPPRESS_PREMIUM_SUBSCRIPTIONS'
+                      ])
+                      .map(string => string.split('_')[0]!.toLowerCase())
+                      .join(', ')})`
+                )),
+            ...(widgetEnabled ?? false
+              ? await channelFieldData('Widget Channel', widgetChannelId)
+              : []),
+            ...(await channelFieldData(
+              'Community Updates Channel',
+              publicUpdatesChannelId
+            )),
+            ...(await channelFieldData('Rules Channel', rulesChannelId)),
+            ...(premiumSubscriptionCount ?? 0
+              ? [
+                  {
+                    name: 'Sever Boost Status',
+                    value: `${
+                      premiumTier === 'NONE'
+                        ? 'No Server Boost'
+                        : `Level ${premiumTier}`
+                    } (${premiumSubscriptionCount} boosts)`
+                  }
+                ]
+              : []),
+            {
+              name: 'Default Notifications',
+              value:
+                defaultMessageNotifications === 'ALL_MESSAGES'
+                  ? 'All Messages'
+                  : 'Only @mentions'
+            },
+            {
+              name: 'Verification Level',
+              value:
+                verificationLevel === 'VERY_HIGH'
+                  ? 'Highest'
+                  : startCase(verificationLevel)
+            },
+            {
+              name: 'Requires 2FA for moderation',
+              value: formatBoolean(!!mfaLevel)
+            },
+            {name: 'Partnered', value: formatBoolean(partnered)}
+          ]
+        }
+      ]
     })
   }
 }

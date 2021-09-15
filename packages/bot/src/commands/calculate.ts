@@ -1,3 +1,4 @@
+import {Formatters} from 'discord.js'
 import {ResultSet, evaluate, simplify} from 'mathjs'
 import type {AnyCommand} from '../types'
 
@@ -42,12 +43,13 @@ The expression to calculate. See https://mathjs.org/docs/expressions/syntax.html
     }
     await (result
       ? message.channel.send(
-          result instanceof ResultSet
-            ? result.entries.length === 1
-              ? (result.entries[0] as MathResult).toString()
-              : result.entries.map(e => e.toString()).join('\n')
-            : result.toString(),
-          {code: true}
+          Formatters.codeBlock(
+            result instanceof ResultSet
+              ? result.entries.length === 1
+                ? (result.entries[0] as MathResult).toString()
+                : result.entries.map(e => e.toString()).join('\n')
+              : result.toString()
+          )
         )
       : message.reply('please provide an expression to calculate!'))
   }

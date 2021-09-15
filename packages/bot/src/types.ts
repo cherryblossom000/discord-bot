@@ -6,83 +6,31 @@ import type Client from './Client'
 
 export type Snowflake = `${bigint}`
 
-// Custom Message
-
-interface MessageManager extends D.MessageManager {
-  fetch(
-    message: D.Snowflake,
-    cache?: boolean,
-    force?: boolean
-  ): Promise<Message>
-  fetch(
-    options?: D.ChannelLogsQueryOptions,
-    cache?: boolean,
-    force?: boolean
-  ): Promise<D.Collection<D.Snowflake, Message>>
+export interface User extends D.User {
+  id: Snowflake
 }
 
-export type OptionsNoSplit = D.MessageOptions & {split?: false}
-export type OptionsWithSplit = D.MessageOptions & {split: D.SplitOptions | true}
-
-export type SendArgs =
-  | [
-      | D.APIMessage
-      | D.APIMessageContentResolvable
-      | D.MessageAdditions
-      | D.MessageOptions
-    ]
-  | [D.APIMessageContentResolvable, (D.MessageAdditions | D.MessageOptions)?]
-  | [D.StringResolvable, D.MessageAdditions | D.MessageOptions]
+interface MessageManager extends D.MessageManager {
+  fetch(message: Snowflake, options?: D.BaseFetchOptions): Promise<Message>
+  fetch(
+    options?: D.ChannelLogsQueryOptions,
+    cacheOptions?: D.BaseFetchOptions
+  ): Promise<D.Collection<Snowflake, Message>>
+}
 
 interface TextChannel extends D.TextChannel {
   messages: MessageManager
-  send(content: OptionsWithSplit): Promise<GuildMessage[]>
-  send(
-    options: D.APIMessageContentResolvable | D.MessageAdditions | OptionsNoSplit
-  ): Promise<GuildMessage>
-  send(
-    content: D.StringResolvable,
-    options: OptionsWithSplit
-  ): Promise<GuildMessage[]>
-  send(
-    content: D.StringResolvable,
-    options: D.MessageAdditions | OptionsNoSplit
-  ): Promise<GuildMessage>
-  send(...[content, options]: SendArgs): Promise<GuildMessage | GuildMessage[]>
+  send(options: D.MessageOptions | D.MessagePayload | string): Promise<Message>
 }
 
 interface NewsChannel extends D.NewsChannel {
   messages: MessageManager
-  send(content: OptionsWithSplit): Promise<GuildMessage[]>
-  send(
-    options: D.APIMessageContentResolvable | D.MessageAdditions | OptionsNoSplit
-  ): Promise<GuildMessage>
-  send(
-    content: D.StringResolvable,
-    options: OptionsWithSplit
-  ): Promise<GuildMessage[]>
-  send(
-    content: D.StringResolvable,
-    options: D.MessageAdditions | OptionsNoSplit
-  ): Promise<GuildMessage>
-  send(...[content, options]: SendArgs): Promise<GuildMessage | GuildMessage[]>
+  send(options: D.MessageOptions | D.MessagePayload | string): Promise<Message>
 }
 
 interface DMChannel extends D.DMChannel {
   messages: MessageManager
-  send(content: OptionsWithSplit): Promise<DMMessage[]>
-  send(
-    options: D.APIMessageContentResolvable | D.MessageAdditions | OptionsNoSplit
-  ): Promise<DMMessage>
-  send(
-    content: D.StringResolvable,
-    options: OptionsWithSplit
-  ): Promise<DMMessage[]>
-  send(
-    content: D.StringResolvable,
-    options: D.MessageAdditions | OptionsNoSplit
-  ): Promise<DMMessage>
-  send(...[content, options]: SendArgs): Promise<DMMessage | DMMessage[]>
+  send(options: D.MessageOptions | D.MessagePayload | string): Promise<Message>
 }
 
 /** Any text-based guild channel. */
@@ -91,57 +39,40 @@ export type TextBasedChannel = DMChannel | TextBasedGuildChannel
 
 export type Channel = D.StoreChannel | D.VoiceChannel | TextBasedChannel
 
+export interface GuildMember extends D.GuildMember {
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define -- circular
+  guild: Guild
+}
+
+interface GuildMemberManager extends D.GuildMemberManager {
+  readonly cache: D.Collection<Snowflake, GuildMember>
+}
+
 /** A guild from this client. */
 export interface Guild extends D.Guild {
   client: Client
   id: Snowflake
+  members: GuildMemberManager
   systemChannel: TextChannel | null
-  member(user: D.UserResolvable): GuildMember | null
+}
+
+interface MessageReference extends D.MessageReference {
+  messageId: Snowflake | null
 }
 
 /** A message from this client. */
-export interface BaseMessage extends D.Message {
-  client: Client
-  guild: Guild | null
-  awaitReactions(
-    filter: (
-      reaction: D.MessageReaction,
-      user: D.User,
-      collected?: D.Collection<D.Snowflake, D.MessageReaction>
-    ) => boolean,
-    options?: D.AwaitReactionsOptions
-  ): Promise<D.Collection<D.Snowflake, D.MessageReaction>>
-  reply(content: OptionsWithSplit): Promise<this[]>
-  reply(
-    options: D.APIMessageContentResolvable | D.MessageAdditions | OptionsNoSplit
-  ): Promise<this>
-  reply(content: D.StringResolvable, options: OptionsWithSplit): Promise<this[]>
-  reply(
-    content: D.StringResolvable,
-    options: D.MessageAdditions | OptionsNoSplit
-  ): Promise<this>
-  reply(...[content, options]: SendArgs): Promise<this[] | this>
-  sendDeletableMessage({
-    content,
-    reply
-  }: {
-    content:
-      | D.MessageAttachment
-      | D.MessageEmbed
-      | D.MessageOptions
-      | string
-      | readonly [
-          string | readonly string[],
-          (D.MessageAdditions | D.MessageOptions)?
-        ]
-    reply?: boolean
-  }): Promise<void>
+
+interface MessageMentions extends D.MessageMentions {
+  readonly members: D.Collection<Snowflake, GuildMember>
+  readonly users: D.Collection<Snowflake, User>
 }
 
-export interface GuildMember extends D.GuildMember {
-  guild: Guild
-  // TODO: Fix Discord.js' types (nickname is nullable)
-  setNickname(nickname: string | null, reason?: string): Promise<GuildMember>
+export interface BaseMessage extends D.Message {
+  author: User
+  client: Client
+  guild: Guild | null
+  mentions: MessageMentions
+  reference: MessageReference | null
 }
 
 /** A message from a guild. */
@@ -149,9 +80,6 @@ export interface GuildMessage extends BaseMessage {
   channel: TextBasedGuildChannel
   guild: Guild
   member: GuildMember
-  mentions: D.MessageMentions & {
-    readonly members: D.Collection<D.Snowflake, GuildMember>
-  }
 }
 
 /** A message from a DM. */
@@ -230,18 +158,4 @@ export interface RegexCommand {
 
   /** The message to reply with. Can be a function that returns the message.. */
   regexMessage: string | ((message: Message) => string)
-}
-
-export interface Video {
-  title: string
-  id: string
-  author: string
-}
-
-/** A music queue. */
-export interface Queue {
-  textChannel: TextBasedGuildChannel
-  voiceChannel: D.VoiceChannel
-  connection: D.VoiceConnection
-  songs: Video[]
 }
