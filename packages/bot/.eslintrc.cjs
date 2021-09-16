@@ -3,7 +3,6 @@
 // eslint-disable-next-line jsdoc/no-undefined-types -- unknown types
 const [, ...originalNamingConventionRules] =
   /** @type {{rules: {'@typescript-eslint/naming-convention': [number, ...unknown[]]}}} */ (
-    // @ts-expect-error
     require('@cherryblossom/eslint-config/ts/index')
   ).rules['@typescript-eslint/naming-convention']
 
@@ -11,6 +10,7 @@ const [, ...originalNamingConventionRules] =
 module.exports = {
   extends: ['plugin:@comrade-pingu/recommended'],
   plugins: ['@comrade-pingu'],
+  ignorePatterns: ['tests/coverage/'],
   parserOptions: {
     project: 'tsconfig.eslint.json',
     tsconfigRootDir: __dirname
@@ -23,20 +23,20 @@ module.exports = {
     'jsdoc/require-throws': 0,
     'jsdoc/require-returns': 0,
     // Just for types
-    'node/no-unpublished-import': [2, {allowModules: ['mathjax-full']}]
+    'node/no-unpublished-import': [
+      2,
+      {
+        allowModules: [
+          'discord-api-types',
+          'discord-api-types-updated',
+          'mathjax-full',
+          'type-fest'
+        ]
+      }
+    ]
   },
 
   overrides: [
-    {
-      files: [
-        'src/commands/*.ts',
-        'src/regex-commands/*.ts',
-        'src/events/*.ts'
-      ],
-      rules: {
-        'import/no-unused-modules': 0
-      }
-    },
     {
       files: '**/*.ts',
       rules: {

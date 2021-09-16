@@ -24,29 +24,27 @@ Comrade Pingu’s default prefix is `.`.
 <!-- markdownlint-disable MD033 -->
 <!-- DOCS START -->
 
-| Command | Aliases | Description | Usage | Cooldown (s) |
-| - | - | - | - | - |
-| `calculate` | `c`, `calculator` | Calculates a maths expression. | `.calculate <expression>`<br>`expression`<br>The expression to calculate. See https://mathjs.org/docs/expressions/syntax.html for more information. | 3 |
-| `dog` | `d`, `randomdog` | Gets a random image of a dog from random.dog. | `.dog` | 3 |
-| `emoji` | `em` | Gets the image for an emoji. | `.emoji <emoji>`<br>`emoji`<br>The emoji to get the image of. | 3 |
-| `help` | `commands`, `h` | Lists all my commands or gets info about a specific command. | `.help [command]`<br>`command` (optional)<br>The command that you want to get info about. If omitted, all the commands will be listed. | 5 |
-| `htkb` | `howtokissboy` | Gets the image that shows how to kiss a boy.<br>![how to kiss boy](./assets/img/htkb.jpg) | `.htkb` | 3 |
-| `icon` | `i` | Gets the server icon. | `.icon` | 3 |
-| `info` | `in` | Gets info about me. | `.info` | 3 |
-| `invite` | `add`, `inv`, `link` | Gets my invite link. | `.invite` | 3 |
-| `iwmelc` | `iwillmurdereverylastcapitalist` | Gets the meme that shows that ‘noot noot’ in Pingu means ‘i will murder every last capitalist’ in English.<br>![i will murder every last capitalist](./assets/img/iwmelc.jpg) | `.iwmelc` | 3 |
-| `maths` | `m`, `math`, `mathsimage`, `latex` | Convert LaTeX into an image. | `.maths <LaTeX>`<br>`LaTeX`<br>The LaTeX to convert. See http://docs.mathjax.org/en/latest/input/tex/macros/index.html for supported tags (ams is the only package loaded). | 3 |
-| `ping` | `p` | Gets my current latency. | `.ping` | 5 |
-| `prefix` | `pre` | Gets or sets the prefix. | `.prefix [new prefix]`<br>`new prefix` (optional)<br>The text that you want to set the prefix to. If omitted, displays the current prefix.<br>The default prefix is `.`. | 3 |
-| `profile` | `pr`, `pro`, `u`, `user` | Gets information on a user. | `.profile [user]`<br>`user` (optional)<br>The user to display information about. If omitted, defaults to you.<br>You can mention the user or use their tag (for example `Username#1234`). | 3 |
-| `rejoin` | `re`, `rj` | Manages settings for what to do when a member rejoins this server. | `.rejoin [e(nable) [r(oles)\|n(ickname)\|a(ll)]]\|[d(isable)]`<br>This command has 3 subcommands.<br>`rejoin`<br>See this server’s rejoining configuration.<br><br>`rejoin e(nable) [r(oles)|n(ickname)|a(ll)]`<br>Enables adding a member’s past roles, nickname, or both of these. Defaults to `all`.<br><br>`rejoin d(isable)`<br>Stops doing anything when a member rejoins this server. | 10 |
-| `rotate` | `rt` | Rotates an image. | `.rotate <message> [channel] <rotation>`<br>`message`<br>The ID or message link of the message to rotate.<br><br>`channel` (optional)<br>The channel of the message. This is required if the message is not in this channel.<br><br>`rotation`<br>The amount (in degrees) to rotate the image clockwise. Negative values work as well. | 3 |
-| `server` | `sv`, `guild`, `g` | Gets information on this server. | `.server` | 3 |
-| `stats` | `statistics` | Gets my stats. | `.stats` | 3 |
-| `timezone` | `tz` | Manages time zone preferences. | `.timezone [timezone]`<br>`timezone` (optional)<br>An IANA time zone (https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) to use for commands such as `profile` that show the times. Spaces will be automatically converted into underscores. The default is `UTC`.<br>If omitted, shows the currently set timezone. | 3 |
-| `trivia` | `t` | Asks a trivia question. | `.trivia ([s(tat(s))] [user]\|l(eaderboard))`<br>Using this command without any arguments will ask a trivia question.<br>`s(tat(s)) [user]`<br>Gets the trivia statistics for a user. If no user is specified, it will get the stats for yourself.<br><br>`l(eaderboard)`<br>Gets the leaderboard for this server. | 5 |
-| `uptime` | `up` | Gets my uptime. | `.uptime` | 3 |
-| `website` | `site`, `w`, `web` | Sends my website. | `.website` | 3 |
+| Command | Description | Usage |
+| - | - | - |
+| `calculate` | Calculates a maths expression. | `/calculate <expression: string>`<br>`expression`: The expression to calculate.<br><br>See [the mathjs docs](https://mathjs.org/docs/expressions/syntax.html) for more information on the syntax of `expression`. |
+| `dog` | Gets a random image of a dog from random.dog. | `/dog` |
+| `emoji` | Gets the image for an emoji. | `/emoji <emoji: string>`<br>`emoji`: The emoji to get the image of. |
+| `help` | Lists all my commands or gets info about a specific command. | `/help [command: calculate\|dog\|emoji\|eval\|icon\|info\|invite\|maths\|meme\|ping\|profile\|rejoin\|rotate\|server\|stats\|timezone\|trivia\|uptime\|website]`<br>`command`: The command that you want to get info about. If omitted, all the commands will be listed. |
+| `icon` | Gets the server icon. | `/icon` |
+| `info` | Gets info about me. | `/info` |
+| `invite` | Gets my invite link. | `/invite` |
+| `maths` | Convert LaTeX into an image. | `/maths <latex: string>`<br>`latex`: The LaTeX to convert.<br><br>See [the MathJax docs](http://docs.mathjax.org/en/latest/input/tex/macros/index.html) for supported tags. `ams` is the only package loaded. |
+| `meme` | Gets a Pingu-related meme. | `/meme <meme: I will murder every last capitalist\|how to kiss boy>`<br>`meme`: The meme to get.<br><br>![I will murder every last capitalist](./assets/img/iwmelc.jpg)<br><img src="./assets/img/htkb.jpg" alt="how to kiss boy" width="320"> |
+| `ping` | Gets my current latency. | `/ping` |
+| `profile` | Gets information on a user. | `/profile [user: user]`<br>`user`: The user to display information about. Defaults to you. |
+| `rejoin` | Manages settings for what to do when a member rejoins this server. | `/rejoin status`: Get this server’s rejoining configuration.<br><br>`/rejoin set <mode: roles\|nickname\|both>`: Configure what I do when a member rejoins the server.<br>`mode`: What to restore when a member rejoins the server.<br><br>`/rejoin disable`: Stops doing anything when a member rejoins this server. |
+| `rotate` | Rotates an image. | `/rotate <angle: number> [attachment: integer]`<br>`angle`: The angle in degrees to rotate the image clockwise. Negative values work as well!<br>`attachment`: The index of the attachment/image you want to rotate. Defaults to 1 (the first image).<br><br>Use Rotate Image after right-clicking on a message with the image you want to rotate, and then use this command. Negative angles rotate the image counterclockwise. |
+| `server` | Gets information on this server. | `/server` |
+| `stats` | Gets my stats. | `/stats` |
+| `timezone` | Manages time zone preferences for commands such as `profile` that show times. | `/timezone [timezone: string]`<br>`timezone`: An IANA time zone. Spaces will be automatically converted into underscores.<br><br>See [here](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) for a list of timezones. |
+| `trivia` | Trivia from https://opentdb.com! | `/trivia play`: Ask a trivia question.<br><br>`/trivia stats [user: user]`: Gets the trivia statistics for a user.<br>`user`: The user to get the stats for, defaulting to yourself.<br><br>`/trivia leaderboard`: Gets the trivia leaderboard for this server. |
+| `uptime` | Gets my uptime. | `/uptime` |
+| `website` | Sends my website. | `/website` |
 
 <!-- DOCS END -->
 <!-- markdownlint-enable MD033 -->

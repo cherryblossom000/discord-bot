@@ -1,6 +1,6 @@
 import {MongoClient} from 'mongodb'
-import {defaultPrefix, defaultTimeZone} from './constants.js'
-import type {Snowflake, User as DiscordUser} from 'discord.js'
+import {defaultTimeZone} from './constants.js'
+import type {Snowflake, GuildMember as DiscordGuildMember} from 'discord.js'
 import type {
   Collection as MongoCollection,
   Document,
@@ -15,15 +15,14 @@ import type {
 } from 'mongodb'
 import type {Difficulty, Type, Question as TriviaQuestion} from './opentdb'
 import type * as Discord from './types'
-
-type Override<T, U> = Omit<T, keyof U> & U
+import type {Override} from './utils'
 
 // #region Models
 
 export const enum MemberRejoinFlags {
   Roles = 1,
   Nickname,
-  All = Roles | Nickname
+  Both = Roles | Nickname
 }
 
 interface Member {
@@ -35,8 +34,6 @@ interface Member {
 // eslint-disable-next-line import/no-unused-modules -- it is used
 export interface Guild {
   _id: Snowflake
-  prefix?: string
-  volume?: number
   rejoinFlags?: MemberRejoinFlags
   members?: readonly Member[]
 }
@@ -61,7 +58,7 @@ interface User {
 /** A mapping of collection names to `[databaseType, discordType]`. */
 interface Collections {
   guilds: [Guild, Discord.Guild]
-  users: [User, DiscordUser]
+  users: [User, Discord.User]
 }
 
 type CollectionsKeys = keyof Collections
@@ -269,19 +266,10 @@ export const setValue = async <
 
 // #endregion
 
-/** Gets the prefix for a guild. */
-export const fetchPrefix = async (
-  database: Db,
-  guild: Discord.Guild | Snowflake | null
-): Promise<string> =>
-  guild === null
-    ? defaultPrefix
-    : (await fetchValue(database, 'guilds', guild, 'prefix')) ?? defaultPrefix
-
 /** Gets the timezone for a user. Defaults to UTC. */
 export const fetchTimeZone = async (
   database: Db,
-  user: DiscordUser | Snowflake
+  user: Discord.User | Snowflake
 ): Promise<string> =>
   (await fetchValue(database, 'users', user, 'timeZone')) ?? defaultTimeZone
 
@@ -297,7 +285,7 @@ export const disableRejoin = async (
 
 export const fetchMemberRejoinInfo = async (
   guilds: Collection<'guilds'>,
-  member: Discord.GuildMember
+  member: DiscordGuildMember
 ): Promise<Pick<Member, 'nickname' | 'roles'>> =>
   (
     await guilds
@@ -325,14 +313,14 @@ export const fetchMemberRejoinInfo = async (
 const removeMemberArgs = ({
   guild,
   id
-}: Pick<Discord.GuildMember, 'guild' | 'id'>): {
+}: Pick<DiscordGuildMember, 'guild' | 'id'>): {
   filter: Filter<Guild>
   update: UpdateFilter<Guild>
 } => ({filter: {_id: guild.id}, update: {$pull: {members: {_id: id}}}})
 
 export const removeMember = async (
   guilds: Collection<'guilds'>,
-  member: Discord.GuildMember
+  member: DiscordGuildMember
 ): Promise<void> => {
   const {filter, update} = removeMemberArgs(member)
   await guilds.updateOne(filter, update)
@@ -342,7 +330,7 @@ export const addMemberRejoinInfo = async (
   database: Db,
   enabledRoles: number,
   enabledNickname: number,
-  {id, guild, roles, nickname}: Discord.GuildMember
+  {id, guild, roles, nickname}: DiscordGuildMember
 ): Promise<void> => {
   const guilds = collection(database, 'guilds')
   const member: Member = {
@@ -380,7 +368,7 @@ export const fetchRejoinGuilds = (
 
 export const addTriviaQuestion = async (
   database: Db,
-  user: DiscordUser | Snowflake,
+  user: Discord.User | Snowflake,
   {category, type, difficulty}: TriviaQuestion,
   correct?: boolean
 ): Promise<void> => {

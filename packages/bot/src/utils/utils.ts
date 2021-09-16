@@ -1,36 +1,26 @@
 import path from 'node:path'
 import {homedir} from 'node:os'
+import {bold, codeBlock, hyperlink} from '@discordjs/builders'
 import originalCleanStack from 'clean-stack'
-import {
-  Channel as DiscordChannel,
-  Constants,
-  DiscordAPIError,
-  Message as DiscordMessage
-} from 'discord.js'
+import D, {Constants, DiscordAPIError} from 'discord.js'
 import {dev, me} from '../constants.js'
 import type {
   EmbedFieldData,
+  InteractionReplyOptions,
   PermissionResolvable,
   PermissionString
 } from 'discord.js'
 import type Client from '../Client'
 import type {
-  Channel,
+  Guild,
+  GuildSlashCommandInteraction,
   GuildMessage,
+  CommandInteraction,
   Message,
   Snowflake,
   TextBasedChannel,
-  User
+  TextBasedGuildChannel
 } from '../types'
-
-declare global {
-  namespace Intl {
-    interface DateTimeFormatOptions {
-      dateStyle?: 'full' | 'long' | 'medium' | 'short'
-      timeStyle?: 'full' | 'long' | 'medium' | 'short'
-    }
-  }
-}
 
 const stackBasePath = path.join(
   homedir(),
@@ -66,22 +56,29 @@ export const ignoreError =
  * Replies to a message causing an error and either logs it or DMs me it depending on `NODE_ENV`.
  * @param info Extra information to send to the DM.
  * @param message The message to reply to, if applicable.
- * @param response The response in the message reply.
+ * @param content The response in the message reply.
  */
 // explicit type annotation needed for declaration (otherwise can't find name
 // TextChannel etc)
 export const handleError: (
   client: Client,
   error: unknown,
-  info: string,
-  messageOrChannel?: Message | TextBasedChannel,
-  response?: string
+  info?: string,
+  respondOpts?: {
+    to?: CommandInteraction | TextBasedChannel
+    response?: string
+    followUp?: boolean
+  }
 ) => void = (
   client,
   error,
   info,
-  messageOrChannel,
-  response = 'unfortunately, there was an error trying to execute that command. Noot noot.'
+  {
+    to: channelOrInteraction,
+    response:
+      content = 'unfortunately, there was an error trying to execute that command. Noot noot.',
+    followUp = false
+  } = {}
 ): void => {
   const errorHandler = (err: unknown): void => {
     if (err instanceof Error) cleanErrorsStack(err)
@@ -96,42 +93,98 @@ export const handleError: (
   // eslint-disable-next-line @typescript-eslint/no-floating-promises -- intended
   ;(async (): Promise<void> => {
     if (error instanceof Error) cleanErrorsStack(error)
-    if (messageOrChannel) {
-      await (
-        (messageOrChannel instanceof DiscordMessage
-          ? messageOrChannel.reply(response)
-          : messageOrChannel.send(response)) as Promise<Message>
+    if (channelOrInteraction) {
+      await (channelOrInteraction instanceof D.Interaction
+        ? followUp
+          ? channelOrInteraction.followUp({content, ephemeral: true})
+          : channelOrInteraction.reply({content, ephemeral: true})
+        : channelOrInteraction.send(content)
       ).catch(errorHandler)
     }
     if (dev) throw error
     try {
       await (
         await client.users.fetch(me)!
-      ).send(`${info}
-**Error at ${new Date().toLocaleString()}**${
-        error instanceof Error
-          ? error.stack!
-            ? `
+      ).send(
+        `${info === undefined ? '' : `${info}\n`}${bold(
+          `Error at ${new Date().toLocaleString()}`
+        )}${
+          error instanceof Error
+            ? error.stack!
+              ? `
       ${error.stack}`
-            : ''
-          : error
-      }${
-        error instanceof DiscordAPIError
-          ? `
+              : ''
+            : error
+        }${
+          error instanceof DiscordAPIError
+            ? `
 Code: ${error.code} (${
-              Object.entries(Constants.APIErrors).find(
-                ([, code]) => code === error.code
-              )?.[0] ?? 'unknown'
-            })
+                Object.entries(Constants.APIErrors).find(
+                  ([, code]) => code === error.code
+                )?.[0] ?? 'unknown'
+              })
 Path: ${error.path}
 Method: ${error.method}
 Status: ${error.httpStatus}`
-          : ''
-      }`)
-    } catch (_error: unknown) {
-      errorHandler(_error)
+            : ''
+        }`
+      )
+    } catch (error_) {
+      errorHandler(error_)
     }
   })()
+}
+
+export const debugInteractionDetails = ({
+  id,
+  channelId,
+  options
+}: CommandInteraction): string => `Id: ${id}
+Channel: ${channelId}
+Options: ${codeBlock('json', JSON.stringify(options.data, null, 2))}`
+
+export const fetchChannel = async (
+  interaction: CommandInteraction
+): Promise<TextBasedChannel> => {
+  const {channelId, client} = interaction
+  const channel = (await client.channels.fetch(
+    channelId
+  )) as TextBasedGuildChannel | null
+  if (!channel) {
+    throw new Error(
+      `fetchChannel: Channel ${channelId} could not be fetched from interaction
+${debugInteractionDetails(interaction)}`
+    )
+  }
+  return channel
+}
+
+export const fetchGuild = async ({
+  client,
+  guildId
+}: GuildSlashCommandInteraction): Promise<Guild> =>
+  // for some reason TS resolves the overload to the one in Discord.js
+  (client.guilds.fetch as (options: Snowflake) => Promise<Guild>)(guildId)
+
+export const replyAndFetch = async (
+  interaction: CommandInteraction,
+  options: Omit<InteractionReplyOptions, 'fetchReply'>,
+  followUp = false
+): Promise<Message> => {
+  const opts: InteractionReplyOptions & {fetchReply: true} = {
+    ...options,
+    fetchReply: true
+  }
+  const message = await (followUp
+    ? interaction.followUp(opts)
+    : interaction.reply(opts))
+  return message instanceof D.Message
+    ? message
+    : (
+        (await interaction.client.channels.fetch(
+          interaction.channelId
+        ))! as TextBasedChannel
+      ).messages.fetch(message.id)
 }
 
 /** Check if the bot has permissions. */
@@ -142,10 +195,13 @@ export const hasPermissions = (
 
 /** Check if the bot has permissions and sends a message if it doesn't. */
 export const checkPermissions = async (
-  message: GuildMessage,
+  interaction: CommandInteraction,
   permissions: PermissionString | readonly PermissionString[]
 ): Promise<boolean> => {
-  const {channel, client, guild} = message
+  if (!interaction.inGuild()) return true
+  const {client, guildId} = interaction
+  const channel = (await fetchChannel(interaction)) as TextBasedGuildChannel
+
   const channelPermissions = channel.permissionsFor(client.user!)
   if (channelPermissions?.has(permissions) !== true) {
     const neededPermissions = Array.isArray(permissions)
@@ -155,231 +211,21 @@ export const checkPermissions = async (
     const plural = neededPermissions.length !== 1
     const permissionsString = ` permission${plural ? 's' : ''}`
 
-    await message.reply(
-      [
-        `I don’t have th${plural ? 'ese' : 'is'}${permissionsString}!`,
-        neededPermissions.map(p => `- ${p}`).join('\n'),
-        `To fix this, ask an admin or the owner of the server to add th${
-          plural ? 'ose' : 'at'
-        }${permissionsString} to ${guild.me!.roles.cache.find(
-          role => role.managed
-        )!}.`
-      ].join('\n')
+    await interaction.reply(
+      `I don’t have th${plural ? 'ese' : 'is'}${permissionsString}!
+${neededPermissions.map(p => `- ${p}`).join('\n')}
+To fix this, ask an admin or the owner of the server to add th${
+        plural ? 'ose' : 'at'
+      }${permissionsString} to ${(
+        await client.guilds.fetch(guildId)
+      ).me!.roles.cache.find(role => role.managed)!}.`
     )
     return false
   }
   return true
 }
 
-const idRegex = /^\d{17,19}$/u as unknown as Omit<RegExp, 'test'> & {
-  test(string: string): string is Snowflake
-}
-const userTagRegex = /^.{2,}#\d{4}$/u
-const messageLinkRegex =
-  /https?:\/\/.*?discord(?:app)?\.com\/channels\/(\d+|@me)\/(\d+)\/(\d+)/u as Omit<
-    RegExp,
-    'exec'
-  > & {
-    exec(
-      string: string
-      // Using the RegExpExecArray means TS doesn't know spreading the type will result in 3 args
-    ): [string, Snowflake | '@me', Snowflake, Snowflake] | null
-  }
-// Not using MessageMentions.CHANNELS_PATTERN because it's not anchored
-const channelMentionRegex = /^<#(\d{17,19})>$/gu as Omit<RegExp, 'exec'> & {
-  exec(string: string): [string, Snowflake] | null
-}
-
-const execOnce = <T extends readonly string[] | null>(
-  regex: Omit<RegExp, 'exec'> & {exec(string: string): T},
-  string: string
-): T => {
-  const result = regex.exec(string)
-  regex.lastIndex = 0
-  return result
-}
-
-/** Resolves a user based on user input. */
-export const resolveUser = async (
-  message: Message,
-  input: string
-): Promise<User | null> => {
-  const {author, client, guild, mentions} = message
-
-  // Check for mentioned user
-  const mentionedUser = mentions.users.first()
-  if (mentionedUser) return mentionedUser
-
-  // Default to the message author
-  if (!input) return author
-
-  type KeysMatching<T, V> = {
-    [K in keyof T]-?: T[K] extends V ? K : never
-  }[keyof T]
-  const getUser = async (
-    key: KeysMatching<User, string>
-  ): Promise<User | null> => {
-    // Check if it's the bot or the author in a DM
-    if (!guild && input !== author[key] && input !== client.user![key]) {
-      await message.reply(
-        'you can only get information about you or I in a DM!'
-      )
-      return null
-    }
-
-    // Find user
-    const user = client.users.cache.find(u => u[key] === input)
-    if (!user || !guild?.members.cache.get(user.id)) {
-      await message.reply(
-        `‘${input}’ is not a valid user or is not a member of this guild!`
-      )
-      return null
-    }
-    return user
-  }
-
-  if (userTagRegex.test(input)) return getUser('tag')
-  if (idRegex.test(input)) return getUser('id')
-  await message.reply(`‘${input}’ is not a valid user tag or ID!`)
-  return null
-}
-
-const constNull = (): null => null
-
-/** Resolves a message based on user input. */
-// TODO: refactor
-// eslint-disable-next-line max-statements -- can't be bothered lol
-export const resolveMessage = async (
-  message: Message,
-  messageInput: string | undefined,
-  channelInput: string | undefined
-): Promise<Message | null> => {
-  const {channel, client, flags, guild, reference} = message
-
-  const resolve = async (
-    guildID: Snowflake | '@me',
-    channelOrID: Channel | Snowflake,
-    messageID: Snowflake
-  ): Promise<Message | null> => {
-    const channelID =
-      channelOrID instanceof DiscordChannel ? channelOrID.id : channelOrID
-    if (
-      (guild && guildID !== guild.id) ||
-      (!guild && (guildID !== '@me' || channelID !== channel.id))
-    ) {
-      await message.reply(
-        'that message is from another server or DM! Noot noot.'
-      )
-      return null
-    }
-
-    const resolvedChannel =
-      channelOrID instanceof DiscordChannel
-        ? channelOrID
-        : await client.channels.fetch(channelOrID).catch(constNull)
-    if (!resolvedChannel) {
-      await message.reply(
-        `channel with ID ${channelID} doesn’t exist or I don’t have permissions to view it!`
-      )
-      return null
-    }
-    if (
-      resolvedChannel.type === 'GUILD_VOICE' ||
-      resolvedChannel.type === 'GUILD_STORE'
-    ) {
-      await message.reply(
-        `channel ${resolvedChannel.name} is a ${resolvedChannel.type} channel!`
-      )
-      return null
-    }
-
-    const resolvedMessage = await resolvedChannel.messages
-      .fetch(messageID)
-      .catch(constNull)
-    if (!resolvedMessage) {
-      await message.reply(
-        `message with ID ${messageID} in ${
-          resolvedChannel.type === 'DM'
-            ? 'this channel'
-            : // TODO: fix typescript-eslint thinking that resolvedChannel has no toString method
-              (resolvedChannel as {toString: () => string})
-        } doesn’t exist or I don’t have permissions to view it!`
-      )
-      return null
-    }
-
-    return resolvedMessage
-  }
-
-  // Check for referenced message (inline replies)
-  const referencedMessage =
-    // TODO [discord.js@>=13]: change to check if type == 19 (inline reply)
-    reference?.messageId != null && !flags.has('IS_CROSSPOST')
-      ? // All messages replied to must be in the same channel
-        await channel.messages.fetch(reference.messageId).catch(constNull)
-      : null
-  if (referencedMessage) return referencedMessage
-
-  if (messageInput === undefined) {
-    await message.reply(
-      'you must provide a message link or ID if you aren’t replying to a message!'
-    )
-    return null
-  }
-
-  let result: Message | null
-  const messageLinkResult = execOnce(messageLinkRegex, messageInput)
-  if (messageLinkResult) {
-    const [, guildID, channelID, messageID] = messageLinkResult
-    result = await resolve(guildID, channelID, messageID)
-  } else if (idRegex.test(messageInput)) {
-    let channelOrID: Channel | Snowflake
-    if (channelInput === undefined) channelOrID = channel
-    else {
-      const channelMentionResult = execOnce(channelMentionRegex, channelInput)
-      if (!channelMentionResult) {
-        await message.reply(`${channelInput} is not a valid channel!`)
-        return null
-      }
-      ;[, channelOrID] = channelMentionResult
-    }
-    result = await resolve(guild?.id ?? '@me', channelOrID, messageInput)
-  } else {
-    await message.reply(
-      `‘${messageInput}${
-        channelInput === undefined ? '' : ` ${channelInput}`
-      }’ is not a valid message link or ID!`
-    )
-    return null
-  }
-
-  return result
-}
-
-export type DateFormatter = (date: Date) => string
-
-export const createDateFormatter = (timeZone: string): DateFormatter => {
-  const format = new Intl.DateTimeFormat('en-AU', {
-    dateStyle: 'short',
-    timeStyle: 'long',
-    timeZone
-  })
-  return (date): string => {
-    const parts = format.formatToParts(date)
-    const part = (type: Intl.DateTimeFormatPartTypes): string | undefined =>
-      parts.find(p => p.type === type)?.value
-    return `${part('day')}/${part('month')}/${part('year')}, ${part(
-      'hour'
-    )}:${part('minute')} ${part('dayPeriod')!.toLowerCase()} ${
-      part('timeZoneName') ?? 'GMT'
-    }`
-  }
-}
-
-export const formatBoolean = (boolean: boolean | null): string =>
-  boolean ?? false ? 'Yes' : 'No'
-
 export const imageField = (name: string, url: string): EmbedFieldData => ({
   name,
-  value: `[Link](${url})`
+  value: hyperlink('Link', url)
 })

@@ -61,6 +61,15 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "Register Commands",
+      "program": "${workspaceFolder}/packages/bot/scripts/src/register-commands.ts",
+      "outFiles": ["${workspaceFolder}/packages/bot/scripts/dist/**/*.js"],
+      "skipFiles": ["<node_internals>/**", "node_modules/**"],
+      "presentation": {"group": "scripts"}
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "Launch Current File",
       "runtimeArgs": ["-r", "ts-node/register"],
       "args": ["${file}"],

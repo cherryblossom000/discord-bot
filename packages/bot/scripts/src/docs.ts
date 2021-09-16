@@ -1,79 +1,92 @@
-import fs from 'fs'
-import path from 'path'
-import {fileURLToPath} from 'url'
+import fs, {mkdir, writeFile} from 'node:fs/promises'
+import path from 'node:path'
+import {inlineCode} from '@discordjs/builders'
+import {ApplicationCommandOptionType} from 'discord-api-types'
 import {Permissions} from 'discord.js'
 import MarkdownIt from 'markdown-it'
 import {markdownTable} from 'markdown-table'
+import {
+  distFolder,
+  rootFolder,
+  slashCommands,
+  scriptsFolder
+} from './commands.js'
 import exitOnError from '../../../../scripts/dist/exit-on-error.js'
-import {defaultPrefix, permissions} from '../../dist/src/constants.js'
-import {upperFirst} from '../../dist/src/lodash.js'
-import type {Command} from '../../src/types'
+import {permissions} from '../../dist/src/constants.js'
+import {
+  formatCommandSyntax,
+  formatCommandUsage,
+  upperFirst
+} from '../../dist/src/utils.js'
+import type {APIApplicationCommandSubCommandOptions} from 'discord-api-types'
+import type {
+  FormatCommandSyntaxInput,
+  FormatCommandInput
+} from '../../src/utils'
+import type {PathLike} from 'node:fs'
 
 exitOnError()
 
-const {mkdir, readdir, writeFile} = fs.promises
+const readFile = async (filePath: PathLike): Promise<string> =>
+  fs.readFile(filePath, 'utf8')
 
-const readFile = async (
-  path_: fs.PathLike | fs.promises.FileHandle
-): Promise<string> => fs.promises.readFile(path_, 'utf8')
-
-const scriptsFolder = new URL('..', import.meta.url)
-const rootFolder = new URL('..', scriptsFolder)
-const distFolder = new URL('dist/', rootFolder)
-const commandsFolder = new URL('src/commands/', distFolder)
 const htmlFolder = new URL('assets/html/', distFolder)
 const readmeFile = new URL('README.md', rootFolder)
 
-// Import commands
-const commands = await Promise.all(
-  (
-    await readdir(commandsFolder)
-  )
-    .filter(f => f.endsWith('.js'))
-    .map(
-      async f =>
-        (
-          await (import(fileURLToPath(new URL(f, commandsFolder))) as Promise<{
-            default: Command
-          }>)
-        ).default
-    )
-)
+const br = '<br>'
 
-// Commands docs for markdown-table
-const usageMarkdownIt = new MarkdownIt({
-  html: true,
-  breaks: true,
-  linkify: true
-})
+const formatCommand = (
+  command: FormatCommandInput,
+  usage: string | undefined,
+  prefix?: string,
+  includeDescription = false
+): string => {
+  const {name, options = []} = command
+  const resolvedPrefix = prefix === undefined ? '' : `${prefix} `
+  if (
+    options[0]?.type === ApplicationCommandOptionType.Subcommand ||
+    options[0]?.type === ApplicationCommandOptionType.SubcommandGroup
+  ) {
+    return options
+      .map(opt =>
+        formatCommand(
+          opt as APIApplicationCommandSubCommandOptions,
+          undefined,
+          resolvedPrefix + name,
+          true
+        )
+      )
+      .join(br + br)
+  }
+  return (
+    formatCommandSyntax(command as FormatCommandSyntaxInput, {
+      prefix,
+      includeDescription,
+      pipeChar: '\\|' // escape for table
+    }) +
+    (options.length
+      ? br +
+        options
+          .map(
+            opt =>
+              inlineCode(opt.name) +
+              (opt.description ? `: ${opt.description}` : '')
+          )
+          .join(br)
+      : '') +
+    formatCommandUsage(usage, br)
+  )
+}
+
 const docs = [
-  ['Command', 'Aliases', 'Description', 'Usage', 'Cooldown (s)'],
-  ...commands
+  ['Command', 'Description', 'Usage'],
+  ...slashCommands
     .filter(({hidden = false}) => !hidden)
-    .map(({name, aliases, description, syntax, usage, cooldown = 3}) => [
-      `\`${name}\``,
-      aliases?.map(a => `\`${a}\``).join(', ') ?? '-',
-      name === 'iwmelc'
-        ? `${description}<br>![i will murder every last capitalist](./assets/img/iwmelc.jpg)`
-        : name === 'htkb'
-        ? `${description}<br>![how to kiss boy](./assets/img/htkb.jpg)`
-        : description,
-      `\`${defaultPrefix}${name}${
-        syntax === undefined ? '' : ` ${syntax.replace(/\|/gu, '\\|')}`
-      }\`${
-        usage === undefined
-          ? ''
-          : `<br>${(name === 'play' || name === 'volume'
-              ? usageMarkdownIt
-                  .render(usage)
-                  .replace(/\|/gu, '\\|')
-                  .replace(/\n/gu, '')
-                  .replace(/<\/?p>/gu, '')
-              : usage
-            ).replace(/\n/gu, '<br>')}`
-      }`,
-      cooldown.toString()
-    ])
+    .map(({data, usage}) => {
+      const command = data.toJSON()
+      const {name, description} = command
+      return [inlineCode(name), description, formatCommand(command, usage)]
+    })
 ]
 
 const [newReadme, template] = await Promise.all([

@@ -39,7 +39,7 @@ export const configs: Record<string, Linter.Config> = {
     plugins: ['@comrade-pingu'],
     overrides: [
       {
-        files: ['src/commands/*.ts'],
+        files: ['src/commands/slash/*.ts'],
         rules: {
           '@comrade-pingu/correct-command-type': 2,
           '@comrade-pingu/default-export-name': [1, {name: 'command'}]

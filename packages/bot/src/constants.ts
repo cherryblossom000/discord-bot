@@ -3,50 +3,30 @@ import type {PermissionString} from 'discord.js'
 /** Whether this is a development environment. */
 export const dev = process.env.NODE_ENV !== 'production'
 
-/** The prefix for the bot. */
-export const defaultPrefix = '.'
-
 /** The permissions needed for the bot to work fully. */
 export const permissions: PermissionString[] = [
   'VIEW_CHANNEL',
   'SEND_MESSAGES',
-  // To remove other users' reactions
-  'MANAGE_MESSAGES',
   'EMBED_LINKS',
-  'ATTACH_FILES',
-  // To react on a message
-  'READ_MESSAGE_HISTORY',
-  'ADD_REACTIONS',
-  'CONNECT',
-  'SPEAK'
+  'ATTACH_FILES'
 ]
 
 /** The user id of the creator, cherryblossom. */
 export const me = '506054261717598210'
 
-const numbers = []
-for (let i = 0; i <= 9; i++) numbers.push(`${i}\uFE0F\u20E3`)
-numbers.push('🔟')
-
 /** Emojis. */
 export const emojis = {
   left: '⬅',
   right: '➡',
-  pause: '⏸',
-  resume: '▶',
-  stop: '🛑',
-  numbers,
-  delete: '🗑',
-  letters: ['🇦', '🇧', '🇨', '🇩'],
+  // delete: '🗑',
   tick: '✅',
   cross: '❌',
   clock: '🕒',
-  smirk: '😏'
+  smirk: '😏',
+  thumbsUp: '👍'
 } as const
 
 export const defaultTimeZone = 'UTC'
-
-export const imagesFolder = new URL('assets/img/', import.meta.url)
 
 // #region Angry Noot Noot
 

@@ -1,148 +1,51 @@
-import {Collection} from 'discord.js'
-import escapeRegex from 'escape-string-regexp'
-import {dev} from '../constants.js'
-import {fetchPrefix} from '../database.js'
-import {handleError, ignoreError, sendDeletableMessage} from '../utils.js'
-import type {Snowflake} from 'discord.js'
+import {inlineCode} from '@discordjs/builders'
+import {handleError} from '../utils.js'
 import type {EventListener} from '../Client'
-import type {Command, GuildMessage, Message} from '../types'
-
-const executeRegexCommands = async (message: Message): Promise<void> => {
-  const {client, channel, content} = message
-  // Regex message commands
-  for (const [regex, regexMessage] of client.regexCommands.entries()) {
-    if (regex.test(content)) {
-      try {
-        // only want to be sent once!
-        // eslint-disable-next-line no-await-in-loop -- only single await due to return
-        await (typeof regexMessage === 'string'
-          ? channel.send(regexMessage)
-          : channel.send(regexMessage(message)))
-        return
-      } catch (error: unknown) {
-        handleError(
-          client,
-          error,
-          `Regex command with regex \`${regex}\` failed with message content \`${content}\`.`,
-          message
-        )
-      }
-    }
-  }
-}
-
-const cooldowns = new Collection<string, Collection<Snowflake, number>>()
 
 const listener: EventListener<'messageCreate'> =
-  (client, database) =>
-  // eslint-disable-next-line max-statements -- don't know how to shorten and isn't a typical, simple function
+  client =>
   async (message): Promise<void> => {
-    const now = Date.now()
-    const {author, content, channel, guild} = message
+    const {author, content, channel} = message
 
     if (author.bot) return
 
-    const prefix = await fetchPrefix(database, guild)
-    const matchedPrefix = new RegExp(
-      `^(<@!?${client.user!.id}>|${escapeRegex(prefix)})`,
-      'u'
-    ).exec(content)?.[0]
-    if (matchedPrefix !== undefined || !guild) {
-      const rawInput = content.slice(matchedPrefix?.length ?? 0).trim()
-
-      // Exits if there is no input and the bot was mentioned
-      if (!rawInput.length && matchedPrefix !== prefix) {
-        await channel.send(`Hi, I am Comrade Pingu. Noot noot.
-My prefix is \`${prefix}\`. Run \`${prefix}help\` for a list of commands.`)
-        return
-      }
-
-      // Get args and command
-      const args = rawInput.split(/\s+/u)
-      const commandName = args.shift()!.toLowerCase()
-
-      const checkCommand = async (command?: Command): Promise<boolean> => {
-        // If command doesn't exist exit or execute regex commands
-        if (!command) {
-          if (!guild) await executeRegexCommands(message)
-          return false
-        }
-
-        const {name, args: noArgs = 0, syntax, guildOnly = false} = command
-        // Guild only
-        if (guildOnly && channel.type !== 'GUILD_TEXT') {
-          await sendDeletableMessage(
-            message,
-            'sorry, I can’t execute that command inside DMs. Noot noot.',
-            true
-          )
-          return false
-        }
-
-        // If no args
-        if (args.length < noArgs) {
-          await sendDeletableMessage(
-            message,
-            `you didn’t provide enough arguments.
-The syntax is: \`${prefix}${name}${
-              syntax === undefined ? '' : ` ${syntax}`
-            }\`. Noot noot.`,
-            true
-          )
-          return false
-        }
-        return true
-      }
-      const command =
-        client.commands.get(commandName) ??
-        client.commands.find(({aliases = []}) => aliases.includes(commandName))
-      if (!(await checkCommand(command))) return
-
-      if (!dev) {
-        const checkCooldowns = async (): Promise<boolean> => {
-          if (!cooldowns.has(command!.name))
-            cooldowns.set(command!.name, new Collection())
-
-          const timestamps = cooldowns.get(command!.name)!
-          const cooldownAmount = (command!.cooldown ?? 3) * 1000
-          if (timestamps.has(author.id)) {
-            const expirationTime = timestamps.get(author.id)! + cooldownAmount
-            if (now < expirationTime) {
-              const timeLeft = ((expirationTime - now) / 1000).toFixed(1)
-              const msg = await message.reply(
-                `please wait ${timeLeft} more second${
-                  timeLeft === '1.0' ? '' : 's'
-                } before using the \`${command!.name}\` command. Noot noot.`
-              )
-              // Can't use delete with timeout because I need to return false before waiting 10 seconds
-              setTimeout(async () => {
-                await msg.delete()
-                await message.delete().catch(ignoreError('MISSING_PERMISSIONS'))
-              }, 5000)
-              return false
-            }
-          }
-          timestamps.set(author.id, now)
-          setTimeout(() => timestamps.delete(author.id), cooldownAmount)
-          return true
-        }
-        if (!(await checkCooldowns())) return
-      }
-
-      // Execute command
-      const input = rawInput.replace(new RegExp(`^${commandName}\\s*`, 'u'), '')
+    if (content.trim().startsWith(`<@!${client.user!.id}>`)) {
       try {
-        await command!.execute(message as GuildMessage, {args, input}, database)
-      } catch (error: unknown) {
+        await channel.send(`Hi, I am Comrade Pingu. Noot noot.
+    I use slash commands now — type ${inlineCode('/')} to see my commands.`)
+      } catch (error) {
         handleError(
           client,
           error,
-          `Command \`${command!.name}\` failed${
-            input ? ` with input ${input}` : ''
-          }.`,
-          message
+          `Responding to mention failed in channel ${channel.id}${
+            channel.type === 'DM'
+              ? ''
+              : ` (#${channel.name}) (guild ${channel.guild.id} (${channel.guild.name}))`
+          }.`
         )
       }
-    } else await executeRegexCommands(message)
+      return
+    }
+
+    for (const [regex, triggerMessage] of client.triggers.entries()) {
+      if (regex.test(content)) {
+        try {
+          // only want to be sent once!
+          // eslint-disable-next-line no-await-in-loop -- only single await due to return
+          await (typeof triggerMessage === 'string'
+            ? channel.send(triggerMessage)
+            : channel.send(triggerMessage(message)))
+          return
+        } catch (error) {
+          handleError(
+            client,
+            error,
+            `Trigger with regex ${inlineCode(
+              String(regex)
+            )} failed with message content ${inlineCode(content)}.`
+          )
+        }
+      }
+    }
   }
 export default listener

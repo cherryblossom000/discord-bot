@@ -1,6 +1,9 @@
 #!/bin/bash
 set -xeuo pipefail
 
+# Register commands
+pnpm -C packages/bot register-commands
+
 # Update package.json (could have changed due to semantic-release) and remove
 # devDependencies so they aren't installed on Repl.it
 node scripts/dist/update-package

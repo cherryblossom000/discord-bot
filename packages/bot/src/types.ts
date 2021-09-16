@@ -1,161 +1,80 @@
-import type * as D from 'discord.js'
+import type {
+  SlashCommandBuilder,
+  SlashCommandSubcommandsOnlyBuilder
+} from '@discordjs/builders'
+import type {APIApplicationCommandPermission} from 'discord-api-types-updated/v9'
+import type {MessageAttachment} from 'discord.js'
+import type {
+  SlashCommandInteraction,
+  ContextMenuInteraction,
+  GuildSlashCommandInteraction,
+  Message
+} from './types/discord.js-patches'
 import type {Db} from './database'
-import type Client from './Client'
+import type {NonEmpty} from './utils'
 
-// #region Discord Extensions
+export * from './types/discord.js-patches'
 
-export type Snowflake = `${bigint}`
-
-export interface User extends D.User {
-  id: Snowflake
-}
-
-interface MessageManager extends D.MessageManager {
-  fetch(message: Snowflake, options?: D.BaseFetchOptions): Promise<Message>
-  fetch(
-    options?: D.ChannelLogsQueryOptions,
-    cacheOptions?: D.BaseFetchOptions
-  ): Promise<D.Collection<Snowflake, Message>>
-}
-
-interface TextChannel extends D.TextChannel {
-  messages: MessageManager
-  send(options: D.MessageOptions | D.MessagePayload | string): Promise<Message>
-}
-
-interface NewsChannel extends D.NewsChannel {
-  messages: MessageManager
-  send(options: D.MessageOptions | D.MessagePayload | string): Promise<Message>
-}
-
-interface DMChannel extends D.DMChannel {
-  messages: MessageManager
-  send(options: D.MessageOptions | D.MessagePayload | string): Promise<Message>
-}
-
-/** Any text-based guild channel. */
-export type TextBasedGuildChannel = NewsChannel | TextChannel
-export type TextBasedChannel = DMChannel | TextBasedGuildChannel
-
-export type Channel = D.StoreChannel | D.VoiceChannel | TextBasedChannel
-
-export interface GuildMember extends D.GuildMember {
-  // eslint-disable-next-line @typescript-eslint/no-use-before-define -- circular
-  guild: Guild
-}
-
-interface GuildMemberManager extends D.GuildMemberManager {
-  readonly cache: D.Collection<Snowflake, GuildMember>
-}
-
-/** A guild from this client. */
-export interface Guild extends D.Guild {
-  client: Client
-  id: Snowflake
-  members: GuildMemberManager
-  systemChannel: TextChannel | null
-}
-
-interface MessageReference extends D.MessageReference {
-  messageId: Snowflake | null
-}
-
-/** A message from this client. */
-
-interface MessageMentions extends D.MessageMentions {
-  readonly members: D.Collection<Snowflake, GuildMember>
-  readonly users: D.Collection<Snowflake, User>
-}
-
-export interface BaseMessage extends D.Message {
-  author: User
-  client: Client
-  guild: Guild | null
-  mentions: MessageMentions
-  reference: MessageReference | null
-}
-
-/** A message from a guild. */
-export interface GuildMessage extends BaseMessage {
-  channel: TextBasedGuildChannel
-  guild: Guild
-  member: GuildMember
-}
-
-/** A message from a DM. */
-interface DMMessage extends BaseMessage {
-  channel: DMChannel
-  guild: null
-  member: null
-}
-
-/** A message from this client. */
-export type Message = DMMessage | GuildMessage
-
-// #endregion
-
-/** @template T The type of the message in `execute`. */
-interface CommandBase<T extends Message> {
-  /** The name. */
-  name: string
-
+/** @template T The type of the interaction in `execute`. */
+interface CommandBase<T> {
   /**
-   * Aliases.
-   * @default []
+   * Whether or not the command is only available in a guild.
+   * @default false
    */
-  aliases?: readonly string[]
-
-  /** A description. */
-  description: string
-
-  /** Whether or not the command is only available in a server. */
   guildOnly?: boolean
 
-  /** Whether or not the command is not shown in the help list of commands. */
-  hidden?: boolean
+  /** The actual command. */
+  execute(interaction: T, database: Db): Promise<void> | void
+}
 
-  /**
-   * The minimum number of arguments required.
-   * @default 0
-   */
-  args?: number
+interface SlashCommandBase<T extends SlashCommandInteraction>
+  extends CommandBase<T> {
+  /** The data of the slash command for Discord. */
+  data:
+    | Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'>
+    | SlashCommandSubcommandsOnlyBuilder
 
-  /** The syntax. */
-  syntax?: string
+  /** The permissions for the command. */
+  permissions?: NonEmpty<APIApplicationCommandPermission>
 
-  /** The explanation for how to use it. */
+  /** More docs. */
   usage?: string
 
   /**
-   * The cooldown, in seconds.
-   * @default 3
+   * Whether or not the command is not shown in the docs.
+   * @default false
    */
-  cooldown?: number
-
-  /** The actual command. */
-  execute(
-    message: T,
-    input: {args: readonly string[]; input: string},
-    database: Db
-  ): Promise<void> | void
+  hidden?: boolean
 }
 
-export interface GuildOnlyCommand extends CommandBase<GuildMessage> {
-  guildOnly: true
+type GuildOnly<T extends CommandBase<unknown>> = T & {guildOnly: true}
+type GuildOrDM<T extends CommandBase<unknown>> = T & {guildOnly?: false}
+
+export type GuildOnlySlashCommand = GuildOnly<
+  SlashCommandBase<GuildSlashCommandInteraction>
+>
+export type AnySlashCommand = GuildOrDM<
+  SlashCommandBase<SlashCommandInteraction>
+>
+export type SlashCommand = AnySlashCommand | GuildOnlySlashCommand
+
+interface ContextMenuCommandBase extends CommandBase<ContextMenuInteraction> {
+  name: string
 }
 
-export interface AnyCommand extends CommandBase<DMMessage | GuildMessage> {
-  guildOnly?: false
-}
+export type GuildOnlyContextMenuCommand = GuildOnly<ContextMenuCommandBase>
+export type AnyContextMenuCommand = GuildOrDM<ContextMenuCommandBase>
+export type ContextMenuCommand =
+  | AnyContextMenuCommand
+  | GuildOnlyContextMenuCommand
 
-/** A command. */
-export type Command = AnyCommand | GuildOnlyCommand
-
-/** A command that is triggered based on a regular expression. */
-export interface RegexCommand {
+/** Something that is triggered based on a regular expression. */
+export interface Trigger {
   /** The regex to test for. */
   regex: RegExp
 
   /** The message to reply with. Can be a function that returns the message.. */
-  regexMessage: string | ((message: Message) => string)
+  message: string | ((message: Message) => string)
 }
+
+export type RotateAttachment = Pick<MessageAttachment, 'name' | 'url'>

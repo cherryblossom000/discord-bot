@@ -1,15 +1,18 @@
 import D, {Collection} from 'discord.js'
+import type {GuildMember} from 'discord.js'
 import type {Db} from './database.js'
 import type {
   Channel,
-  Command,
+  ContextMenuCommand,
   Guild,
-  GuildMember,
+  InteractionBase,
   Message,
-  User,
-  RegexCommand,
-  Snowflake
+  SlashCommand,
+  Snowflake,
+  RotateAttachment,
+  Trigger
 } from './types'
+import type {ReadonlyNonEmpty} from './utils'
 
 declare global {
   interface ArrayConstructor {
@@ -22,6 +25,7 @@ export interface ClientEvents extends D.ClientEvents {
   // Not using partials
   guildMemberRemove: [GuildMember]
   messageCreate: [Message]
+  interactionCreate: [InteractionBase]
 }
 
 export type Listener<K extends keyof ClientEvents> = (
@@ -37,17 +41,12 @@ interface RejoinListeners {
   guildMemberRemove: Listener<'guildMemberRemove'>
 }
 
-interface UserManager extends D.UserManager {
-  readonly cache: Collection<string, User>
-}
-
 interface ChannelManager extends D.ChannelManager {
   fetch(...args: Parameters<D.ChannelManager['fetch']>): Promise<Channel>
 }
 
 interface GuildManager extends D.GuildManager {
   readonly cache: Collection<string, Guild>
-  create(...args: Parameters<D.GuildManager['create']>): Promise<Guild>
   fetch(options: D.FetchGuildOptions | Snowflake): Promise<Guild>
   fetch(
     options?: D.FetchGuildsOptions
@@ -56,7 +55,6 @@ interface GuildManager extends D.GuildManager {
 
 /** The Discord client for this bot. */
 export default class Client extends D.Client {
-  declare users: UserManager
   declare channels: ChannelManager
   declare guilds: GuildManager
 
@@ -70,17 +68,29 @@ export default class Client extends D.Client {
     listener: Listener<K>
   ) => this
 
-  /** The commands. */
-  readonly commands = new Collection<string, Command>()
+  /** The slash commands. */
+  readonly slashCommands = new Collection<string, SlashCommand>()
 
-  /** The regex commands. */
-  readonly regexCommands = new Collection<
-    RegExp,
-    RegexCommand['regexMessage']
-  >()
+  /** The user context menu commands. */
+  readonly userCommands = new Collection<string, ContextMenuCommand>()
+
+  /** The message context menu commands. */
+  readonly messageCommands = new Collection<string, ContextMenuCommand>()
+
+  /** The triggers. */
+  readonly triggers = new Collection<RegExp, Trigger['message']>()
 
   /** The rejoining listeners, mapped by a guild's ID. */
-  readonly rejoinListeners = new Collection<D.Snowflake, RejoinListeners>()
+  readonly rejoinListeners = new Collection<Snowflake, RejoinListeners>()
+
+  /**
+   * The pending attachments of the messages that the Rotate Image command was
+   * used on, mapped by the id of the user who requested it.
+   */
+  readonly rotateAttachments = new Collection<
+    Snowflake,
+    ReadonlyNonEmpty<RotateAttachment>
+  >()
 
   /** Set the activity. */
   setActivity(): void {

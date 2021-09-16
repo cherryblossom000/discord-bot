@@ -61,6 +61,7 @@ jobs:
         path: |
           scripts/dist
           packages/*/dist
+          packages/*/scripts/dist
         if-no-files-found: error
 
   release:
@@ -122,6 +123,9 @@ jobs:
     - name: Deploy
       run: scripts/deploy.sh
       env:
+        TOKEN: ${{ secrets.TOKEN }}
+        APP_ID: '554539674899841055'
+        NODE_ENV: production
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GIT_AUTHOR_NAME: Github Actions
         GIT_COMMITTER_NAME: Github Actions

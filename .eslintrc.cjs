@@ -10,6 +10,7 @@ module.exports = {
     '@cherryblossom/eslint-config/node/16'
   ],
   reportUnusedDisableDirectives: true,
+  ignorePatterns: ['.history/', 'dist/'],
   parserOptions: {
     project: 'tsconfig.eslint.json',
     tsconfigRootDir: __dirname,
@@ -47,10 +48,7 @@ module.exports = {
     },
     {
       files: ['scripts/**/*.ts', 'packages/*/scripts/**/*.ts'],
-      extends: [
-        '@cherryblossom/eslint-config/ts/node/esm',
-        '@cherryblossom/eslint-config/node/12'
-      ],
+      extends: ['@cherryblossom/eslint-config/ts/node/esm'],
       rules: {
         'node/no-extraneous-import': 0,
         'node/no-process-exit': 0,

@@ -1,19 +1,23 @@
-import fs from 'node:fs'
 import dotenv from 'dotenv'
+import {inlineCode} from '@discordjs/builders'
 import Koa from 'koa'
 import serve from 'koa-static'
 import Client from './Client.js'
-import {addListeners} from './commands/rejoin.js'
+import {addListeners} from './commands/slash/rejoin.js'
 import {dev} from './constants.js'
 import {connect, fetchRejoinGuilds} from './database.js'
-import {handleError} from './utils.js'
+import {
+  commandFiles,
+  handleError,
+  importFolder as utilsImportFolder
+} from './utils.js'
 import type {AddressInfo} from 'node:net'
+import type {Collection} from 'discord.js'
 import type {ClientEvents, EventListener} from './Client'
-import type {Command, RegexCommand} from './types'
+import type {ContextMenuCommand, SlashCommand, Trigger} from './types'
+import type {KeysMatching} from './utils'
 
 dotenv.config()
-
-const {readdir} = fs.promises
 
 const assetsFolder = new URL('../assets/', import.meta.url)
 
@@ -96,32 +100,23 @@ const database = await connect(
 
 const importFolder = async <T>(
   folderPath: string,
-  callback: (command: T, file: string) => void
+  fn: (mod: T, filename: string) => void,
+  files?: readonly string[]
 ): Promise<void> => {
   try {
-    await Promise.all(
-      (
-        await readdir(new URL(`${folderPath}/`, import.meta.url))
-      )
-        .filter(file => file.endsWith('.js'))
-        .map(async file =>
-          callback(
-            (
-              (await import(
-                new URL(`${folderPath}/${file}`, import.meta.url).pathname
-              )) as {
-                default: T
-              }
-            ).default,
-            file.slice(0, -3)
-          )
-        )
-    )
-  } catch (error: unknown) {
+    for (const [filename, mod] of await utilsImportFolder<T>(
+      import.meta.url,
+      folderPath,
+      files
+    ))
+      fn(mod, filename)
+  } catch (error) {
     handleError(
       client,
       error,
-      `\`importFolder\` failed with path \`${folderPath}\`.`
+      `${inlineCode('importFolder')} failed with path ${inlineCode(
+        folderPath
+      )}.`
     )
   }
 }
@@ -149,11 +144,31 @@ await importFolder<EventListener<keyof ClientEvents>>(
     client.on(name as keyof ClientEvents, listener(client, database))
 )
 
+const addContextMenuCommand =
+  (
+    collectionKey: KeysMatching<Client, Collection<string, ContextMenuCommand>>
+  ) =>
+  (command: ContextMenuCommand): void => {
+    client[collectionKey].set(command.name, command)
+  }
+
 // Initialise commands
 await Promise.all([
-  importFolder<Command>('commands', c => client.commands.set(c.name, c)),
-  importFolder<RegexCommand>('regex-commands', c =>
-    client.regexCommands.set(c.regex, c.regexMessage)
+  importFolder<SlashCommand>(
+    'commands/slash',
+    command => client.slashCommands.set(command.data.name, command),
+    commandFiles
+  ),
+  importFolder<ContextMenuCommand>(
+    'commands/user',
+    addContextMenuCommand('userCommands')
+  ),
+  importFolder<ContextMenuCommand>(
+    'commands/message',
+    addContextMenuCommand('messageCommands')
+  ),
+  importFolder<Trigger>('triggers', command =>
+    client.triggers.set(command.regex, command.message)
   )
 ])
 const listener = app.listen(Number(process.env.PORT), () => {

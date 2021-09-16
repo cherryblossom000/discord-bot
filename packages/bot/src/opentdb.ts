@@ -1,8 +1,7 @@
 import fetch from 'node-fetch'
-import {upperFirst} from './lodash.js'
+import {upperFirst} from './utils.js'
 
 // #region Response
-/* eslint-disable @typescript-eslint/naming-convention -- raw API response */
 const enum ResponseCode {
   Success,
   NoResults,
@@ -11,6 +10,7 @@ const enum ResponseCode {
   TokenEmpty
 }
 
+/* eslint-disable @typescript-eslint/naming-convention -- raw API response */
 interface QuestionResponseBase {
   category: string
   difficulty: 'easy' | 'hard' | 'medium'

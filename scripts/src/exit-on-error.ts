@@ -1,4 +1,4 @@
-export const exit = (error: unknown): never => {
+const exit = (error: unknown): never => {
   process.exitCode = 1
   throw error
 }

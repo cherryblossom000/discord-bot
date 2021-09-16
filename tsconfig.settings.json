@@ -22,6 +22,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "useDefineForClassFields": true,
+    "useUnknownInCatchVariables": true,
     "strict": true
   }
 }
