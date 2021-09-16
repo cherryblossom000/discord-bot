@@ -1,11 +1,10 @@
 import {basename} from 'node:path'
 import {AST_NODE_TYPES} from '@typescript-eslint/experimental-utils'
 import type {Linter} from 'eslint'
-import createDefaultExportRule from './create-default-export-rule.js'
+import defaultExportName from './rules/default-export-name.js'
 import createTypeRule from './create-type-rule.js'
 
 export const rules = {
-  'command-export-name': createDefaultExportRule('command'),
   'correct-command-type': createTypeRule(
     'command',
     new Set(['AnyCommand', 'GuildOnlyCommand']),
@@ -31,8 +30,8 @@ export const rules = {
         report(typeParam)
     }
   ),
-  'correct-regex-command-type': createTypeRule('command', 'RegexCommand'),
-  'event-export-name': createDefaultExportRule('listener')
+  'correct-trigger-type': createTypeRule('command', 'Trigger'),
+  'default-export-name': defaultExportName
 }
 
 export const configs: Record<string, Linter.Config> = {
@@ -43,21 +42,21 @@ export const configs: Record<string, Linter.Config> = {
         files: ['src/commands/*.ts'],
         rules: {
           '@comrade-pingu/correct-command-type': 2,
-          '@comrade-pingu/command-export-name': 1
+          '@comrade-pingu/default-export-name': [1, {name: 'command'}]
         }
       },
       {
-        files: ['src/regex-commands/*.ts'],
+        files: ['src/triggers/*.ts'],
         rules: {
-          '@comrade-pingu/correct-regex-command-type': 2,
-          '@comrade-pingu/command-export-name': 1
+          '@comrade-pingu/correct-trigger-type': 2,
+          '@comrade-pingu/default-export-name': [1, {name: 'trigger'}]
         }
       },
       {
         files: ['src/events/*.ts'],
         rules: {
           '@comrade-pingu/correct-event-type': 2,
-          '@comrade-pingu/event-export-name': 1
+          '@comrade-pingu/default-export-name': [1, {name: 'listener'}]
         }
       }
     ]

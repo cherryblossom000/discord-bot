@@ -1,18 +1,23 @@
 import {AST_NODE_TYPES} from '@typescript-eslint/experimental-utils'
 import type {TSESLint, TSESTree} from '@typescript-eslint/experimental-utils'
 
-export default (
-  name: string
-): TSESLint.RuleModule<'incorrectName' | 'wrongExport', []> => ({
+const rule: TSESLint.RuleModule<
+  'incorrectName' | 'wrongExport',
+  [{name: string}]
+> = {
   meta: {
     type: 'suggestion',
     messages: {
-      incorrectName: `\`{{name}}\` should be \`${name}\`.`,
-      wrongExport: `An identifier called \`${name}\` should be the default export.`
+      incorrectName: '`{{actual}}` should be `{{expected}}`.',
+      wrongExport:
+        'An identifier called `{{expected}}` should be the default export.'
     },
-    schema: []
+    schema: [
+      {properties: {name: {type: 'string'}}, additionalProperties: false}
+    ]
   },
   create(context): TSESLint.RuleListener {
+    const [{name}] = context.options
     return {
       ExportDefaultDeclaration({declaration}): void {
         if (declaration.type !== AST_NODE_TYPES.Identifier) {
@@ -24,15 +29,16 @@ export default (
           context.report({
             node: declaration,
             messageId: 'incorrectName',
-            data: {name: declaration.name}
+            data: {actual: declaration.name, expected: name}
           })
         }
       },
       'Program:not(:has(ExportDefaultDeclaration))'(
         node: TSESTree.Program
       ): void {
-        context.report({node, messageId: 'wrongExport'})
+        context.report({node, messageId: 'wrongExport', data: {expected: name}})
       }
     }
   }
-})
+}
+export default rule
