@@ -5,9 +5,16 @@ import type {AnySlashCommand} from '../../types'
 const IWMELC = 'I will murder every last capitalist'
 const HTKB = 'how to kiss boy'
 
+const enum Meme {
+  /* eslint-disable @typescript-eslint/no-shadow -- not using enum names in enum values */
+  IWMELC = 'iwmelc',
+  HTKB = 'htkb'
+  /* eslint-enable @typescript-eslint/no-shadow */
+}
+
 const imagesFolder = new URL('../../../assets/img/', import.meta.url)
-const htkb = new URL('htkb.jpg', imagesFolder).pathname
 const iwmelc = new URL('iwmelc.jpg', imagesFolder).pathname
+const htkb = new URL('htkb.jpg', imagesFolder).pathname
 
 const MEME = 'meme'
 
@@ -21,8 +28,8 @@ const command: AnySlashCommand = {
         .setDescription('The meme to get.')
         .setRequired(true)
         .addChoices([
-          [IWMELC, iwmelc],
-          [HTKB, htkb]
+          [IWMELC, Meme.IWMELC],
+          [HTKB, Meme.HTKB]
         ])
     ),
   usage: `!${hyperlink(
@@ -32,7 +39,11 @@ const command: AnySlashCommand = {
   async execute(interaction) {
     if (!(await checkPermissions(interaction, 'ATTACH_FILES'))) return
     await interaction.reply({
-      files: [interaction.options.getString(MEME, true)]
+      files: [
+        interaction.options.getString(MEME, true) === Meme.IWMELC
+          ? iwmelc
+          : htkb
+      ]
     })
   }
 }
