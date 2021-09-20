@@ -1,0 +1,49 @@
+{
+  "name": "@comrade-pingu/bot",
+  "version": "4.0.0",
+  "private": true,
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "homepage": "https://comrade-pingu--cherryblossom00.repl.co",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cherryblossom000/comrade-pingu",
+    "directory": "packages/bot"
+  },
+  "type": "module",
+  "main": "dist/src/server.js",
+  "engines": {
+    "node": ">=16.6"
+  },
+  "scripts": {
+    "lint": "eslint --max-warnings 0 --ext ts .",
+    "lint:dev": "pnpm lint -- --cache",
+    "copy": "cd dist && (mkdir assets; trash assets/img; cp -r ../assets/img assets/img)",
+    "docs": "node scripts/dist/docs && (mkdir -p dist/assets/css; purgecss -c purgecss.config.cjs -o dist/assets/css)",
+    "postbuild": "pnpm copy && pnpm run docs",
+    "build": "tsc -b src && pnpm postbuild",
+    "build:all": "tsc -b && pnpm postbuild",
+    "watch": "tsc -b -w",
+    "register-commands": "node scripts/dist/register-commands",
+    "start": "node .",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test:dev": "pnpm test -- -c jest.config.dev.cjs"
+  },
+  "dependencies": {
+    "@discordjs/builders": "^0.6.0",
+    "clean-stack": "^4.1.0",
+    "discord.js": "^13.1.0",
+    "dotenv": "^10.0.0",
+    "koa": "^2.13.1",
+    "koa-static": "^5.0.0",
+    "mathjax": "^3.2.0",
+    "mathjs": "^9.4.4",
+    "mongodb": "^4.1.2",
+    "ms": "^2.1.3",
+    "node-fetch": "yo1dog/node-fetch#patch-1",
+    "sharp": "^0.29.1",
+    "tslib": "^2.3.1",
+    "ytdl-core": "^4.9.1"
+  }
+}
