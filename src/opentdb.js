@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { upperFirst } from './lodash.js';
+import { upperFirst } from './utils.js';
 class OpenTDBError extends Error {
     constructor(message, path) {
         super(message);

@@ -1,37 +1,21 @@
 export const dev = process.env.NODE_ENV !== 'production';
-export const defaultPrefix = '.';
 export const permissions = [
     'VIEW_CHANNEL',
     'SEND_MESSAGES',
-    'MANAGE_MESSAGES',
     'EMBED_LINKS',
-    'ATTACH_FILES',
-    'READ_MESSAGE_HISTORY',
-    'ADD_REACTIONS',
-    'CONNECT',
-    'SPEAK'
+    'ATTACH_FILES'
 ];
 export const me = '506054261717598210';
-const numbers = [];
-for (let i = 0; i <= 9; i++)
-    numbers.push(`${i}\uFE0F\u20E3`);
-numbers.push('🔟');
 export const emojis = {
     left: '⬅',
     right: '➡',
-    pause: '⏸',
-    resume: '▶',
-    stop: '🛑',
-    numbers,
-    delete: '🗑',
-    letters: ['🇦', '🇧', '🇨', '🇩'],
     tick: '✅',
     cross: '❌',
     clock: '🕒',
-    smirk: '😏'
+    smirk: '😏',
+    thumbsUp: '👍'
 };
 export const defaultTimeZone = 'UTC';
-export const imagesFolder = new URL('assets/img/', import.meta.url);
 export const pinguNouns = [
     'bots?',
     'pingu',

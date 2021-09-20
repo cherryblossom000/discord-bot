@@ -32,8 +32,7 @@ img {
   border-style: none;
 }
 
-code,
-pre {
+code {
   font-family: monospace,monospace;
   font-size: 1em;
 }
@@ -126,15 +125,9 @@ ul {
   margin-bottom: 0;
 }
 
-code,
-pre {
+code {
   font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace;
   font-size: 12px;
-}
-
-pre {
-  margin-top: 0;
-  margin-bottom: 0;
 }
 
 input::-webkit-inner-spin-button,
@@ -169,7 +162,6 @@ a:not([href]) {
 
 
 p,
-pre,
 table,
 ul {
   margin-top: 0;
@@ -268,40 +260,4 @@ code {
   font-size: 85%;
   background-color: rgba(27,31,35,.05);
   border-radius: 3px;
-}
-
-pre {
-  word-wrap: normal;
-}
-
-pre>code {
-  padding: 0;
-  margin: 0;
-  font-size: 100%;
-  word-break: normal;
-  white-space: pre;
-  background: transparent;
-  border: 0;
-}
-
-
-pre {
-  padding: 16px;
-  overflow: auto;
-  font-size: 85%;
-  line-height: 1.45;
-  background-color: #f6f8fa;
-  border-radius: 3px;
-}
-
-pre code {
-  display: inline;
-  max-width: auto;
-  padding: 0;
-  margin: 0;
-  overflow: visible;
-  line-height: inherit;
-  word-wrap: normal;
-  background-color: initial;
-  border: 0;
 }

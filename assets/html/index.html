@@ -1,230 +1,128 @@
 <!DOCTYPE html><html lang=en-AU><head><title>Comrade Pingu</title><meta name=description content='Kill all the capitalist scum!'/><meta charset=utf-8 /><meta http-equiv=X-UA-Compatible content='IE=edge'/><meta name=viewport content='width=device-width,initial-scale=1'/><meta name=og:title content='Comrade Pingu'/><meta name=og:description content='Kill all the capitalist scum!'/><meta name=og:type content=website /><meta name=og:locale content=en_AU /><meta name=og:site_name content='Comrade Pingu'/><meta name=og:image content=https://comrade-pingu.cherryblossom00.repl.co/pingu.jpg /><meta name=og:url content=https://comrade-pingu.cherryblossom00.repl.co /><link id=favicon rel=icon href=/pingu.jpg type=image/x-icon /><link rel=stylesheet href=/github-markdown.css type=text/css /><link rel=stylesheet href=/style.css type=text/css /></head><body><h1>Comrade Pingu</h1>
 <p><img src="https://github.com/cherryblossom000/comrade-pingu/workflows/CI/badge.svg" alt="CI"></p>
-<p><em>You may be looking for the <a href="http://comradepingu.glitch.me">other website</a>.</em></p>
-<p>A fun Discord bot created on the 3<sup>rd</sup> of March 2019 with <a href="https://discord.js.org">discord.js</a>. Kill all the capitalist scum!</p>
+<p><em>You may be looking for the <a href="http://comradepingu.glitch.me">other website</a> (not
+created by me).</em></p>
+<!-- markdownlint-disable MD033 -->
+<p>A fun Discord bot created on the 3<sup>rd</sup> of March 2019 with
+<a href="https://discord.js.org">discord.js</a>. Kill all the capitalist scum!</p>
+<!-- markdownlint-enable MD033 -->
 <h2>Inviting</h2>
-<p>To invite Comrade Pingu to your sever, you must have the Manage Server permission and then use <a href="https://discordapp.com/oauth2/authorize?client_id=554539674899841055&amp;scope=bot&amp;permissions=3271744">this link</a>.</p>
+<p>To invite Comrade Pingu to your sever, you must have the Manage Server
+permission and then use
+<a href="https://discord.com/oauth2/authorize?client_id=554539674899841055&amp;scope=applications.commands+bot&amp;permissions=52224">this link</a>.</p>
 <h2>Prefix</h2>
 <p>Comrade Pingu’s default prefix is <code>.</code>.</p>
 <h2>Documentation</h2>
+<!-- markdownlint-disable MD033 -->
 <!-- DOCS START -->
 <table>
 <thead>
 <tr>
 <th>Command</th>
-<th>Aliases</th>
 <th>Description</th>
 <th>Usage</th>
-<th>Cooldown (s)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>calculate</code></td>
-<td><code>c</code>, <code>calculator</code></td>
 <td>Calculates a maths expression.</td>
-<td><code>.calculate &lt;expression&gt;</code><br><code>expression</code><br>The expression to calculate. See https://mathjs.org/docs/expressions/syntax.html for more information.</td>
-<td>3</td>
+<td><code>/calculate &lt;expression: string&gt;</code><br><code>expression</code>: The expression to calculate.<br><br>See <a href="https://mathjs.org/docs/expressions/syntax.html">the mathjs docs</a> for more information on the syntax of <code>expression</code>.</td>
 </tr>
 <tr>
 <td><code>dog</code></td>
-<td><code>d</code>, <code>randomdog</code></td>
 <td>Gets a random image of a dog from random.dog.</td>
-<td><code>.dog</code></td>
-<td>3</td>
+<td><code>/dog</code></td>
 </tr>
 <tr>
 <td><code>emoji</code></td>
-<td><code>em</code></td>
 <td>Gets the image for an emoji.</td>
-<td><code>.emoji &lt;emoji&gt;</code><br><code>emoji</code><br>The emoji to get the image of.</td>
-<td>3</td>
+<td><code>/emoji &lt;emoji: string&gt;</code><br><code>emoji</code>: The emoji to get the image of.</td>
 </tr>
 <tr>
 <td><code>help</code></td>
-<td><code>commands</code>, <code>h</code></td>
 <td>Lists all my commands or gets info about a specific command.</td>
-<td><code>.help [command]</code><br><code>command</code> (optional)<br>The command that you want to get info about. If omitted, all the commands will be listed.</td>
-<td>5</td>
-</tr>
-<tr>
-<td><code>htkb</code></td>
-<td><code>howtokissboy</code></td>
-<td>Gets the image that shows how to kiss a boy.<br><img src="/htkb.jpg" alt="how to kiss boy"></td>
-<td><code>.htkb</code></td>
-<td>3</td>
+<td><code>/help [command: calculate|dog|emoji|eval|icon|info|invite|maths|meme|ping|profile|rejoin|rotate|server|stats|timezone|trivia|uptime|website]</code><br><code>command</code>: The command that you want to get info about. If omitted, all the commands will be listed.</td>
 </tr>
 <tr>
 <td><code>icon</code></td>
-<td><code>i</code></td>
 <td>Gets the server icon.</td>
-<td><code>.icon</code></td>
-<td>3</td>
+<td><code>/icon</code></td>
 </tr>
 <tr>
 <td><code>info</code></td>
-<td><code>in</code></td>
 <td>Gets info about me.</td>
-<td><code>.info</code></td>
-<td>3</td>
+<td><code>/info</code></td>
 </tr>
 <tr>
 <td><code>invite</code></td>
-<td><code>add</code>, <code>inv</code>, <code>link</code></td>
 <td>Gets my invite link.</td>
-<td><code>.invite</code></td>
-<td>3</td>
-</tr>
-<tr>
-<td><code>iwmelc</code></td>
-<td><code>iwillmurdereverylastcapitalist</code></td>
-<td>Gets the meme that shows that ‘noot noot’ in Pingu means ‘i will murder every last capitalist’ in English.<br><img src="/iwmelc.jpg" alt="i will murder every last capitalist"></td>
-<td><code>.iwmelc</code></td>
-<td>3</td>
+<td><code>/invite</code></td>
 </tr>
 <tr>
 <td><code>maths</code></td>
-<td><code>m</code>, <code>math</code>, <code>mathsimage</code>, <code>latex</code></td>
 <td>Convert LaTeX into an image.</td>
-<td><code>.maths &lt;LaTeX&gt;</code><br><code>LaTeX</code><br>The LaTeX to convert. See http://docs.mathjax.org/en/latest/input/tex/macros/index.html for supported tags (ams is the only package loaded).</td>
-<td>3</td>
+<td><code>/maths &lt;latex: string&gt;</code><br><code>latex</code>: The LaTeX to convert.<br><br>See <a href="http://docs.mathjax.org/en/latest/input/tex/macros/index.html">the MathJax docs</a> for supported tags. <code>ams</code> is the only package loaded.</td>
 </tr>
 <tr>
-<td><code>nowplaying</code></td>
-<td><code>np</code></td>
-<td>Gets the song currently playing.</td>
-<td><code>.nowplaying</code></td>
-<td>3</td>
-</tr>
-<tr>
-<td><code>pause</code></td>
-<td><code>pa</code></td>
-<td>Pauses the song currently playing.</td>
-<td><code>.pause</code></td>
-<td>3</td>
+<td><code>meme</code></td>
+<td>Gets a Pingu-related meme.</td>
+<td><code>/meme &lt;meme: I will murder every last capitalist|how to kiss boy&gt;</code><br><code>meme</code>: The meme to get.<br><br><img src="/iwmelc.jpg" alt="I will murder every last capitalist"><br><img src="/htkb.jpg" alt="how to kiss boy" width="320"></td>
 </tr>
 <tr>
 <td><code>ping</code></td>
-<td><code>p</code></td>
 <td>Gets my current latency.</td>
-<td><code>.ping</code></td>
-<td>5</td>
-</tr>
-<tr>
-<td><code>play</code></td>
-<td><code>pl</code></td>
-<td>Plays a song from YouTube.</td>
-<td><code>.play [song]|search [query]</code><br><code>[song]</code><br><code>song</code> (optional)<br>The video that you want to play. If it’s:<ul><li>a YouTube link or ID: plays the YouTube video</li><li>anything else: searches YouTube and plays the first result</li><li>omitted: resumes the music (if it’s paused) (the same as <code>resume</code>)</li></ul><code>search [query]</code><br><code>query</code><br>The query to search on YouTube for.</td>
-<td>3</td>
-</tr>
-<tr>
-<td><code>prefix</code></td>
-<td><code>pre</code></td>
-<td>Gets or sets the prefix.</td>
-<td><code>.prefix [new prefix]</code><br><code>new prefix</code> (optional)<br>The text that you want to set the prefix to. If omitted, displays the current prefix.<br>The default prefix is <code>.</code>.</td>
-<td>3</td>
+<td><code>/ping</code></td>
 </tr>
 <tr>
 <td><code>profile</code></td>
-<td><code>pr</code>, <code>pro</code>, <code>u</code>, <code>user</code></td>
 <td>Gets information on a user.</td>
-<td><code>.profile [user]</code><br><code>user</code> (optional)<br>The user to display information about. If omitted, defaults to you.<br>You can mention the user or use their tag (for example <code>Username#1234</code>).</td>
-<td>3</td>
-</tr>
-<tr>
-<td><code>queue</code></td>
-<td><code>q</code></td>
-<td>Views the music queue.</td>
-<td><code>.queue</code></td>
-<td>3</td>
+<td><code>/profile [user: user]</code><br><code>user</code>: The user to display information about. Defaults to you.</td>
 </tr>
 <tr>
 <td><code>rejoin</code></td>
-<td><code>re</code>, <code>rj</code></td>
 <td>Manages settings for what to do when a member rejoins this server.</td>
-<td><code>.rejoin [e(nable) [r(oles)|n(ickname)|a(ll)]]|[d(isable)]</code><br>This command has 3 subcommands.<br><code>rejoin</code><br>See this server’s rejoining configuration.<br><br>`rejoin e(nable) [r(oles)</td>
-<td>n(ickname)</td>
-</tr>
-<tr>
-<td><code>resume</code></td>
-<td><code>r</code>, <code>unpause</code></td>
-<td>Resumes the song currently playing.</td>
-<td><code>.resume</code></td>
-<td>3</td>
+<td><code>/rejoin status</code>: Get this server’s rejoining configuration.<br><br><code>/rejoin set &lt;mode: roles|nickname|both&gt;</code>: Configure what I do when a member rejoins the server.<br><code>mode</code>: What to restore when a member rejoins the server.<br><br><code>/rejoin disable</code>: Stops doing anything when a member rejoins this server.</td>
 </tr>
 <tr>
 <td><code>rotate</code></td>
-<td><code>rt</code></td>
 <td>Rotates an image.</td>
-<td><code>.rotate &lt;message&gt; [channel] &lt;rotation&gt;</code><br><code>message</code><br>The ID or message link of the message to rotate.<br><br><code>channel</code> (optional)<br>The channel of the message. This is required if the message is not in this channel.<br><br><code>rotation</code><br>The amount (in degrees) to rotate the image clockwise. Negative values work as well.</td>
-<td>3</td>
+<td><code>/rotate &lt;angle: number&gt; [attachment: integer]</code><br><code>angle</code>: The angle in degrees to rotate the image clockwise. Negative values work as well!<br><code>attachment</code>: The index of the attachment/image you want to rotate. Defaults to 1 (the first image).<br><br>Use Rotate Image after right-clicking on a message with the image you want to rotate, and then use this command. Negative angles rotate the image counterclockwise.</td>
 </tr>
 <tr>
 <td><code>server</code></td>
-<td><code>sv</code>, <code>guild</code>, <code>g</code></td>
 <td>Gets information on this server.</td>
-<td><code>.server</code></td>
-<td>3</td>
-</tr>
-<tr>
-<td><code>skip</code></td>
-<td><code>sk</code></td>
-<td>Skips the current song.</td>
-<td><code>.skip</code></td>
-<td>3</td>
+<td><code>/server</code></td>
 </tr>
 <tr>
 <td><code>stats</code></td>
-<td><code>statistics</code></td>
 <td>Gets my stats.</td>
-<td><code>.stats</code></td>
-<td>3</td>
-</tr>
-<tr>
-<td><code>stop</code></td>
-<td><code>s</code></td>
-<td>Stops playing music.</td>
-<td><code>.stop</code></td>
-<td>3</td>
+<td><code>/stats</code></td>
 </tr>
 <tr>
 <td><code>timezone</code></td>
-<td><code>tz</code></td>
-<td>Manages time zone preferences.</td>
-<td><code>.timezone [timezone]</code><br><code>timezone</code> (optional)<br>An IANA time zone (https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) to use for commands such as <code>profile</code> that show the times. Spaces will be automatically converted into underscores. The default is <code>UTC</code>.<br>If omitted, shows the currently set timezone.</td>
-<td>3</td>
+<td>Manages time zone preferences for commands such as <code>profile</code> that show times.</td>
+<td><code>/timezone [timezone: string]</code><br><code>timezone</code>: An IANA time zone. Spaces will be automatically converted into underscores.<br><br>See <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">here</a> for a list of timezones.</td>
 </tr>
 <tr>
 <td><code>trivia</code></td>
-<td><code>t</code></td>
-<td>Asks a trivia question.</td>
-<td><code>.trivia ([s(tat(s))] [user]|l(eaderboard))</code><br>Using this command without any arguments will ask a trivia question.<br><code>s(tat(s)) [user]</code><br>Gets the trivia statistics for a user. If no user is specified, it will get the stats for yourself.<br><br><code>l(eaderboard)</code><br>Gets the leaderboard for this server.</td>
-<td>5</td>
+<td>Trivia from https://opentdb.com!</td>
+<td><code>/trivia play</code>: Ask a trivia question.<br><br><code>/trivia stats [user: user]</code>: Gets the trivia statistics for a user.<br><code>user</code>: The user to get the stats for, defaulting to yourself.<br><br><code>/trivia leaderboard</code>: Gets the trivia leaderboard for this server.</td>
 </tr>
 <tr>
 <td><code>uptime</code></td>
-<td><code>up</code></td>
 <td>Gets my uptime.</td>
-<td><code>.uptime</code></td>
-<td>3</td>
-</tr>
-<tr>
-<td><code>volume</code></td>
-<td><code>v</code></td>
-<td>Changes or gets the volume of the music playing.</td>
-<td><code>.volume [volume]</code><br><code>volume</code> (optional)<br>The new volume as a percentage to set it to. If omitted, the current volume will be shown. Can be one of the following:<ul><li><code>&lt;number&gt;[%]</code> Sets the current volume.</li><li><code>&lt;+|-&gt;&lt;number&gt;[%]</code> Increments/decrements the volume.</li><li><code>reset</code> (or anything starting with <code>r</code>) Resets the volume to 100%.</li></ul></td>
-<td>3</td>
+<td><code>/uptime</code></td>
 </tr>
 <tr>
 <td><code>website</code></td>
-<td><code>site</code>, <code>w</code>, <code>web</code></td>
 <td>Sends my website.</td>
-<td><code>.website</code></td>
-<td>3</td>
+<td><code>/website</code></td>
 </tr>
 </tbody>
 </table>
 <!-- DOCS END -->
+<!-- markdownlint-enable MD033 -->
 <h2>Links</h2>
 <h3>Pingu</h3>
 <ul>

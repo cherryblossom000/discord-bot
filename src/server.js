@@ -1,14 +1,13 @@
-import fs from 'node:fs';
 import dotenv from 'dotenv';
+import { inlineCode } from '@discordjs/builders';
 import Koa from 'koa';
 import serve from 'koa-static';
 import Client from './Client.js';
-import { addListeners } from './commands/rejoin.js';
+import { addListeners } from './commands/slash/rejoin.js';
 import { dev } from './constants.js';
 import { connect, fetchRejoinGuilds } from './database.js';
-import { handleError } from './utils.js';
+import { commandFiles, handleError, importFolder as utilsImportFolder } from './utils.js';
 dotenv.config();
-const { readdir } = fs.promises;
 const assetsFolder = new URL('../assets/', import.meta.url);
 const app = new Koa();
 app
@@ -36,20 +35,18 @@ app
     .use(serve(new URL('css/', assetsFolder).pathname))
     .use(serve(new URL('img/', assetsFolder).pathname));
 const client = new Client({
-    disableMentions: 'everyone',
-    ws: {
-        intents: [
-            'GUILDS',
-            'GUILD_MEMBERS',
-            'GUILD_EMOJIS',
-            'GUILD_MESSAGE_REACTIONS',
-            'GUILD_VOICE_STATES',
-            'GUILD_PRESENCES',
-            'GUILD_MESSAGES',
-            'DIRECT_MESSAGES',
-            'DIRECT_MESSAGE_REACTIONS'
-        ]
-    }
+    allowedMentions: { parse: ['roles', 'users'] },
+    intents: [
+        'GUILDS',
+        'GUILD_MEMBERS',
+        'GUILD_EMOJIS_AND_STICKERS',
+        'GUILD_MESSAGE_REACTIONS',
+        'GUILD_VOICE_STATES',
+        'GUILD_PRESENCES',
+        'GUILD_MESSAGES',
+        'DIRECT_MESSAGES',
+        'DIRECT_MESSAGE_REACTIONS'
+    ]
 });
 if (dev) {
     process.on('unhandledRejection', reason => {
@@ -61,18 +58,17 @@ else {
     process.on('uncaughtException', error => handleError(client, error, 'Uncaught exception:'));
 }
 const database = await connect(process.env.DB_USER, process.env.DB_PASSWORD, process.env.DB_NAME);
-const importFolder = async (folderPath, callback) => {
+const importFolder = async (folderPath, fn, files) => {
     try {
-        await Promise.all((await readdir(new URL(`${folderPath}/`, import.meta.url)))
-            .filter(file => file.endsWith('.js'))
-            .map(async (file) => callback((await import(new URL(`${folderPath}/${file}`, import.meta.url).pathname)).default, file.slice(0, -3))));
+        for (const [filename, mod] of await utilsImportFolder(import.meta.url, folderPath, files))
+            fn(mod, filename);
     }
     catch (error) {
-        handleError(client, error, `\`importFolder\` failed with path \`${folderPath}\`.`);
+        handleError(client, error, `${inlineCode('importFolder')} failed with path ${inlineCode(folderPath)}.`);
     }
 };
 client.once('ready', async () => {
-    await client.setActivity();
+    client.setActivity();
     await fetchRejoinGuilds(database).forEach(({ _id, rejoinFlags }) => addListeners(client, client.guilds.cache.get(_id), database, rejoinFlags));
     console.log(`READY
   Users: ${client.users.cache.size}
@@ -80,9 +76,14 @@ client.once('ready', async () => {
   Guilds: ${client.guilds.cache.size}`);
 });
 await importFolder('events', (listener, name) => client.on(name, listener(client, database)));
+const addContextMenuCommand = (collectionKey) => (command) => {
+    client[collectionKey].set(command.name, command);
+};
 await Promise.all([
-    importFolder('commands', c => client.commands.set(c.name, c)),
-    importFolder('regex-commands', c => client.regexCommands.set(c.regex, c.regexMessage))
+    importFolder('commands/slash', command => client.slashCommands.set(command.data.name, command), commandFiles),
+    importFolder('commands/user', addContextMenuCommand('userCommands')),
+    importFolder('commands/message', addContextMenuCommand('messageCommands')),
+    importFolder('triggers', command => client.triggers.set(command.regex, command.message))
 ]);
 const listener = app.listen(Number(process.env.PORT), () => {
     if (dev)

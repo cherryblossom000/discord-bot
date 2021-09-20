@@ -1,5 +1,5 @@
 import { MongoClient } from 'mongodb';
-import { defaultPrefix, defaultTimeZone } from './constants.js';
+import { defaultTimeZone } from './constants.js';
 const collectionCache = new WeakMap();
 export const collection = (database, name) => {
     const cache = collectionCache.get(database) ??
@@ -56,9 +56,6 @@ export const setValue = async (database, name, id, key, value) => {
     await col.updateOne({ _id }, { $set: { [key]: value } }, { upsert: true });
     updateCache(col, _id, cached => ({ ...cached, [key]: value }));
 };
-export const fetchPrefix = async (database, guild) => guild === null
-    ? defaultPrefix
-    : (await fetchValue(database, 'guilds', guild, 'prefix')) ?? defaultPrefix;
 export const fetchTimeZone = async (database, user) => (await fetchValue(database, 'users', user, 'timeZone')) ?? defaultTimeZone;
 export const disableRejoin = async (database, guild) => {
     const col = collection(database, 'guilds');
@@ -93,7 +90,7 @@ export const addMemberRejoinInfo = async (database, enabledRoles, enabledNicknam
     const guilds = collection(database, 'guilds');
     const member = {
         _id: id,
-        ...(enabledRoles ? { roles: roles.cache.keyArray() } : {}),
+        ...(enabledRoles ? { roles: [...roles.cache.keys()] } : {}),
         ...(enabledNickname ? { nickname } : {})
     };
     await guilds.bulkWrite([
@@ -126,7 +123,7 @@ export const addTriviaQuestion = async (database, user, { category, type, diffic
     }, { upsert: true });
 };
 export const triviaUsersCountQuery = async (guild) => ({
-    _id: { $in: (await guild.members.fetch()).keyArray() },
+    _id: { $in: [...(await guild.members.fetch()).keys()] },
     questionsAnswered: { $exists: true, $not: { $size: 0 } }
 });
 export const triviaUsersCount = async (users, query) => users.countDocuments(query);
