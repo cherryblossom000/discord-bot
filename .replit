@@ -1,1 +1,1 @@
-run = 'node /nix/store/7hj5li0v5jv9xv3qbxb9bgwjac64h8jf-pnpm-6.13.0/lib/node_modules/pnpm/bin/pnpm.cjs install && node src/server'
+run = 'pnpm install; pnpm install && node src/server'

@@ -46,7 +46,6 @@ const play = async (interaction, database) => {
     }
     const execute = async (buttons, { getSelectedAnswer = (x) => x, questionPrefix = '' } = {}) => {
         const message = await replyAndFetch(interaction, {
-            content: String(user),
             embeds: [
                 {
                     title: questionPrefix + Util.escapeMarkdown(question.question),
@@ -84,9 +83,9 @@ const play = async (interaction, database) => {
                 collector.stop();
                 const selectedAnswer = getSelectedAnswer(buttonInteraction.customId);
                 const correct = selectedAnswer === question.correctAnswer;
-                await buttonInteraction.reply(`${user} ${correct
+                await buttonInteraction.reply(correct
                     ? `${emojis.tick} Congratulations, ${bold(correctAnswer)} was the correct answer!`
-                    : `${emojis.cross} ${bold(format(selectedAnswer))} was incorrect. The correct answer was ${bold(correctAnswer)}.`}`);
+                    : `${emojis.cross} ${bold(format(selectedAnswer))} was incorrect. The correct answer was ${bold(correctAnswer)}.`);
                 await addTriviaQuestion(database, user, question, correct);
             }
             catch (error) {
@@ -98,7 +97,7 @@ const play = async (interaction, database) => {
             .on('end', async (_, reason) => {
             try {
                 if (reason === 'time') {
-                    await interaction.followUp(`${user} ${emojis.clock} Time’s up! The correct answer was ${bold(correctAnswer)}.`);
+                    await interaction.followUp(`${emojis.clock} Time’s up! The correct answer was ${bold(correctAnswer)}.`);
                     await addTriviaQuestion(database, user, question, undefined);
                 }
             }
