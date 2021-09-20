@@ -97,7 +97,6 @@ const play = async (
     } = {}
   ): Promise<void> => {
     const message = await replyAndFetch(interaction, {
-      content: String(user),
       embeds: [
         {
           title: questionPrefix + Util.escapeMarkdown(question.question),
@@ -140,17 +139,15 @@ const play = async (
           const correct = selectedAnswer === question.correctAnswer
 
           await buttonInteraction.reply(
-            `${user} ${
-              correct
-                ? `${emojis.tick} Congratulations, ${bold(
-                    correctAnswer
-                  )} was the correct answer!`
-                : `${emojis.cross} ${bold(
-                    format(selectedAnswer)
-                  )} was incorrect. The correct answer was ${bold(
-                    correctAnswer
-                  )}.`
-            }`
+            correct
+              ? `${emojis.tick} Congratulations, ${bold(
+                  correctAnswer
+                )} was the correct answer!`
+              : `${emojis.cross} ${bold(
+                  format(selectedAnswer)
+                )} was incorrect. The correct answer was ${bold(
+                  correctAnswer
+                )}.`
           )
 
           await addTriviaQuestion(database, user, question, correct)
@@ -164,7 +161,7 @@ const play = async (
         try {
           if (reason === 'time') {
             await interaction.followUp(
-              `${user} ${emojis.clock} Time’s up! The correct answer was ${bold(
+              `${emojis.clock} Time’s up! The correct answer was ${bold(
                 correctAnswer
               )}.`
             )
