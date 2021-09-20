@@ -5,10 +5,10 @@ import defaultExportName from './rules/default-export-name.js'
 import createTypeRule from './create-type-rule.js'
 
 export const rules = {
-  'correct-command-type': createTypeRule(
+  'correct-context-menu-command-type': createTypeRule(
     'command',
-    new Set(['AnyCommand', 'GuildOnlyCommand']),
-    '`AnyCommand` or `GuildOnlyCommand`'
+    new Set(['AnyContextMenuCommand', 'GuildOnlyContextMenuCommand']),
+    '`AnyContextMenuCommand` or `GuildOnlyContextMenuCommand`'
   ),
   'correct-event-type': createTypeRule(
     'listener',
@@ -30,6 +30,11 @@ export const rules = {
         report(typeParam)
     }
   ),
+  'correct-slash-command-type': createTypeRule(
+    'command',
+    new Set(['AnySlashCommand', 'GuildOnlySlashCommand']),
+    '`AnySlashCommand` or `GuildOnlySlashCommand`'
+  ),
   'correct-trigger-type': createTypeRule('command', 'Trigger'),
   'default-export-name': defaultExportName
 }
@@ -39,10 +44,21 @@ export const configs: Record<string, Linter.Config> = {
     plugins: ['@comrade-pingu'],
     overrides: [
       {
+        files: ['src/commands/{context-menu,slash}/*.ts'],
+        rules: {
+          '@comrade-pingu/default-export-name': [1, {name: 'command'}]
+        }
+      },
+      {
+        files: ['src/commands/context-menu/*.ts'],
+        rules: {
+          '@comrade-pingu/correct-context-menu-command-type': 2
+        }
+      },
+      {
         files: ['src/commands/slash/*.ts'],
         rules: {
-          '@comrade-pingu/correct-command-type': 2,
-          '@comrade-pingu/default-export-name': [1, {name: 'command'}]
+          '@comrade-pingu/correct-slash-command-type': 2
         }
       },
       {
