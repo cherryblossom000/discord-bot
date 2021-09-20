@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.1](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@4.0.0...@comrade-pingu/bot@4.0.1) (2021-09-20)
+
+
+### Bug Fixes
+
+* **bot/trivia:** remove unnecessary mentions ([4698ebd](https://github.com/cherryblossom000/comrade-pingu/commit/4698ebd1bfcdae523ed65f7e90eb3bd81c4cb8ed))
+
 # [4.0.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@3.3.1...@comrade-pingu/bot@4.0.0) (2021-09-20)
 
 
