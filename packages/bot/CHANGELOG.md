@@ -1,5 +1,25 @@
 # Changelog
 
+# [4.0.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@3.3.1...@comrade-pingu/bot@4.0.0) (2021-09-20)
+
+
+* feat(eslint-plugin)!: update for refactor ([325710a](https://github.com/cherryblossom000/comrade-pingu/commit/325710ae58dcac678dd4194ef8b3245037d82291))
+* feat(bot)!: use slash commands and context menus ([acba424](https://github.com/cherryblossom000/comrade-pingu/commit/acba42432620d59e4a2aab24853b71564b7332bd))
+* feat(eslint-plugin)!: add `default-export-name` rule ([fdc107d](https://github.com/cherryblossom000/comrade-pingu/commit/fdc107d1838b685d2742efe2715db9e5052dbd05))
+
+
+### Features
+
+* **url-shim:** add `URL` type to global scope ([8ce2e80](https://github.com/cherryblossom000/comrade-pingu/commit/8ce2e800b9d62e4ecf9a1ba1d205b1ecd7efa46e))
+
+
+### BREAKING CHANGES
+
+* `correct-command-type` has been removed.
+* The old way of using commands is no longer supported, so the `prefix` command has
+been removed. The `hktb` and `iwmelc` commands have also been merged into a single `meme` command.
+* The `command-export-name` and `event-export-name` rules have been removed.
+
 ## [3.3.1](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@3.3.0...@comrade-pingu/bot@3.3.1) (2021-09-14)
 
 
