@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.2](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@4.0.1...@comrade-pingu/bot@4.0.2) (2021-09-20)
+
+
+### Bug Fixes
+
+* **bot/meme:** fix command ([4e7de1e](https://github.com/cherryblossom000/comrade-pingu/commit/4e7de1e155f60f0aa4a56596e707f49fab1efaf5))
+
 ## [4.0.1](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@4.0.0...@comrade-pingu/bot@4.0.1) (2021-09-20)
 
 
