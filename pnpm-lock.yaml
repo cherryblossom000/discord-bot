@@ -80,7 +80,7 @@ importers:
 
   packages/bot:
     specifiers:
-      '@comrade-pingu/eslint-plugin': workspace
+      '@comrade-pingu/eslint-plugin': 2.0.0
       '@discordjs/builders': ^0.6.0
       '@discordjs/rest': ^0.1.0-canary.0
       '@types/jest': ^27.0.1
@@ -90,7 +90,7 @@ importers:
       '@types/ms': ^0.7.31
       '@types/node': ~16.9.1
       '@types/sharp': ^0.29.2
-      '@types/url-shim': workspace
+      '@types/url-shim': 1.1.0
       '@types/yt-search': ^2.3.2
       clean-stack: ^4.1.0
       discord-api-types: ^0.22.0
