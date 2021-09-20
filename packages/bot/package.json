@@ -47,7 +47,7 @@
     "ytdl-core": "^4.9.1"
   },
   "devDependencies": {
-    "@comrade-pingu/eslint-plugin": "workspace:1.1.1",
+    "@comrade-pingu/eslint-plugin": "workspace",
     "@discordjs/rest": "^0.1.0-canary.0",
     "@types/jest": "^27.0.1",
     "@types/koa": "^2.13.4",
@@ -56,7 +56,7 @@
     "@types/ms": "^0.7.31",
     "@types/node": "~16.9.1",
     "@types/sharp": "^0.29.2",
-    "@types/url-shim": "1.0.0",
+    "@types/url-shim": "workspace",
     "@types/yt-search": "^2.3.2",
     "discord-api-types": "^0.22.0",
     "discord-api-types-updated": "npm:discord-api-types@^0.23.1",
