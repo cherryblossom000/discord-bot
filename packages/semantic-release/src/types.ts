@@ -30,6 +30,7 @@ export type Branch = Exclude<BranchSpec, string> & {
   )
 
 declare module 'semantic-release' {
+  // eslint-disable-next-line @typescript-eslint/no-shadow -- module augmentation
   interface Context {
     cwd: string
     branch: Branch

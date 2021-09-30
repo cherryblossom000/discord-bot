@@ -1,4 +1,5 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-pnpx is-ci || pnpx commitlint -e $1
+# https://github.com/conventional-changelog/commitlint/issues/2742
+pnpx is-ci || pnpx commitlint -g commitlint.config.cjs -e $1

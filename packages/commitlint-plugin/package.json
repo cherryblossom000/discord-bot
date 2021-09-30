@@ -24,6 +24,6 @@
     "tslib": "^2.3.1"
   },
   "devDependencies": {
-    "@commitlint/types": "^13.1.0"
+    "@commitlint/types": "^13.2.0"
   }
 }
