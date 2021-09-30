@@ -29,10 +29,9 @@ const command: AnySlashCommand = {
   usage:
     'Use Rotate Image after right-clicking on a message with the image you want to rotate, and then use this command. Negative angles rotate the image counterclockwise.',
   async execute(interaction) {
+    const {client, options, user} = interaction
     // ATTACH_FILES already checked in context menu command
-    const attachments = interaction.client.rotateAttachments.get(
-      interaction.user.id
-    )
+    const attachments = client.rotateAttachments.get(user.id)
     if (!attachments) {
       await interaction.reply({
         content:
@@ -42,7 +41,7 @@ const command: AnySlashCommand = {
       return
     }
 
-    const attachmentIdx = interaction.options.getInteger(ATTACHMENT) ?? 1
+    const attachmentIdx = options.getInteger(ATTACHMENT) ?? 1
     const attachment = attachments[attachmentIdx - 1]
     if (!attachment) {
       await interaction.reply({
@@ -51,7 +50,7 @@ const command: AnySlashCommand = {
       })
       return
     }
-    const angle = interaction.options.getNumber(ANGLE, true)
+    const angle = options.getNumber(ANGLE, true)
 
     await interaction.deferReply()
 
@@ -63,22 +62,18 @@ const command: AnySlashCommand = {
         .rotate(angle)
         .toBuffer()
     } catch (error) {
-      handleError(
-        interaction.client,
-        error,
-        `Error rotating image ${attachment.url}`,
-        {
-          to: interaction,
-          response: 'there was an error rotating the image!',
-          followUp: true
-        }
-      )
+      handleError(client, error, `Error rotating image ${attachment.url}`, {
+        to: interaction,
+        response: 'there was an error rotating the image!',
+        followUp: true
+      })
       return
     }
 
     await interaction.editReply({
       files: [{attachment: buffer, name: attachment.name ?? undefined}]
     })
+    client.rotateAttachments.delete(user.id)
   }
 }
 export default command
