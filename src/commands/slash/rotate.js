@@ -17,7 +17,8 @@ const command = {
         .setDescription('The index of the attachment/image you want to rotate. Defaults to 1 (the first image).')),
     usage: 'Use Rotate Image after right-clicking on a message with the image you want to rotate, and then use this command. Negative angles rotate the image counterclockwise.',
     async execute(interaction) {
-        const attachments = interaction.client.rotateAttachments.get(interaction.user.id);
+        const { client, options, user } = interaction;
+        const attachments = client.rotateAttachments.get(user.id);
         if (!attachments) {
             await interaction.reply({
                 content: 'Use the Rotate Image command on the message that has the image you want to rotate first!',
@@ -25,7 +26,7 @@ const command = {
             });
             return;
         }
-        const attachmentIdx = interaction.options.getInteger(ATTACHMENT) ?? 1;
+        const attachmentIdx = options.getInteger(ATTACHMENT) ?? 1;
         const attachment = attachments[attachmentIdx - 1];
         if (!attachment) {
             await interaction.reply({
@@ -34,7 +35,7 @@ const command = {
             });
             return;
         }
-        const angle = interaction.options.getNumber(ANGLE, true);
+        const angle = options.getNumber(ANGLE, true);
         await interaction.deferReply();
         let buffer;
         try {
@@ -43,7 +44,7 @@ const command = {
                 .toBuffer();
         }
         catch (error) {
-            handleError(interaction.client, error, `Error rotating image ${attachment.url}`, {
+            handleError(client, error, `Error rotating image ${attachment.url}`, {
                 to: interaction,
                 response: 'there was an error rotating the image!',
                 followUp: true
@@ -53,6 +54,7 @@ const command = {
         await interaction.editReply({
             files: [{ attachment: buffer, name: attachment.name ?? undefined }]
         });
+        client.rotateAttachments.delete(user.id);
     }
 };
 export default command;
