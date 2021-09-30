@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.3](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@4.0.2...@comrade-pingu/bot@4.0.3) (2021-09-30)
+
+
+### Bug Fixes
+
+* **bot/rotate:** delete entry from rotateAttachments after rotating ([579932f](https://github.com/cherryblossom000/comrade-pingu/commit/579932f0db0888bceb10993610d417759d84c9c0))
+
 ## [4.0.2](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@4.0.1...@comrade-pingu/bot@4.0.2) (2021-09-20)
 
 
