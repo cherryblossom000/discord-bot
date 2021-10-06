@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.4](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@4.0.3...@comrade-pingu/bot@4.0.4) (2021-10-06)
+
+
+### Bug Fixes
+
+* **bot/rejoin:** fix bot being unable to add roles when member rejoins server ([ba1974a](https://github.com/cherryblossom000/comrade-pingu/commit/ba1974a7b295d012eef7bb52b3073c7b2e8ee9ed))
+
 ## [4.0.3](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@4.0.2...@comrade-pingu/bot@4.0.3) (2021-09-30)
 
 
