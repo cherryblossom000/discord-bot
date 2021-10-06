@@ -1,5 +1,5 @@
 import {SlashCommandBuilder, inlineCode} from '@discordjs/builders'
-import {ApplicationCommandOptionType} from 'discord-api-types/v9'
+import {ApplicationCommandOptionType} from 'discord-api-types-old/v9'
 import {
   commandFiles,
   formatCommandSyntax,
@@ -10,7 +10,7 @@ import type {EmbedFieldData} from 'discord.js'
 import type {
   APIApplicationCommandOption,
   APIApplicationCommandSubCommandOptions
-} from 'discord-api-types/v9'
+} from 'discord-api-types-old/v9'
 import type {AnySlashCommand} from '../../types'
 import type {FormatCommandSyntaxInput} from '../../utils'
 

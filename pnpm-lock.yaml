@@ -93,8 +93,8 @@ importers:
       '@types/url-shim': 1.1.0
       '@types/yt-search': ^2.3.2
       clean-stack: ^4.1.0
-      discord-api-types: ^0.22.0
-      discord-api-types-updated: npm:discord-api-types@^0.23.1
+      discord-api-types: ^0.23.1
+      discord-api-types-old: npm:discord-api-types@^0.22.0
       discord.js: ^13.2.0
       dotenv: ^10.0.0
       jest: ^27.2.4
@@ -138,8 +138,8 @@ importers:
       '@types/sharp': 0.29.2
       '@types/url-shim': link:../url-shim
       '@types/yt-search': 2.3.2
-      discord-api-types: 0.22.0
-      discord-api-types-updated: /discord-api-types/0.23.1
+      discord-api-types: 0.23.1
+      discord-api-types-old: /discord-api-types/0.22.0
       jest: 27.2.4
       mathjax-full: 3.2.0
       ts-jest: 27.0.5_52a571d76319e63aeaa66dc9db9e90cc

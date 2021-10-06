@@ -3,7 +3,7 @@ import {
   ApplicationCommandType,
   RESTJSONErrorCodes,
   Routes
-} from 'discord-api-types-updated/v9'
+} from 'discord-api-types/v9'
 import dotenv from 'dotenv'
 import {messageCommands, slashCommands, userCommands} from './commands.js'
 import type {RouteLike} from '@discordjs/rest'
@@ -19,7 +19,7 @@ import type {
   RESTPostAPIChatInputApplicationCommandsJSONBody,
   RESTPostAPIContextMenuApplicationCommandsJSONBody,
   Snowflake
-} from 'discord-api-types-updated/v9'
+} from 'discord-api-types/v9'
 import type {ContextMenuCommand, SlashCommand} from '../../src/types'
 
 dotenv.config()

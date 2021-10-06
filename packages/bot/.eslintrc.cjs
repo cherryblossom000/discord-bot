@@ -28,7 +28,7 @@ module.exports = {
       {
         allowModules: [
           'discord-api-types',
-          'discord-api-types-updated',
+          'discord-api-types-old',
           'mathjax-full',
           'type-fest'
         ]

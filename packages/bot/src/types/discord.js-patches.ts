@@ -73,7 +73,7 @@ export type Message = DMMessage | GuildMessage
 
 // #endregion
 
-// #region Commands
+// #region Interaction
 
 export interface APIMessage extends DA.APIMessage {
   id: Snowflake
@@ -82,26 +82,8 @@ export interface APIMessage extends DA.APIMessage {
 export interface InteractionBase extends D.Interaction {
   readonly client: Client
   user: User
-  inGuild(): this is this & {
-    guildId: Snowflake
-    member: NonNullable<D.Interaction['member']>
-  }
   isCommand(): this is SlashCommandInteraction
   isContextMenu(): this is ContextMenuInteraction
-}
-
-type BaseCommandInteractionBase = D.BaseCommandInteraction & InteractionBase
-interface BaseCommandInteraction extends BaseCommandInteractionBase {
-  inGuild(): this is GuildSlashCommandInteraction & this
-  followUp(
-    options: D.InteractionReplyOptions | D.MessagePayload | string
-  ): Promise<APIMessage | Message>
-  reply(
-    options: D.InteractionReplyOptions & {fetchReply: true}
-  ): Promise<APIMessage | Message>
-  reply(
-    options: D.InteractionReplyOptions | D.MessagePayload | string
-  ): Promise<void>
 }
 
 interface CommandInteractionOptionResolver
@@ -110,82 +92,34 @@ interface CommandInteractionOptionResolver
   getUser(name: string, required?: boolean): User | null
 }
 
-// #region Slash Commands
+type BaseCommandInteractionBase = D.BaseCommandInteraction & InteractionBase
+interface BaseCommandInteraction extends BaseCommandInteractionBase {
+  options: CommandInteractionOptionResolver
+  inGuild(): this is BaseGuildCommandInteraction & this
+  followUp(
+    options: D.InteractionReplyOptions | D.MessagePayload | string
+  ): Promise<APIMessage | Message>
+  reply(
+    options: D.InteractionReplyOptions & {fetchReply: true}
+  ): Promise<APIMessage | Message>
+  reply(
+    options: D.InteractionReplyOptions | D.MessagePayload | string
+  ): Promise<void>
+}
 
-type SlashCommandInteractionBaseBase = BaseCommandInteraction &
+type BaseGuildCommandInteraction = BaseCommandInteraction &
+  D.BaseGuildCommandInteraction<'present'> & {
+    guildId: Snowflake
+  }
+
+export type SlashCommandInteraction = BaseCommandInteraction &
   D.CommandInteraction
-interface SlashCommandInteractionBase extends SlashCommandInteractionBaseBase {
-  options: CommandInteractionOptionResolver
-  followUp(
-    options: D.InteractionReplyOptions | D.MessagePayload | string
-  ): Promise<APIMessage | Message>
-  reply(
-    options: D.InteractionReplyOptions & {fetchReply: true}
-  ): Promise<APIMessage | Message>
-  reply(
-    options: D.InteractionReplyOptions | D.MessagePayload | string
-  ): Promise<void>
-}
-
-interface DMSlashCommandInteraction extends SlashCommandInteractionBase {
-  readonly guild: null
-  guildId: null
-  member: null
-}
-
-export interface GuildSlashCommandInteraction
-  extends SlashCommandInteractionBase {
-  guildId: Snowflake
-  member: NonNullable<D.CommandInteraction['member']>
-}
-
-export type SlashCommandInteraction =
-  | DMSlashCommandInteraction
-  | GuildSlashCommandInteraction
-
-// #endregion
-
-// #region Context Menus
-
-type ContextMenuInteractionBaseBase = BaseCommandInteraction &
+export type GuildSlashCommandInteraction = BaseGuildCommandInteraction &
+  SlashCommandInteraction
+export type ContextMenuInteraction = BaseCommandInteraction &
   D.ContextMenuInteraction
-export interface ContextMenuInteractionBase
-  extends ContextMenuInteractionBaseBase {
-  options: CommandInteractionOptionResolver
-  inGuild(): this is GuildContextMenuInteraction & this
-  followUp(
-    options: D.InteractionReplyOptions | D.MessagePayload | string
-  ): Promise<APIMessage | Message>
-  reply(
-    options: D.InteractionReplyOptions & {fetchReply: true}
-  ): Promise<APIMessage | Message>
-  reply(
-    options: D.InteractionReplyOptions | D.MessagePayload | string
-  ): Promise<void>
-}
-
-interface DMContextMenuInteraction extends ContextMenuInteractionBase {
-  readonly guild: null
-  guildId: null
-  member: null
-}
-
-interface GuildContextMenuInteraction extends ContextMenuInteractionBase {
-  guildId: Snowflake
-  member: NonNullable<D.ContextMenuInteraction['member']>
-}
-
-export type ContextMenuInteraction =
-  | DMContextMenuInteraction
-  | GuildContextMenuInteraction
-
-// #endregion
-
 export type CommandInteraction =
   | ContextMenuInteraction
   | SlashCommandInteraction
-export type GuildCommandInteraction =
-  | GuildContextMenuInteraction
-  | GuildSlashCommandInteraction
 
 // #endregion

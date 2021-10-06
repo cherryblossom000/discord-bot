@@ -1,9 +1,6 @@
 import {inlineCode} from '@discordjs/builders'
-import {ApplicationCommandOptionType} from 'discord-api-types/v9'
-import type {
-  APIApplicationCommandArgumentOptions,
-  APIApplicationCommandSubCommandOptions
-} from 'discord-api-types/v9'
+import * as DN from 'discord-api-types/v9'
+import type * as DO from 'discord-api-types-old/v9'
 
 export type DateFormatter = (date: Date) => string
 
@@ -29,32 +26,42 @@ export const formatBoolean = (boolean: boolean | null): string =>
   boolean ?? false ? 'Yes' : 'No'
 
 type OptionType = Exclude<
-  ApplicationCommandOptionType,
-  | ApplicationCommandOptionType.Subcommand
-  | ApplicationCommandOptionType.SubcommandGroup
+  DN.ApplicationCommandOptionType | DO.ApplicationCommandOptionType,
+  | DN.ApplicationCommandOptionType.Subcommand
+  | DN.ApplicationCommandOptionType.SubcommandGroup
+  | DO.ApplicationCommandOptionType.Subcommand
+  | DO.ApplicationCommandOptionType.SubcommandGroup
 >
 
-const optionsToString: Readonly<Record<OptionType, string>> = {
-  [ApplicationCommandOptionType.String]: 'string',
-  [ApplicationCommandOptionType.Integer]: 'integer',
-  [ApplicationCommandOptionType.Boolean]: 'boolean',
-  [ApplicationCommandOptionType.User]: 'user',
-  [ApplicationCommandOptionType.Channel]: 'channel',
-  [ApplicationCommandOptionType.Role]: 'role',
-  [ApplicationCommandOptionType.Mentionable]: 'mentionable',
-  [ApplicationCommandOptionType.Number]: 'number'
+// multiple versions of discord-api-types
+// const optionsToString: Readonly<Record<OptionType, string>> = {
+const optionsToString = {
+  [DN.ApplicationCommandOptionType.String]: 'string',
+  [DN.ApplicationCommandOptionType.Integer]: 'integer',
+  [DN.ApplicationCommandOptionType.Boolean]: 'boolean',
+  [DN.ApplicationCommandOptionType.User]: 'user',
+  [DN.ApplicationCommandOptionType.Channel]: 'channel',
+  [DN.ApplicationCommandOptionType.Role]: 'role',
+  [DN.ApplicationCommandOptionType.Mentionable]: 'mentionable',
+  [DN.ApplicationCommandOptionType.Number]: 'number'
 }
 
 export type FormatCommandInput = Pick<
-  APIApplicationCommandSubCommandOptions,
+  | DN.APIApplicationCommandSubCommandOptions
+  | DO.APIApplicationCommandSubCommandOptions,
   'description' | 'name' | 'options'
 >
 
 /** Basically a normal (non-subcommand) command with argument options. */
 export type FormatCommandSyntaxInput = Omit<FormatCommandInput, 'options'> & {
-  options?: (APIApplicationCommandArgumentOptions & {
-    type: OptionType
-  })[]
+  options?: (
+    | {
+        type: OptionType
+      } & (
+        | DN.APIApplicationCommandArgumentOptions
+        | DO.APIApplicationCommandArgumentOptions
+      )
+  )[]
 }
 
 export const formatCommandSyntax = (
@@ -77,7 +84,7 @@ export const formatCommandSyntax = (
                 ({name: optName, required = false, type, choices}) =>
                   `${required ? '<' : '['}${optName}: ${
                     choices?.map(choice => choice.name).join(pipeChar) ??
-                    optionsToString[type]
+                    optionsToString[type as OptionType]
                   }${required ? '>' : ']'}`
               )
               .join(' ')}`

@@ -1,7 +1,7 @@
 import fs, {mkdir, writeFile} from 'node:fs/promises'
 import path from 'node:path'
 import {inlineCode} from '@discordjs/builders'
-import {ApplicationCommandOptionType} from 'discord-api-types'
+import {ApplicationCommandOptionType} from 'discord-api-types/v9'
 import {Permissions} from 'discord.js'
 import MarkdownIt from 'markdown-it'
 import {markdownTable} from 'markdown-table'
@@ -18,7 +18,7 @@ import {
   formatCommandUsage,
   upperFirst
 } from '../../dist/src/utils.js'
-import type {APIApplicationCommandSubCommandOptions} from 'discord-api-types'
+import type {APIApplicationCommandSubCommandOptions} from 'discord-api-types/v9'
 import type {
   FormatCommandSyntaxInput,
   FormatCommandInput

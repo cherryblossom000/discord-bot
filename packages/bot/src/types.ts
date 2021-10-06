@@ -2,7 +2,7 @@ import type {
   SlashCommandBuilder,
   SlashCommandSubcommandsOnlyBuilder
 } from '@discordjs/builders'
-import type {APIApplicationCommandPermission} from 'discord-api-types-updated/v9'
+import type {APIApplicationCommandPermission} from 'discord-api-types/v9'
 import type {MessageAttachment} from 'discord.js'
 import type {
   SlashCommandInteraction,

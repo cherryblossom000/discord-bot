@@ -1,6 +1,6 @@
 import {inspect} from 'node:util'
 import {SlashCommandBuilder, codeBlock, inlineCode} from '@discordjs/builders'
-import {ApplicationCommandPermissionType} from 'discord-api-types-updated/v9'
+import {ApplicationCommandPermissionType} from 'discord-api-types/v9'
 import Discord, {Util} from 'discord.js'
 import {emojis, me} from '../../constants.js'
 import {replyDeletable} from '../../utils.js'
