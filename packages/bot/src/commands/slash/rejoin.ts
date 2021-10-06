@@ -87,6 +87,7 @@ ${owner} sorry, but you have to do this yourself.`
             }`
           }
         )
+        return
       }
 
       removeMember(guilds, member).catch(error =>
