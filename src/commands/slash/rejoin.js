@@ -38,6 +38,7 @@ export const addListeners = (client, guild, database, flags) => {
 ${owner} sorry, but you have to do this yourself.`
                         : ''}`
                 });
+                return;
             }
             removeMember(guilds, member).catch(error => handleError(client, error, `Removing member from DB failed (member ${member.id}, flags ${flags})`));
         }

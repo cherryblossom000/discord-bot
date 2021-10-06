@@ -46,7 +46,9 @@ export const handleError = (client, error, info, { to: channelOrInteraction, res
 Code: ${error.code} (${Object.entries(Constants.APIErrors).find(([, code]) => code === error.code)?.[0] ?? 'unknown'})
 Path: ${error.path}
 Method: ${error.method}
-Status: ${error.httpStatus}`
+Status: ${error.httpStatus}
+Request data:
+${codeBlock('json', JSON.stringify(error.requestData, null, 2))}`
                 : ''}`);
         }
         catch (error_) {
