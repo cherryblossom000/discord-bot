@@ -125,7 +125,9 @@ Code: ${error.code} (${
               })
 Path: ${error.path}
 Method: ${error.method}
-Status: ${error.httpStatus}`
+Status: ${error.httpStatus}
+Request data:
+${codeBlock('json', JSON.stringify(error.requestData, null, 2))}`
             : ''
         }`
       )
