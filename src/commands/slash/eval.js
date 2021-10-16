@@ -23,14 +23,19 @@ const command = {
         .addBooleanOption(option => option
         .setName(EPHEMERAL)
         .setDescription('Whether or not to send the reply as an ephemeral one. Defaults to False.')),
-    permissions: [
-        { id: me, type: 1, permission: true }
-    ],
     hidden: true,
     usage: `The following variables are available:
 - ${inlineCode('interaction: Discord.Interaction')}: The slash command interaction you sent.
-- ${inlineCode('Discord: Discord')}: The discord.js module.`,
+- ${inlineCode('database: Db')}: The database.
+- ${inlineCode('Discord: Discord')}: The Discord.js module.`,
     async execute(interaction, database) {
+        if (interaction.user.id !== me) {
+            await interaction.reply({
+                content: 'This command can only be done by the bot owner!',
+                ephemeral: true
+            });
+            return;
+        }
         const ephemeral = interaction.options.getBoolean(EPHEMERAL) ?? false;
         let result;
         try {
