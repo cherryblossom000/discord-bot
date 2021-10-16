@@ -2,7 +2,6 @@ import type {
   SlashCommandBuilder,
   SlashCommandSubcommandsOnlyBuilder
 } from '@discordjs/builders'
-import type {APIApplicationCommandPermission} from 'discord-api-types/v9'
 import type {MessageAttachment} from 'discord.js'
 import type {
   SlashCommandInteraction,
@@ -11,7 +10,6 @@ import type {
   Message
 } from './types/discord.js-patches'
 import type {Db} from './database'
-import type {NonEmpty} from './utils'
 
 export * from './types/discord.js-patches'
 
@@ -33,9 +31,6 @@ interface SlashCommandBase<T extends SlashCommandInteraction>
   data:
     | Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'>
     | SlashCommandSubcommandsOnlyBuilder
-
-  /** The permissions for the command. */
-  permissions?: NonEmpty<APIApplicationCommandPermission>
 
   /** More docs. */
   usage?: string

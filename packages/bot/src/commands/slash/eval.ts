@@ -1,6 +1,5 @@
 import {inspect} from 'node:util'
 import {SlashCommandBuilder, codeBlock, inlineCode} from '@discordjs/builders'
-import {ApplicationCommandPermissionType} from 'discord-api-types/v9'
 import Discord, {Util} from 'discord.js'
 import {emojis, me} from '../../constants.js'
 import {replyDeletable} from '../../utils.js'
@@ -55,16 +54,22 @@ const command: AnySlashCommand = {
           'Whether or not to send the reply as an ephemeral one. Defaults to False.'
         )
     ),
-  permissions: [
-    {id: me, type: ApplicationCommandPermissionType.Role, permission: true}
-  ],
   hidden: true,
   usage: `The following variables are available:
 - ${inlineCode(
     'interaction: Discord.Interaction'
   )}: The slash command interaction you sent.
-- ${inlineCode('Discord: Discord')}: The discord.js module.`,
+- ${inlineCode('database: Db')}: The database.
+- ${inlineCode('Discord: Discord')}: The Discord.js module.`,
   async execute(interaction, database) {
+    if (interaction.user.id !== me) {
+      await interaction.reply({
+        content: 'This command can only be done by the bot owner!',
+        ephemeral: true
+      })
+      return
+    }
+
     const ephemeral = interaction.options.getBoolean(EPHEMERAL) ?? false
 
     let result

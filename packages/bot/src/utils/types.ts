@@ -1,5 +1,4 @@
-export type NonEmpty<T> = [T, ...T[]]
-export type ReadonlyNonEmpty<T> = Readonly<NonEmpty<T>>
+export type ReadonlyNonEmpty<T> = readonly [T, ...T[]]
 
 export type KeysMatching<T, V> = {
   [K in keyof T]-?: T[K] extends V ? K : never

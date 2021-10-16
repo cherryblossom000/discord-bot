@@ -8,17 +8,14 @@ import dotenv from 'dotenv'
 import {messageCommands, slashCommands, userCommands} from './commands.js'
 import type {RouteLike} from '@discordjs/rest'
 import type {
-  APIApplicationCommand,
   APIApplicationCommandOption,
   RESTGetAPICurrentUserGuildsResult,
   RESTPutAPIApplicationCommandsJSONBody,
   RESTPutAPIApplicationCommandsResult,
   RESTPutAPIApplicationGuildCommandsJSONBody,
   RESTPutAPIApplicationGuildCommandsResult,
-  RESTPutAPIGuildApplicationCommandsPermissionsJSONBody,
   RESTPostAPIChatInputApplicationCommandsJSONBody,
-  RESTPostAPIContextMenuApplicationCommandsJSONBody,
-  Snowflake
+  RESTPostAPIContextMenuApplicationCommandsJSONBody
 } from 'discord-api-types/v9'
 import type {ContextMenuCommand, SlashCommand} from '../../src/types'
 
@@ -39,28 +36,6 @@ const fetchGuilds = async (): Promise<RESTGetAPICurrentUserGuildsResult> =>
     'get',
     Routes.userGuilds()
   )
-
-const permissionsCommands = slashCommands.filter(
-  (cmd): cmd is Required<Pick<SlashCommand, 'permissions'>> & SlashCommand =>
-    !!cmd.permissions
-)
-
-const updatePermissions = async (
-  apiCommands: readonly APIApplicationCommand[],
-  guildId: Snowflake
-): Promise<void> => {
-  const idMap = new Map(apiCommands.map(({id, name}) => [name, id]))
-  const body: RESTPutAPIGuildApplicationCommandsPermissionsJSONBody =
-    permissionsCommands.map(({data, permissions}) => ({
-      id: idMap.get(data.name)!,
-      permissions
-    }))
-  await request<RESTPutAPIGuildApplicationCommandsPermissionsJSONBody>(
-    'put',
-    Routes.guildApplicationCommandsPermissions(applicationId, guildId),
-    body
-  )
-}
 
 const slashCommandsToJSON = (
   commands: readonly SlashCommand[]
@@ -91,10 +66,10 @@ const messageCommandsToJSON = contextMenuCommandsToJSON(
 if (process.env.NODE_ENV === 'production') {
   const guildCmds = <T extends ContextMenuCommand | SlashCommand>(
     commands: readonly T[]
-  ): T[] => commands.filter(({guildOnly = false}) => !guildOnly)
+  ): T[] => commands.filter(({guildOnly = false}) => guildOnly)
   const globalCmds = <T extends ContextMenuCommand | SlashCommand>(
     commands: readonly T[]
-  ): T[] => commands.filter(({guildOnly = false}) => guildOnly)
+  ): T[] => commands.filter(({guildOnly = false}) => !guildOnly)
 
   await Promise.all([
     request<RESTPutAPIApplicationCommandsJSONBody>(
@@ -114,9 +89,8 @@ if (process.env.NODE_ENV === 'production') {
       ]
       await Promise.all(
         guilds.map(async guild => {
-          let commands: RESTPutAPIApplicationGuildCommandsResult
           try {
-            commands = await request<
+            await request<
               RESTPutAPIApplicationGuildCommandsJSONBody,
               RESTPutAPIApplicationGuildCommandsResult
             >(
@@ -128,28 +102,22 @@ if (process.env.NODE_ENV === 'production') {
             if (
               error instanceof DiscordAPIError &&
               error.code === RESTJSONErrorCodes.MissingAccess
-            ) {
+            )
               console.error(`Guild ${guild.id} missing applications.commands`)
-              return
-            }
-            throw error
+            else throw error
           }
-          await updatePermissions(commands, guild.id)
         })
       )
     })
   ])
 } else {
   const guildId = '541932275068174356'
-  await updatePermissions(
-    await request<
-      RESTPutAPIApplicationCommandsJSONBody,
-      RESTPutAPIApplicationCommandsResult
-    >('put', Routes.applicationGuildCommands(applicationId, guildId), [
-      ...slashCommandsToJSON(slashCommands),
-      ...userCommandsToJSON(userCommands),
-      ...messageCommandsToJSON(messageCommands)
-    ]),
-    guildId
-  )
+  await request<
+    RESTPutAPIApplicationCommandsJSONBody,
+    RESTPutAPIApplicationCommandsResult
+  >('put', Routes.applicationGuildCommands(applicationId, guildId), [
+    ...slashCommandsToJSON(slashCommands),
+    ...userCommandsToJSON(userCommands),
+    ...messageCommandsToJSON(messageCommands)
+  ])
 }
