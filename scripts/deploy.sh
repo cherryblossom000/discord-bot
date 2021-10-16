@@ -12,10 +12,17 @@ node scripts/dist/update-package
   cd packages/bot/dist
 
   # Add .replit
-  echo "run = 'pnpm install; pnpm install && node src/server'" > .replit
+  echo "run = 'pnpm install && node src/server'" > .replit
 
   # Add replit.nix
-  echo '{ pkgs }: { deps = [ pkgs.nodejs-16_x pkgs.nodePackages_latest.pnpm ]; }' > replit.nix
+  echo '{ pkgs }: {
+  deps = [
+    pkgs.nodejs-16_x
+    (pkgs.nodePackages_latest.pnpm.override {
+      postInstall = "mkdir -p $out/bin && ln -s $out/lib/node_modules/pnpm/bin/pnpm.cjs $out/bin/pnpm";
+    })
+  ];
+}' > replit.nix
 
   # Add .gitignore
   echo '/node_modules/' > .gitignore
