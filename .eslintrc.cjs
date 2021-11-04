@@ -2,6 +2,9 @@
 
 const path = require('node:path')
 
+const tsconfigRootDir = __dirname
+const project = 'tsconfig.eslint.json'
+
 /** @type {import('eslint').Linter.Config & {parserOptions?: import('@typescript-eslint/parser').ParserOptions}} */
 module.exports = {
   root: true,
@@ -12,8 +15,8 @@ module.exports = {
   reportUnusedDisableDirectives: true,
   ignorePatterns: ['.history/', 'dist/'],
   parserOptions: {
-    project: 'tsconfig.eslint.json',
-    tsconfigRootDir: __dirname,
+    project,
+    tsconfigRootDir,
     EXPERIMENTAL_useSourceOfProjectReferenceRedirect: true
   },
   overrides: [
@@ -41,7 +44,7 @@ module.exports = {
       settings: {
         'import/resolver': {
           typescript: {
-            project: path.join('tsconfig.eslint.json')
+            project: path.join(tsconfigRootDir, project)
           }
         }
       }
