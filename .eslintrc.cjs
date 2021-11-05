@@ -28,11 +28,12 @@ module.exports = {
       rules: {
         camelcase: 0,
         'id-length': 0,
-        'import/no-extraneous-dependencies': 0
+        'import/no-extraneous-dependencies': 0,
+        'import/no-unused-modules': 0
       }
     },
     {
-      files: '**/*.config*.js',
+      files: '**/*.config*.cjs',
       rules: {
         // Allow @typedef {import('ts-jest')} (stops 'Tag @typedef must have a name/namepath in "typescript" mode')
         'jsdoc/valid-types': 0,
