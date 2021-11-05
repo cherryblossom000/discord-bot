@@ -16,7 +16,7 @@
     "node": ">=16"
   },
   "scripts": {
-    "lint": "eslint --max-warnings 0 --ext ts .",
+    "lint": "eslint --max-warnings 0 --ext ts,cjs .",
     "lint:dev": "pnpm lint -- --cache",
     "build": "tsc -b",
     "watch": "pnpm build -- -w"

@@ -22,7 +22,7 @@
     "prepare": "husky install",
     "lint:config": "eslint --max-warnings 0 **/*.config*.cjs **/.eslintrc.cjs",
     "lint:config:dev": "pnpm lint:config -- --cache",
-    "lint": "eslint --max-warnings 0 --ext ts,js .",
+    "lint": "eslint --max-warnings 0 --ext ts,cjs .",
     "lint:dev": "pnpm lint -- --cache",
     "build": "tsc -b && pnpm postbuild",
     "postbuild": "echo '{\"type\": \"module\"}' | tee scripts/dist/package.json > packages/bot/scripts/dist/package.json && pnpm m run postbuild",

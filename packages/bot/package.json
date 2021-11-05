@@ -17,7 +17,7 @@
     "node": ">=16.6"
   },
   "scripts": {
-    "lint": "eslint --max-warnings 0 --ext ts .",
+    "lint": "eslint --max-warnings 0 --ext ts,cjs .",
     "lint:dev": "pnpm lint -- --cache",
     "copy": "cd dist && (mkdir assets; trash assets/img; cp -r ../assets/img assets/img)",
     "docs": "node scripts/dist/docs && (mkdir -p dist/assets/css; purgecss -c purgecss.config.cjs -o dist/assets/css)",
