@@ -100,7 +100,7 @@ importers:
       koa-static: ^5.0.0
       mathjax: ^3.2.0
       mathjax-full: ^3.2.0
-      mathjs: ^9.5.2
+      mathjs: ^10.0.0
       mongodb: ^4.1.4
       ms: ^2.1.3
       node-fetch: github:yo1dog/node-fetch#patch-1
@@ -117,7 +117,7 @@ importers:
       koa: 2.13.4
       koa-static: 5.0.0
       mathjax: 3.2.0
-      mathjs: 9.5.2
+      mathjs: 10.0.0
       mongodb: 4.1.4
       ms: 2.1.3
       node-fetch: github.com/yo1dog/node-fetch/9558c776dbc89bc2fb301260f4a3462f22fc4326
@@ -5361,8 +5361,8 @@ packages:
     resolution: {integrity: sha512-PL+rdYRK4Wxif+SQ94zP/L0sv6/oW/1WdQiIx0Jvn9FZaU5W9E6nlIv8liYAXBNPL2Fw/i+o/mZ1212eSzn0Cw==}
     dev: false
 
-  /mathjs/9.5.2:
-    resolution: {integrity: sha512-c0erTq0GP503/Ch2OtDOAn50GIOsuxTMjmE00NI/vKJFSWrDaQHRjx6ai+16xYv70yBSnnpUgHZGNf9FR9IwmA==}
+  /mathjs/10.0.0:
+    resolution: {integrity: sha512-PZcQ73mVvVG2GZXvE47q+j7P3ALVxWUM51wTmlVX3F/3IJMLNziNIqStwyIDAO64ZGB8u3iFlQwxT7DIijtNlw==}
     engines: {node: '>= 12'}
     hasBin: true
     dependencies:

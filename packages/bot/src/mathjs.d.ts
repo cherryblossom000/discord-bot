@@ -7,7 +7,7 @@ declare module 'mathjs' {
     entries: T[]
     type: 'ResultSet'
     isResultSet: true
-    constructor(entries?: readonly T[]): ResultS
+    constructor(entries?: readonly T[]): ResultSet
     valueOf(): T[]
     toString(): string
     toJSON(): {mathjs: 'ResultSet'; entries: T[]}
