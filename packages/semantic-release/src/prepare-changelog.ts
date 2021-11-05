@@ -4,7 +4,7 @@ import {ensureFile, readFile, writeFile} from 'fs-extra'
 import editNotes from './edit-notes'
 import type {PluginWithNextRelease} from './types'
 
-// https://github.com/semantic-release/changelog/blob/v5.0.1/lib/prepare.js#L5-L27
+// https://github.com/semantic-release/changelog/blob/v6.0.1/lib/prepare.js#L5-L27
 const prepareChangelog: PluginWithNextRelease = async (
   pluginConfig,
   {cwd, nextRelease: {notes}, logger}

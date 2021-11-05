@@ -15,7 +15,7 @@
     "node": ">=12"
   },
   "scripts": {
-    "lint": "eslint --max-warnings 0 --ext ts,cjs .",
+    "lint": "eslint --max-warnings 0 --ext ts .",
     "lint:dev": "pnpm lint -- --cache",
     "build": "tsc -b",
     "watch": "pnpm build -- -w"
@@ -24,6 +24,6 @@
     "tslib": "^2.3.1"
   },
   "devDependencies": {
-    "@commitlint/types": "^13.2.0"
+    "@commitlint/types": "^14.0.0"
   }
 }

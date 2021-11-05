@@ -1,4 +1,4 @@
-// https://github.com/semantic-release/github/blob/v7.2.0/lib/publish.js#L1
+// https://github.com/semantic-release/github/blob/v8.0.2/lib/publish.js#L1
 import path from 'node:path'
 import {RELEASE_NAME} from '@semantic-release/github/lib/definitions/constants'
 import getClient from '@semantic-release/github/lib/get-client'
@@ -7,7 +7,7 @@ import isPrerelease from '@semantic-release/github/lib/is-prerelease'
 import parseGithubUrl from '@semantic-release/github/lib/parse-github-url'
 import resolveConfig from '@semantic-release/github/lib/resolve-config'
 import _debug from 'debug'
-// https://github.com/semantic-release/github/blob/v7.2.0/lib/publish.js#L2-L4
+// https://github.com/semantic-release/github/blob/v8.0.2/lib/publish.js#L2-L4
 import {readFile, stat} from 'fs-extra'
 import {isPlainObject, template} from 'lodash'
 import mime from 'mime'
@@ -15,10 +15,10 @@ import editNotes from './edit-notes'
 import type {Octokit} from '@octokit/rest'
 import type {PublishPlugin} from './types'
 
-// https://github.com/semantic-release/github/blob/v7.2.0/lib/publish.js#L5
+// https://github.com/semantic-release/github/blob/v8.0.2/lib/publish.js#L5
 const debug = _debug('semantic-release:comrade-pingu:github')
 
-// https://github.com/semantic-release/github/blob/v7.2.0/lib/publish.js#L13-L106
+// https://github.com/semantic-release/github/blob/v8.0.2/lib/publish.js#L13-L106
 const publishGithub: PublishPlugin = async (pluginConfig, context) => {
   const {
     cwd,
@@ -66,7 +66,6 @@ const publishGithub: PublishPlugin = async (pluginConfig, context) => {
 
   await Promise.all(
     globbedAssets.map(async asset => {
-      // eslint-disable-next-line @typescript-eslint/ban-types -- checking for an object
       const filePath = (isPlainObject as (value?: unknown) => value is object)(
         asset
       )
@@ -111,7 +110,6 @@ const publishGithub: PublishPlugin = async (pluginConfig, context) => {
       debug('file name: %o', fileName)
 
       if (
-        // eslint-disable-next-line @typescript-eslint/ban-types -- checking for an object
         (isPlainObject as (value?: unknown) => value is object)(asset) &&
         asset.label !== undefined &&
         asset.label !== ''

@@ -3,7 +3,16 @@
 const path = require('node:path')
 
 const tsconfigRootDir = __dirname
-const project = 'tsconfig.eslint.json'
+const projects = [
+  'packages/bot/src/tsconfig.json',
+  'packages/bot/tests/tsconfig.json',
+  'packages/bot/scripts/tsconfig.json',
+  'packages/commitlint-plugin/tsconfig.json',
+  'packages/eslint-plugin/tsconfig.json',
+  'packages/semantic-release/tsconfig.json',
+  'packages/url-shim/tsconfig.json',
+  'scripts/tsconfig.json'
+]
 
 /** @type {import('eslint').Linter.Config & {parserOptions?: import('@typescript-eslint/parser').ParserOptions}} */
 module.exports = {
@@ -12,10 +21,9 @@ module.exports = {
     '@cherryblossom/eslint-config/node',
     '@cherryblossom/eslint-config/node/16'
   ],
-  reportUnusedDisableDirectives: true,
   ignorePatterns: ['.history/', 'dist/'],
   parserOptions: {
-    project,
+    project: projects,
     tsconfigRootDir,
     EXPERIMENTAL_useSourceOfProjectReferenceRedirect: true
   },
@@ -45,7 +53,9 @@ module.exports = {
       settings: {
         'import/resolver': {
           typescript: {
-            project: path.join(tsconfigRootDir, project)
+            project: projects.map(project =>
+              path.join(tsconfigRootDir, project)
+            )
           }
         }
       }
