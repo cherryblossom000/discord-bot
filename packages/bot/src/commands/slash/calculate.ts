@@ -3,7 +3,7 @@ import {
   codeBlock,
   hyperlink,
   inlineCode
-} from '@discordjs/builders'
+} from '../../discordjs-builders.js'
 import {ResultSet, evaluate, simplify} from 'mathjs'
 import type {AnySlashCommand} from '../../types'
 

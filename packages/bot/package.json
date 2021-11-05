@@ -31,9 +31,9 @@
     "test:dev": "pnpm test -- -c jest.config.dev.cjs"
   },
   "dependencies": {
-    "@discordjs/builders": "^0.6.0",
+    "@discordjs/builders": "^0.8.2",
     "clean-stack": "^4.1.0",
-    "discord.js": "13.2.0",
+    "discord.js": "13.3.1",
     "dotenv": "^10.0.0",
     "koa": "^2.13.4",
     "koa-static": "^5.0.0",
@@ -58,8 +58,7 @@
     "@types/sharp": "^0.29.3",
     "@types/url-shim": "workspace:1.1.0",
     "@types/yt-search": "^2.3.2",
-    "discord-api-types": "^0.23.1",
-    "discord-api-types-old": "npm:discord-api-types@^0.22.0",
+    "discord-api-types": "^0.24.0",
     "jest": "^27.3.1",
     "mathjax-full": "^3.2.0",
     "ts-jest": "^27.0.7",

@@ -2,12 +2,11 @@ import type {
   SlashCommandBuilder,
   SlashCommandSubcommandsOnlyBuilder
 } from '@discordjs/builders'
-import type {MessageAttachment} from 'discord.js'
+import type {Message, MessageAttachment} from 'discord.js'
 import type {
   SlashCommandInteraction,
   ContextMenuInteraction,
-  GuildSlashCommandInteraction,
-  Message
+  GuildSlashCommandInteraction
 } from './types/discord.js-patches'
 import type {Db} from './database'
 
@@ -53,15 +52,10 @@ export type AnySlashCommand = GuildOrDM<
 >
 export type SlashCommand = AnySlashCommand | GuildOnlySlashCommand
 
-interface ContextMenuCommandBase extends CommandBase<ContextMenuInteraction> {
+export interface ContextMenuCommand
+  extends GuildOrDM<CommandBase<ContextMenuInteraction>> {
   name: string
 }
-
-export type GuildOnlyContextMenuCommand = GuildOnly<ContextMenuCommandBase>
-export type AnyContextMenuCommand = GuildOrDM<ContextMenuCommandBase>
-export type ContextMenuCommand =
-  | AnyContextMenuCommand
-  | GuildOnlyContextMenuCommand
 
 /** Something that is triggered based on a regular expression. */
 export interface Trigger {
@@ -69,7 +63,7 @@ export interface Trigger {
   regex: RegExp
 
   /** The message to reply with. Can be a function that returns the message.. */
-  message: string | ((message: Message) => string)
+  message: string | ((message: Message) => Promise<string> | string)
 }
 
 export type RotateAttachment = Pick<MessageAttachment, 'name' | 'url'>

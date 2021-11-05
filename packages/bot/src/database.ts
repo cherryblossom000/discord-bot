@@ -1,6 +1,6 @@
 import {MongoClient} from 'mongodb'
 import {defaultTimeZone} from './constants.js'
-import type {Snowflake, GuildMember as DiscordGuildMember} from 'discord.js'
+import type * as D from 'discord.js'
 import type {
   Collection as MongoCollection,
   Document,
@@ -14,7 +14,6 @@ import type {
   UpdateResult
 } from 'mongodb'
 import type {Difficulty, Type, Question as TriviaQuestion} from './opentdb'
-import type * as Discord from './types'
 import type {Override} from './utils'
 
 // #region Models
@@ -26,14 +25,14 @@ export const enum MemberRejoinFlags {
 }
 
 interface Member {
-  _id: Snowflake
-  roles?: readonly Snowflake[]
+  _id: D.Snowflake
+  roles?: readonly D.Snowflake[]
   nickname?: string | null
 }
 
 // eslint-disable-next-line import/no-unused-modules -- it is used
 export interface Guild {
-  _id: Snowflake
+  _id: D.Snowflake
   rejoinFlags?: MemberRejoinFlags
   members?: readonly Member[]
 }
@@ -57,8 +56,8 @@ interface User {
 
 /** A mapping of collection names to `[databaseType, discordType]`. */
 interface Collections {
-  guilds: [Guild, Discord.Guild]
-  users: [User, Discord.User]
+  guilds: [Guild, D.Guild]
+  users: [User, D.User]
 }
 
 type CollectionsKeys = keyof Collections
@@ -220,7 +219,7 @@ const findOne =
 const fetchValueC =
   <C extends CollectionsKeys>(col: Collection<C>) =>
   async <K extends keyof Cached<C>>(
-    _id: DiscordType<C> | Snowflake,
+    _id: D.Snowflake | DiscordType<C>,
     key: K
   ): Promise<DatabaseType<C>[K] | undefined> =>
     (await findOne(col)(_id, [key]))?.[key]
@@ -231,7 +230,7 @@ export const fetchValue = async <
 >(
   database: Db,
   name: C,
-  _id: DiscordType<C> | Snowflake,
+  _id: D.Snowflake | DiscordType<C>,
   key: K
 ): Promise<DatabaseType<C>[K] | undefined> =>
   fetchValueC(collection(database, name))(_id, key)
@@ -269,7 +268,7 @@ export const setValue = async <
 /** Gets the timezone for a user. Defaults to UTC. */
 export const fetchTimeZone = async (
   database: Db,
-  user: Discord.User | Snowflake
+  user: D.Snowflake | D.User
 ): Promise<string> =>
   (await fetchValue(database, 'users', user, 'timeZone')) ?? defaultTimeZone
 
@@ -277,7 +276,7 @@ export const fetchTimeZone = async (
 
 export const disableRejoin = async (
   database: Db,
-  guild: Discord.Guild
+  guild: D.Guild
 ): Promise<void> => {
   const col = collection(database, 'guilds')
   await col.updateOne({_id: guild.id}, {$unset: {members: 1, rejoinFlags: 1}})
@@ -285,7 +284,7 @@ export const disableRejoin = async (
 
 export const fetchMemberRejoinInfo = async (
   guilds: Collection<'guilds'>,
-  member: DiscordGuildMember
+  member: D.GuildMember
 ): Promise<Pick<Member, 'nickname' | 'roles'>> =>
   (
     await guilds
@@ -313,14 +312,14 @@ export const fetchMemberRejoinInfo = async (
 const removeMemberArgs = ({
   guild,
   id
-}: Pick<DiscordGuildMember, 'guild' | 'id'>): {
+}: Pick<D.GuildMember, 'guild' | 'id'>): {
   filter: Filter<Guild>
   update: UpdateFilter<Guild>
 } => ({filter: {_id: guild.id}, update: {$pull: {members: {_id: id}}}})
 
 export const removeMember = async (
   guilds: Collection<'guilds'>,
-  member: DiscordGuildMember
+  member: D.GuildMember
 ): Promise<void> => {
   const {filter, update} = removeMemberArgs(member)
   await guilds.updateOne(filter, update)
@@ -330,7 +329,7 @@ export const addMemberRejoinInfo = async (
   database: Db,
   enabledRoles: number,
   enabledNickname: number,
-  {id, guild, roles, nickname}: DiscordGuildMember
+  {id, guild, roles, nickname}: D.GuildMember
 ): Promise<void> => {
   const guilds = collection(database, 'guilds')
   const member: Member = {
@@ -368,7 +367,7 @@ export const fetchRejoinGuilds = (
 
 export const addTriviaQuestion = async (
   database: Db,
-  user: Discord.User | Snowflake,
+  user: D.Snowflake | D.User,
   {category, type, difficulty}: TriviaQuestion,
   correct?: boolean
 ): Promise<void> => {
@@ -392,7 +391,7 @@ export const addTriviaQuestion = async (
 }
 
 export const triviaUsersCountQuery = async (
-  guild: Discord.Guild
+  guild: D.Guild
 ): Promise<Filter<User>> => ({
   _id: {$in: [...(await guild.members.fetch()).keys()]},
   questionsAnswered: {$exists: true, $not: {$size: 0}}
@@ -404,7 +403,7 @@ export const triviaUsersCount = async (
 ): Promise<number> => users.countDocuments(query)
 
 export interface AggregatedTriviaUser {
-  _id: Snowflake
+  _id: D.Snowflake
   correct: number
   total: number
   percentage: number

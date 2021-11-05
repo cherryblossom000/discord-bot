@@ -1,5 +1,5 @@
-import {SlashCommandBuilder, inlineCode} from '@discordjs/builders'
-import {ApplicationCommandOptionType} from 'discord-api-types-old/v9'
+import {SlashCommandBuilder, inlineCode} from '../../discordjs-builders.js'
+import {ApplicationCommandOptionType} from 'discord-api-types/v9'
 import {
   commandFiles,
   formatCommandSyntax,
@@ -9,8 +9,9 @@ import {
 import type {EmbedFieldData} from 'discord.js'
 import type {
   APIApplicationCommandOption,
-  APIApplicationCommandSubCommandOptions
-} from 'discord-api-types-old/v9'
+  APIApplicationCommandSubCommandOptions,
+  RESTPostAPIChatInputApplicationCommandsJSONBody
+} from 'discord-api-types/v9'
 import type {AnySlashCommand} from '../../types'
 import type {FormatCommandSyntaxInput} from '../../utils'
 
@@ -72,10 +73,11 @@ You can send ${inlineCode(
 
     // Specific command
     const {data, usage} = slashCommands.get(commandName)!
-    const cmd = data.toJSON()
+    // TODO: fix @discordjs/builders types
+    const cmd = data.toJSON() as RESTPostAPIChatInputApplicationCommandsJSONBody
     const {name, description, options} = cmd
     const hasSubcommands =
-      options[0]?.type === ApplicationCommandOptionType.Subcommand
+      options?.[0]?.type === ApplicationCommandOptionType.Subcommand
     await interaction.reply({
       embeds: [
         {

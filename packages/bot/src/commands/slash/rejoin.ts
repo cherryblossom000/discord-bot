@@ -1,5 +1,4 @@
-import {SlashCommandBuilder} from '@discordjs/builders'
-import type {GuildMember} from 'discord.js'
+import {SlashCommandBuilder} from '../../discordjs-builders.js'
 import {
   MemberRejoinFlags,
   addMemberRejoinInfo,
@@ -11,11 +10,11 @@ import {
   disableRejoin
 } from '../../database.js'
 import {checkPermissions, fetchGuild, handleError} from '../../utils.js'
+import type {Guild, GuildMember} from 'discord.js'
 // eslint-disable-next-line import/no-named-default -- can't because type import
 import type {default as Client, Listener} from '../../Client'
 import type {Db} from '../../database'
 import type {
-  Guild,
   GuildSlashCommandInteraction,
   GuildOnlySlashCommand
 } from '../../types'

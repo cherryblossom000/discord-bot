@@ -1,4 +1,4 @@
-import {SlashCommandBuilder} from '@discordjs/builders'
+import {SlashCommandBuilder} from '../../discordjs-builders.js'
 import {checkPermissions, fetchGuild, replyDeletable} from '../../utils.js'
 import type {GuildOnlySlashCommand} from '../../types'
 

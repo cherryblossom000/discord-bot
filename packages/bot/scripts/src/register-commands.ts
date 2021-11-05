@@ -8,7 +8,6 @@ import dotenv from 'dotenv'
 import {messageCommands, slashCommands, userCommands} from './commands.js'
 import type {RouteLike} from '@discordjs/rest'
 import type {
-  APIApplicationCommandOption,
   RESTGetAPICurrentUserGuildsResult,
   RESTPutAPIApplicationCommandsJSONBody,
   RESTPutAPIApplicationCommandsResult,
@@ -41,10 +40,7 @@ const slashCommandsToJSON = (
   commands: readonly SlashCommand[]
 ): RESTPostAPIChatInputApplicationCommandsJSONBody[] =>
   commands.map(
-    ({data}) =>
-      data.toJSON() as ReturnType<typeof data['toJSON']> & {
-        options: APIApplicationCommandOption[]
-      }
+    ({data}) => data.toJSON() as RESTPostAPIChatInputApplicationCommandsJSONBody
   )
 const contextMenuCommandsToJSON =
   (type: ApplicationCommandType.Message | ApplicationCommandType.User) =>

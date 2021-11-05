@@ -1,14 +1,10 @@
 import D, {Collection} from 'discord.js'
-import type {GuildMember} from 'discord.js'
+import type {GuildMember, Snowflake} from 'discord.js'
 import type {Db} from './database.js'
 import type {
-  Channel,
   ContextMenuCommand,
-  Guild,
   InteractionBase,
-  Message,
   SlashCommand,
-  Snowflake,
   RotateAttachment,
   Trigger
 } from './types'
@@ -21,10 +17,8 @@ declare global {
 }
 
 export interface ClientEvents extends D.ClientEvents {
-  guildMemberAdd: [GuildMember]
   // Not using partials
   guildMemberRemove: [GuildMember]
-  messageCreate: [Message]
   interactionCreate: [InteractionBase]
 }
 
@@ -41,23 +35,8 @@ interface RejoinListeners {
   guildMemberRemove: Listener<'guildMemberRemove'>
 }
 
-interface ChannelManager extends D.ChannelManager {
-  fetch(...args: Parameters<D.ChannelManager['fetch']>): Promise<Channel>
-}
-
-interface GuildManager extends D.GuildManager {
-  readonly cache: Collection<string, Guild>
-  fetch(options: D.FetchGuildOptions | Snowflake): Promise<Guild>
-  fetch(
-    options?: D.FetchGuildsOptions
-  ): Promise<Collection<Snowflake, D.OAuth2Guild>>
-}
-
 /** The Discord client for this bot. */
 export default class Client extends D.Client {
-  declare channels: ChannelManager
-  declare guilds: GuildManager
-
   declare on: <K extends keyof ClientEvents>(
     event: K,
     listener: Listener<K>

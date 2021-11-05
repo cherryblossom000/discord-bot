@@ -1,10 +1,10 @@
-import {inlineCode} from '@discordjs/builders'
+import {inlineCode} from '../../discordjs-builders.js'
 import {Collection} from 'discord.js'
 import {checkPermissions} from '../../utils.js'
-import type {AnyContextMenuCommand, RotateAttachment} from '../../types'
+import type {ContextMenuCommand, RotateAttachment} from '../../types'
 import type {ReadonlyNonEmpty} from '../../utils'
 
-const command: AnyContextMenuCommand = {
+const command: ContextMenuCommand = {
   name: 'Rotate Image',
   async execute(interaction) {
     if (!(await checkPermissions(interaction, 'ATTACH_FILES'))) return

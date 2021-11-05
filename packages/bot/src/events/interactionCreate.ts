@@ -1,4 +1,4 @@
-import {inlineCode} from '@discordjs/builders'
+import {inlineCode} from '../discordjs-builders.js'
 import {debugInteractionDetails, handleError} from '../utils.js'
 import type {EventListener} from '../Client'
 import type {AnySlashCommand} from '../types'

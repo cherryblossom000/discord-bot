@@ -1,5 +1,5 @@
 import dotenv from 'dotenv'
-import {inlineCode} from '@discordjs/builders'
+import {inlineCode} from './discordjs-builders.js'
 import Koa from 'koa'
 import serve from 'koa-static'
 import Client from './Client.js'

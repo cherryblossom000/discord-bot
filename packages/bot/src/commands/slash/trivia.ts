@@ -1,4 +1,4 @@
-import {SlashCommandBuilder, bold} from '@discordjs/builders'
+import {SlashCommandBuilder, bold} from '../../discordjs-builders.js'
 import {
   Collection,
   MessageActionRow,
@@ -24,8 +24,9 @@ import {
   replyDeletable,
   shuffle
 } from '../../utils.js'
+import type {User} from 'discord.js'
 import type {AggregatedTriviaUser, Db, Question} from '../../database'
-import type {AnySlashCommand, SlashCommandInteraction, User} from '../../types'
+import type {AnySlashCommand, SlashCommandInteraction} from '../../types'
 
 const TRUE = 'true'
 const FALSE = 'false'

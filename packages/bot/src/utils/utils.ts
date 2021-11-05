@@ -1,26 +1,21 @@
 import path from 'node:path'
 import {homedir} from 'node:os'
-import {bold, codeBlock, hyperlink} from '@discordjs/builders'
+import {bold, codeBlock, hyperlink} from '../discordjs-builders.js'
 import originalCleanStack from 'clean-stack'
 import D, {Constants, DiscordAPIError} from 'discord.js'
 import {dev, me} from '../constants.js'
 import type {
+  BaseCommandInteraction,
   EmbedFieldData,
+  Guild,
+  GuildTextBasedChannel,
   InteractionReplyOptions,
-  PermissionResolvable,
-  PermissionString
+  Message,
+  PermissionString,
+  TextBasedChannels
 } from 'discord.js'
 import type Client from '../Client'
-import type {
-  Guild,
-  GuildSlashCommandInteraction,
-  GuildMessage,
-  CommandInteraction,
-  Message,
-  Snowflake,
-  TextBasedChannel,
-  TextBasedGuildChannel
-} from '../types'
+import type {CommandInteraction} from '../types'
 
 const stackBasePath = path.join(
   homedir(),
@@ -65,7 +60,7 @@ export const handleError: (
   error: unknown,
   info?: string,
   respondOpts?: {
-    to?: CommandInteraction | TextBasedChannel
+    to?: CommandInteraction | TextBasedChannels
     response?: string
     followUp?: boolean
   }
@@ -147,11 +142,11 @@ Options: ${codeBlock('json', JSON.stringify(options.data, null, 2))}`
 
 export const fetchChannel = async (
   interaction: CommandInteraction
-): Promise<TextBasedChannel> => {
+): Promise<TextBasedChannels> => {
   const {channelId, client} = interaction
   const channel = (await client.channels.fetch(
     channelId
-  )) as TextBasedGuildChannel | null
+  )) as GuildTextBasedChannel | null
   if (!channel) {
     throw new Error(
       `fetchChannel: Channel ${channelId} could not be fetched from interaction
@@ -164,9 +159,8 @@ ${debugInteractionDetails(interaction)}`
 export const fetchGuild = async ({
   client,
   guildId
-}: GuildSlashCommandInteraction): Promise<Guild> =>
-  // for some reason TS resolves the overload to the one in Discord.js
-  (client.guilds.fetch as (options: Snowflake) => Promise<Guild>)(guildId)
+}: BaseCommandInteraction<'present'>): Promise<Guild> =>
+  client.guilds.fetch(guildId)
 
 export const replyAndFetch = async (
   interaction: CommandInteraction,
@@ -185,15 +179,9 @@ export const replyAndFetch = async (
     : (
         (await interaction.client.channels.fetch(
           interaction.channelId
-        ))! as TextBasedChannel
+        ))! as TextBasedChannels
       ).messages.fetch(message.id)
 }
-
-/** Check if the bot has permissions. */
-export const hasPermissions = (
-  {channel, client}: GuildMessage,
-  permissions: PermissionResolvable
-): boolean => channel.permissionsFor(client.user!)?.has(permissions) ?? false
 
 /** Check if the bot has permissions and sends a message if it doesn't. */
 export const checkPermissions = async (
@@ -202,7 +190,7 @@ export const checkPermissions = async (
 ): Promise<boolean> => {
   if (!interaction.inGuild()) return true
   const {client, guildId} = interaction
-  const channel = (await fetchChannel(interaction)) as TextBasedGuildChannel
+  const channel = (await fetchChannel(interaction)) as GuildTextBasedChannel
 
   const channelPermissions = channel.permissionsFor(client.user!)
   if (channelPermissions?.has(permissions) !== true) {

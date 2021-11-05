@@ -1,6 +1,6 @@
 import fs, {mkdir, writeFile} from 'node:fs/promises'
 import path from 'node:path'
-import {inlineCode} from '@discordjs/builders'
+import {inlineCode} from '../../dist/src/discordjs-builders.js'
 import {ApplicationCommandOptionType} from 'discord-api-types/v9'
 import {Permissions} from 'discord.js'
 import MarkdownIt from 'markdown-it'
@@ -18,7 +18,10 @@ import {
   formatCommandUsage,
   upperFirst
 } from '../../dist/src/utils.js'
-import type {APIApplicationCommandSubCommandOptions} from 'discord-api-types/v9'
+import type {
+  APIApplicationCommandSubCommandOptions,
+  RESTPostAPIChatInputApplicationCommandsJSONBody
+} from 'discord-api-types/v9'
 import type {
   FormatCommandSyntaxInput,
   FormatCommandInput
@@ -83,7 +86,8 @@ const docs = [
   ...slashCommands
     .filter(({hidden = false}) => !hidden)
     .map(({data, usage}) => {
-      const command = data.toJSON()
+      const command =
+        data.toJSON() as RESTPostAPIChatInputApplicationCommandsJSONBody
       const {name, description} = command
       return [inlineCode(name), description, formatCommand(command, usage)]
     })

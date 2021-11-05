@@ -1,4 +1,8 @@
-import {SlashCommandBuilder, hyperlink, inlineCode} from '@discordjs/builders'
+import {
+  SlashCommandBuilder,
+  hyperlink,
+  inlineCode
+} from '../../discordjs-builders.js'
 import sharp from 'sharp'
 import {checkPermissions, handleError, replyDeletable} from '../../utils.js'
 import type {MathJax} from 'mathjax'

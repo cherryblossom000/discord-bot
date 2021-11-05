@@ -1,5 +1,5 @@
 import {MessageActionRow, MessageButton} from 'discord.js'
-import {SlashCommandBuilder} from '@discordjs/builders'
+import {SlashCommandBuilder} from '../../discordjs-builders.js'
 import type {InteractionReplyOptions} from 'discord.js'
 import type {AnySlashCommand} from '../../types'
 

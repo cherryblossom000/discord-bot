@@ -1,4 +1,4 @@
-import {SlashCommandBuilder, hyperlink} from '@discordjs/builders'
+import {SlashCommandBuilder, hyperlink} from '../../discordjs-builders.js'
 import {checkPermissions} from '../../utils.js'
 import type {AnySlashCommand} from '../../types'
 

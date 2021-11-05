@@ -1,4 +1,4 @@
-import {hyperlink} from '@discordjs/builders'
+import {hyperlink} from '../../discordjs-builders.js'
 import {fetchTimeZone} from '../../database.js'
 import {
   checkPermissions,
@@ -15,9 +15,10 @@ import type {
   EmbedFieldData,
   GuildMember,
   Presence,
-  PresenceStatus
+  PresenceStatus,
+  User
 } from 'discord.js'
-import type {AnyContextMenuCommand, User} from '../../types'
+import type {ContextMenuCommand} from '../../types'
 import type {DateFormatter} from '../../utils'
 
 const formatStatus = (status: PresenceStatus): string =>
@@ -183,7 +184,7 @@ Streaming: ${formatBoolean(streaming)}`
     : [])
 ]
 
-const command: AnyContextMenuCommand = {
+const command: ContextMenuCommand = {
   name: 'Profile',
   async execute(interaction, database) {
     if (!(await checkPermissions(interaction, 'EMBED_LINKS'))) return

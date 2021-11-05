@@ -1,4 +1,4 @@
-import {inlineCode} from '@discordjs/builders'
+import {inlineCode} from '../discordjs-builders.js'
 import {handleError} from '../utils.js'
 import type {EventListener} from '../Client'
 
@@ -31,10 +31,11 @@ const listener: EventListener<'messageCreate'> =
       if (regex.test(content)) {
         try {
           // only want to be sent once!
-          // eslint-disable-next-line no-await-in-loop -- only single await due to return
+          /* eslint-disable no-await-in-loop -- only single await due to return */
           await (typeof triggerMessage === 'string'
             ? channel.send(triggerMessage)
-            : channel.send(triggerMessage(message)))
+            : channel.send(await triggerMessage(message)))
+          /* eslint-enable no-await-in-loop */
           return
         } catch (error) {
           handleError(

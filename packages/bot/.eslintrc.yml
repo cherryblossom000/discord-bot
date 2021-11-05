@@ -12,6 +12,5 @@ rules:
   - 2
   - allowModules:
     - discord-api-types
-    - discord-api-types-old
     - mathjax-full
     - type-fest

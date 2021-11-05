@@ -79,7 +79,7 @@ importers:
   packages/bot:
     specifiers:
       '@comrade-pingu/eslint-plugin': workspace:2.0.0
-      '@discordjs/builders': ^0.6.0
+      '@discordjs/builders': ^0.8.2
       '@discordjs/rest': ^0.1.0-canary.0
       '@types/jest': ^27.0.2
       '@types/koa': ^2.13.4
@@ -91,9 +91,8 @@ importers:
       '@types/url-shim': workspace:1.1.0
       '@types/yt-search': ^2.3.2
       clean-stack: ^4.1.0
-      discord-api-types: ^0.23.1
-      discord-api-types-old: npm:discord-api-types@^0.22.0
-      discord.js: 13.2.0
+      discord-api-types: ^0.24.0
+      discord.js: 13.3.1
       dotenv: ^10.0.0
       jest: ^27.3.1
       koa: ^2.13.4
@@ -110,9 +109,9 @@ importers:
       type-fest: ^2.5.2
       ytdl-core: ^4.9.1
     dependencies:
-      '@discordjs/builders': 0.6.0
+      '@discordjs/builders': 0.8.2
       clean-stack: 4.1.0
-      discord.js: 13.2.0
+      discord.js: 13.3.1
       dotenv: 10.0.0
       koa: 2.13.4
       koa-static: 5.0.0
@@ -136,8 +135,7 @@ importers:
       '@types/sharp': 0.29.3
       '@types/url-shim': link:../url-shim
       '@types/yt-search': 2.3.2
-      discord-api-types: 0.23.1
-      discord-api-types-old: /discord-api-types/0.22.0
+      discord-api-types: 0.24.0
       jest: 27.3.1
       mathjax-full: 3.2.0
       ts-jest: 27.0.7_2c4ca6574207836d1023f54689cc81ac
@@ -768,12 +766,12 @@ packages:
       chalk: 4.1.2
     dev: true
 
-  /@discordjs/builders/0.6.0:
-    resolution: {integrity: sha512-mH3Gx61LKk2CD05laCI9K5wp+a3NyASHDUGx83DGJFkqJlRlSV5WMJNY6RS37A5SjqDtGMF4wVR9jzFaqShe6Q==}
-    engines: {node: '>=14.0.0', npm: '>=7.0.0'}
+  /@discordjs/builders/0.8.2:
+    resolution: {integrity: sha512-/YRd11SrcluqXkKppq/FAVzLIPRVlIVmc6X8ZklspzMIHDtJ+A4W37D43SHvLdH//+NnK+SHW/WeOF4Ts54PeQ==}
+    engines: {node: '>=16.0.0', npm: '>=7.0.0'}
     dependencies:
       '@sindresorhus/is': 4.2.0
-      discord-api-types: 0.22.0
+      discord-api-types: 0.24.0
       ow: 0.27.0
       ts-mixer: 6.0.0
       tslib: 2.3.1
@@ -783,8 +781,8 @@ packages:
     resolution: {integrity: sha512-utRNxnd9kSS2qhyivo9lMlt5qgAUasH2gb7BEOn6p0efFh24gjGomHzWKMAPn2hEReOPQZCJaRKoURwRotKucQ==}
     dev: true
 
-  /@discordjs/collection/0.2.4:
-    resolution: {integrity: sha512-PVrEJH+V6Ob0OwfagYQ/57kwt/HNEJxt5jqY4P+S3st9y29t9iokdnGMQoJXG5VEMAQIPbzu9Snw1F6yE8PdLA==}
+  /@discordjs/collection/0.3.2:
+    resolution: {integrity: sha512-dMjLl60b2DMqObbH1MQZKePgWhsNe49XkKBZ0W5Acl5uVV43SN414i2QfZwRI7dXAqIn8pEWD2+XXQFn9KWxqg==}
     engines: {node: '>=16.0.0', npm: '>=7.0.0'}
     dev: false
 
@@ -1684,6 +1682,13 @@ packages:
   /@types/ms/0.7.31:
     resolution: {integrity: sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==}
     dev: true
+
+  /@types/node-fetch/2.5.12:
+    resolution: {integrity: sha512-MKgC4dlq4kKNa/mYrwpKfzQMB5X3ee5U6fSprkKpToBqBmX4nFZL9cW5jl6sWn+xpRJ7ypWh2yyqqr8UUCstSw==}
+    dependencies:
+      '@types/node': 16.11.6
+      form-data: 3.0.1
+    dev: false
 
   /@types/node/12.20.36:
     resolution: {integrity: sha512-+5haRZ9uzI7rYqzDznXgkuacqb6LJhAti8mzZKWxIXn/WEtvB+GHVJ7AuMwcN1HMvXOSJcrvA6PPoYHYOYYebA==}
@@ -2907,24 +2912,21 @@ packages:
     deprecated: No longer supported. Install the latest release (0.20.2)
     dev: true
 
-  /discord-api-types/0.22.0:
-    resolution: {integrity: sha512-l8yD/2zRbZItUQpy7ZxBJwaLX/Bs2TGaCthRppk8Sw24LOIWg12t9JEreezPoYD0SQcC2htNNo27kYEpYW/Srg==}
+  /discord-api-types/0.24.0:
+    resolution: {integrity: sha512-X0uA2a92cRjowUEXpLZIHWl4jiX1NsUpDhcEOpa1/hpO1vkaokgZ8kkPtPih9hHth5UVQ3mHBu/PpB4qjyfJ4A==}
     engines: {node: '>=12'}
 
-  /discord-api-types/0.23.1:
-    resolution: {integrity: sha512-igWmn+45mzXRWNEPU25I/pr8MwxHb767wAr51oy3VRLRcTlp5ADBbrBR0lq3SA1Rfw3MtM4TQu1xo3kxscfVdQ==}
-    engines: {node: '>=12'}
-
-  /discord.js/13.2.0:
-    resolution: {integrity: sha512-nyxUvL8wuQG38zx13wUMkpcA8koFszyiXdkSLwwM9opKW2LC2H5gD0cTZxImeJ6GtEnKPWT8xBiE8lLBmbNIhw==}
+  /discord.js/13.3.1:
+    resolution: {integrity: sha512-zn4G8tL5+tMV00+0aSsVYNYcIfMSdT2g0nudKny+Ikd+XKv7m6bqI7n3Vji0GIRqXDr5ArPaw+iYFM2I1Iw3vg==}
     engines: {node: '>=16.6.0', npm: '>=7.0.0'}
     dependencies:
-      '@discordjs/builders': 0.6.0
-      '@discordjs/collection': 0.2.4
+      '@discordjs/builders': 0.8.2
+      '@discordjs/collection': 0.3.2
       '@discordjs/form-data': 3.0.1
       '@sapphire/async-queue': 1.1.8
+      '@types/node-fetch': 2.5.12
       '@types/ws': 8.2.0
-      discord-api-types: 0.23.1
+      discord-api-types: 0.24.0
       node-fetch: 2.6.6
       ws: 8.2.3
     transitivePeerDependencies:
@@ -3668,7 +3670,6 @@ packages:
       asynckit: 0.4.0
       combined-stream: 1.0.8
       mime-types: 2.1.33
-    dev: true
 
   /form-data/4.0.0:
     resolution: {integrity: sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==}

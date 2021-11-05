@@ -1,4 +1,4 @@
-import {SlashCommandBuilder, hyperlink} from '@discordjs/builders'
+import {SlashCommandBuilder, hyperlink} from '../../discordjs-builders.js'
 import {fetchTimeZone} from '../../database.js'
 import {
   checkPermissions,
