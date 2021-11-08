@@ -71,7 +71,7 @@ export const handleError: (
   {
     to: channelOrInteraction,
     response:
-      content = 'unfortunately, there was an error trying to execute that command. Noot noot.',
+      content = 'Unfortunately, there was an error trying to execute that command. Noot noot.',
     followUp = false
   } = {}
 ): void => {
