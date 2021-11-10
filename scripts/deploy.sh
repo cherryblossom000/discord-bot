@@ -32,7 +32,7 @@ node scripts/dist/update-package
   git remote add origin "https://${GITHUB_REPOSITORY%%/*}:$GITHUB_TOKEN@${GITHUB_SERVER_URL##https://}/$GITHUB_REPOSITORY"
   git checkout -b repl
   # Push to repl branch
-  git add *.js .replit  replit.nix package.json **/*.js assets
+  git add .replit replit.nix package.json **/*.js assets
   git commit -m "chore: update from workflow run #$GITHUB_RUN_NUMBER"
   git push -f origin repl
 )
