@@ -31,7 +31,8 @@
     "test": "pnpm m run test",
     "test:dev": "pnpm m run test:dev",
     "docs": "pnpm m run docs",
-    "start": "pnpm -C packages/bot start"
+    "start": "pnpm -C packages/bot start",
+    "register-commands": "pnpm -C packages/bot register-commands"
   },
   "devDependencies": {
     "@cherryblossom/eslint-config": "15.0.0-beta.24",
