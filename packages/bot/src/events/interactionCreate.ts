@@ -14,13 +14,10 @@ const listener: EventListener<'interactionCreate'> =
         return
       }
       if ((command.guildOnly ?? false) && !interaction.inGuild()) {
-        handleError(
-          client,
-          new Error(
-            `Command ${commandName} is guild only but interaction is not in a guild
-${debugInteractionDetails(interaction)}`
-          )
-        )
+        await interaction.reply({
+          content: 'This command is only available in servers! Noot noot.',
+          ephemeral: true
+        })
         return
       }
       try {

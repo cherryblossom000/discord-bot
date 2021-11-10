@@ -37,7 +37,6 @@ const command: AnySlashCommand = {
   data: new SlashCommandBuilder()
     .setName('eval')
     .setDescription('Evaluates some JS.')
-    .setDefaultPermission(false)
     .addStringOption(option =>
       option
         .setName(JAVASCRIPT)
