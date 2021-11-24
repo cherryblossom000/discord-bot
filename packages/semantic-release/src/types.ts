@@ -39,10 +39,6 @@ declare module 'semantic-release' {
   interface GlobalConfig {
     repositoryUrl: string
   }
-
-  interface NextRelease {
-    name: string
-  }
 }
 
 interface PluginConfig extends Changelog.PluginConfig, Github.PluginConfig {}
