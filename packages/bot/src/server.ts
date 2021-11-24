@@ -1,4 +1,3 @@
-import dotenv from 'dotenv'
 import {inlineCode} from './discordjs-builders.js'
 import Koa from 'koa'
 import serve from 'koa-static'
@@ -16,8 +15,7 @@ import type {Collection} from 'discord.js'
 import type {ClientEvents, EventListener} from './Client'
 import type {ContextMenuCommand, SlashCommand, Trigger} from './types'
 import type {KeysMatching} from './utils'
-
-dotenv.config()
+import 'dotenv/config'
 
 const assetsFolder = new URL('../assets/', import.meta.url)
 
