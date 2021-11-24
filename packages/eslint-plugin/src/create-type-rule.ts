@@ -13,7 +13,7 @@ type ExtraValidator<T> = (
   report: ReportFn,
   data: T
 ) => void
-type CreateTypeRule = TSESLint.RuleModule<'incorrectType', []>
+type CreateTypeRule = TSESLint.RuleModule<'incorrectType'>
 
 const createTypeRule: {
   <T extends Record<string, unknown> | undefined = undefined>(
@@ -40,7 +40,7 @@ const createTypeRule: {
     report: ReportFn,
     data: T
   ) => void
-): TSESLint.RuleModule<'incorrectType', []> => {
+): TSESLint.RuleModule<'incorrectType'> => {
   const isCorrectTypeName: (name: string) => boolean =
     typeof typeNames == 'string'
       ? (name): boolean => name === typeNames
