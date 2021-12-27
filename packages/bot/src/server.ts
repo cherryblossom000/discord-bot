@@ -1,4 +1,4 @@
-import {inlineCode} from './discordjs-builders.js'
+import {inlineCode} from '@discordjs/builders'
 import Koa from 'koa'
 import serve from 'koa-static'
 import Client from './Client.js'

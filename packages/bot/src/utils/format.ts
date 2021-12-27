@@ -1,4 +1,4 @@
-import {inlineCode} from '../discordjs-builders.js'
+import {inlineCode} from '@discordjs/builders'
 import * as D from 'discord-api-types/v9'
 
 export type DateFormatter = (date: Date) => string
@@ -51,7 +51,7 @@ export type FormatCommandInput = Pick<
 /** Basically a normal (non-subcommand) command with argument options. */
 export type FormatCommandSyntaxInput = Omit<FormatCommandInput, 'options'> & {
   options?: (
-    | D.APIApplicationCommandArgumentOptions & {
+    | D.APIApplicationCommandStringArgumentOptions & {
         type: OptionType
       }
   )[]

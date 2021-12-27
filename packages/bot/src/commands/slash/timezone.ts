@@ -1,8 +1,4 @@
-import {
-  SlashCommandBuilder,
-  hyperlink,
-  inlineCode
-} from '../../discordjs-builders.js'
+import {SlashCommandBuilder, hyperlink, inlineCode} from '@discordjs/builders'
 import {fetchTimeZone, setValue} from '../../database.js'
 import type {AnySlashCommand} from '../../types'
 

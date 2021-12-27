@@ -1,4 +1,4 @@
-import {SlashCommandBuilder, bold} from '../../discordjs-builders.js'
+import {SlashCommandBuilder, bold} from '@discordjs/builders'
 import {
   Collection,
   MessageActionRow,

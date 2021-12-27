@@ -7,7 +7,7 @@ const trigger: Trigger = {
       message.inGuild()
         ? (
             await (
-              await message.client.guilds.fetch(message.guildId!)
+              await message.client.guilds.fetch(message.guildId)
             ).members.fetch(message.author)
           ).displayName
         : message.author.username

@@ -1,4 +1,4 @@
-import {SlashCommandBuilder} from '../../discordjs-builders.js'
+import {SlashCommandBuilder} from '@discordjs/builders'
 import {fetchTimeZone} from '../../database.js'
 import {
   checkPermissions,
@@ -9,7 +9,7 @@ import {
   startCase,
   startCaseFromParts
 } from '../../utils.js'
-import type {Channel, EmbedFieldData, VoiceChannel} from 'discord.js'
+import type {GuildBasedChannel, EmbedFieldData, VoiceChannel} from 'discord.js'
 import type {GuildOnlySlashCommand} from '../../types'
 
 const command: GuildOnlySlashCommand = {
@@ -55,7 +55,10 @@ const command: GuildOnlySlashCommand = {
       fieldName: string,
       channelId: string | null,
       getSuffix = (): string => '',
-      value = (channel: Channel): string => `${channel}`
+      // TODO: investigate this
+      // maybe the TextBasedChannel mixin is interfering?
+      // eslint-disable-next-line @typescript-eslint/no-base-to-string -- false positive
+      value = (channel: GuildBasedChannel): string => `${channel}`
     ): Promise<readonly EmbedFieldData[]> => {
       if (channelId === null) return []
       const suffix = getSuffix()
@@ -67,7 +70,7 @@ const command: GuildOnlySlashCommand = {
         channel
           ? {
               name: fieldName,
-              value: value(channel) + suffix
+              value: value(channel as GuildBasedChannel) + suffix
             }
           : {
               name: `${fieldName} Id`,

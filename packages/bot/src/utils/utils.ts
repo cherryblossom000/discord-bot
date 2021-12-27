@@ -1,6 +1,6 @@
 import path from 'node:path'
 import {homedir} from 'node:os'
-import {bold, codeBlock, hyperlink} from '../discordjs-builders.js'
+import {bold, codeBlock, hyperlink} from '@discordjs/builders'
 import originalCleanStack from 'clean-stack'
 import D, {Constants, DiscordAPIError} from 'discord.js'
 import {dev, me} from '../constants.js'
@@ -12,7 +12,7 @@ import type {
   InteractionReplyOptions,
   Message,
   PermissionString,
-  TextBasedChannels
+  TextBasedChannel
 } from 'discord.js'
 import type Client from '../Client'
 import type {CommandInteraction} from '../types'
@@ -60,7 +60,7 @@ export const handleError: (
   error: unknown,
   info?: string,
   respondOpts?: {
-    to?: CommandInteraction | TextBasedChannels
+    to?: CommandInteraction | TextBasedChannel
     response?: string
     followUp?: boolean
   }
@@ -142,7 +142,7 @@ Options: ${codeBlock('json', JSON.stringify(options.data, null, 2))}`
 
 export const fetchChannel = async (
   interaction: CommandInteraction
-): Promise<TextBasedChannels> => {
+): Promise<TextBasedChannel> => {
   const {channelId, client} = interaction
   const channel = (await client.channels.fetch(
     channelId
@@ -179,7 +179,7 @@ export const replyAndFetch = async (
     : (
         (await interaction.client.channels.fetch(
           interaction.channelId
-        ))! as TextBasedChannels
+        ))! as TextBasedChannel
       ).messages.fetch(message.id)
 }
 

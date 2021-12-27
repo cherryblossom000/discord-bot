@@ -458,4 +458,4 @@ export const connect = async (
       `mongodb+srv://comrade-pingu.vnvdt.mongodb.net/${name}`,
       {auth: {username, password}, retryWrites: true, w: 'majority'}
     ).connect()
-  ).db(name)
+  ).db(name) as Db

@@ -1,4 +1,4 @@
-import {SlashCommandBuilder} from '../../discordjs-builders.js'
+import {SlashCommandBuilder} from '@discordjs/builders'
 import fetch from 'node-fetch'
 import {checkPermissions} from '../../utils.js'
 import type {AnySlashCommand} from '../../types'

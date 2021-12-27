@@ -1,9 +1,5 @@
 import {inspect} from 'node:util'
-import {
-  SlashCommandBuilder,
-  codeBlock,
-  inlineCode
-} from '../../discordjs-builders.js'
+import {SlashCommandBuilder, codeBlock, inlineCode} from '@discordjs/builders'
 import Discord, {Util} from 'discord.js'
 import {emojis, me} from '../../constants.js'
 import {replyDeletable} from '../../utils.js'

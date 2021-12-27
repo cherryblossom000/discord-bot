@@ -1,6 +1,9 @@
 import fs, {mkdir, writeFile} from 'node:fs/promises'
 import path from 'node:path'
-import {inlineCode} from '../../dist/src/discordjs-builders.js'
+// TODO [@discordjs/rest@>0.2.0-canary.0]: see ./commands.ts
+// eslint-disable-next-line @typescript-eslint/no-shadow -- ^
+import {URL} from 'node:url'
+import {inlineCode} from '@discordjs/builders'
 import {ApplicationCommandOptionType} from 'discord-api-types/v9'
 import {Permissions} from 'discord.js'
 import MarkdownIt from 'markdown-it'

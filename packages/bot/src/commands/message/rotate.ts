@@ -1,4 +1,4 @@
-import {inlineCode} from '../../discordjs-builders.js'
+import {inlineCode} from '@discordjs/builders'
 import {Collection} from 'discord.js'
 import {checkPermissions} from '../../utils.js'
 import type {ContextMenuCommand, RotateAttachment} from '../../types'

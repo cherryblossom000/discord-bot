@@ -1,3 +1,7 @@
+// TODO [@discordjs/rest@>0.2.0-canary.0]: remove once
+// https://github.com/discordjs/discord.js-modules/pull/97 is merged
+// eslint-disable-next-line @typescript-eslint/no-shadow -- ^
+import {URL} from 'node:url'
 import {importFolder} from '../../dist/src/utils.js'
 import type {ContextMenuCommand, SlashCommand} from '../../src/types'
 

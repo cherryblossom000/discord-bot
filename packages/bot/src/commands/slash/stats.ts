@@ -1,4 +1,4 @@
-import {SlashCommandBuilder} from '../../discordjs-builders.js'
+import {SlashCommandBuilder} from '@discordjs/builders'
 import type {AnySlashCommand} from '../../types'
 
 const command: AnySlashCommand = {

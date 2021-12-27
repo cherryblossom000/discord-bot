@@ -1,4 +1,4 @@
-import {SlashCommandBuilder} from '../../discordjs-builders.js'
+import {SlashCommandBuilder} from '@discordjs/builders'
 import fetch from 'node-fetch'
 import sharp from 'sharp'
 import {handleError} from '../../utils.js'

@@ -1,4 +1,4 @@
-import {SlashCommandBuilder} from '../../discordjs-builders.js'
+import {SlashCommandBuilder} from '@discordjs/builders'
 import {MessageActionRow, MessageButton} from 'discord.js'
 import {permissions} from '../../constants.js'
 import type {InteractionReplyOptions} from 'discord.js'

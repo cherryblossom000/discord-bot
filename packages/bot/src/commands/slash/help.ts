@@ -1,4 +1,4 @@
-import {SlashCommandBuilder, inlineCode} from '../../discordjs-builders.js'
+import {SlashCommandBuilder, inlineCode} from '@discordjs/builders'
 import {ApplicationCommandOptionType} from 'discord-api-types/v9'
 import {
   commandFiles,
