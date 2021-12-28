@@ -19,9 +19,6 @@
     "build": "tsc -b",
     "watch": "dum build -- -w"
   },
-  "dependencies": {
-    "tslib": "^2.3.1"
-  },
   "devDependencies": {
     "@commitlint/types": "^16.0.0"
   }
