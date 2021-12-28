@@ -21,7 +21,7 @@
   "scripts": {
     "prepare": "husky install",
     "lint": "turbo run lint && eslint --max-warnings 0 --cache **/*.config*.cjs **/.eslintrc.cjs",
-    "build": "turbo run build",
+    "build": "turbo run build && turbo run build:site",
     "watch": "tsc -b -w",
     "clean": "trash '**/{*.tsbuildinfo,.eslintcache,dist}' '!**/node_modules/**'",
     "test": "turbo run test",
@@ -36,12 +36,19 @@
     "pipeline": {
       "build": {
         "dependsOn": ["^build"],
-        "outputs": ["dist/**", "*.tsbuildinfo", "README.md"]
+        "outputs": ["dist/**", "*.tsbuildinfo"]
+      },
+      "build:site": {
+        "dependsOn": ["build"],
+        "outputs": ["dist/assets/**", "README.md"]
       },
       "lint": {
         "outputs": []
       },
       "test": {
+        "outputs": []
+      },
+      "test:dev": {
         "outputs": []
       }
     }
