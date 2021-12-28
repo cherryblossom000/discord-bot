@@ -15,10 +15,9 @@
     "node": ">=16"
   },
   "scripts": {
-    "lint": "eslint --max-warnings 0 --ext ts .",
-    "lint:dev": "pnpm lint -- --cache",
+    "lint": "eslint --max-warnings 0 --ext ts --cache .",
     "build": "tsc -b",
-    "watch": "pnpm build -- -w"
+    "watch": "dum build -- -w"
   },
   "devDependencies": {
     "@types/node": "^16.11.17"

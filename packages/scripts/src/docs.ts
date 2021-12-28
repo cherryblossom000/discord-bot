@@ -1,5 +1,4 @@
 import fs, {mkdir, writeFile} from 'node:fs/promises'
-import path from 'node:path'
 // TODO [@discordjs/rest@>0.2.0-canary.0]: see ./commands.ts
 // eslint-disable-next-line @typescript-eslint/no-shadow -- ^
 import {URL} from 'node:url'
@@ -8,19 +7,16 @@ import {ApplicationCommandOptionType} from 'discord-api-types/v9'
 import {Permissions} from 'discord.js'
 import MarkdownIt from 'markdown-it'
 import {markdownTable} from 'markdown-table'
-import {
-  distFolder,
-  rootFolder,
-  slashCommands,
-  scriptsFolder
-} from './commands.js'
-import exitOnError from '../../../../scripts/dist/exit-on-error.js'
-import {permissions} from '../../dist/src/constants.js'
+import {permissions} from '@comrade-pingu/bot/dist/src/constants.js'
 import {
   formatCommandSyntax,
   formatCommandUsage,
   upperFirst
-} from '../../dist/src/utils.js'
+} from '@comrade-pingu/bot/dist/src/utils.js'
+import {slashCommands} from './commands.js'
+import {botDistFolder, botFolder, scriptsFolder} from './folders.js'
+import exitOnError from './exit-on-error.js'
+import type {PathLike} from 'node:fs'
 import type {
   APIApplicationCommandSubCommandOptions,
   RESTPostAPIChatInputApplicationCommandsJSONBody
@@ -28,16 +24,15 @@ import type {
 import type {
   FormatCommandSyntaxInput,
   FormatCommandInput
-} from '../../src/utils'
-import type {PathLike} from 'node:fs'
+} from '@comrade-pingu/bot/dist/src/utils'
 
 exitOnError()
 
 const readFile = async (filePath: PathLike): Promise<string> =>
   fs.readFile(filePath, 'utf8')
 
-const htmlFolder = new URL('assets/html/', distFolder)
-const readmeFile = new URL('README.md', rootFolder)
+const htmlFolder = new URL('assets/html/', botDistFolder)
+const readmeFile = new URL('README.md', botFolder)
 
 const br = '<br>'
 
@@ -132,17 +127,14 @@ const writeHtml = async (
       .replace('[content]', htmlMarkdownIt.render(md))
   )
 
-const writeOtherPage = async (
-  htmlPath: string,
-  mdPath: string
-): Promise<void> => {
+const writeOtherPage = async (htmlPath: string, mdFile: URL): Promise<void> => {
   const title = upperFirst(htmlPath)
   return writeHtml(
     htmlPath,
     `${title} - Comrade Pingu`,
     `${title} for Comrade Pingu`,
     `/${htmlPath}`,
-    `${await readFile(new URL(mdPath, rootFolder))}
+    `${await readFile(mdFile)}
 #### [← back](/)`
   )
 }
@@ -162,6 +154,6 @@ await Promise.all([
       .replace('CHANGELOG.md', 'changelog')
   ),
   // Update license.html and changelog.html
-  writeOtherPage('license', path.join('..', '..', 'LICENSE')),
-  writeOtherPage('changelog', 'CHANGELOG.md')
+  writeOtherPage('license', new URL('../../LICENSE', scriptsFolder)),
+  writeOtherPage('changelog', new URL('CHANGELOG.md', botFolder))
 ])

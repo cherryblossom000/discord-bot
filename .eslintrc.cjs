@@ -6,12 +6,11 @@ const tsconfigRootDir = __dirname
 const projects = [
   'packages/bot/src/tsconfig.json',
   'packages/bot/tests/tsconfig.json',
-  'packages/bot/scripts/tsconfig.json',
   'packages/commitlint-plugin/tsconfig.json',
   'packages/eslint-plugin/tsconfig.json',
+  'packages/scripts/tsconfig.json',
   'packages/semantic-release/tsconfig.json',
-  'packages/url-shim/tsconfig.json',
-  'scripts/tsconfig.json'
+  'packages/url-shim/tsconfig.json'
 ]
 
 /** @type {import('eslint').Linter.Config & {parserOptions?: import('@typescript-eslint/parser').ParserOptions}} */
@@ -58,15 +57,6 @@ module.exports = {
             )
           }
         }
-      }
-    },
-    {
-      files: ['scripts/**/*.ts', 'packages/*/scripts/**/*.ts'],
-      extends: ['@cherryblossom/eslint-config/ts/node/esm'],
-      rules: {
-        'node/no-extraneous-import': 0,
-        'node/no-process-exit': 0,
-        'node/no-unpublished-import': 0
       }
     }
   ]

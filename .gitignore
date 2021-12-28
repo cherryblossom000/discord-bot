@@ -1,4 +1,4 @@
-.history/
+.turbo/
 dist/
 node_modules/
 /packages/bot/tests/coverage/

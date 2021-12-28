@@ -17,18 +17,13 @@
     "node": ">=16.6"
   },
   "scripts": {
-    "lint": "eslint --max-warnings 0 --ext ts,cjs .",
-    "lint:dev": "pnpm lint -- --cache",
-    "copy": "cd dist && (mkdir assets; trash assets/img; cp -r ../assets/img assets/img)",
-    "docs": "node scripts/dist/docs && (mkdir -p dist/assets/css; purgecss -c purgecss.config.cjs -o dist/assets/css)",
-    "postbuild": "pnpm copy && pnpm run docs",
-    "build": "tsc -b src && pnpm postbuild",
-    "build:all": "tsc -b && pnpm postbuild",
+    "lint": "eslint --max-warnings 0 --ext ts,cjs --cache .",
+    "build": "tsc -b && pnpm build-site",
+    "build-site": "./scripts/build-site.sh",
     "watch": "tsc -b -w",
-    "register-commands": "node scripts/dist/register-commands",
     "start": "node .",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "test:dev": "pnpm test -- -c jest.config.dev.cjs"
+    "test:dev": "dum test -- -c jest.config.dev.cjs"
   },
   "dependencies": {
     "@discordjs/builders": "^0.10.0",
@@ -48,7 +43,6 @@
   },
   "devDependencies": {
     "@comrade-pingu/eslint-plugin": "workspace:2.0.0",
-    "@discordjs/rest": "^0.2.0-canary.0",
     "@types/jest": "^27.0.3",
     "@types/koa": "^2.13.4",
     "@types/koa-static": "^4.0.2",

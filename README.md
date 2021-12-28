@@ -12,11 +12,14 @@ This started as a joke and does not represent my actual political views.
 
 - [`bot`](./packages/bot): The Discord bot.
 - [`commitlint-plugin`](./packages/commitlint-plugin): A Commitlint plugin used
-internally.
+  internally.
 - [`eslint-plugin`](./packages/eslint-plugin): An ESLint plugin used
-internally.
+  internally.
 - [`semantic-release`](./packages/semantic-release): A semantic-release plugin
-used internally.
+  used internally.
+- [`scripts`](./packages/scripts): Some helper scripts to deploy the bot.
+- [`url-shim`](./packages/url-shim): A workaround for
+  <https://github.com/DefinitelyTyped/DefinitelyTyped/issues/34960>.
 
 ## License
 

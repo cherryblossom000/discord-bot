@@ -53,8 +53,8 @@
       "type": "node",
       "request": "launch",
       "name": "Build Docs",
-      "program": "${workspaceFolder}/packages/bot/scripts/src/docs.ts",
-      "outFiles": ["${workspaceFolder}/packages/bot/scripts/dist/**/*.js"],
+      "program": "${workspaceFolder}/packages/scripts/src/docs.ts",
+      "outFiles": ["${workspaceFolder}/packages/scripts/dist/**/*.js"],
       "skipFiles": ["<node_internals>/**", "node_modules/**"],
       "presentation": {"group": "scripts"}
     },
@@ -62,8 +62,8 @@
       "type": "node",
       "request": "launch",
       "name": "Register Commands",
-      "program": "${workspaceFolder}/packages/bot/scripts/src/register-commands.ts",
-      "outFiles": ["${workspaceFolder}/packages/bot/scripts/dist/**/*.js"],
+      "program": "${workspaceFolder}/packages/scripts/src/register-commands.ts",
+      "outFiles": ["${workspaceFolder}/packages/scripts/dist/**/*.js"],
       "skipFiles": ["<node_internals>/**", "node_modules/**"],
       "presentation": {"group": "scripts"}
     },

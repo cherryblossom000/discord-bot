@@ -1,3 +1,0 @@
-overrides:
-- files: '**/*.ts'
-  extends: ../../../../scripts/src/.eslintrc.cjs

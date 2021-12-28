@@ -11,7 +11,6 @@ importers:
       '@comrade-pingu/semantic-release': workspace:^1.2.0
       '@semantic-release/changelog': ^6.0.1
       '@semantic-release/git': ^10.0.1
-      '@types/markdown-it': ^12.2.3
       '@types/node': ^16.11.17
       '@types/url-shim': workspace:^1.1.0
       '@typescript-eslint/eslint-plugin': ^5.8.0
@@ -30,14 +29,12 @@ importers:
       eslint-plugin-unicorn: ^39.0.0
       husky: ^7.0.4
       is-ci: ^3.0.1
-      markdown-it: ^12.3.0
-      markdown-table: ^3.0.2
       multi-semantic-release: ^2.11.0
       prettier: ^2.5.1
       purgecss: ^4.1.3
       semantic-release: ^18.0.1
       trash-cli: ^5.0.0
-      type-fest: ^2.8.0
+      turbo: ^1.0.23
       typescript: ~4.5.4
     devDependencies:
       '@cherryblossom/eslint-config': 15.0.0-beta.27_5589d8b8e5b96048f2543f513ce96867
@@ -47,7 +44,6 @@ importers:
       '@comrade-pingu/semantic-release': link:packages/semantic-release
       '@semantic-release/changelog': 6.0.1_semantic-release@18.0.1
       '@semantic-release/git': 10.0.1_semantic-release@18.0.1
-      '@types/markdown-it': 12.2.3
       '@types/node': 16.11.17
       '@types/url-shim': link:packages/url-shim
       '@typescript-eslint/eslint-plugin': 5.8.0_836011a006f4f5d67178564baf2b6d34
@@ -66,21 +62,18 @@ importers:
       eslint-plugin-unicorn: 39.0.0_eslint@8.5.0
       husky: 7.0.4
       is-ci: 3.0.1
-      markdown-it: 12.3.0
-      markdown-table: 3.0.2
       multi-semantic-release: 2.11.0
       prettier: 2.5.1
       purgecss: 4.1.3
       semantic-release: 18.0.1
       trash-cli: 5.0.0
-      type-fest: 2.8.0
+      turbo: 1.0.23
       typescript: 4.5.4
 
   packages/bot:
     specifiers:
       '@comrade-pingu/eslint-plugin': workspace:2.0.0
       '@discordjs/builders': ^0.10.0
-      '@discordjs/rest': ^0.2.0-canary.0
       '@types/jest': ^27.0.3
       '@types/koa': ^2.13.4
       '@types/koa-static': ^4.0.2
@@ -125,7 +118,6 @@ importers:
       ytdl-core: 4.9.2
     devDependencies:
       '@comrade-pingu/eslint-plugin': link:../eslint-plugin
-      '@discordjs/rest': 0.2.0-canary.0
       '@types/jest': 27.0.3
       '@types/koa': 2.13.4
       '@types/koa-static': 4.0.2
@@ -162,6 +154,31 @@ importers:
     devDependencies:
       '@types/eslint': 8.2.1
       eslint-plugin-eslint-plugin: 4.1.0_eslint@8.5.0
+
+  packages/scripts:
+    specifiers:
+      '@comrade-pingu/bot': workspace:^4.0.4
+      '@discordjs/builders': ^0.10.0
+      '@discordjs/rest': ^0.2.0-canary.0
+      '@types/markdown-it': ^12.2.3
+      '@types/url-shim': workspace:^1.1.0
+      discord.js: 13.4.0
+      dotenv: ^10.0.0
+      markdown-it: ^12.3.0
+      markdown-table: ^3.0.2
+      type-fest: ^2.8.0
+    dependencies:
+      '@comrade-pingu/bot': link:../bot
+      '@discordjs/builders': 0.10.0
+      '@discordjs/rest': 0.2.0-canary.0
+      discord.js: 13.4.0
+      dotenv: 10.0.0
+      markdown-it: 12.3.0
+      markdown-table: 3.0.2
+    devDependencies:
+      '@types/markdown-it': 12.2.3
+      '@types/url-shim': link:../url-shim
+      type-fest: 2.8.0
 
   packages/semantic-release:
     specifiers:
@@ -790,7 +807,7 @@ packages:
   /@discordjs/collection/0.3.2:
     resolution: {integrity: sha512-dMjLl60b2DMqObbH1MQZKePgWhsNe49XkKBZ0W5Acl5uVV43SN414i2QfZwRI7dXAqIn8pEWD2+XXQFn9KWxqg==}
     engines: {node: '>=16.0.0', npm: '>=7.0.0'}
-    dev: true
+    dev: false
 
   /@discordjs/collection/0.4.0:
     resolution: {integrity: sha512-zmjq+l/rV35kE6zRrwe8BHqV78JvIh2ybJeZavBi5NySjWXqN3hmmAKg7kYMMXSeiWtSsMoZ/+MQi0DiQWy2lw==}
@@ -808,7 +825,7 @@ packages:
       form-data: 4.0.0
       node-fetch: 2.6.6
       tslib: 2.3.1
-    dev: true
+    dev: false
 
   /@es-joy/jsdoccomment/0.13.0:
     resolution: {integrity: sha512-APVqbVPGOprb4BmjEnwbSzV+V2e/6DVIUnZG3zdW5uWXWkN0DKMCpiIy2TdBauoANKYO7RQpO8cTjIYNVSKwUA==}
@@ -1186,11 +1203,12 @@ packages:
   /@sapphire/async-queue/1.1.9:
     resolution: {integrity: sha512-CbXaGwwlEMq+l1TRu01FJCvySJ1CEFKFclHT48nIfNeZXaAAmmwwy7scUKmYHPUa3GhoMp6Qr1B3eAJux6XgOQ==}
     engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
+    dev: false
 
   /@sapphire/snowflake/3.0.0:
     resolution: {integrity: sha512-YVYXvpWe8fVs2P9mvvsMXByXCcSPcsgUhuKwA+SSlJk1VO7EW1vWjlgGozGj0tPOhsuaeAj1EjPbkCmNKiSRLA==}
     engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
-    dev: true
+    dev: false
 
   /@semantic-release/changelog/6.0.1_semantic-release@18.0.1:
     resolution: {integrity: sha512-FT+tAGdWHr0RCM3EpWegWnvXJ05LQtBkQUaQRIExONoXjVjLuOILNm4DEKNaV+GAQyJjbLRVs57ti//GypH6PA==}
@@ -2061,7 +2079,6 @@ packages:
 
   /argparse/2.0.1:
     resolution: {integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==}
-    dev: true
 
   /argv-formatter/1.0.0:
     resolution: {integrity: sha1-oMoMvCmltz6Dbuvhy/bF4OTrgvk=}
@@ -3057,7 +3074,7 @@ packages:
 
   /entities/2.1.0:
     resolution: {integrity: sha512-hCx1oky9PFrJ611mf0ifBLBRW8lUUVRlFolb5gWRfIELabBlbp9xZvrqZLZAs+NxFnbfQoeGd8wDkygjg7U85w==}
-    dev: true
+    dev: false
 
   /env-ci/5.5.0:
     resolution: {integrity: sha512-o0JdWIbOLP+WJKIUt36hz1ImQQFuN92nhsfTkHHap+J8CiI8WgGpH/a9jEGHh4/TU5BUUGjlnKXNoDb57+ne+A==}
@@ -3713,6 +3730,7 @@ packages:
       asynckit: 0.4.0
       combined-stream: 1.0.8
       mime-types: 2.1.34
+    dev: false
 
   /fraction.js/4.1.2:
     resolution: {integrity: sha512-o2RiJQ6DZaR/5+Si0qJUIy637QMRudSi9kU/FFzx9EZazrIdnBgpU+3sEWCxAVhH2RtxW2Oz+T4p2o8uOPVcgA==}
@@ -5239,7 +5257,7 @@ packages:
     resolution: {integrity: sha512-ynTsyrFSdE5oZ/O9GEf00kPngmOfVwazR5GKDq6EYfhlpFug3J2zybX56a2PRRpc9P+FuSoGNAwjlbDs9jJBPQ==}
     dependencies:
       uc.micro: 1.0.6
-    dev: true
+    dev: false
 
   /load-json-file/4.0.0:
     resolution: {integrity: sha1-L19Fq5HjMhYjT9U62rZo607AmTs=}
@@ -5362,11 +5380,11 @@ packages:
       linkify-it: 3.0.3
       mdurl: 1.0.1
       uc.micro: 1.0.6
-    dev: true
+    dev: false
 
   /markdown-table/3.0.2:
     resolution: {integrity: sha512-y8j3a5/DkJCmS5x4dMCQL+OR0+2EAq3DOtio1COSHsmW2BGXnNCK3v12hJt1LrUz5iZH5g0LmuYOjDdI+czghA==}
-    dev: true
+    dev: false
 
   /marked-terminal/4.2.0_marked@2.1.3:
     resolution: {integrity: sha512-DQfNRV9svZf0Dm9Cf5x5xaVJ1+XjxQW6XjFJ5HFkVyK52SDpj5PCBzS5X5r2w9nHr3mlB0T5201UMLue9fmhUw==}
@@ -5419,7 +5437,7 @@ packages:
 
   /mdurl/1.0.1:
     resolution: {integrity: sha1-/oWy7HWlkDfyrf7BAP1sYBdhFS4=}
-    dev: true
+    dev: false
 
   /media-typer/0.3.0:
     resolution: {integrity: sha1-hxDXrwqmJvj/+hzgAWhUUmMlV0g=}
@@ -7322,6 +7340,7 @@ packages:
 
   /tslib/2.3.1:
     resolution: {integrity: sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==}
+    dev: false
 
   /tsscmp/1.0.6:
     resolution: {integrity: sha512-LxhtAkPDTkVCMQjt2h6eBVY28KCjikZqZfMcC15YBeNjkgUpdCfBu5HoiOTDu86v6smE8yOjyEktJ8hlbANHQA==}
@@ -7342,6 +7361,121 @@ packages:
     dependencies:
       safe-buffer: 5.2.1
     dev: false
+
+  /turbo-darwin-64/1.0.23:
+    resolution: {integrity: sha512-z6ArzNKpQIw/YhFf20lUGl5VaGTZ94MSppXuuYkCyxMQwK3qye3r2ENQbUKkxfv16fAmfr7z1bJt6YwfOjwPiw==}
+    cpu: [x64]
+    os: [darwin]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /turbo-darwin-arm64/1.0.23:
+    resolution: {integrity: sha512-U02Ip7kO7eDN3WRliIrPtqYFqcpsvpNsE5fX1T0uFjXfSJruiDBrrNpGmZEh8hatS5wQyG7VaxW+izJqd7TCsw==}
+    cpu: [arm64]
+    os: [darwin]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /turbo-freebsd-64/1.0.23:
+    resolution: {integrity: sha512-5XT8pp0uJ1vRqNJydacn6ouY4COUeufOdLuiPOWAOsvMW5FOJNAOdAJ7lISBBqhCpYF8CEZ9kCAI2f9nOzzY0Q==}
+    cpu: [x64]
+    os: [freebsd]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /turbo-freebsd-arm64/1.0.23:
+    resolution: {integrity: sha512-70BGJTVX3jYvzDISp8dWM/rwiK4CDlNVQJnnlUMKrueFtpgHZhsRKjIeNgIKxVSTyp4xT0Vl4xhc9zFhMT17aw==}
+    cpu: [arm64]
+    os: [freebsd]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /turbo-linux-32/1.0.23:
+    resolution: {integrity: sha512-ee3N8f7h1qg5noKII5Tq2gyG6PVFl/apllX0TPbZiUab6553QPfVt+tB+5W6BZmKGUdHHCvW42xuig0krrrRGw==}
+    cpu: [ia32]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /turbo-linux-64/1.0.23:
+    resolution: {integrity: sha512-j2+1P2+rdOXb/yzz78SCmxXLdFSSlCzZS0Psg1vetYozuoT0k+xu7gr6iqEHdBWw39jNFuT72hVqrNZ4TClHcA==}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /turbo-linux-arm/1.0.23:
+    resolution: {integrity: sha512-+aD+v03bpkmuXEfk14w2fLH5cAyfyGlAs5gBwQmwyF3XllJ40OL/cw9xDnBREpZsnm9o1GTQpr0wmepjw9d4iQ==}
+    cpu: [arm]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /turbo-linux-arm64/1.0.23:
+    resolution: {integrity: sha512-VNW8yyBG63MGUzZ/Y2DS883P8rzz/hQuiCklw2lTBQ4O9dp2FxYrAVnmCxbnsIDZG/wEupdvaHVgqH7j2DJgwg==}
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /turbo-linux-mips64le/1.0.23:
+    resolution: {integrity: sha512-CJNd7F9z8EhqcdJnd1rSiU/+hSNG3E+fudQ5pr55y0nhSShFMMdZxdLvL5zzhWpBl1g8YldphjPqNLChgGatKw==}
+    cpu: [mips64el]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /turbo-linux-ppc64le/1.0.23:
+    resolution: {integrity: sha512-RjzDqXQl+nqV+2A6MRk1sALBQtpCB/h8qDWhJIL/VUgToTMdllAThiYI+lALLmGWBumXs4XDbk+83FGJlJ1bDg==}
+    cpu: [ppc64]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /turbo-windows-32/1.0.23:
+    resolution: {integrity: sha512-qTfldTd5OO/s8unGFnITe4IX8ua2SNj/VVQbvVcObDJK6xrfBY4tDS78rIo9//xTSRyK+28AoPxRZsVqqF2hlA==}
+    cpu: [ia32]
+    os: [win32]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /turbo-windows-64/1.0.23:
+    resolution: {integrity: sha512-yzhF6GEYiyrXoO/l9T6amB16OITsFXdeMTc0Vf2BZFOG1fn9Muc4CxQ+CcdsLlai+TqQTKlpEf0+l83vI+R2Jw==}
+    cpu: [x64]
+    os: [win32]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /turbo/1.0.23:
+    resolution: {integrity: sha512-/VHsARQyl8wsfCJtuJicjYq7Do/P5yjJde3bjG9TAZHj/PzA9LuRU7WOEPfUrT+felOQ3vwUMZtC8xrYFmndLA==}
+    hasBin: true
+    requiresBuild: true
+    optionalDependencies:
+      turbo-darwin-64: 1.0.23
+      turbo-darwin-arm64: 1.0.23
+      turbo-freebsd-64: 1.0.23
+      turbo-freebsd-arm64: 1.0.23
+      turbo-linux-32: 1.0.23
+      turbo-linux-64: 1.0.23
+      turbo-linux-arm: 1.0.23
+      turbo-linux-arm64: 1.0.23
+      turbo-linux-mips64le: 1.0.23
+      turbo-linux-ppc64le: 1.0.23
+      turbo-windows-32: 1.0.23
+      turbo-windows-64: 1.0.23
+    dev: true
 
   /type-check/0.3.2:
     resolution: {integrity: sha1-WITKtRLPHTVeP7eE8wgEsrUg23I=}
@@ -7429,7 +7563,7 @@ packages:
 
   /uc.micro/1.0.6:
     resolution: {integrity: sha512-8Y75pvTYkLJW2hWQHXxoqRgV7qb9B+9vFEtidML+7koHUFapnVJAZ6cKs+Qjz5Aw3aZWHMC6u0wJE3At+nSGwA==}
-    dev: true
+    dev: false
 
   /uglify-js/3.14.5:
     resolution: {integrity: sha512-qZukoSxOG0urUTvjc2ERMTcAy+BiFh3weWAkeurLwjrCba73poHmG3E36XEjd/JGukMzwTL7uCxZiAexj8ppvQ==}

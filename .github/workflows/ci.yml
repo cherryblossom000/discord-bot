@@ -58,10 +58,7 @@ jobs:
       uses: actions/upload-artifact@v2.2.4
       with:
         name: build-data
-        path: |
-          scripts/dist
-          packages/*/dist
-          packages/*/scripts/dist
+        path: packages/*/dist
         if-no-files-found: error
 
   release:
