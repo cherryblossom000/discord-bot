@@ -91,7 +91,7 @@ const command: AnySlashCommand = {
       ? interaction.reply({content: emojis.thumbsUp, ephemeral: true})
       : Promise.all(
           Util.splitMessage(
-            ['TOKEN', 'DB_USER', 'DB_PASSWORD', 'REPLIT_DB_URL'].reduce(
+            ['DISCORD_TOKEN', 'DB_USER', 'DB_PASSWORD', 'REPLIT_DB_URL'].reduce(
               (acc, key) => {
                 const value = process.env[key]
                 return value === undefined

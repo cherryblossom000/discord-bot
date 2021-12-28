@@ -173,4 +173,4 @@ const listener = app.listen(Number(process.env.PORT), () => {
   if (dev)
     console.log(`http://localhost:${(listener.address() as AddressInfo).port}`)
 })
-await client.login(process.env.TOKEN)
+await client.login()

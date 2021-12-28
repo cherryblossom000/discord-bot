@@ -121,7 +121,7 @@ jobs:
     - name: Deploy
       run: scripts/deploy.sh
       env:
-        TOKEN: ${{ secrets.TOKEN }}
+        DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
         APP_ID: '554539674899841055'
         NODE_ENV: production
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

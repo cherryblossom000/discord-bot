@@ -14,7 +14,7 @@ exitOnError()
 dotenv.config()
 
 const applicationId = process.env.APP_ID!
-const rest = new REST({version: '9'}).setToken(process.env.TOKEN!)
+const rest = new REST({version: '9'}).setToken(process.env.DISCORD_TOKEN!)
 
 const contextMenuCommandToJSON =
   (type: ApplicationCommandType.Message | ApplicationCommandType.User) =>
