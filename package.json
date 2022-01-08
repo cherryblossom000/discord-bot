@@ -27,7 +27,7 @@
     "test": "turbo run test",
     "test:dev": "turbo run test:dev",
     "register-commands": "node packages/scripts/dist/register-commands",
-    "start": "dum -C packages/bot start"
+    "start": "dum -c packages/bot start"
   },
   "turbo": {
     "baseBranch": "origin/main",
