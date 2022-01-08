@@ -1,4 +1,3 @@
-import dotenv from 'dotenv';
 import { inlineCode } from '@discordjs/builders';
 import Koa from 'koa';
 import serve from 'koa-static';
@@ -7,7 +6,7 @@ import { addListeners } from './commands/slash/rejoin.js';
 import { dev } from './constants.js';
 import { connect, fetchRejoinGuilds } from './database.js';
 import { commandFiles, handleError, importFolder as utilsImportFolder } from './utils.js';
-dotenv.config();
+import 'dotenv/config';
 const assetsFolder = new URL('../assets/', import.meta.url);
 const app = new Koa();
 app
@@ -89,5 +88,5 @@ const listener = app.listen(Number(process.env.PORT), () => {
     if (dev)
         console.log(`http://localhost:${listener.address().port}`);
 });
-await client.login(process.env.TOKEN);
+await client.login();
 //# sourceMappingURL=server.js.map
