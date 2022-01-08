@@ -1,6 +1,6 @@
 {
   "name": "@comrade-pingu/bot",
-  "version": "4.0.4",
+  "version": "4.0.5",
   "private": true,
   "publishConfig": {
     "access": "restricted"
@@ -42,7 +42,7 @@
     "ytdl-core": "^4.9.2"
   },
   "devDependencies": {
-    "@comrade-pingu/eslint-plugin": "workspace:2.0.0",
+    "@comrade-pingu/eslint-plugin": "2.0.0",
     "@types/jest": "^27.0.3",
     "@types/koa": "^2.13.4",
     "@types/koa-static": "^4.0.2",
@@ -50,7 +50,7 @@
     "@types/ms": "^0.7.31",
     "@types/node": "~16.11.17",
     "@types/sharp": "^0.29.5",
-    "@types/url-shim": "workspace:1.1.0",
+    "@types/url-shim": "1.1.0",
     "@types/yt-search": "^2.3.2",
     "discord-api-types": "^0.25.2",
     "jest": "^27.4.5",

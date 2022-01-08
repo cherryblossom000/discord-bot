@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.5](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@4.0.4...@comrade-pingu/bot@4.0.5) (2022-01-08)
+
+
+### Bug Fixes
+
+* **bot/rejoin:** fix admin check ([d3d515d](https://github.com/cherryblossom000/comrade-pingu/commit/d3d515df75d5617f8899bf5bd731d9348076e395))
+
 ## [4.0.4](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@4.0.3...@comrade-pingu/bot@4.0.4) (2021-10-06)
 
 
