@@ -12,7 +12,7 @@ node packages/scripts/dist/update-package
   cd packages/bot/dist
 
   # Add .replit
-  echo "run = 'pnpm install && node src/server'" > .replit
+  echo 'run = "pnpm install && node src/server"' > .replit
 
   # Add replit.nix
   echo '{ pkgs }: {
@@ -25,7 +25,8 @@ node packages/scripts/dist/update-package
 }' > replit.nix
 
   # Add .gitignore
-  echo '/node_modules/' > .gitignore
+  echo '/node_modules/
+/.cache/' > .gitignore
 
   # Init repo
   git init
