@@ -9,7 +9,7 @@ import {
 import type {EmbedFieldData} from 'discord.js'
 import type {
   APIApplicationCommandOption,
-  APIApplicationCommandSubCommandOptions,
+  APIApplicationCommandSubcommandOption,
   RESTPostAPIChatInputApplicationCommandsJSONBody
 } from 'discord-api-types/v9'
 import type {AnySlashCommand} from '../../types'
@@ -91,7 +91,7 @@ You can send ${inlineCode(
         },
         ...(hasSubcommands
           ? // For now I don't use any subcommand groups, so this is fine
-            (options as APIApplicationCommandSubCommandOptions[]).map(c => ({
+            (options as APIApplicationCommandSubcommandOption[]).map(c => ({
               title: `${name} ${c.name}`,
               description:
                 formatCommandSyntax(c as FormatCommandSyntaxInput, {

@@ -198,7 +198,7 @@ const findOne =
         ): Promise<U | null>
       }
     ).findOne(
-      {...filter, _id} as Filter<DatabaseType<C>>,
+      {...filter, _id} as unknown as Filter<DatabaseType<C>>,
       {
         ...options,
         projection: Object.fromEntries(keysToFetch.map(key => [key, 1]))
@@ -256,7 +256,7 @@ export const setValue = async <
       ): Promise<Document | UpdateResult>
     }
   ).updateOne(
-    {_id} as Filter<DatabaseType<C>>,
+    {_id} as unknown as Filter<DatabaseType<C>>,
     {$set: {[key]: value} as MatchKeysAndValues<DatabaseType<C>>},
     {upsert: true}
   )

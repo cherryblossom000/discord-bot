@@ -44,17 +44,13 @@ const optionsToString = {
 }
 
 export type FormatCommandInput = Pick<
-  D.APIApplicationCommandSubCommandOptions,
+  D.APIApplicationCommand,
   'description' | 'name' | 'options'
 >
 
 /** Basically a normal (non-subcommand) command with argument options. */
-export type FormatCommandSyntaxInput = Omit<FormatCommandInput, 'options'> & {
-  options?: (
-    | D.APIApplicationCommandStringArgumentOptions & {
-        type: OptionType
-      }
-  )[]
+export interface FormatCommandSyntaxInput extends FormatCommandInput {
+  options?: Extract<D.APIApplicationCommandStringOption, {choices?: unknown}>[]
 }
 
 export const formatCommandSyntax = (

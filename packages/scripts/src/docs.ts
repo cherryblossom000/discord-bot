@@ -18,7 +18,7 @@ import {botDistFolder, botFolder, scriptsFolder} from './folders.js'
 import exitOnError from './exit-on-error.js'
 import type {PathLike} from 'node:fs'
 import type {
-  APIApplicationCommandSubCommandOptions,
+  APIApplicationCommandSubcommandOption,
   RESTPostAPIChatInputApplicationCommandsJSONBody
 } from 'discord-api-types/v9'
 import type {
@@ -51,7 +51,7 @@ const formatCommand = (
     return options
       .map(opt =>
         formatCommand(
-          opt as APIApplicationCommandSubCommandOptions,
+          opt as APIApplicationCommandSubcommandOption,
           undefined,
           resolvedPrefix + name,
           true
@@ -93,6 +93,7 @@ const docs = [
 
 const [newReadme, template] = await Promise.all([
   // Replace old readme docs
+  // eslint-disable-next-line unicorn/prefer-top-level-await -- Promise.all
   readFile(readmeFile).then(s =>
     s
       .replace(
