@@ -172,12 +172,12 @@ const checkIfAdmin = async (
   guild: Guild
 ): Promise<boolean> => {
   if (
-    (await guild.members.fetch(interaction.user.id)).permissions.has(
+    !(await guild.members.fetch(interaction.user.id)).permissions.has(
       'ADMINISTRATOR'
     )
   ) {
     await interaction.reply(
-      'This command can only be used by someone with the Manage Messages permission or the bot owner!'
+      'This command can only be used by an administrator!'
     )
     return false
   }
