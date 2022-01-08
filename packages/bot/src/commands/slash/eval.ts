@@ -87,30 +87,33 @@ const command: AnySlashCommand = {
       return
     }
 
-    await (interaction.options.getBoolean(HIDE_RESULT) ?? false
-      ? interaction.reply({content: emojis.thumbsUp, ephemeral: true})
-      : Promise.all(
-          Util.splitMessage(
-            ['DISCORD_TOKEN', 'DB_USER', 'DB_PASSWORD', 'REPLIT_DB_URL'].reduce(
-              (acc, key) => {
-                const value = process.env[key]
-                return value === undefined
-                  ? acc
-                  : acc.replaceAll(value, `<${key}>`)
-              },
-              inspect(result)
-            )
-          ).map(async (text, i) =>
-            replyDeletable(
-              interaction,
-              {
-                content: codeBlock('js', text),
-                ephemeral
-              },
-              i !== 0
-            )
-          )
-        ))
+    if (interaction.options.getBoolean(HIDE_RESULT) ?? false) {
+      await interaction.reply({content: emojis.thumbsUp, ephemeral: true})
+      return
+    }
+
+    for (const [i, text] of Util.splitMessage(
+      ['DISCORD_TOKEN', 'DB_USER', 'DB_PASSWORD', 'REPLIT_DB_URL'].reduce(
+        (acc, key) => {
+          const value = process.env[key]
+          return value === undefined ? acc : acc.replaceAll(value, `<${key}>`)
+        },
+        inspect(result)
+      ),
+      {maxLength: 1990} // '```js\n'.length + '\n```'.length == 10
+    ).entries()) {
+      /* eslint-disable-next-line no-await-in-loop -- There's been issues with
+       * the follow-up messages attempting to send before Discord.js knows that
+       * there's been a follow-up */
+      await replyDeletable(
+        interaction,
+        {
+          content: codeBlock('js', text),
+          ephemeral
+        },
+        i !== 0
+      )
+    }
   }
 }
 export default command
