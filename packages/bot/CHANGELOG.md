@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.6](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@4.0.5...@comrade-pingu/bot@4.0.6) (2022-01-08)
+
+
+### Bug Fixes
+
+* **bot/eval:** fix bot error when output exceeds 2000 chars ([fb44e62](https://github.com/cherryblossom000/comrade-pingu/commit/fb44e628c81797228e5cfd47681345c3b2643d85))
+
 ## [4.0.5](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@4.0.4...@comrade-pingu/bot@4.0.5) (2022-01-08)
 
 
