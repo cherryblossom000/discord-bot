@@ -1,8 +1,10 @@
 import {basename} from 'node:path'
 import {AST_NODE_TYPES} from '@typescript-eslint/experimental-utils'
-import type {Linter} from 'eslint'
 import defaultExportName from './rules/default-export-name.js'
 import createTypeRule from './create-type-rule.js'
+// @ts-expect-error for inferred type of rules to be portable
+import type {TSESLint} from '@typescript-eslint/experimental-utils'
+import type {Linter} from 'eslint'
 
 export const rules = {
   'correct-context-menu-command-type': createTypeRule(

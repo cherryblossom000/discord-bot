@@ -9,8 +9,7 @@ const projects = [
   'packages/commitlint-plugin/tsconfig.json',
   'packages/eslint-plugin/tsconfig.json',
   'packages/scripts/tsconfig.json',
-  'packages/semantic-release/tsconfig.json',
-  'packages/url-shim/tsconfig.json'
+  'packages/semantic-release/tsconfig.json'
 ]
 
 /** @type {import('eslint').Linter.Config & {parserOptions?: import('@typescript-eslint/parser').ParserOptions}} */

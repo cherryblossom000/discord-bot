@@ -4,10 +4,9 @@
     "rootDir": "src",
     "outDir": "dist",
     "module": "ESNext",
-    "types": ["node", "url-shim"]
+    "types": ["node"]
   },
   "references": [
-    {"path": "../bot/src"},
-    {"path": "../url-shim"}
+    {"path": "../bot/src"}
   ]
 }

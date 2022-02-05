@@ -5,10 +5,7 @@
     // Needs to be in src for deployment
     "rootDir": "..",
     "outDir": "../dist",
-    "types": ["node", "url-shim"],
+    "types": ["node"],
     "resolveJsonModule": true
-  },
-  "references": [
-    {"path": "../../url-shim/tsconfig.json"}
-  ]
+  }
 }

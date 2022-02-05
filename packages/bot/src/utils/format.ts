@@ -30,7 +30,6 @@ type OptionType = Exclude<
   | D.ApplicationCommandOptionType.SubcommandGroup
 >
 
-// multiple versions of discord-api-types
 // const optionsToString: Readonly<Record<OptionType, string>> = {
 const optionsToString = {
   [D.ApplicationCommandOptionType.String]: 'string',

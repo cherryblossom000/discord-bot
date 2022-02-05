@@ -1,0 +1,39 @@
+{
+  "baseBranch": "origin/main",
+  "npmClient": "pnpm",
+  "globalDependencies": [
+    "tsconfig.settings.json",
+    ".eslintrc.cjs"
+  ],
+  "pipeline": {
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "dist/**",
+        "*.tsbuildinfo"
+      ]
+    },
+    "build:site": {
+      "dependsOn": [
+        "build"
+      ],
+      "outputs": [
+        "dist/assets/**",
+        "README.md"
+      ]
+    },
+    "lint": {
+      "outputs": [
+        ".eslintcache"
+      ]
+    },
+    "test": {
+      "outputs": []
+    },
+    "test:dev": {
+      "outputs": []
+    }
+  }
+}

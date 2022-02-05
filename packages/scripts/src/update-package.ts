@@ -1,7 +1,4 @@
 import * as fs from 'node:fs'
-// TODO [@discordjs/rest@>0.2.0-canary.0]: see ./commands.ts
-// eslint-disable-next-line @typescript-eslint/no-shadow -- ^
-import {URL} from 'node:url'
 import exitOnError from './exit-on-error.js'
 import {botFolder, botDistFolder} from './folders.js'
 import type {PackageJson} from 'type-fest'
