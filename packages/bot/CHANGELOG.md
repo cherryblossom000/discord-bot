@@ -1,5 +1,12 @@
 # Changelog
 
+# [4.1.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@4.0.6...@comrade-pingu/bot@4.1.0) (2022-02-20)
+
+
+### Features
+
+* **bot:** add colour command ([aaf6c5d](https://github.com/cherryblossom000/comrade-pingu/commit/aaf6c5d0c2fce33d5cc7e0fce8c3de59ccb79cfe))
+
 ## [4.0.6](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@4.0.5...@comrade-pingu/bot@4.0.6) (2022-01-08)
 
 
