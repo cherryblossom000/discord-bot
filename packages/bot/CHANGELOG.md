@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.2.1](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@4.2.0...@comrade-pingu/bot@4.2.1) (2022-02-20)
+
+
+### Bug Fixes
+
+* **bot/colour:** create role with no permissions ([91ce594](https://github.com/cherryblossom000/comrade-pingu/commit/91ce594279c18ce8c685bd6b1d2709188e4db847))
+
 # [4.2.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@4.1.0...@comrade-pingu/bot@4.2.0) (2022-02-20)
 
 
