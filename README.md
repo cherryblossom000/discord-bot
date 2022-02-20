@@ -16,7 +16,6 @@ This started as a joke and does not represent my actual political views.
 - [`semantic-release`](./packages/semantic-release): A semantic-release plugin
   used internally.
 - [`scripts`](./packages/scripts): Some helper scripts to deploy the bot.
-  <https://github.com/DefinitelyTyped/DefinitelyTyped/issues/34960>.
 
 ## License
 
