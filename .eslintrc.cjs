@@ -6,7 +6,6 @@ const tsconfigRootDir = __dirname
 const projects = [
   'packages/bot/src/tsconfig.json',
   'packages/bot/tests/tsconfig.json',
-  'packages/commitlint-plugin/tsconfig.json',
   'packages/eslint-plugin/tsconfig.json',
   'packages/scripts/tsconfig.json',
   'packages/semantic-release/tsconfig.json'

@@ -16,8 +16,8 @@ diagnose, and fix the issue.
 **Package**
 <!--
 Choose one of:
-commitlint-plugin
 eslint-plugin
+scripts
 semantic-release
 >
 
