@@ -1,6 +1,6 @@
 {
   "name": "@comrade-pingu/bot",
-  "version": "4.0.6",
+  "version": "4.1.0",
   "private": true,
   "publishConfig": {
     "access": "restricted"
@@ -35,10 +35,10 @@
     "koa-static": "^5.0.0",
     "mathjax": "^3.2.0",
     "mathjs": "^10.1.1",
-    "mongodb": "^4.3.1",
+    "mongodb": "^4.4.0",
     "ms": "^2.1.3",
     "node-fetch": "github:yo1dog/node-fetch#patch-1",
-    "sharp": "^0.30.0",
+    "sharp": "^0.30.1",
     "ytdl-core": "^4.10.1"
   }
 }
