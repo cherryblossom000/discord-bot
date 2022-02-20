@@ -2,7 +2,8 @@
 
 import {hyperlink} from '@discordjs/builders'
 import {fetchValue} from '../../database.js'
-import {checkPermissions, fetchMessage} from '../../utils.js'
+import {checkPermissions} from '../../utils.js'
+import type {Snowflake} from 'discord.js'
 import type {GuildOnlyMessageContextMenuCommand} from '../../types'
 
 const command: GuildOnlyMessageContextMenuCommand = {
@@ -25,10 +26,25 @@ const command: GuildOnlyMessageContextMenuCommand = {
       return
     }
     if (!(await checkPermissions(interaction, 'MANAGE_MESSAGES'))) return
-    const message = await fetchMessage(interaction)
-    await message.pin()
+    const {channelId, client, guildId, options, user} = interaction
+    const messageId = options.getMessage('message', true).id
+    await (
+      client['api'] as {
+        channels: (channelId: Snowflake) => {
+          pins: (messageId: Snowflake) => {
+            put: (options: {reason: string}) => Promise<unknown>
+          }
+        }
+      }
+    )
+      .channels(channelId)
+      .pins(messageId)
+      .put({reason: `‘Pin Message’ from ${user.tag} (${user.id})`})
     await interaction.reply(
-      `Pinned ${hyperlink(`message ${message.id}`, message.url)}. Noot noot.`
+      `Pinned ${hyperlink(
+        `message ${messageId}`,
+        `https://discord.com/channels/${guildId}/${channelId}/${messageId}`
+      )}. Noot noot.`
     )
   }
 }
