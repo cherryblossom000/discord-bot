@@ -5,13 +5,19 @@ import createTypeRule from './create-type-rule.js'
 // @ts-expect-error for inferred type of rules to be portable
 import type {TSESLint} from '@typescript-eslint/experimental-utils'
 import type {Linter} from 'eslint'
+import type {CreateTypeRule} from './create-type-rule'
+
+const createCommandTypeRule = (type: string): CreateTypeRule => {
+  const anyType = `Any${type}`
+  const guildOnlyType = `GuildOnly${type}`
+  return createTypeRule(
+    'command',
+    new Set([anyType, guildOnlyType]),
+    `\`${anyType}\` or \`${guildOnlyType}\``
+  )
+}
 
 export const rules = {
-  'correct-context-menu-command-type': createTypeRule(
-    'command',
-    new Set(['AnyContextMenuCommand', 'GuildOnlyContextMenuCommand']),
-    '`AnyContextMenuCommand` or `GuildOnlyContextMenuCommand`'
-  ),
   'correct-event-type': createTypeRule(
     'listener',
     'EventListener',
@@ -32,12 +38,12 @@ export const rules = {
         report(typeParam)
     }
   ),
-  'correct-slash-command-type': createTypeRule(
-    'command',
-    new Set(['AnySlashCommand', 'GuildOnlySlashCommand']),
-    '`AnySlashCommand` or `GuildOnlySlashCommand`'
+  'correct-message-command-type': createCommandTypeRule(
+    'MessageContextMenuCommand'
   ),
+  'correct-slash-command-type': createCommandTypeRule('SlashCommand'),
   'correct-trigger-type': createTypeRule('command', 'Trigger'),
+  'correct-user-command-type': createCommandTypeRule('UserContextMenuCommand'),
   'default-export-name': defaultExportName
 }
 
@@ -46,21 +52,27 @@ export const configs: Record<string, Linter.Config> = {
     plugins: ['@comrade-pingu'],
     overrides: [
       {
-        files: ['src/commands/{context-menu,slash}/*.ts'],
+        files: ['src/commands/{message,slash,user}/*.ts'],
         rules: {
           '@comrade-pingu/default-export-name': [1, {name: 'command'}]
         }
       },
       {
-        files: ['src/commands/context-menu/*.ts'],
+        files: ['src/commands/message/*.ts'],
         rules: {
-          '@comrade-pingu/correct-context-menu-command-type': 2
+          '@comrade-pingu/correct-message-command-type': 2
         }
       },
       {
         files: ['src/commands/slash/*.ts'],
         rules: {
           '@comrade-pingu/correct-slash-command-type': 2
+        }
+      },
+      {
+        files: ['src/commands/user/*.ts'],
+        rules: {
+          '@comrade-pingu/correct-user-command-type': 2
         }
       },
       {

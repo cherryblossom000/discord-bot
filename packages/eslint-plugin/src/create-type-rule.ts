@@ -13,7 +13,7 @@ type ExtraValidator<T> = (
   report: ReportFn,
   data: T
 ) => void
-type CreateTypeRule = TSESLint.RuleModule<'incorrectType'>
+export type CreateTypeRule = TSESLint.RuleModule<'incorrectType'>
 
 const createTypeRule: {
   <T extends Record<string, unknown> | undefined = undefined>(
