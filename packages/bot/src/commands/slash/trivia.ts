@@ -151,7 +151,7 @@ const play = async (
                 )}.`
           )
 
-          await addTriviaQuestion(database, user, question, correct)
+          await addTriviaQuestion(database, user.id, question, correct)
         } catch (error) {
           handleError(client, error, 'trivia play: collect collector event', {
             to: interaction
@@ -166,7 +166,7 @@ const play = async (
                 correctAnswer
               )}.`
             )
-            await addTriviaQuestion(database, user, question, undefined)
+            await addTriviaQuestion(database, user.id, question, undefined)
           }
         } catch (error) {
           handleError(client, error, 'trivia play: end collector event', {
@@ -223,7 +223,7 @@ const stats = async (
     .setTimestamp()
 
   const questions =
-    (await fetchValue(database, 'users', user, 'questionsAnswered')) ?? []
+    (await fetchValue(database, 'users', user.id, 'questionsAnswered')) ?? []
   if (questions.length) {
     /** Groups questions by a key and returns `[numberCorrect, total]`. */
     const reduceQuestions = <T extends keyof Question>(

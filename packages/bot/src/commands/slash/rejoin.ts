@@ -3,11 +3,11 @@ import {
   MemberRejoinFlags,
   addMemberRejoinInfo,
   collection,
+  disableRejoin,
   fetchMemberRejoinInfo,
   fetchValue,
   removeMember,
-  setValue,
-  disableRejoin
+  setValue
 } from '../../database.js'
 import {checkPermissions, fetchGuild, handleError} from '../../utils.js'
 import type {Guild, GuildMember} from 'discord.js'
@@ -32,7 +32,7 @@ const enum Mode {
 const modeToFlags: Readonly<Record<Mode, MemberRejoinFlags>> = {
   [Mode.Roles]: MemberRejoinFlags.Roles,
   [Mode.Nickname]: MemberRejoinFlags.Nickname,
-  [Mode.Both]: MemberRejoinFlags.Both
+  [Mode.Both]: MemberRejoinFlags.Roles | MemberRejoinFlags.Nickname
 }
 
 export const addListeners = (
@@ -50,7 +50,11 @@ export const addListeners = (
       const guilds = collection(database, 'guilds')
       try {
         // Set roles and nicknames
-        const {roles, nickname} = await fetchMemberRejoinInfo(guilds, member)
+        const {roles, nickname} = await fetchMemberRejoinInfo(
+          guilds,
+          member.guild.id,
+          member.id
+        )
         await Promise.all([
           ...(enabledRoles && roles
             ? [
@@ -89,7 +93,7 @@ ${owner} sorry, but you have to do this yourself.`
         return
       }
 
-      removeMember(guilds, member).catch(error =>
+      removeMember(guilds, member.guild.id, member.id).catch(error =>
         handleError(
           client,
           error,
@@ -222,7 +226,7 @@ const disable = async (
     return
   }
 
-  await disableRejoin(database, await fetchGuild(interaction))
+  await disableRejoin(database, guildId)
   client
     .off('guildMemberAdd', listeners.guildMemberAdd)
     .off('guildMemberRemove', listeners.guildMemberRemove)

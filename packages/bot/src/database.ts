@@ -3,11 +3,10 @@ import {defaultTimeZone} from './constants.js'
 import type * as D from 'discord.js'
 import type {
   Collection as MongoCollection,
-  Document,
   Db as MongoDb,
+  Document,
   Filter,
   FindCursor,
-  FindOptions,
   MatchKeysAndValues,
   UpdateFilter,
   UpdateOptions,
@@ -20,8 +19,7 @@ import type {Override} from './utils'
 
 export const enum MemberRejoinFlags {
   Roles = 1,
-  Nickname,
-  Both = Roles | Nickname
+  Nickname
 }
 
 interface Member {
@@ -35,6 +33,7 @@ export interface Guild {
   _id: D.Snowflake
   rejoinFlags?: MemberRejoinFlags
   members?: readonly Member[]
+  colourRoles?: boolean
 }
 
 export interface Question {
@@ -54,15 +53,13 @@ interface User {
 
 // #region Collection
 
-/** A mapping of collection names to `[databaseType, discordType]`. */
 interface Collections {
-  guilds: [Guild, D.Guild]
-  users: [User, D.User]
+  guilds: Guild
+  users: User
 }
 
 type CollectionsKeys = keyof Collections
-type DatabaseType<C extends CollectionsKeys> = Collections[C][0]
-type DiscordType<C extends CollectionsKeys> = Collections[C][1]
+type DatabaseType<C extends CollectionsKeys> = Collections[C]
 
 /** A collection for this client. */
 type Collection<C extends CollectionsKeys> = C extends unknown
@@ -120,133 +117,33 @@ export const collection = <C extends CollectionsKeys>(
 
 // #endregion
 
-// #region Documents Cache
-
-const resolveID = (id: DiscordType<CollectionsKeys> | string): string =>
-  typeof id == 'string' ? id : id.id
-
-type Cached<C extends CollectionsKeys> = Omit<DatabaseType<C>, '_id'>
-
-type DocumentsCache = Override<
-  WeakMap<AnyCollection, Map<string, Cached<CollectionsKeys>>>,
-  {
-    get<C extends CollectionsKeys>(
-      key: Collection<C>
-    ): Map<string, Cached<C>> | undefined
-    set<C extends CollectionsKeys>(
-      key: Collection<C>,
-      value: Map<string, Cached<C>>
-    ): DocumentsCache
-  }
->
-
-const documentsCache = new WeakMap() as DocumentsCache
-
-const getCache = <C extends CollectionsKeys>(
-  col: Collection<C>
-): Map<string, Cached<C>> => {
-  const existingCache = documentsCache.get(col)
-  if (existingCache) return existingCache
-  const newCache = new Map<string, Cached<C>>()
-  documentsCache.set(col, newCache)
-  return newCache
-}
-
-const updateCache = <C extends CollectionsKeys>(
-  col: Collection<C>,
-  id: DiscordType<C> | string,
-  value: Cached<C> | ((cached?: Cached<C>) => Cached<C> | undefined)
-): void => {
-  const cache = getCache(col)
-  const resolvedID = resolveID(id)
-  const result =
-    typeof value == 'function' ? value(cache.get(resolvedID)) : value
-  result ? cache.set(resolvedID, result) : cache.delete(resolvedID)
-}
-
-// #endregion
-
-// #region Low Level Utils
-
-type FindOneResult<C extends CollectionsKeys, K extends keyof Cached<C>> = Pick<
-  DatabaseType<C>,
-  K | '_id'
->
-
-const findOne =
-  <C extends CollectionsKeys>(col: Collection<C>) =>
-  async <K extends keyof Cached<C>>(
-    id: DiscordType<C> | string,
-    keys: readonly K[],
-    filter?: Omit<Filter<DatabaseType<C>>, '_id'>,
-    options?: Omit<FindOptions<DatabaseType<C>>, 'projection'>
-  ): Promise<FindOneResult<C, K> | undefined> => {
-    const _id = resolveID(id)
-    const cache = getCache(col)
-    const cached = cache.get(_id)
-    const cachedKeys = cached ? Object.keys(cached) : []
-    const keysToFetch = keys.filter(
-      key => !(cachedKeys as readonly PropertyKey[]).includes(key)
-    )
-    if (!keysToFetch.length) return cached as FindOneResult<C, K> | undefined
-
-    const result = await (
-      col as {
-        findOne<U = DatabaseType<C>>(
-          filter: Filter<DatabaseType<C>>,
-          options?: FindOptions<U extends DatabaseType<C> ? DatabaseType<C> : U>
-        ): Promise<U | null>
-      }
-    ).findOne(
-      {...filter, _id} as unknown as Filter<DatabaseType<C>>,
-      {
-        ...options,
-        projection: Object.fromEntries(keysToFetch.map(key => [key, 1]))
-      } as FindOptions<
-        FindOneResult<C, K> extends DatabaseType<C>
-          ? DatabaseType<C>
-          : FindOneResult<C, K>
-      >
-    )
-    if (result) {
-      const {_id: _, ...rest} = result
-      cache.set(_id, {...cached, ...rest} as Cached<C>)
-    } else cache.delete(_id)
-    return result ? {...cached, ...result} : undefined
-  }
-
-// TODO: Uncurry if partial type inference is ever added: https://github.com/microsoft/TypeScript/issues/26242
-const fetchValueC =
-  <C extends CollectionsKeys>(col: Collection<C>) =>
-  async <K extends keyof Cached<C>>(
-    _id: D.Snowflake | DiscordType<C>,
-    key: K
-  ): Promise<DatabaseType<C>[K] | undefined> =>
-    (await findOne(col)(_id, [key]))?.[key]
-
 export const fetchValue = async <
   C extends CollectionsKeys,
-  K extends keyof Cached<C>
+  K extends keyof DatabaseType<C>
 >(
   database: Db,
   name: C,
-  _id: D.Snowflake | DiscordType<C>,
+  _id: D.Snowflake,
   key: K
 ): Promise<DatabaseType<C>[K] | undefined> =>
-  fetchValueC(collection(database, name))(_id, key)
+  (
+    (await collection(database, name).findOne(
+      {_id},
+      {projection: {_id: 0, [key]: 1}}
+    )) as Pick<DatabaseType<C>, K> | null
+  )?.[key]
 
 export const setValue = async <
   C extends CollectionsKeys,
-  K extends keyof Cached<C>
+  K extends keyof DatabaseType<C>
 >(
   database: Db,
   name: C,
-  id: DiscordType<C> | string,
+  id: D.Snowflake,
   key: K,
   value: DatabaseType<C>[K]
 ): Promise<void> => {
   const col = collection(database, name)
-  const _id = resolveID(id)
   await (
     col as {
       updateOne(
@@ -256,19 +153,16 @@ export const setValue = async <
       ): Promise<Document | UpdateResult>
     }
   ).updateOne(
-    {_id} as unknown as Filter<DatabaseType<C>>,
+    {_id: id}, // as unknown as Filter<DatabaseType<C>>,
     {$set: {[key]: value} as MatchKeysAndValues<DatabaseType<C>>},
     {upsert: true}
   )
-  updateCache(col, _id, cached => ({...cached, [key]: value} as Cached<C>))
 }
-
-// #endregion
 
 /** Gets the timezone for a user. Defaults to UTC. */
 export const fetchTimeZone = async (
   database: Db,
-  user: D.Snowflake | D.User
+  user: D.Snowflake
 ): Promise<string> =>
   (await fetchValue(database, 'users', user, 'timeZone')) ?? defaultTimeZone
 
@@ -276,20 +170,23 @@ export const fetchTimeZone = async (
 
 export const disableRejoin = async (
   database: Db,
-  guild: D.Guild
+  guild: D.Snowflake
 ): Promise<void> => {
-  const col = collection(database, 'guilds')
-  await col.updateOne({_id: guild.id}, {$unset: {members: 1, rejoinFlags: 1}})
+  await collection(database, 'guilds').updateOne(
+    {_id: guild},
+    {$unset: {members: 1, rejoinFlags: 1}}
+  )
 }
 
 export const fetchMemberRejoinInfo = async (
   guilds: Collection<'guilds'>,
-  member: D.GuildMember
+  guild: D.Snowflake,
+  member: D.Snowflake
 ): Promise<Pick<Member, 'nickname' | 'roles'>> =>
   (
     await guilds
       .aggregate<{member?: Pick<Member, 'nickname' | 'roles'>}>([
-        {$match: {_id: member.guild.id}},
+        {$match: {_id: guild}},
         {$limit: 1},
         {
           $project: {
@@ -298,7 +195,7 @@ export const fetchMemberRejoinInfo = async (
               $first: {
                 $filter: {
                   input: '$members',
-                  cond: {$eq: ['$$this._id', member.id]}
+                  cond: {$eq: ['$$this._id', member]}
                 }
               }
             }
@@ -309,19 +206,19 @@ export const fetchMemberRejoinInfo = async (
       .next()
   )?.member ?? {}
 
-const removeMemberArgs = ({
-  guild,
-  id
-}: Pick<D.GuildMember, 'guild' | 'id'>): {
+const removeMemberArgs = (
+  guild: D.Snowflake,
+  member: D.Snowflake
+): {
   filter: Filter<Guild>
   update: UpdateFilter<Guild>
-} => ({filter: {_id: guild.id}, update: {$pull: {members: {_id: id}}}})
+} => ({filter: {_id: guild}, update: {$pull: {members: {_id: member}}}})
 
 export const removeMember = async (
   guilds: Collection<'guilds'>,
-  member: D.GuildMember
+  ...args: Parameters<typeof removeMemberArgs>
 ): Promise<void> => {
-  const {filter, update} = removeMemberArgs(member)
+  const {filter, update} = removeMemberArgs(...args)
   await guilds.updateOne(filter, update)
 }
 
@@ -329,10 +226,11 @@ export const addMemberRejoinInfo = async (
   database: Db,
   enabledRoles: number,
   enabledNickname: number,
-  {id, guild, roles, nickname}: D.GuildMember
+  member: D.GuildMember
 ): Promise<void> => {
+  const {id, guild, roles, nickname} = member
   const guilds = collection(database, 'guilds')
-  const member: Member = {
+  const dbMember: Member = {
     _id: id,
     ...(enabledRoles ? {roles: [...roles.cache.keys()]} : {}),
     ...(enabledNickname ? {nickname} : {})
@@ -344,12 +242,12 @@ export const addMemberRejoinInfo = async (
      * able to remove it.
      */
     {
-      updateOne: removeMemberArgs({id, guild})
+      updateOne: removeMemberArgs(guild.id, id)
     },
     {
       updateOne: {
         filter: {_id: guild.id},
-        update: {$push: {members: member}},
+        update: {$push: {members: dbMember}},
         upsert: true
       }
     }
@@ -367,11 +265,10 @@ export const fetchRejoinGuilds = (
 
 export const addTriviaQuestion = async (
   database: Db,
-  user: D.Snowflake | D.User,
+  user: D.Snowflake,
   {category, type, difficulty}: TriviaQuestion,
   correct?: boolean
 ): Promise<void> => {
-  const id = resolveID(user)
   const users = collection(database, 'users')
   const dbQuestion: Question = {
     category,
@@ -380,7 +277,7 @@ export const addTriviaQuestion = async (
     correct
   }
   await users.updateOne(
-    {_id: id},
+    {_id: user},
     {
       $push: {
         questionsAnswered: dbQuestion

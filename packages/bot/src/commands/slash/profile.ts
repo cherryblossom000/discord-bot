@@ -202,7 +202,7 @@ const command: AnySlashCommand = {
 
     const user = interaction.options.getUser(USER) ?? interaction.user
     const formatDate = createDateFormatter(
-      await fetchTimeZone(database, interaction.user)
+      await fetchTimeZone(database, interaction.user.id)
     )
     const {bot, id, tag} = user
     const avatarURL = user.displayAvatarURL({size: 4096})

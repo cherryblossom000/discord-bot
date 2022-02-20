@@ -50,7 +50,9 @@ const command: GuildOnlySlashCommand = {
       widgetChannelId,
       widgetEnabled
     } = guild
-    const formatDate = createDateFormatter(await fetchTimeZone(database, user))
+    const formatDate = createDateFormatter(
+      await fetchTimeZone(database, user.id)
+    )
     const channelFieldData = async (
       fieldName: string,
       channelId: string | null,

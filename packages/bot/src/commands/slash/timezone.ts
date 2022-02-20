@@ -29,7 +29,7 @@ const command: AnySlashCommand = {
       await interaction.reply(
         `Your current time zone is set to ${await fetchTimeZone(
           database,
-          interaction.user
+          interaction.user.id
         )}.`
       )
       return
@@ -49,7 +49,7 @@ const command: AnySlashCommand = {
       throw error
     }
 
-    await setValue(database, 'users', interaction.user, 'timeZone', timeZone)
+    await setValue(database, 'users', interaction.user.id, 'timeZone', timeZone)
     await interaction.reply(
       `successfully changed time zone to ${inlineCode(timeZone)}.`
     )
