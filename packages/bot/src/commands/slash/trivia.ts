@@ -216,10 +216,10 @@ const stats = async (
   const embed = new MessageEmbed()
     .setTitle(user.tag)
     .setThumbnail(user.displayAvatarURL())
-    .setFooter(
-      `Requested by ${interaction.user.tag}`,
-      interaction.user.displayAvatarURL()
-    )
+    .setFooter({
+      text: `Requested by ${interaction.user.tag}`,
+      iconURL: interaction.user.displayAvatarURL()
+    })
     .setTimestamp()
 
   const questions =

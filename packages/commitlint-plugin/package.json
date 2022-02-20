@@ -20,6 +20,6 @@
     "watch": "dum build -- -w"
   },
   "devDependencies": {
-    "@commitlint/types": "^16.0.0"
+    "@commitlint/types": "^16.2.1"
   }
 }

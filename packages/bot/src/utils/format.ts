@@ -24,14 +24,16 @@ export const createDateFormatter = (timeZone: string): DateFormatter => {
 export const formatBoolean = (boolean: boolean | null): string =>
   boolean ?? false ? 'Yes' : 'No'
 
-type OptionType = Exclude<
-  D.ApplicationCommandOptionType,
-  | D.ApplicationCommandOptionType.Subcommand
-  | D.ApplicationCommandOptionType.SubcommandGroup
->
-
-// const optionsToString: Readonly<Record<OptionType, string>> = {
-const optionsToString = {
+const optionsToString: Readonly<
+  Record<
+    Exclude<
+      D.ApplicationCommandOptionType,
+      | D.ApplicationCommandOptionType.Subcommand
+      | D.ApplicationCommandOptionType.SubcommandGroup
+    >,
+    string
+  >
+> = {
   [D.ApplicationCommandOptionType.String]: 'string',
   [D.ApplicationCommandOptionType.Integer]: 'integer',
   [D.ApplicationCommandOptionType.Boolean]: 'boolean',
@@ -40,6 +42,8 @@ const optionsToString = {
   [D.ApplicationCommandOptionType.Role]: 'role',
   [D.ApplicationCommandOptionType.Mentionable]: 'mentionable',
   [D.ApplicationCommandOptionType.Number]: 'number'
+  // TODO [discord-api-types@>=0.27.0]: uncomment
+  // [D.ApplicationCommandOptionType.Attachment]: 'attachment'
 }
 
 export type FormatCommandInput = Pick<
@@ -49,7 +53,7 @@ export type FormatCommandInput = Pick<
 
 /** Basically a normal (non-subcommand) command with argument options. */
 export interface FormatCommandSyntaxInput extends FormatCommandInput {
-  options?: Extract<D.APIApplicationCommandStringOption, {choices?: unknown}>[]
+  options: Exclude<D.APIApplicationCommandBasicOption, {autocomplete?: true}>[]
 }
 
 export const formatCommandSyntax = (
@@ -68,13 +72,17 @@ export const formatCommandSyntax = (
       commandString +
         (options.length
           ? ` ${options
-              .map(
-                ({name: optName, required = false, type, choices}) =>
-                  `${required ? '<' : '['}${optName}: ${
-                    choices?.map(choice => choice.name).join(pipeChar) ??
-                    optionsToString[type as OptionType]
-                  }${required ? '>' : ']'}`
-              )
+              .map(opt => {
+                const {required = false} = opt
+                // TODO [typescript@>=4.6.0]: remove these comments
+                /* eslint-disable unicorn/consistent-destructuring -- ts issue */
+                return `${required ? '<' : '['}${opt.name}: ${
+                  'choices' in opt && opt.choices
+                    ? opt.choices.map(choice => choice.name).join(pipeChar)
+                    : /* eslint-enable unicorn/consistent-destructuring */
+                      optionsToString[opt.type]
+                }${required ? '>' : ']'}`
+              })
               .join(' ')}`
           : '')
     ) + resolvedDescription
