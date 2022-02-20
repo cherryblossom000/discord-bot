@@ -34,6 +34,7 @@ export interface Guild {
   rejoinFlags?: MemberRejoinFlags
   members?: readonly Member[]
   enableColourRoles?: boolean
+  enablePinning?: boolean
 }
 
 export interface Question {

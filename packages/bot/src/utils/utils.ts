@@ -10,7 +10,7 @@ import type {
   Guild,
   GuildTextBasedChannel,
   InteractionReplyOptions,
-  Message,
+  MessageContextMenuInteraction,
   PermissionString,
   TextBasedChannel
 } from 'discord.js'
@@ -161,6 +161,18 @@ export const fetchGuild = async ({
   guildId
 }: BaseCommandInteraction<'present'>): Promise<Guild> =>
   client.guilds.fetch(guildId)
+
+export const fetchMessage = async ({
+  client,
+  options
+}: MessageContextMenuInteraction): Promise<Message> => {
+  const message = options.getMessage('message', true)
+  return message instanceof Message
+    ? message
+    : (
+        (await client.channels.fetch(message.channel_id)) as TextBasedChannel
+      ).messages.fetch(message.id)
+}
 
 export const replyAndFetch = async (
   interaction: CommandInteraction,

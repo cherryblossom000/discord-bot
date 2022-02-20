@@ -4,7 +4,9 @@ import type {
 } from '@discordjs/builders'
 import type {Message, MessageAttachment} from 'discord.js'
 import type {
+  GuildMessageContextMenuInteraction,
   GuildSlashCommandInteraction,
+  GuildUserContextMenuInteraction,
   MessageContextMenuInteraction,
   SlashCommandInteraction,
   UserContextMenuInteraction
@@ -22,7 +24,7 @@ interface CommandBase<T> {
   guildOnly?: boolean
 
   /** The actual command. */
-  execute(interaction: T, database: Db): Promise<void>
+  execute: (interaction: T, database: Db) => Promise<void>
 }
 
 interface SlashCommandBase<T extends SlashCommandInteraction>
@@ -42,8 +44,8 @@ interface SlashCommandBase<T extends SlashCommandInteraction>
   hidden?: boolean
 }
 
-type GuildOnly<T extends CommandBase<unknown>> = T & {guildOnly: true}
-type GuildOrDM<T extends CommandBase<unknown>> = T & {guildOnly?: false}
+type GuildOnly<T extends CommandBase<never>> = T & {guildOnly: true}
+type GuildOrDM<T extends CommandBase<never>> = T & {guildOnly?: false}
 
 export type GuildOnlySlashCommand = GuildOnly<
   SlashCommandBase<GuildSlashCommandInteraction>
@@ -53,14 +55,30 @@ export type AnySlashCommand = GuildOrDM<
 >
 export type SlashCommand = AnySlashCommand | GuildOnlySlashCommand
 
-interface ContextMenuCommandBase<T> extends GuildOrDM<CommandBase<T>> {
+interface ContextMenuCommandBase<T> extends CommandBase<T> {
   name: string
 }
 
-export type MessageContextMenuCommand =
+export type GuildOnlyMessageContextMenuCommand = GuildOnly<
+  ContextMenuCommandBase<GuildMessageContextMenuInteraction>
+>
+export type AnyMessageContextMenuCommand = GuildOrDM<
   ContextMenuCommandBase<MessageContextMenuInteraction>
-export type UserContextMenuCommand =
+>
+export type MessageContextMenuCommand =
+  | AnyMessageContextMenuCommand
+  | GuildOnlyMessageContextMenuCommand
+
+type GuildOnlyUserContextMenuCommand = GuildOnly<
+  ContextMenuCommandBase<GuildUserContextMenuInteraction>
+>
+export type AnyUserContextMenuCommand = GuildOrDM<
   ContextMenuCommandBase<UserContextMenuInteraction>
+>
+export type UserContextMenuCommand =
+  | AnyUserContextMenuCommand
+  | GuildOnlyUserContextMenuCommand
+
 export type ContextMenuCommand =
   | MessageContextMenuCommand
   | UserContextMenuCommand
