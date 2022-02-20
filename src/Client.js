@@ -1,5 +1,5 @@
 import D, { Collection } from 'discord.js';
-export default class Client extends D.Client {
+export class Client extends D.Client {
     constructor() {
         super(...arguments);
         Object.defineProperty(this, "slashCommands", {
@@ -8,13 +8,13 @@ export default class Client extends D.Client {
             writable: true,
             value: new Collection()
         });
-        Object.defineProperty(this, "userCommands", {
+        Object.defineProperty(this, "messageCommands", {
             enumerable: true,
             configurable: true,
             writable: true,
             value: new Collection()
         });
-        Object.defineProperty(this, "messageCommands", {
+        Object.defineProperty(this, "userCommands", {
             enumerable: true,
             configurable: true,
             writable: true,

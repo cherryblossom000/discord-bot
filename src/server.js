@@ -1,7 +1,7 @@
 import { inlineCode } from '@discordjs/builders';
 import Koa from 'koa';
 import serve from 'koa-static';
-import Client from './Client.js';
+import { Client } from './Client.js';
 import { addListeners } from './commands/slash/rejoin.js';
 import { dev } from './constants.js';
 import { connect, fetchRejoinGuilds } from './database.js';
@@ -76,12 +76,13 @@ client.once('ready', async () => {
 });
 await importFolder('events', (listener, name) => client.on(name, listener(client, database)));
 const addContextMenuCommand = (collectionKey) => (command) => {
+    ;
     client[collectionKey].set(command.name, command);
 };
 await Promise.all([
     importFolder('commands/slash', command => client.slashCommands.set(command.data.name, command), commandFiles),
-    importFolder('commands/user', addContextMenuCommand('userCommands')),
     importFolder('commands/message', addContextMenuCommand('messageCommands')),
+    importFolder('commands/user', addContextMenuCommand('userCommands')),
     importFolder('triggers', command => client.triggers.set(command.regex, command.message))
 ]);
 const listener = app.listen(Number(process.env.PORT), () => {
