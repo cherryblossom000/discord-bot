@@ -11,9 +11,13 @@ export type SlashCommandInteraction<C extends D.CacheType = D.CacheType> =
 
 export type GuildSlashCommandInteraction = SlashCommandInteraction<'present'>
 
-export type ContextMenuInteraction<C extends D.CacheType = D.CacheType> =
-  D.ContextMenuInteraction<C> & InteractionBase<C>
+export type MessageContextMenuInteraction<C extends D.CacheType = D.CacheType> =
+  D.MessageContextMenuInteraction<C> & InteractionBase<C>
+
+export type UserContextMenuInteraction<C extends D.CacheType = D.CacheType> =
+  D.UserContextMenuInteraction<C> & InteractionBase<C>
 
 export type CommandInteraction =
-  | ContextMenuInteraction
+  | MessageContextMenuInteraction
   | SlashCommandInteraction
+  | UserContextMenuInteraction

@@ -26,10 +26,10 @@ const contextMenuCommandToJSON =
 
 const body: RESTPutAPIApplicationCommandsJSONBody = [
   ...slashCommands.map(({data}) => data.toJSON()),
-  ...userCommands.map(contextMenuCommandToJSON(ApplicationCommandType.User)),
   ...messageCommands.map(
     contextMenuCommandToJSON(ApplicationCommandType.Message)
-  )
+  ),
+  ...userCommands.map(contextMenuCommandToJSON(ApplicationCommandType.User))
 ]
 
 await rest.put(

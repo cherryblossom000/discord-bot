@@ -13,7 +13,13 @@ import {
 import type {AddressInfo} from 'node:net'
 import type {Collection} from 'discord.js'
 import type {ClientEvents, EventListener} from './Client'
-import type {ContextMenuCommand, SlashCommand, Trigger} from './types'
+import type {
+  ContextMenuCommand,
+  MessageContextMenuCommand,
+  SlashCommand,
+  Trigger,
+  UserContextMenuCommand
+} from './types'
 import type {KeysMatching} from './utils'
 import 'dotenv/config'
 
@@ -143,11 +149,11 @@ await importFolder<EventListener<keyof ClientEvents>>(
 )
 
 const addContextMenuCommand =
-  (
-    collectionKey: KeysMatching<Client, Collection<string, ContextMenuCommand>>
+  <T extends ContextMenuCommand>(
+    collectionKey: KeysMatching<Client, Collection<string, T>>
   ) =>
-  (command: ContextMenuCommand): void => {
-    client[collectionKey].set(command.name, command)
+  (command: T): void => {
+    ;(client[collectionKey] as Collection<string, T>).set(command.name, command)
   }
 
 // Initialise commands
@@ -157,13 +163,13 @@ await Promise.all([
     command => client.slashCommands.set(command.data.name, command),
     commandFiles
   ),
-  importFolder<ContextMenuCommand>(
-    'commands/user',
-    addContextMenuCommand('userCommands')
-  ),
-  importFolder<ContextMenuCommand>(
+  importFolder<MessageContextMenuCommand>(
     'commands/message',
     addContextMenuCommand('messageCommands')
+  ),
+  importFolder<UserContextMenuCommand>(
+    'commands/user',
+    addContextMenuCommand('userCommands')
   ),
   importFolder<Trigger>('triggers', command =>
     client.triggers.set(command.regex, command.message)

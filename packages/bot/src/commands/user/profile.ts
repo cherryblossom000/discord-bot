@@ -18,7 +18,7 @@ import type {
   PresenceStatus,
   User
 } from 'discord.js'
-import type {ContextMenuCommand} from '../../types'
+import type {UserContextMenuCommand} from '../../types'
 import type {DateFormatter} from '../../utils'
 
 const formatStatus = (status: PresenceStatus): string =>
@@ -184,7 +184,7 @@ Streaming: ${formatBoolean(streaming)}`
     : [])
 ]
 
-const command: ContextMenuCommand = {
+const command: UserContextMenuCommand = {
   name: 'Profile',
   async execute(interaction, database) {
     if (!(await checkPermissions(interaction, 'EMBED_LINKS'))) return

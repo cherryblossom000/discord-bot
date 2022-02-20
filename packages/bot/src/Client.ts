@@ -2,11 +2,12 @@ import D, {Collection} from 'discord.js'
 import type {GuildMember, Snowflake} from 'discord.js'
 import type {Db} from './database.js'
 import type {
-  ContextMenuCommand,
   InteractionBase,
-  SlashCommand,
+  MessageContextMenuCommand,
   RotateAttachment,
-  Trigger
+  SlashCommand,
+  Trigger,
+  UserContextMenuCommand
 } from './types'
 import type {ReadonlyNonEmpty} from './utils'
 
@@ -50,11 +51,11 @@ export default class Client extends D.Client {
   /** The slash commands. */
   readonly slashCommands = new Collection<string, SlashCommand>()
 
-  /** The user context menu commands. */
-  readonly userCommands = new Collection<string, ContextMenuCommand>()
-
   /** The message context menu commands. */
-  readonly messageCommands = new Collection<string, ContextMenuCommand>()
+  readonly messageCommands = new Collection<string, MessageContextMenuCommand>()
+
+  /** The user context menu commands. */
+  readonly userCommands = new Collection<string, UserContextMenuCommand>()
 
   /** The triggers. */
   readonly triggers = new Collection<RegExp, Trigger['message']>()

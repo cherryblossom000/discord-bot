@@ -4,9 +4,10 @@ import type {
 } from '@discordjs/builders'
 import type {Message, MessageAttachment} from 'discord.js'
 import type {
+  GuildSlashCommandInteraction,
+  MessageContextMenuInteraction,
   SlashCommandInteraction,
-  ContextMenuInteraction,
-  GuildSlashCommandInteraction
+  UserContextMenuInteraction
 } from './types/discord.js-patches'
 import type {Db} from './database'
 
@@ -21,7 +22,7 @@ interface CommandBase<T> {
   guildOnly?: boolean
 
   /** The actual command. */
-  execute(interaction: T, database: Db): Promise<void> | void
+  execute(interaction: T, database: Db): Promise<void>
 }
 
 interface SlashCommandBase<T extends SlashCommandInteraction>
@@ -52,10 +53,19 @@ export type AnySlashCommand = GuildOrDM<
 >
 export type SlashCommand = AnySlashCommand | GuildOnlySlashCommand
 
-export interface ContextMenuCommand
-  extends GuildOrDM<CommandBase<ContextMenuInteraction>> {
+interface ContextMenuCommandBase<T> extends GuildOrDM<CommandBase<T>> {
   name: string
 }
+
+export type MessageContextMenuCommand =
+  ContextMenuCommandBase<MessageContextMenuInteraction>
+export type UserContextMenuCommand =
+  ContextMenuCommandBase<UserContextMenuInteraction>
+export type ContextMenuCommand =
+  | MessageContextMenuCommand
+  | UserContextMenuCommand
+
+export type Command = ContextMenuCommand | SlashCommand
 
 /** Something that is triggered based on a regular expression. */
 export interface Trigger {
