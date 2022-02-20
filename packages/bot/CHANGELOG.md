@@ -1,5 +1,20 @@
 # Changelog
 
+# [4.2.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@4.1.0...@comrade-pingu/bot@4.2.0) (2022-02-20)
+
+
+### Features
+
+* **bot:** add ‘Pin Message’ command ([1dc88f7](https://github.com/cherryblossom000/comrade-pingu/commit/1dc88f7f6aeba11f32b36fa708ee922a052a3c0d))
+
+
+
+
+
+### Dependencies
+
+* **@comrade-pingu/eslint-plugin:** upgraded to 3.0.0
+
 # [4.1.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@4.0.6...@comrade-pingu/bot@4.1.0) (2022-02-20)
 
 
