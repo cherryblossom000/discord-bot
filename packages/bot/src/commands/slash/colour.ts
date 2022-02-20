@@ -79,6 +79,7 @@ const set = async (
     (await guild.roles.create({
       name: hexColour,
       color: colour,
+      permissions: 0n,
       position:
         newPosition === undefined
           ? guild.me?.roles.highest.position
