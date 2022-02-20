@@ -27,9 +27,10 @@ Comrade Pingu’s default prefix is `.`.
 | Command | Description | Usage |
 | - | - | - |
 | `calculate` | Calculates a maths expression. | `/calculate <expression: string>`<br>`expression`: The expression to calculate.<br><br>See [the mathjs docs](https://mathjs.org/docs/expressions/syntax.html) for more information on the syntax of `expression`. |
+| `colour` | Change your colour (using a role). | `/colour enable`: Enable allowing users to change their colour.<br><br>`/colour disable`: Disable allowing users to change their colour.<br><br>`/colour set <colour: string>`: Set your colour.<br>`colour`: The colour, e.g. ‘#abcdef’ or ‘red’. Run the command for more info.<br><br>`/colour remove`: Remove your colour. |
 | `dog` | Gets a random image of a dog from random.dog. | `/dog` |
 | `emoji` | Gets the image for an emoji. | `/emoji <emoji: string>`<br>`emoji`: The emoji to get the image of. |
-| `help` | Lists all my commands or gets info about a specific command. | `/help [command: calculate\|dog\|emoji\|eval\|icon\|info\|invite\|maths\|meme\|ping\|profile\|rejoin\|rotate\|server\|stats\|timezone\|trivia\|uptime\|website]`<br>`command`: The command that you want to get info about. If omitted, all the commands will be listed. |
+| `help` | Lists all my commands or gets info about a specific command. | `/help [command: calculate\|colour\|dog\|emoji\|eval\|icon\|info\|invite\|maths\|meme\|ping\|profile\|rejoin\|rotate\|server\|stats\|timezone\|trivia\|uptime\|website]`<br>`command`: The command that you want to get info about. If omitted, all the commands will be listed. |
 | `icon` | Gets the server icon. | `/icon` |
 | `info` | Gets info about me. | `/info` |
 | `invite` | Gets my invite link. | `/invite` |

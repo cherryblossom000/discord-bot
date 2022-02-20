@@ -9,7 +9,12 @@ import {
   removeMember,
   setValue
 } from '../../database.js'
-import {checkPermissions, fetchGuild, handleError} from '../../utils.js'
+import {
+  checkIfAdmin,
+  checkPermissions,
+  fetchGuild,
+  handleError
+} from '../../utils.js'
 import type {Guild, GuildMember} from 'discord.js'
 // eslint-disable-next-line import/no-named-default -- can't because type import
 import type {default as Client, Listener} from '../../Client'
@@ -169,23 +174,6 @@ const status = async (
           ...(rejoinFlags & MemberRejoinFlags.Nickname ? ['Nicknames'] : [])
         ].join(', ')
   )
-}
-
-const checkIfAdmin = async (
-  interaction: GuildSlashCommandInteraction,
-  guild: Guild
-): Promise<boolean> => {
-  if (
-    !(await guild.members.fetch(interaction.user.id)).permissions.has(
-      'ADMINISTRATOR'
-    )
-  ) {
-    await interaction.reply(
-      'This command can only be used by an administrator!'
-    )
-    return false
-  }
-  return true
 }
 
 const set = async (
