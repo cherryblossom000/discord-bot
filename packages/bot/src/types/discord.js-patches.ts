@@ -1,5 +1,5 @@
 import type * as D from 'discord.js'
-import type Client from '../Client'
+import type {Client} from '../Client'
 
 export interface InteractionBase<C extends D.CacheType = D.CacheType>
   extends D.Interaction<C> {

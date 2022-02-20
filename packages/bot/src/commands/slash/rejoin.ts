@@ -16,8 +16,7 @@ import {
   handleError
 } from '../../utils.js'
 import type {Guild, GuildMember} from 'discord.js'
-// eslint-disable-next-line import/no-named-default -- can't because type import
-import type {default as Client, Listener} from '../../Client'
+import type {Client, Listener} from '../../Client'
 import type {Db} from '../../database'
 import type {
   GuildSlashCommandInteraction,

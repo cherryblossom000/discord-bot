@@ -37,7 +37,7 @@ interface RejoinListeners {
 }
 
 /** The Discord client for this bot. */
-export default class Client extends D.Client {
+export class Client extends D.Client {
   declare on: <K extends keyof ClientEvents>(
     event: K,
     listener: Listener<K>

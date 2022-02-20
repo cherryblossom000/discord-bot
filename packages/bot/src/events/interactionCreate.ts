@@ -1,7 +1,7 @@
 import {inlineCode} from '@discordjs/builders'
 import {debugInteractionDetails, handleError} from '../utils.js'
 import type {Collection} from 'discord.js'
-import type {default as Client, EventListener} from '../Client'
+import type {Client, EventListener} from '../Client'
 import type {AnySlashCommand, Command, CommandInteraction} from '../types'
 import type {CollectionValue, KeysMatching} from '../utils'
 

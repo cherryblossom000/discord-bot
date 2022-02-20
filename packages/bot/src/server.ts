@@ -1,7 +1,7 @@
 import {inlineCode} from '@discordjs/builders'
 import Koa from 'koa'
 import serve from 'koa-static'
-import Client from './Client.js'
+import {Client} from './Client.js'
 import {addListeners} from './commands/slash/rejoin.js'
 import {dev} from './constants.js'
 import {connect, fetchRejoinGuilds} from './database.js'

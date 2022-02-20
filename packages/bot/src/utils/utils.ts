@@ -2,7 +2,7 @@ import path from 'node:path'
 import {homedir} from 'node:os'
 import {bold, codeBlock, hyperlink} from '@discordjs/builders'
 import originalCleanStack from 'clean-stack'
-import D, {Constants, DiscordAPIError} from 'discord.js'
+import D, {Constants, DiscordAPIError, Message} from 'discord.js'
 import {dev, me} from '../constants.js'
 import type {
   BaseCommandInteraction,
@@ -14,7 +14,7 @@ import type {
   PermissionString,
   TextBasedChannel
 } from 'discord.js'
-import type Client from '../Client'
+import type {Client} from '../Client'
 import type {CommandInteraction, GuildSlashCommandInteraction} from '../types'
 
 const stackBasePath = path.join(
