@@ -1,5 +1,32 @@
 # Changelog
 
+# [3.0.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/eslint-plugin@2.0.0...@comrade-pingu/eslint-plugin@3.0.0) (2022-02-20)
+
+
+### Features
+
+* **bot:** add ‘Pin Message’ command ([1dc88f7](https://github.com/cherryblossom000/comrade-pingu/commit/1dc88f7f6aeba11f32b36fa708ee922a052a3c0d))
+* **bot:** add colour command ([aaf6c5d](https://github.com/cherryblossom000/comrade-pingu/commit/aaf6c5d0c2fce33d5cc7e0fce8c3de59ccb79cfe))
+
+
+* feat(eslint-plugin)!: support context menu commands ([d2976ed](https://github.com/cherryblossom000/comrade-pingu/commit/d2976ed98d29710f258c72b7c2ed6a78bbc809ad))
+
+
+### Bug Fixes
+
+* **bot/eval:** fix bot error when output exceeds 2000 chars ([fb44e62](https://github.com/cherryblossom000/comrade-pingu/commit/fb44e628c81797228e5cfd47681345c3b2643d85))
+* **bot/meme:** fix command ([4e7de1e](https://github.com/cherryblossom000/comrade-pingu/commit/4e7de1e155f60f0aa4a56596e707f49fab1efaf5))
+* **bot/rejoin:** fix admin check ([d3d515d](https://github.com/cherryblossom000/comrade-pingu/commit/d3d515df75d5617f8899bf5bd731d9348076e395))
+* **bot/rejoin:** fix bot being unable to add roles when member rejoins server ([ba1974a](https://github.com/cherryblossom000/comrade-pingu/commit/ba1974a7b295d012eef7bb52b3073c7b2e8ee9ed))
+* **bot/rotate:** delete entry from rotateAttachments after rotating ([579932f](https://github.com/cherryblossom000/comrade-pingu/commit/579932f0db0888bceb10993610d417759d84c9c0))
+* **bot/trivia:** remove unnecessary mentions ([4698ebd](https://github.com/cherryblossom000/comrade-pingu/commit/4698ebd1bfcdae523ed65f7e90eb3bd81c4cb8ed))
+
+
+### BREAKING CHANGES
+
+* Remove `correct-context-menu-command-type` and update
+recommended config.
+
 # [2.0.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/eslint-plugin@1.1.1...@comrade-pingu/eslint-plugin@2.0.0) (2021-09-20)
 
 
