@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -xeuo pipefail
+shopt -s globstar
 
 # Register commands
 pnpm register-commands
