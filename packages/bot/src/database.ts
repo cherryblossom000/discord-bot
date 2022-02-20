@@ -33,7 +33,7 @@ export interface Guild {
   _id: D.Snowflake
   rejoinFlags?: MemberRejoinFlags
   members?: readonly Member[]
-  colourRoles?: boolean
+  enableColourRoles?: boolean
 }
 
 export interface Question {

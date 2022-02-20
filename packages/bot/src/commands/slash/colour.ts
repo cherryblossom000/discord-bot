@@ -137,7 +137,13 @@ const command: GuildOnlySlashCommand = {
       if (!(await checkIfAdmin(interaction, guild))) return
       if (isEnable && !(await checkPermissions(interaction, 'MANAGE_ROLES')))
         return
-      await setValue(database, 'guilds', guild.id, 'colourRoles', isEnable)
+      await setValue(
+        database,
+        'guilds',
+        guild.id,
+        'enableColourRoles',
+        isEnable
+      )
       await interaction.reply({
         content: `Successfully ${
           isEnable ? 'enabled' : 'disabled'
@@ -153,7 +159,7 @@ const command: GuildOnlySlashCommand = {
           database,
           'guilds',
           interaction.guildId,
-          'colourRoles'
+          'enableColourRoles'
         )) ?? false
       )
     ) {
