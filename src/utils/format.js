@@ -29,8 +29,13 @@ export const formatCommandSyntax = ({ name, description, options = [] }, { prefi
     return (inlineCode(commandString +
         (options.length
             ? ` ${options
-                .map(({ name: optName, required = false, type, choices }) => `${required ? '<' : '['}${optName}: ${choices?.map(choice => choice.name).join(pipeChar) ??
-                optionsToString[type]}${required ? '>' : ']'}`)
+                .map(opt => {
+                const { required = false } = opt;
+                return `${required ? '<' : '['}${opt.name}: ${'choices' in opt && opt.choices
+                    ? opt.choices.map(choice => choice.name).join(pipeChar)
+                    :
+                        optionsToString[opt.type]}${required ? '>' : ']'}`;
+            })
                 .join(' ')}`
             : '')) + resolvedDescription);
 };

@@ -37,7 +37,7 @@ You can send ${inlineCode('/help [command name]')} to get info on a specific com
         const { data, usage } = slashCommands.get(commandName);
         const cmd = data.toJSON();
         const { name, description, options } = cmd;
-        const hasSubcommands = options[0]?.type === 1;
+        const hasSubcommands = options?.[0]?.type === 1;
         await interaction.reply({
             embeds: [
                 {

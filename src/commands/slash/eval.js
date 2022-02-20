@@ -12,7 +12,6 @@ const command = {
     data: new SlashCommandBuilder()
         .setName('eval')
         .setDescription('Evaluates some JS.')
-        .setDefaultPermission(false)
         .addStringOption(option => option
         .setName(JAVASCRIPT)
         .setRequired(true)
@@ -48,17 +47,19 @@ const command = {
             });
             return;
         }
-        await (interaction.options.getBoolean(HIDE_RESULT) ?? false
-            ? interaction.reply({ content: emojis.thumbsUp, ephemeral: true })
-            : Promise.all(Util.splitMessage(['TOKEN', 'DB_USER', 'DB_PASSWORD', 'REPLIT_DB_URL'].reduce((acc, key) => {
-                const value = process.env[key];
-                return value === undefined
-                    ? acc
-                    : acc.replaceAll(value, `<${key}>`);
-            }, inspect(result))).map(async (text, i) => replyDeletable(interaction, {
+        if (interaction.options.getBoolean(HIDE_RESULT) ?? false) {
+            await interaction.reply({ content: emojis.thumbsUp, ephemeral: true });
+            return;
+        }
+        for (const [i, text] of Util.splitMessage(['DISCORD_TOKEN', 'DB_USER', 'DB_PASSWORD', 'REPLIT_DB_URL'].reduce((acc, key) => {
+            const value = process.env[key];
+            return value === undefined ? acc : acc.replaceAll(value, `<${key}>`);
+        }, inspect(result)), { maxLength: 1990 }).entries()) {
+            await replyDeletable(interaction, {
                 content: codeBlock('js', text),
                 ephemeral
-            }, i !== 0))));
+            }, i !== 0);
+        }
     }
 };
 export default command;

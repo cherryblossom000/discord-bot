@@ -12,7 +12,7 @@ const command = {
     async execute(interaction, database) {
         const input = interaction.options.getString(TIMEZONE);
         if (input === null) {
-            await interaction.reply(`Your current time zone is set to ${await fetchTimeZone(database, interaction.user)}.`);
+            await interaction.reply(`Your current time zone is set to ${await fetchTimeZone(database, interaction.user.id)}.`);
             return;
         }
         const timeZone = input.replaceAll(' ', '_');
@@ -26,7 +26,7 @@ const command = {
             }
             throw error;
         }
-        await setValue(database, 'users', interaction.user, 'timeZone', timeZone);
+        await setValue(database, 'users', interaction.user.id, 'timeZone', timeZone);
         await interaction.reply(`successfully changed time zone to ${inlineCode(timeZone)}.`);
     }
 };

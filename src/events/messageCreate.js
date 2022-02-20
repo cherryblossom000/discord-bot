@@ -21,7 +21,7 @@ const listener = client => async (message) => {
             try {
                 await (typeof triggerMessage === 'string'
                     ? channel.send(triggerMessage)
-                    : channel.send(triggerMessage(message)));
+                    : channel.send(await triggerMessage(message)));
                 return;
             }
             catch (error) {

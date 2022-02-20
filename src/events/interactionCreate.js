@@ -1,41 +1,34 @@
 import { inlineCode } from '@discordjs/builders';
 import { debugInteractionDetails, handleError } from '../utils.js';
-const listener = (client, database) => async (interaction) => {
-    if (interaction.isCommand()) {
+const handleInteractionError = (interaction) => (error) => handleError(interaction.client, error, `Command ${inlineCode(interaction.commandName)} failed
+${debugInteractionDetails(interaction)}`, { to: interaction });
+const listener = (client, database) => {
+    const runCommand = async (interaction, key) => {
         const { commandName } = interaction;
-        const command = client.slashCommands.get(commandName);
+        const command = client[key].get(commandName);
         if (!command) {
             handleError(client, new Error(`Command ${commandName} not found`));
             return;
         }
         if ((command.guildOnly ?? false) && !interaction.inGuild()) {
-            handleError(client, new Error(`Command ${commandName} is guild only but interaction is not in a guild
-${debugInteractionDetails(interaction)}`));
+            await interaction.reply({
+                content: 'This command is only available in servers! Noot noot.',
+                ephemeral: true
+            });
             return;
         }
-        try {
-            await command.execute(interaction, database);
-        }
-        catch (error) {
-            handleError(client, error, `Command ${inlineCode(commandName)} failed
-${debugInteractionDetails(interaction)}`, { to: interaction });
-        }
-    }
-    else if (interaction.isContextMenu()) {
-        const { commandName, targetType } = interaction;
-        const command = (targetType === 'USER' ? client.userCommands : client.messageCommands).get(commandName);
-        if (!command) {
-            handleError(client, new Error(`Command ${commandName} not found`));
-            return;
-        }
-        try {
-            await command.execute(interaction, database);
-        }
-        catch (error) {
-            handleError(client, error, `Command ${inlineCode(commandName)} failed
-${debugInteractionDetails(interaction)}`, { to: interaction });
-        }
-    }
+        await command
+            .execute(interaction, database)
+            .catch(handleInteractionError(interaction));
+    };
+    return async (interaction) => {
+        if (interaction.isCommand())
+            await runCommand(interaction, 'slashCommands');
+        else if (interaction.isMessageContextMenu())
+            await runCommand(interaction, 'messageCommands');
+        else if (interaction.isUserContextMenu())
+            await runCommand(interaction, 'userCommands');
+    };
 };
 export default listener;
 //# sourceMappingURL=interactionCreate.js.map

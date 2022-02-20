@@ -86,7 +86,7 @@ const play = async (interaction, database) => {
                 await buttonInteraction.reply(correct
                     ? `${emojis.tick} Congratulations, ${bold(correctAnswer)} was the correct answer!`
                     : `${emojis.cross} ${bold(format(selectedAnswer))} was incorrect. The correct answer was ${bold(correctAnswer)}.`);
-                await addTriviaQuestion(database, user, question, correct);
+                await addTriviaQuestion(database, user.id, question, correct);
             }
             catch (error) {
                 handleError(client, error, 'trivia play: collect collector event', {
@@ -98,7 +98,7 @@ const play = async (interaction, database) => {
             try {
                 if (reason === 'time') {
                     await interaction.followUp(`${emojis.clock} Time’s up! The correct answer was ${bold(correctAnswer)}.`);
-                    await addTriviaQuestion(database, user, question, undefined);
+                    await addTriviaQuestion(database, user.id, question, undefined);
                 }
             }
             catch (error) {
@@ -133,9 +133,12 @@ const stats = async (interaction, user, database) => {
     const embed = new MessageEmbed()
         .setTitle(user.tag)
         .setThumbnail(user.displayAvatarURL())
-        .setFooter(`Requested by ${interaction.user.tag}`, interaction.user.displayAvatarURL())
+        .setFooter({
+        text: `Requested by ${interaction.user.tag}`,
+        iconURL: interaction.user.displayAvatarURL()
+    })
         .setTimestamp();
-    const questions = (await fetchValue(database, 'users', user, 'questionsAnswered')) ?? [];
+    const questions = (await fetchValue(database, 'users', user.id, 'questionsAnswered')) ?? [];
     if (questions.length) {
         const reduceQuestions = (key) => questions.reduce((result, { [key]: value, correct }) => {
             const [existingCorrect, total] = result.get(value) ?? [0, 0];

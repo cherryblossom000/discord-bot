@@ -2,7 +2,7 @@ import path from 'node:path';
 import { homedir } from 'node:os';
 import { bold, codeBlock, hyperlink } from '@discordjs/builders';
 import originalCleanStack from 'clean-stack';
-import D, { Constants, DiscordAPIError } from 'discord.js';
+import D, { Constants, DiscordAPIError, Message } from 'discord.js';
 import { dev, me } from '../constants.js';
 const stackBasePath = path.join(homedir(), ...(dev
     ? ['dev', 'node', 'comrade-pingu', 'packages', 'bot']
@@ -17,7 +17,7 @@ export const ignoreError = (key) => (error) => {
         error.code === Constants.APIErrors[key]))
         throw error;
 };
-export const handleError = (client, error, info, { to: channelOrInteraction, response: content = 'unfortunately, there was an error trying to execute that command. Noot noot.', followUp = false } = {}) => {
+export const handleError = (client, error, info, { to: channelOrInteraction, response: content = 'Unfortunately, there was an error trying to execute that command. Noot noot.', followUp = false } = {}) => {
     const errorHandler = (err) => {
         if (err instanceof Error)
             cleanErrorsStack(err);
@@ -69,6 +69,12 @@ ${debugInteractionDetails(interaction)}`);
     return channel;
 };
 export const fetchGuild = async ({ client, guildId }) => client.guilds.fetch(guildId);
+export const fetchMessage = async ({ client, options }) => {
+    const message = options.getMessage('message', true);
+    return message instanceof Message
+        ? message
+        : (await client.channels.fetch(message.channel_id)).messages.fetch(message.id);
+};
 export const replyAndFetch = async (interaction, options, followUp = false) => {
     const opts = {
         ...options,
@@ -81,7 +87,6 @@ export const replyAndFetch = async (interaction, options, followUp = false) => {
         ? message
         : (await interaction.client.channels.fetch(interaction.channelId)).messages.fetch(message.id);
 };
-export const hasPermissions = ({ channel, client }, permissions) => channel.permissionsFor(client.user)?.has(permissions) ?? false;
 export const checkPermissions = async (interaction, permissions) => {
     if (!interaction.inGuild())
         return true;
@@ -97,6 +102,16 @@ export const checkPermissions = async (interaction, permissions) => {
         await interaction.reply(`I don’t have th${plural ? 'ese' : 'is'}${permissionsString}!
 ${neededPermissions.map(p => `- ${p}`).join('\n')}
 To fix this, ask an admin or the owner of the server to add th${plural ? 'ose' : 'at'}${permissionsString} to ${(await client.guilds.fetch(guildId)).me.roles.cache.find(role => role.managed)}.`);
+        return false;
+    }
+    return true;
+};
+export const checkIfAdmin = async (interaction, guild) => {
+    if (!(await guild.members.fetch(interaction.user.id)).permissions.has('ADMINISTRATOR')) {
+        await interaction.reply({
+            content: 'This command can only be used by an administrator!',
+            ephemeral: true
+        });
         return false;
     }
     return true;

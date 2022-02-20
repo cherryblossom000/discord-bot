@@ -12,7 +12,7 @@ const command = {
             return;
         const guild = await fetchGuild(interaction);
         const { afkChannelId, afkTimeout, applicationId, createdAt, defaultMessageNotifications, description, discoverySplash, features, id, memberCount, members, mfaLevel, name, ownerId, partnered, publicUpdatesChannelId, preferredLocale, premiumSubscriptionCount, premiumTier, rulesChannelId, systemChannelFlags, systemChannelId, vanityURLCode, vanityURLUses, verificationLevel, widgetChannelId, widgetEnabled } = guild;
-        const formatDate = createDateFormatter(await fetchTimeZone(database, user));
+        const formatDate = createDateFormatter(await fetchTimeZone(database, user.id));
         const channelFieldData = async (fieldName, channelId, getSuffix = () => '', value = (channel) => `${channel}`) => {
             if (channelId === null)
                 return [];

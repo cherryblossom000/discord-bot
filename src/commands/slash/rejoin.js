@@ -1,11 +1,11 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { addMemberRejoinInfo, collection, fetchMemberRejoinInfo, fetchValue, removeMember, setValue, disableRejoin } from '../../database.js';
-import { checkPermissions, fetchGuild, handleError } from '../../utils.js';
+import { addMemberRejoinInfo, collection, disableRejoin, fetchMemberRejoinInfo, fetchValue, removeMember, setValue } from '../../database.js';
+import { checkIfAdmin, checkPermissions, fetchGuild, handleError } from '../../utils.js';
 const fetchOwner = async (guild) => guild.fetchOwner().catch(() => undefined);
 const modeToFlags = {
     ["roles"]: 1,
     ["nickname"]: 2,
-    ["both"]: 3
+    ["both"]: 1 | 2
 };
 export const addListeners = (client, guild, database, flags) => {
     const enabledRoles = flags & 1;
@@ -15,7 +15,7 @@ export const addListeners = (client, guild, database, flags) => {
         if (member.guild.id === guild.id) {
             const guilds = collection(database, 'guilds');
             try {
-                const { roles, nickname } = await fetchMemberRejoinInfo(guilds, member);
+                const { roles, nickname } = await fetchMemberRejoinInfo(guilds, member.guild.id, member.id);
                 await Promise.all([
                     ...(enabledRoles && roles
                         ? [
@@ -40,7 +40,7 @@ ${owner} sorry, but you have to do this yourself.`
                 });
                 return;
             }
-            removeMember(guilds, member).catch(error => handleError(client, error, `Removing member from DB failed (member ${member.id}, flags ${flags})`));
+            removeMember(guilds, member.guild.id, member.id).catch(error => handleError(client, error, `Removing member from DB failed (member ${member.id}, flags ${flags})`));
         }
     };
     const guildMemberRemove = async (member) => {
@@ -76,13 +76,6 @@ const status = async (interaction, database) => {
             ...(rejoinFlags & 2 ? ['Nicknames'] : [])
         ].join(', '));
 };
-const checkIfAdmin = async (interaction, guild) => {
-    if ((await guild.members.fetch(interaction.user.id)).permissions.has('ADMINISTRATOR')) {
-        await interaction.reply('This command can only be used by someone with the Manage Messages permission or the bot owner!');
-        return false;
-    }
-    return true;
-};
 const set = async (interaction, mode, database) => {
     const guild = await fetchGuild(interaction);
     if (!(await checkIfAdmin(interaction, guild)))
@@ -109,7 +102,7 @@ const disable = async (interaction, database) => {
         await interaction.reply('Already disabled! Noot noot.');
         return;
     }
-    await disableRejoin(database, await fetchGuild(interaction));
+    await disableRejoin(database, guildId);
     client
         .off('guildMemberAdd', listeners.guildMemberAdd)
         .off('guildMemberRemove', listeners.guildMemberRemove)
