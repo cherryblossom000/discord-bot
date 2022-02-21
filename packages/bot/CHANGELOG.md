@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.2.2](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@4.2.1...@comrade-pingu/bot@4.2.2) (2022-02-21)
+
+
+### Bug Fixes
+
+* **bot/pin:** suppress embeds when sending response ([2d9d603](https://github.com/cherryblossom000/comrade-pingu/commit/2d9d6038c7fb6b6ddb797e73e2fdafc6c053d034))
+
 ## [4.2.1](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@4.2.0...@comrade-pingu/bot@4.2.1) (2022-02-20)
 
 
