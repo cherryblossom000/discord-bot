@@ -2,7 +2,7 @@ import path from 'node:path';
 import { homedir } from 'node:os';
 import { bold, codeBlock, hyperlink } from '@discordjs/builders';
 import originalCleanStack from 'clean-stack';
-import D, { Constants, DiscordAPIError, Message } from 'discord.js';
+import D, { Constants, DiscordAPIError } from 'discord.js';
 import { dev, me } from '../constants.js';
 const stackBasePath = path.join(homedir(), ...(dev
     ? ['dev', 'node', 'comrade-pingu', 'packages', 'bot']
@@ -69,12 +69,6 @@ ${debugInteractionDetails(interaction)}`);
     return channel;
 };
 export const fetchGuild = async ({ client, guildId }) => client.guilds.fetch(guildId);
-export const fetchMessage = async ({ client, options }) => {
-    const message = options.getMessage('message', true);
-    return message instanceof Message
-        ? message
-        : (await client.channels.fetch(message.channel_id)).messages.fetch(message.id);
-};
 export const replyAndFetch = async (interaction, options, followUp = false) => {
     const opts = {
         ...options,

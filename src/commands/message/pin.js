@@ -1,6 +1,6 @@
 import { hyperlink } from '@discordjs/builders';
 import { fetchValue } from '../../database.js';
-import { checkPermissions, fetchMessage } from '../../utils.js';
+import { checkPermissions } from '../../utils.js';
 const command = {
     name: 'Pin Message',
     guildOnly: true,
@@ -13,9 +13,24 @@ const command = {
         }
         if (!(await checkPermissions(interaction, 'MANAGE_MESSAGES')))
             return;
-        const message = await fetchMessage(interaction);
-        await message.pin();
-        await interaction.reply(`Pinned ${hyperlink(`message ${message.id}`, message.url)}. Noot noot.`);
+        const { channelId, client, guildId, id, options, token, user } = interaction;
+        const messageId = options.getMessage('message', true).id;
+        await client['api']
+            .channels(channelId)
+            .pins(messageId)
+            .put({ reason: `‘Pin Message’ from ${user.tag} (${user.id})` });
+        await client['api']
+            .interactions(id, token)
+            .callback.post({
+            data: {
+                type: 4,
+                data: {
+                    content: `Pinned ${hyperlink(`message ${messageId}`, `https://discord.com/channels/${guildId}/${channelId}/${messageId}`)}. Noot noot.`,
+                    flags: 4
+                }
+            }
+        });
+        interaction.replied = true;
     }
 };
 export default command;
