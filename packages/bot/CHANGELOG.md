@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.2.3](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@4.2.2...@comrade-pingu/bot@4.2.3) (2022-02-21)
+
+
+### Bug Fixes
+
+* **bot:** make error messages ephemeral ([2d6a28d](https://github.com/cherryblossom000/comrade-pingu/commit/2d6a28dd9e5ad3958674385916d30668179a9b2b))
+
 ## [4.2.2](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@4.2.1...@comrade-pingu/bot@4.2.2) (2022-02-21)
 
 
