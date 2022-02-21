@@ -23,7 +23,8 @@ const command: GuildOnlyMessageContextMenuCommand = {
       )
     ) {
       await interaction.reply({
-        content: 'You can’t pin messages here! Noot noot.'
+        content: 'You can’t pin messages here! Noot noot.',
+        ephemeral: true
       })
       return
     }
