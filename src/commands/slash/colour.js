@@ -97,10 +97,7 @@ const command = {
             if (isEnable && !(await checkPermissions(interaction, 'MANAGE_ROLES')))
                 return;
             await setValue(database, 'guilds', guild.id, 'enableColourRoles', isEnable);
-            await interaction.reply({
-                content: `Successfully ${isEnable ? 'enabled' : 'disabled'}! Noot noot.`,
-                ephemeral: true
-            });
+            await interaction.reply(`Successfully ${isEnable ? 'enabled' : 'disabled'}! Noot noot.`);
             return;
         }
         if (!((await fetchValue(database, 'guilds', interaction.guildId, 'enableColourRoles')) ?? false)) {
