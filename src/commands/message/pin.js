@@ -7,7 +7,8 @@ const command = {
     async execute(interaction, database) {
         if (!((await fetchValue(database, 'guilds', interaction.guildId, 'enablePinning')) ?? false)) {
             await interaction.reply({
-                content: 'You can’t pin messages here! Noot noot.'
+                content: 'You can’t pin messages here! Noot noot.',
+                ephemeral: true
             });
             return;
         }

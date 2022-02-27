@@ -93,9 +93,12 @@ export const checkPermissions = async (interaction, permissions) => {
             : [permissions];
         const plural = neededPermissions.length !== 1;
         const permissionsString = ` permission${plural ? 's' : ''}`;
-        await interaction.reply(`I don’t have th${plural ? 'ese' : 'is'}${permissionsString}!
+        await interaction.reply({
+            content: `I don’t have th${plural ? 'ese' : 'is'}${permissionsString}!
 ${neededPermissions.map(p => `- ${p}`).join('\n')}
-To fix this, ask an admin or the owner of the server to add th${plural ? 'ose' : 'at'}${permissionsString} to ${(await client.guilds.fetch(guildId)).me.roles.cache.find(role => role.managed)}.`);
+To fix this, ask an admin or the owner of the server to add th${plural ? 'ose' : 'at'}${permissionsString} to ${(await client.guilds.fetch(guildId)).me.roles.cache.find(role => role.managed)}.`,
+            ephemeral: true
+        });
         return false;
     }
     return true;
