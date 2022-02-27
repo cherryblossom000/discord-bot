@@ -34,7 +34,7 @@ const userInfoFields = (
   const flags = user.flags?.toArray()
 
   return [
-    {name: 'ID', value: id},
+    {name: 'Id', value: id},
     {name: 'Joined Discord', value: formatDate(createdAt)},
     imageField(`Avatar${avatar == null ? ' (Default)' : ''}`, avatarURL),
     ...(flags?.length ?? 0

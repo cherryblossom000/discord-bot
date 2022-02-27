@@ -59,7 +59,7 @@ export class Client extends D.Client {
   /** The triggers. */
   readonly triggers = new Collection<RegExp, Trigger['message']>()
 
-  /** The rejoining listeners, mapped by a guild's ID. */
+  /** The rejoining listeners, mapped by a guild's id. */
   readonly rejoinListeners = new Collection<Snowflake, RejoinListeners>()
 
   /**
