@@ -29,10 +29,9 @@ const command: GuildOnlySlashCommand = {
     if (isEnable && !(await checkPermissions(interaction, 'MANAGE_MESSAGES')))
       return
     await setValue(database, 'guilds', guild.id, 'enablePinning', isEnable)
-    await interaction.reply({
-      content: `Successfully ${isEnable ? 'enabled' : 'disabled'}! Noot noot.`,
-      ephemeral: true
-    })
+    await interaction.reply(
+      `Successfully ${isEnable ? 'enabled' : 'disabled'}! Noot noot.`
+    )
   }
 }
 export default command

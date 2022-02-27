@@ -145,12 +145,9 @@ const command: GuildOnlySlashCommand = {
         'enableColourRoles',
         isEnable
       )
-      await interaction.reply({
-        content: `Successfully ${
-          isEnable ? 'enabled' : 'disabled'
-        }! Noot noot.`,
-        ephemeral: true
-      })
+      await interaction.reply(
+        `Successfully ${isEnable ? 'enabled' : 'disabled'}! Noot noot.`
+      )
       return
     }
 
