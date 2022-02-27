@@ -46,6 +46,7 @@ const userInfoFields = (
                 startCase(flag)
                   .replace('Hypesquad', 'HypeSquad')
                   .replace('Bughunter', 'Bug Hunter')
+                  .replace('Http', 'HTTP')
               )
               .join('\n')
           }
