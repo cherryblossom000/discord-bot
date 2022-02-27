@@ -1,11 +1,9 @@
-import * as fs from 'node:fs'
+import {readFile, writeFile} from 'node:fs/promises'
 import exitOnError from './exit-on-error.js'
 import {botFolder, botDistFolder} from './folders.js'
 import type {PackageJson} from 'type-fest'
 
 exitOnError()
-
-const {readFile, writeFile} = fs.promises
 
 const package_ = JSON.parse(
   await readFile(new URL('package.json', botFolder), 'utf8')
