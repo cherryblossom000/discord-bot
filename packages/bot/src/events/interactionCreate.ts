@@ -1,10 +1,14 @@
 import {inlineCode} from '@discordjs/builders'
-import {debugInteractionDetails, handleError} from '../utils.js'
+import {
+  debugInteractionDetails,
+  handleError,
+  type CollectionValue,
+  type KeysMatching
+} from '../utils.js'
 import type {Collection} from 'discord.js'
 import type {Client, EventListener} from '../Client'
 import type {Db} from '../database'
 import type {Command, CommandInteraction} from '../types'
-import type {CollectionValue, KeysMatching} from '../utils'
 
 const handleInteractionError =
   (interaction: CommandInteraction) =>

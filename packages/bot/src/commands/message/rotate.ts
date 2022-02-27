@@ -1,8 +1,7 @@
 import {inlineCode} from '@discordjs/builders'
 import {Collection} from 'discord.js'
-import {checkPermissions} from '../../utils.js'
+import {checkPermissions, type ReadonlyNonEmpty} from '../../utils.js'
 import type {AnyMessageContextMenuCommand, RotateAttachment} from '../../types'
-import type {ReadonlyNonEmpty} from '../../utils'
 
 const command: AnyMessageContextMenuCommand = {
   name: 'Rotate Image',

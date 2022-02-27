@@ -1,5 +1,4 @@
-import D, {Collection} from 'discord.js'
-import type {GuildMember, Snowflake} from 'discord.js'
+import D, {Collection, type GuildMember, type Snowflake} from 'discord.js'
 import type {Db} from './database.js'
 import type {
   InteractionBase,

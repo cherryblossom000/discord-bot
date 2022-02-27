@@ -1,6 +1,10 @@
 import fs, {mkdir, writeFile} from 'node:fs/promises'
 import {inlineCode} from '@discordjs/builders'
-import {ApplicationCommandOptionType} from 'discord-api-types/v9'
+import {
+  ApplicationCommandOptionType,
+  type APIApplicationCommandSubcommandOption,
+  type RESTPostAPIChatInputApplicationCommandsJSONBody
+} from 'discord-api-types/v9'
 import {Permissions} from 'discord.js'
 import MarkdownIt from 'markdown-it'
 import {markdownTable} from 'markdown-table'
@@ -8,20 +12,14 @@ import {permissions} from '@comrade-pingu/bot/dist/src/constants.js'
 import {
   formatCommandSyntax,
   formatCommandUsage,
-  upperFirst
+  upperFirst,
+  type FormatCommandSyntaxInput,
+  type FormatCommandInput
 } from '@comrade-pingu/bot/dist/src/utils.js'
 import {slashCommands} from './commands.js'
 import {botDistFolder, botFolder, scriptsFolder} from './folders.js'
 import exitOnError from './exit-on-error.js'
 import type {PathLike} from 'node:fs'
-import type {
-  APIApplicationCommandSubcommandOption,
-  RESTPostAPIChatInputApplicationCommandsJSONBody
-} from 'discord-api-types/v9'
-import type {
-  FormatCommandSyntaxInput,
-  FormatCommandInput
-} from '@comrade-pingu/bot/dist/src/utils'
 
 exitOnError()
 

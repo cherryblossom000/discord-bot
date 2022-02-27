@@ -1,19 +1,19 @@
 import {SlashCommandBuilder, inlineCode} from '@discordjs/builders'
-import {ApplicationCommandOptionType} from 'discord-api-types/v9'
+import {
+  ApplicationCommandOptionType,
+  type APIApplicationCommandOption,
+  type APIApplicationCommandSubcommandOption,
+  type RESTPostAPIChatInputApplicationCommandsJSONBody
+} from 'discord-api-types/v9'
 import {
   commandFiles,
   formatCommandSyntax,
   formatCommandUsage,
-  removeJSExtension
+  removeJSExtension,
+  type FormatCommandSyntaxInput
 } from '../../utils.js'
 import type {EmbedFieldData} from 'discord.js'
-import type {
-  APIApplicationCommandOption,
-  APIApplicationCommandSubcommandOption,
-  RESTPostAPIChatInputApplicationCommandsJSONBody
-} from 'discord-api-types/v9'
 import type {AnySlashCommand} from '../../types'
-import type {FormatCommandSyntaxInput} from '../../utils'
 
 const HELP = 'help'
 const COMMAND = 'command'

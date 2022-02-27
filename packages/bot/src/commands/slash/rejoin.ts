@@ -7,7 +7,8 @@ import {
   fetchMemberRejoinInfo,
   fetchValue,
   removeMember,
-  setValue
+  setValue,
+  type Db
 } from '../../database.js'
 import {
   checkIfAdmin,
@@ -17,7 +18,6 @@ import {
 } from '../../utils.js'
 import type {Guild, GuildMember} from 'discord.js'
 import type {Client, Listener} from '../../Client'
-import type {Db} from '../../database'
 import type {
   GuildSlashCommandInteraction,
   GuildOnlySlashCommand

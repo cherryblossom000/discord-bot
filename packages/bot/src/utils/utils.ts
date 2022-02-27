@@ -1,19 +1,20 @@
 import path from 'node:path'
 import {homedir} from 'node:os'
 import {bold, codeBlock, hyperlink} from '@discordjs/builders'
-import originalCleanStack from 'clean-stack'
-import D, {Constants, DiscordAPIError} from 'discord.js'
-import {dev, me} from '../constants.js'
-import type {
-  BaseCommandInteraction,
-  EmbedFieldData,
-  Guild,
-  GuildTextBasedChannel,
-  InteractionReplyOptions,
-  Message,
-  PermissionString,
-  TextBasedChannel
+import D, {
+  Constants,
+  DiscordAPIError,
+  type BaseCommandInteraction,
+  type EmbedFieldData,
+  type Guild,
+  type GuildTextBasedChannel,
+  type InteractionReplyOptions,
+  type Message,
+  type PermissionString,
+  type TextBasedChannel
 } from 'discord.js'
+import originalCleanStack from 'clean-stack'
+import {dev, me} from '../constants.js'
 import type {Client} from '../Client'
 import type {CommandInteraction, GuildSlashCommandInteraction} from '../types'
 

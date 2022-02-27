@@ -1,5 +1,8 @@
-import {AST_NODE_TYPES} from '@typescript-eslint/experimental-utils'
-import type {TSESLint, TSESTree} from '@typescript-eslint/experimental-utils'
+import {
+  AST_NODE_TYPES,
+  type TSESLint,
+  type TSESTree
+} from '@typescript-eslint/experimental-utils'
 
 const rule: TSESLint.RuleModule<
   'incorrectName' | 'wrongExport',

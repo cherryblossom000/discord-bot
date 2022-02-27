@@ -7,7 +7,8 @@ import {
   formatBoolean,
   imageField,
   startCase,
-  upperFirst
+  upperFirst,
+  type DateFormatter
 } from '../../utils.js'
 import type {
   ClientPresenceStatus,
@@ -19,7 +20,6 @@ import type {
   User
 } from 'discord.js'
 import type {AnyUserContextMenuCommand} from '../../types'
-import type {DateFormatter} from '../../utils'
 
 const formatStatus = (status: PresenceStatus): string =>
   status === 'dnd' ? 'Do Not Disturb' : upperFirst(status)

@@ -1,8 +1,7 @@
 import {bold, inlineCode, SlashCommandBuilder} from '@discordjs/builders'
-import {Constants} from 'discord.js'
+import {Constants, type GuildMember, type Role} from 'discord.js'
 import {fetchValue, setValue} from '../../database.js'
 import {checkIfAdmin, checkPermissions, fetchGuild} from '../../utils.js'
-import type {GuildMember, Role} from 'discord.js'
 import type {
   GuildSlashCommandInteraction,
   GuildOnlySlashCommand

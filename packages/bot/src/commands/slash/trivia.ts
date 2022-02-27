@@ -4,7 +4,8 @@ import {
   MessageActionRow,
   MessageButton,
   MessageEmbed,
-  Util
+  Util,
+  type User
 } from 'discord.js'
 import {dev, emojis} from '../../constants.js'
 import {
@@ -13,7 +14,10 @@ import {
   collection,
   fetchValue,
   triviaUsersCount,
-  triviaUsersCountQuery
+  triviaUsersCountQuery,
+  type AggregatedTriviaUser,
+  type Db,
+  type Question
 } from '../../database.js'
 import {Difficulty, Type, fetchQuestion} from '../../opentdb.js'
 import {
@@ -24,8 +28,6 @@ import {
   replyDeletable,
   shuffle
 } from '../../utils.js'
-import type {User} from 'discord.js'
-import type {AggregatedTriviaUser, Db, Question} from '../../database'
 import type {AnySlashCommand, SlashCommandInteraction} from '../../types'
 
 const TRUE = 'true'

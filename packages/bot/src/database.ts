@@ -1,17 +1,17 @@
-import {MongoClient} from 'mongodb'
+import {
+  MongoClient,
+  type Collection as MongoCollection,
+  type Db as MongoDb,
+  type Document,
+  type Filter,
+  type FindCursor,
+  type MatchKeysAndValues,
+  type UpdateFilter,
+  type UpdateOptions,
+  type UpdateResult
+} from 'mongodb'
 import {defaultTimeZone} from './constants.js'
 import type * as D from 'discord.js'
-import type {
-  Collection as MongoCollection,
-  Db as MongoDb,
-  Document,
-  Filter,
-  FindCursor,
-  MatchKeysAndValues,
-  UpdateFilter,
-  UpdateOptions,
-  UpdateResult
-} from 'mongodb'
 import type {Difficulty, Type, Question as TriviaQuestion} from './opentdb'
 import type {Override} from './utils'
 

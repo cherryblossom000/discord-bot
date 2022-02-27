@@ -1,10 +1,13 @@
 // TODO: config allowed channels
 
 import {hyperlink} from '@discordjs/builders'
-import {MessageFlags, InteractionResponseType} from 'discord-api-types/v9'
+import {
+  MessageFlags,
+  InteractionResponseType,
+  type RESTPostAPIInteractionCallbackJSONBody
+} from 'discord-api-types/v9'
 import {fetchValue} from '../../database.js'
 import {checkPermissions} from '../../utils.js'
-import type {RESTPostAPIInteractionCallbackJSONBody} from 'discord-api-types/v9'
 import type {Snowflake} from 'discord.js'
 import type {GuildOnlyMessageContextMenuCommand} from '../../types'
 

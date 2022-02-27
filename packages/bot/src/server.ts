@@ -1,18 +1,18 @@
 import {inlineCode} from '@discordjs/builders'
 import Koa from 'koa'
 import serve from 'koa-static'
-import {Client} from './Client.js'
+import {Client, type ClientEvents, type EventListener} from './Client.js'
 import {addListeners} from './commands/slash/rejoin.js'
 import {dev} from './constants.js'
 import {connect, fetchRejoinGuilds} from './database.js'
 import {
   commandFiles,
   handleError,
-  importFolder as utilsImportFolder
+  importFolder as utilsImportFolder,
+  type KeysMatching
 } from './utils.js'
 import type {AddressInfo} from 'node:net'
 import type {Collection} from 'discord.js'
-import type {ClientEvents, EventListener} from './Client'
 import type {
   ContextMenuCommand,
   MessageContextMenuCommand,
@@ -20,7 +20,6 @@ import type {
   Trigger,
   UserContextMenuCommand
 } from './types'
-import type {KeysMatching} from './utils'
 import 'dotenv/config'
 
 const assetsFolder = new URL('../assets/', import.meta.url)

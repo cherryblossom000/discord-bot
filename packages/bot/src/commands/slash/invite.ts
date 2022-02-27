@@ -1,7 +1,10 @@
 import {SlashCommandBuilder} from '@discordjs/builders'
-import {MessageActionRow, MessageButton} from 'discord.js'
+import {
+  MessageActionRow,
+  MessageButton,
+  type InteractionReplyOptions
+} from 'discord.js'
 import {permissions} from '../../constants.js'
-import type {InteractionReplyOptions} from 'discord.js'
 import type {AnySlashCommand} from '../../types'
 
 let options: InteractionReplyOptions

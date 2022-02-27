@@ -1,11 +1,12 @@
 import {basename} from 'node:path'
-import {AST_NODE_TYPES} from '@typescript-eslint/experimental-utils'
+import {
+  AST_NODE_TYPES,
+  // @ts-expect-error for inferred type of rules to be portable
+  type TSESLint
+} from '@typescript-eslint/experimental-utils'
 import defaultExportName from './rules/default-export-name.js'
-import createTypeRule from './create-type-rule.js'
-// @ts-expect-error for inferred type of rules to be portable
-import type {TSESLint} from '@typescript-eslint/experimental-utils'
+import createTypeRule, {type CreateTypeRule} from './create-type-rule.js'
 import type {Linter} from 'eslint'
-import type {CreateTypeRule} from './create-type-rule'
 
 const createCommandTypeRule = (type: string): CreateTypeRule => {
   const anyType = `Any${type}`
