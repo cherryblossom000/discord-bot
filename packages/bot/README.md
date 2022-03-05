@@ -15,10 +15,6 @@ To invite Comrade Pingu to your sever, you must have the Manage Server
 permission and then use
 [this link](https://discord.com/oauth2/authorize?client_id=554539674899841055&scope=applications.commands+bot&permissions=52224).
 
-## Prefix
-
-Comrade Pingu’s default prefix is `.`.
-
 ## Documentation
 
 <!-- markdownlint-disable MD033 -->
