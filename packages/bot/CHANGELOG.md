@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.2.4](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@4.2.3...@comrade-pingu/bot@4.2.4) (2022-03-05)
+
+
+### Bug Fixes
+
+* **bot/profile:** fix case of Bot HTTP Interactions user flag ([409f5e9](https://github.com/cherryblossom000/comrade-pingu/commit/409f5e9902912b9cc6f43f85417825be915f952b))
+
 ## [4.2.3](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@4.2.2...@comrade-pingu/bot@4.2.3) (2022-02-21)
 
 

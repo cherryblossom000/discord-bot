@@ -1,6 +1,6 @@
 {
   "name": "@comrade-pingu/bot",
-  "version": "4.2.3",
+  "version": "4.2.4",
   "private": true,
   "publishConfig": {
     "access": "restricted"
@@ -42,7 +42,7 @@
     "ytdl-core": "^4.10.1"
   },
   "devDependencies": {
-    "@comrade-pingu/eslint-plugin": "workspace:3.0.0",
+    "@comrade-pingu/eslint-plugin": "3.0.0",
     "@types/jest": "^27.4.1",
     "@types/koa": "^2.13.4",
     "@types/koa-static": "^4.0.2",
