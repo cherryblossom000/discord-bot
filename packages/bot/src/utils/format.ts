@@ -74,7 +74,6 @@ export const formatCommandSyntax = (
           ? ` ${options
               .map(opt => {
                 const {required = false} = opt
-                // TODO [typescript@>=4.6.0]: remove these comments
                 /* eslint-disable unicorn/consistent-destructuring -- ts issue */
                 return `${required ? '<' : '['}${opt.name}: ${
                   'choices' in opt && opt.choices

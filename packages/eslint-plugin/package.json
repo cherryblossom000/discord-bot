@@ -20,7 +20,7 @@
     "watch": "dum build -- -w"
   },
   "dependencies": {
-    "@typescript-eslint/experimental-utils": "^5.12.1",
+    "@typescript-eslint/experimental-utils": "^5.13.0",
     "tslib": "^2.3.1"
   },
   "peerDependencies": {
