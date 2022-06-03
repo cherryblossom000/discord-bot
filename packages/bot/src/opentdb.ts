@@ -139,26 +139,22 @@ export const fetchQuestion = async (): Promise<Question | null> => {
       const type =
         question.type === 'multiple' ? Type.MultipleChoice : Type.TrueFalse
 
-      return {
-        type,
+      const base: QuestionBase = {
         difficulty:
           Difficulty[
             upperFirst(question.difficulty) as keyof typeof Difficulty
           ],
         category: decodeURIComponent(question.category),
-        question: decodeURIComponent(question.question),
-        correctAnswer:
-          type === Type.MultipleChoice
-            ? decodeURIComponent(question.correct_answer)
-            : question.correct_answer === 'True',
-        ...(type === Type.MultipleChoice
-          ? {
-              incorrectAnswers: (
-                question.incorrect_answers as readonly string[]
-              ).map(decodeURIComponent)
-            }
-          : {})
-      } as Question
+        question: decodeURIComponent(question.question)
+      }
+      return type === Type.MultipleChoice
+        ? {
+            ...base,
+            type,
+            correctAnswer: decodeURIComponent(question.correct_answer),
+            incorrectAnswers: question.incorrect_answers.map(decodeURIComponent)
+          }
+        : {...base, type, correctAnswer: question.correct_answer === 'True'}
     }
   }
 }

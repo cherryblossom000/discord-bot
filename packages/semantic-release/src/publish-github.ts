@@ -102,6 +102,8 @@ const publishGithub: PublishPlugin = async (pluginConfig, context) => {
           'content-type': mime.getType(path.extname(fileName)) ?? 'text/plain',
           'content-length': file.size
         }
+        // data prop should be string not Buffer
+        // seems to work in @semantic-release/github though
       } as unknown as NonNullable<
         Parameters<Octokit['repos']['uploadReleaseAsset']>[0]
       >

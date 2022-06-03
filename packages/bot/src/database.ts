@@ -2,7 +2,6 @@ import {
   MongoClient,
   type Collection as MongoCollection,
   type Db as MongoDb,
-  type Document,
   type Filter,
   type FindCursor,
   type MatchKeysAndValues,
@@ -151,10 +150,10 @@ export const setValue = async <
         filter: Filter<DatabaseType<C>>,
         update: Partial<DatabaseType<C>> | UpdateFilter<DatabaseType<C>>,
         options?: UpdateOptions
-      ): Promise<Document | UpdateResult>
+      ): Promise<UpdateResult>
     }
   ).updateOne(
-    {_id: id}, // as unknown as Filter<DatabaseType<C>>,
+    {_id: id},
     {$set: {[key]: value} as MatchKeysAndValues<DatabaseType<C>>},
     {upsert: true}
   )

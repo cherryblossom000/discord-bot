@@ -18,9 +18,20 @@ import {dev, me} from '../constants.js'
 import type {Client} from '../Client'
 import type {
   CommandInteraction,
+  GuildCommandInteraction,
   GuildSlashCommandInteraction,
   InGuildCacheType
 } from '../types'
+import type {ReadonlyNonEmpty} from './types'
+
+export const isNonEmpty = <T>(
+  array: readonly T[]
+): array is ReadonlyNonEmpty<T> => !!array.length
+
+export const inObject = <T extends object, K extends PropertyKey>(
+  object: T,
+  key: K
+): key is K & keyof T => key in object
 
 const stackBasePath = path.join(
   homedir(),
@@ -145,9 +156,11 @@ export const debugInteractionDetails = ({
 Channel: ${channelId}
 Options: ${codeBlock('json', JSON.stringify(options.data, null, 2))}`
 
-export const fetchChannel = async (
-  interaction: CommandInteraction
-): Promise<TextBasedChannel> => {
+export const fetchChannel = async <T extends CommandInteraction>(
+  interaction: T
+): Promise<
+  T extends GuildCommandInteraction ? GuildTextBasedChannel : TextBasedChannel
+> => {
   const {channelId, client} = interaction
   const channel = (await client.channels.fetch(
     channelId
@@ -195,7 +208,7 @@ export const checkPermissions = async (
 ): Promise<boolean> => {
   if (!interaction.inGuild()) return true
   const {client, guildId} = interaction
-  const channel = (await fetchChannel(interaction)) as GuildTextBasedChannel
+  const channel = await fetchChannel(interaction)
 
   const channelPermissions = channel.permissionsFor(client.user!)
   if (channelPermissions?.has(permissions) !== true) {

@@ -23,7 +23,9 @@ export type UserContextMenuInteraction<C extends D.CacheType = D.CacheType> =
 export type GuildUserContextMenuInteraction =
   UserContextMenuInteraction<InGuildCacheType>
 
-export type CommandInteraction =
-  | MessageContextMenuInteraction
-  | SlashCommandInteraction
-  | UserContextMenuInteraction
+export type CommandInteraction<C extends D.CacheType = D.CacheType> =
+  | MessageContextMenuInteraction<C>
+  | SlashCommandInteraction<C>
+  | UserContextMenuInteraction<C>
+
+export type GuildCommandInteraction = CommandInteraction<InGuildCacheType>

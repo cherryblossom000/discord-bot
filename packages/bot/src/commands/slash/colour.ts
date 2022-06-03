@@ -1,7 +1,12 @@
 import {bold, inlineCode, SlashCommandBuilder} from '@discordjs/builders'
 import {Constants, type GuildMember, type Role} from 'discord.js'
 import {fetchValue, setValue} from '../../database.js'
-import {checkIfAdmin, checkPermissions, fetchGuild} from '../../utils.js'
+import {
+  checkIfAdmin,
+  checkPermissions,
+  fetchGuild,
+  inObject
+} from '../../utils.js'
 import type {
   GuildSlashCommandInteraction,
   GuildOnlySlashCommand
@@ -30,7 +35,7 @@ const VALID_COLOURS = Object.keys(COLOURS)
 
 const parseColour = (string: string): number | undefined => {
   const input = string.toUpperCase().replaceAll('-', '_').replaceAll(' ', '_')
-  if (input in COLOURS) return COLOURS[input as keyof typeof COLOURS]
+  if (inObject(COLOURS, input)) return COLOURS[input]
 
   const hex = input.startsWith('#') ? input.slice(1) : input
   return SHORT_HEX_RE.test(hex)

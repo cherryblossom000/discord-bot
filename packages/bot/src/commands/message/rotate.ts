@@ -1,7 +1,7 @@
 import {inlineCode} from '@discordjs/builders'
 import {Collection} from 'discord.js'
-import {checkPermissions, type ReadonlyNonEmpty} from '../../utils.js'
-import type {AnyMessageContextMenuCommand, RotateAttachment} from '../../types'
+import {checkPermissions, isNonEmpty} from '../../utils.js'
+import type {AnyMessageContextMenuCommand} from '../../types'
 
 const command: AnyMessageContextMenuCommand = {
   name: 'Rotate Image',
@@ -12,17 +12,14 @@ const command: AnyMessageContextMenuCommand = {
       message.attachments instanceof Collection
         ? [...message.attachments.values()]
         : message.attachments.map(({filename, url}) => ({name: filename, url}))
-    if (!attachments.length) {
+    if (!isNonEmpty<typeof attachments[number]>(attachments)) {
       await interaction.reply({
         content: 'That message doesn’t have any attachments! Noot noot.',
         ephemeral: true
       })
       return
     }
-    interaction.client.rotateAttachments.set(
-      interaction.user.id,
-      attachments as unknown as ReadonlyNonEmpty<RotateAttachment>
-    )
+    interaction.client.rotateAttachments.set(interaction.user.id, attachments)
     await interaction.reply({
       content: `Use ${inlineCode('/rotate')} to rotate the image!`,
       ephemeral: true

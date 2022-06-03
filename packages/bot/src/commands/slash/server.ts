@@ -64,15 +64,15 @@ const command: GuildOnlySlashCommand = {
     ): Promise<readonly EmbedFieldData[]> => {
       if (channelId === null) return []
       const suffix = getSuffix()
-      const channel = await client.channels
+      const channel = (await client.channels
         .fetch(channelId)
         // eslint-disable-next-line unicorn/no-useless-undefined -- undefined not void
-        .catch(() => undefined)
+        .catch(() => undefined)) as GuildBasedChannel | null | undefined
       return [
         channel
           ? {
               name: fieldName,
-              value: value(channel as GuildBasedChannel) + suffix
+              value: value(channel) + suffix
             }
           : {
               name: `${fieldName} Id`,
