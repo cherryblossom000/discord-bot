@@ -1,7 +1,6 @@
 import {SlashCommandBuilder} from '@discordjs/builders'
-import fetch from 'node-fetch'
 import sharp from 'sharp'
-import {handleError} from '../../utils.js'
+import {handleError, request} from '../../utils.js'
 import type {AnySlashCommand} from '../../types'
 
 const ANGLE = 'angle'
@@ -54,13 +53,13 @@ const command: AnySlashCommand = {
 
     await interaction.deferReply()
 
+    const image = await (
+      await request('Fetching image', attachment.url)
+    ).arrayBuffer()
+
     let buffer: Buffer
     try {
-      buffer = await sharp(
-        Buffer.from(await (await fetch(attachment.url)).arrayBuffer())
-      )
-        .rotate(angle)
-        .toBuffer()
+      buffer = await sharp(Buffer.from(image)).rotate(angle).toBuffer()
     } catch (error) {
       handleError(client, error, `Error rotating image ${attachment.url}`, {
         to: interaction,

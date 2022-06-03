@@ -1,6 +1,5 @@
 import {SlashCommandBuilder} from '@discordjs/builders'
-import fetch from 'node-fetch'
-import {checkPermissions} from '../../utils.js'
+import {checkPermissions, request} from '../../utils.js'
 import type {AnySlashCommand} from '../../types'
 
 const randomDog = 'https://random.dog/'
@@ -18,7 +17,12 @@ const command: AnySlashCommand = {
           image: {
             url:
               randomDog +
-              (await (await fetch(`${randomDog}woof?filter=mp4`)).text())
+              (await (
+                await request(
+                  'Fetching dog image from random.dog',
+                  `${randomDog}woof?filter=mp4`
+                )
+              ).text())
           },
           footer: {text: 'Provided by random.dog.'}
         }

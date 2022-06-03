@@ -37,8 +37,8 @@
     "mathjs": "^10.6.1",
     "mongodb": "^4.6.0",
     "ms": "^2.1.3",
-    "node-fetch": "github:yo1dog/node-fetch#patch-1",
     "sharp": "^0.30.6",
+    "undici": "^5.4.0",
     "ytdl-core": "^4.11.0"
   },
   "devDependencies": {

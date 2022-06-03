@@ -1,6 +1,6 @@
 import path from 'node:path'
 import {homedir} from 'node:os'
-import {bold, codeBlock, hyperlink} from '@discordjs/builders'
+import {bold, codeBlock, hyperlink, inlineCode} from '@discordjs/builders'
 import D, {
   Constants,
   DiscordAPIError,
@@ -14,6 +14,7 @@ import D, {
   type TextBasedChannel
 } from 'discord.js'
 import originalCleanStack from 'clean-stack'
+import * as undici from 'undici'
 import {dev, me} from '../constants.js'
 import type {Client} from '../Client'
 import type {
@@ -32,6 +33,42 @@ export const inObject = <T extends object, K extends PropertyKey>(
   object: T,
   key: K
 ): key is K & keyof T => key in object
+
+class RequestError extends Error {
+  override readonly name = 'RequestError'
+  constructor(
+    readonly statusCode: number,
+    message: string,
+    readonly url: string,
+    readonly body: string
+  ) {
+    super(
+      `${message} (url: ${url}) failed with status code ${statusCode}
+Body: ${body}`
+    )
+  }
+}
+
+export const request = async (
+  message: string,
+  url: string
+): Promise<undici.Dispatcher.ResponseData['body']> => {
+  const {statusCode, body} = await undici.request(url)
+  if (statusCode !== 200) {
+    throw new RequestError(
+      statusCode,
+      message,
+      url,
+      await body
+        .text()
+        .then(codeBlock)
+        .catch(error => `${inlineCode('body.text()')} failed: ${error}`)
+    )
+  }
+  return body
+}
+
+// #region Errors
 
 const stackBasePath = path.join(
   homedir(),
@@ -156,6 +193,10 @@ export const debugInteractionDetails = ({
 Channel: ${channelId}
 Options: ${codeBlock('json', JSON.stringify(options.data, null, 2))}`
 
+// #endregion
+
+// #region Fetching
+
 export const fetchChannel = async <T extends CommandInteraction>(
   interaction: T
 ): Promise<
@@ -200,6 +241,8 @@ export const replyAndFetch = async (
         ))! as TextBasedChannel
       ).messages.fetch(message.id)
 }
+
+// #endregion
 
 /** Check if the bot has permissions and sends a message if it doesn't. */
 export const checkPermissions = async (

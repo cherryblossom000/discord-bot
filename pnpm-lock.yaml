@@ -90,10 +90,10 @@ importers:
       mathjs: ^10.6.1
       mongodb: ^4.6.0
       ms: ^2.1.3
-      node-fetch: github:yo1dog/node-fetch#patch-1
       sharp: ^0.30.6
       ts-jest: ^28.0.4
       type-fest: ^2.13.0
+      undici: ^5.4.0
       ytdl-core: ^4.11.0
     dependencies:
       '@discordjs/builders': 0.13.0
@@ -106,8 +106,8 @@ importers:
       mathjs: 10.6.1
       mongodb: 4.6.0
       ms: 2.1.3
-      node-fetch: github.com/yo1dog/node-fetch/9558c776dbc89bc2fb301260f4a3462f22fc4326
       sharp: 0.30.6
+      undici: 5.4.0
       ytdl-core: 4.11.0
     devDependencies:
       '@comrade-pingu/eslint-plugin': link:../eslint-plugin
@@ -2921,11 +2921,6 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /data-uri-to-buffer/3.0.1:
-    resolution: {integrity: sha512-WboRycPNsVw3B3TL559F7kuBUM4d8CgMEvk6xEJlOp7OBPjt6G7z8WMWlD2rOFZLk6OYfFIUGsCOWzcQH9K2og==}
-    engines: {node: '>= 6'}
-    dev: false
-
   /dateformat/3.0.3:
     resolution: {integrity: sha512-jyCETtSl3VMZMWeRo7iY1FL19ges1t55hMo5yaam4Jrsm5EPL89UQkoQRyiI+Yf4k8r2ZpdngkV8hr1lIdjb3Q==}
     dev: true
@@ -3767,14 +3762,6 @@ packages:
     dependencies:
       bser: 2.1.1
     dev: true
-
-  /fetch-blob/3.1.5:
-    resolution: {integrity: sha512-N64ZpKqoLejlrwkIAnb9iLSA3Vx/kjgzpcDhygcqJ2KKjky8nCgUQ+dzXtbrLaWZGZNmNfQTsiQ0weZ1svglHg==}
-    engines: {node: ^12.20 || >= 14.13}
-    dependencies:
-      node-domexception: 1.0.0
-      web-streams-polyfill: 3.2.1
-    dev: false
 
   /figures/2.0.0:
     resolution: {integrity: sha512-Oa2M9atig69ZkfwiApY8F2Yy+tzMbazyvqv21R0NsSC8floSOC09BbT1ITWAdoMGQvJ/aZnR1KMwdx9tvHnTNA==}
@@ -5790,11 +5777,6 @@ packages:
     resolution: {integrity: sha512-CvkDw2OEnme7ybCykJpVcKH+uAOLV2qLqiyla128dN9TkEWfrYmxG6C2boDe5KcNQqZF3orkqzGgOMvZ/JNekA==}
     dev: false
 
-  /node-domexception/1.0.0:
-    resolution: {integrity: sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==}
-    engines: {node: '>=10.5.0'}
-    dev: false
-
   /node-emoji/1.11.0:
     resolution: {integrity: sha512-wo2DpQkQp7Sjm2A0cq+sN7EHKO6Sl0ctXeBdFZrL9T9+UywORbufTcTZxom8YqpLQt/FqNMUkOpkZrJVYSKD3A==}
     dependencies:
@@ -7724,6 +7706,11 @@ packages:
       which-boxed-primitive: 1.0.2
     dev: true
 
+  /undici/5.4.0:
+    resolution: {integrity: sha512-A1SRXysDg7J+mVP46jF+9cKANw0kptqSFZ8tGyL+HBiv0K1spjxPX8Z4EGu+Eu6pjClJUBdnUPlxrOafR668/g==}
+    engines: {node: '>=12.18'}
+    dev: false
+
   /unique-string/2.0.0:
     resolution: {integrity: sha512-uNaeirEPvpZWSgzwsPGtU2zVSTrn/8L5q/IexZmH0eH6SA73CmAA5U4GwORTxQAZs95TAXLNqeLoPPNO5gZfWg==}
     engines: {node: '>=8'}
@@ -7808,11 +7795,6 @@ packages:
     dependencies:
       makeerror: 1.0.12
     dev: true
-
-  /web-streams-polyfill/3.2.1:
-    resolution: {integrity: sha512-e0MO3wdXWKrLbL0DgGnUV7WHVuw9OUvL4hjgnPkIeEvESk74gAITi5G606JtZPp39cd8HA9VQzCIvA49LpPN5Q==}
-    engines: {node: '>= 8'}
-    dev: false
 
   /webidl-conversions/3.0.1:
     resolution: {integrity: sha1-JFNCdeKnvGvnvIZhHMFq4KVlSHE=}
@@ -8009,14 +7991,4 @@ packages:
       m3u8stream: 0.8.6
       miniget: 4.2.2
       sax: 1.2.4
-    dev: false
-
-  github.com/yo1dog/node-fetch/9558c776dbc89bc2fb301260f4a3462f22fc4326:
-    resolution: {tarball: https://codeload.github.com/yo1dog/node-fetch/tar.gz/9558c776dbc89bc2fb301260f4a3462f22fc4326}
-    name: node-fetch
-    version: 3.0.0
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
-    dependencies:
-      data-uri-to-buffer: 3.0.1
-      fetch-blob: 3.1.5
     dev: false

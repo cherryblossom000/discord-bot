@@ -1,5 +1,4 @@
-import fetch from 'node-fetch'
-import {upperFirst} from './utils.js'
+import {request, upperFirst} from './utils.js'
 
 // #region Response
 const enum ResponseCode {
@@ -59,6 +58,7 @@ class OpenTDBError extends Error {
 }
 
 const api = async <T extends Response = Response>(
+  message: string,
   path: string
 ): Promise<
   Omit<T, 'response_code'> & {
@@ -69,7 +69,7 @@ const api = async <T extends Response = Response>(
   }
 > => {
   const {response_code: code, ...rest} = (await (
-    await fetch(`https://opentdb.com/${path}`)
+    await request(`${message} from OpenTDB`, `https://opentdb.com/${path}`)
   ).json()) as T
   if (code === ResponseCode.InvalidParameter)
     throw new OpenTDBError(OpenTDBError.INVALID_PARAMETER, path)
@@ -77,11 +77,19 @@ const api = async <T extends Response = Response>(
 }
 
 const fetchToken = async (): Promise<string> =>
-  (await api<FetchTokenResponse>('api_token.php?command=request')).token
+  (
+    await api<FetchTokenResponse>(
+      'Requesting token',
+      'api_token.php?command=request'
+    )
+  ).token
 
 const resetToken = async (token: string): Promise<string> => {
   const path = `api_token.php?command=reset&token=${token}`
-  const {code, token: newToken} = await api<ResetTokenResponse>(path)
+  const {code, token: newToken} = await api<ResetTokenResponse>(
+    'Resetting token',
+    path
+  )
   if (code === ResponseCode.TokenNotFound) return fetchToken()
   return newToken
 }
@@ -123,7 +131,7 @@ export const fetchQuestion = async (): Promise<Question | null> => {
   const {
     code,
     results: [question]
-  } = await api<FetchQuestionResponse>(path)
+  } = await api<FetchQuestionResponse>('Fetching trivia question', path)
 
   switch (code) {
     case ResponseCode.NoResults:
