@@ -41,9 +41,9 @@ const command: AnySlashCommand = {
           'The command that you want to get info about. If omitted, all the commands will be listed.'
         )
         .addChoices(
-          commandFiles.flatMap(filename => {
+          ...commandFiles.flatMap(filename => {
             const name = removeJSExtension(filename)
-            return name === HELP ? [] : [[name, name]]
+            return name === HELP ? [] : [{name, value: name}]
           })
         )
     ),

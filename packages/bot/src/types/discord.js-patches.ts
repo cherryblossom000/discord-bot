@@ -6,19 +6,22 @@ export interface InteractionBase<C extends D.CacheType = D.CacheType>
   readonly client: Client
 }
 
+export type InGuildCacheType = 'cached' | 'raw'
+
 export type SlashCommandInteraction<C extends D.CacheType = D.CacheType> =
   D.CommandInteraction<C> & InteractionBase<C>
-export type GuildSlashCommandInteraction = SlashCommandInteraction<'present'>
+export type GuildSlashCommandInteraction =
+  SlashCommandInteraction<InGuildCacheType>
 
 export type MessageContextMenuInteraction<C extends D.CacheType = D.CacheType> =
   D.MessageContextMenuInteraction<C> & InteractionBase<C>
 export type GuildMessageContextMenuInteraction =
-  MessageContextMenuInteraction<'present'>
+  MessageContextMenuInteraction<InGuildCacheType>
 
 export type UserContextMenuInteraction<C extends D.CacheType = D.CacheType> =
   D.UserContextMenuInteraction<C> & InteractionBase<C>
 export type GuildUserContextMenuInteraction =
-  UserContextMenuInteraction<'present'>
+  UserContextMenuInteraction<InGuildCacheType>
 
 export type CommandInteraction =
   | MessageContextMenuInteraction

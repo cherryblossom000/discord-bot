@@ -27,10 +27,10 @@ const command: AnySlashCommand = {
         .setName(MEME)
         .setDescription('The meme to get.')
         .setRequired(true)
-        .addChoices([
-          [IWMELC, Meme.IWMELC],
-          [HTKB, Meme.HTKB]
-        ])
+        .addChoices(
+          {name: IWMELC, value: Meme.IWMELC},
+          {name: HTKB, value: Meme.HTKB}
+        )
     ),
   usage: `!${hyperlink(
     IWMELC,

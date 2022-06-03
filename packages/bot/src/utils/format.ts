@@ -41,9 +41,8 @@ const optionsToString: Readonly<
   [D.ApplicationCommandOptionType.Channel]: 'channel',
   [D.ApplicationCommandOptionType.Role]: 'role',
   [D.ApplicationCommandOptionType.Mentionable]: 'mentionable',
-  [D.ApplicationCommandOptionType.Number]: 'number'
-  // TODO [discord-api-types@>=0.27.0]: uncomment
-  // [D.ApplicationCommandOptionType.Attachment]: 'attachment'
+  [D.ApplicationCommandOptionType.Number]: 'number',
+  [D.ApplicationCommandOptionType.Attachment]: 'attachment'
 }
 
 export type FormatCommandInput = Pick<

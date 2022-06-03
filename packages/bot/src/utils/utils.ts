@@ -16,7 +16,11 @@ import D, {
 import originalCleanStack from 'clean-stack'
 import {dev, me} from '../constants.js'
 import type {Client} from '../Client'
-import type {CommandInteraction, GuildSlashCommandInteraction} from '../types'
+import type {
+  CommandInteraction,
+  GuildSlashCommandInteraction,
+  InGuildCacheType
+} from '../types'
 
 const stackBasePath = path.join(
   homedir(),
@@ -160,7 +164,7 @@ ${debugInteractionDetails(interaction)}`
 export const fetchGuild = async ({
   client,
   guildId
-}: BaseCommandInteraction<'present'>): Promise<Guild> =>
+}: BaseCommandInteraction<InGuildCacheType>): Promise<Guild> =>
   client.guilds.fetch(guildId)
 
 export const replyAndFetch = async (

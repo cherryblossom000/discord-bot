@@ -84,7 +84,6 @@ const play = async (
 
   /**
    * Asks the question and handles the response.
-   * @param fields The embed fields representing the answers.
    * @param buttons The emojis to react with.
    * @param getSelectedAnswer How to get the selected answer. This function takes the emoji as a parameter.
    * @param questionPrefix A prefix to put at the beginning of the question on the embed title.

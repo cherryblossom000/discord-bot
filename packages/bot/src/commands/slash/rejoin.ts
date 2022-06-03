@@ -245,11 +245,11 @@ const command: GuildOnlySlashCommand = {
             .setName(MODE)
             .setDescription('What to restore when a member rejoins the server.')
             .setRequired(true)
-            .addChoices([
-              ['roles', Mode.Roles],
-              ['nickname', Mode.Nickname],
-              ['both', Mode.Both]
-            ])
+            .addChoices(
+              {name: 'roles', value: Mode.Roles},
+              {name: 'nickname', value: Mode.Nickname},
+              {name: 'both', value: Mode.Both}
+            )
         )
     )
     .addSubcommand(subcommand =>
