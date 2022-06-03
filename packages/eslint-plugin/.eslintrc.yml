@@ -40,9 +40,7 @@ overrides:
       leadingUnderscore: allow
       trailingUnderscore: allow
     - selector: method
-      format: [camelCase, PascalCase]
-      leadingUnderscore: allow
-      trailingUnderscore: allow
+      format: null
     - selector: typeLike
       format: [PascalCase]
       leadingUnderscore: allow

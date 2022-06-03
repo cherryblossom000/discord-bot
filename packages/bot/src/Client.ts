@@ -12,7 +12,7 @@ import type {ReadonlyNonEmpty} from './utils'
 
 declare global {
   interface ArrayConstructor {
-    isArray(arg: unknown | readonly unknown[]): arg is readonly unknown[]
+    isArray(arg: readonly unknown[]): arg is readonly unknown[]
   }
 }
 
