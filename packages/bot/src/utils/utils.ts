@@ -5,6 +5,7 @@ import D, {
   Constants,
   DiscordAPIError,
   type BaseCommandInteraction,
+  type Collection,
   type EmbedFieldData,
   type Guild,
   type GuildTextBasedChannel,
@@ -28,6 +29,17 @@ import type {ReadonlyNonEmpty} from './types'
 export const isNonEmpty = <T>(
   array: readonly T[]
 ): array is ReadonlyNonEmpty<T> => !!array.length
+
+export type KeysMatching<T, V> = {
+  [K in keyof T]-?: T[K] extends V ? K : never
+}[keyof T]
+
+export type RequireKeys<T, K extends keyof T> = Required<Pick<T, K>> & T
+
+export type Override<T, U> = Omit<T, keyof U> & U
+
+export type CollectionValue<T extends Collection<unknown, unknown>> =
+  T extends Collection<unknown, infer V> ? V : never
 
 export const inObject = <T extends object, K extends PropertyKey>(
   object: T,
