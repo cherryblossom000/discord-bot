@@ -21,9 +21,12 @@ import {
 } from '../../database.js'
 import {Difficulty, Type, fetchQuestion} from '../../opentdb.js'
 import {
+  BACK,
+  backButton,
   checkPermissions,
-  handleError,
   fetchGuild,
+  forwardButton,
+  handleError,
   replyAndFetch,
   replyDeletable,
   shuffle
@@ -46,21 +49,6 @@ const booleanButtons = [
     emoji: emojis.cross
   })
 ]
-
-const BACK = 'back'
-const FORWARD = 'forward'
-const backButton = new MessageButton({
-  style: 'SECONDARY',
-  label: 'Back',
-  emoji: emojis.left,
-  customId: BACK
-})
-const forwardButton = new MessageButton({
-  style: 'SECONDARY',
-  label: 'Forward',
-  emoji: emojis.right,
-  customId: FORWARD
-})
 
 /** Formats a trivia answer. */
 const format = (answer: boolean | string): string =>

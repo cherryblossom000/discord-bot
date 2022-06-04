@@ -3,12 +3,10 @@ import type {Db} from './database.js'
 import type {
   InteractionBase,
   MessageContextMenuCommand,
-  RotateAttachment,
   SlashCommand,
   Trigger,
   UserContextMenuCommand
 } from './types'
-import type {ReadonlyNonEmpty} from './utils'
 
 declare global {
   interface ArrayConstructor {
@@ -61,15 +59,6 @@ export class Client extends D.Client {
 
   /** The rejoining listeners, mapped by a guild's id. */
   readonly rejoinListeners = new Collection<Snowflake, RejoinListeners>()
-
-  /**
-   * The pending attachments of the messages that the Rotate Image command was
-   * used on, mapped by the id of the user who requested it.
-   */
-  readonly rotateAttachments = new Collection<
-    Snowflake,
-    ReadonlyNonEmpty<RotateAttachment>
-  >()
 
   /** Set the activity. */
   setActivity(): void {

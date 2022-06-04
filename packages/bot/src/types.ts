@@ -2,7 +2,7 @@ import type {
   SlashCommandBuilder,
   SlashCommandSubcommandsOnlyBuilder
 } from '@discordjs/builders'
-import type {Message, MessageAttachment} from 'discord.js'
+import type {Message} from 'discord.js'
 import type {
   GuildMessageContextMenuInteraction,
   GuildSlashCommandInteraction,
@@ -93,5 +93,3 @@ export interface Trigger {
   /** The message to reply with. Can be a function that returns the message.. */
   message: string | ((message: Message) => Promise<string> | string)
 }
-
-export type RotateAttachment = Pick<MessageAttachment, 'name' | 'url'>

@@ -23,10 +23,14 @@ export const emojis = {
   cross: '❌',
   clock: '🕒',
   smirk: '😏',
-  thumbsUp: '👍'
+  thumbsUp: '👍',
+  anticlockwise: '⤴️',
+  clockwise: '⤵️'
 } as const
 
 export const defaultTimeZone = 'UTC'
+
+export const timeout = dev ? 5000 : 60_000
 
 // #region Angry Noot Noot
 

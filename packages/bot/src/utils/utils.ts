@@ -4,6 +4,7 @@ import {bold, codeBlock, hyperlink, inlineCode} from '@discordjs/builders'
 import D, {
   Constants,
   DiscordAPIError,
+  MessageButton,
   type BaseCommandInteraction,
   type Collection,
   type EmbedFieldData,
@@ -11,12 +12,15 @@ import D, {
   type GuildTextBasedChannel,
   type InteractionReplyOptions,
   type Message,
+  type MessageButtonOptions,
   type PermissionString,
-  type TextBasedChannel
+  type Snowflake,
+  type TextBasedChannel,
+  type WebhookEditMessageOptions
 } from 'discord.js'
 import originalCleanStack from 'clean-stack'
 import * as undici from 'undici'
-import {dev, me} from '../constants.js'
+import {dev, emojis, me} from '../constants.js'
 import type {Client} from '../Client'
 import type {
   CommandInteraction,
@@ -24,11 +28,6 @@ import type {
   GuildSlashCommandInteraction,
   InGuildCacheType
 } from '../types'
-import type {ReadonlyNonEmpty} from './types'
-
-export const isNonEmpty = <T>(
-  array: readonly T[]
-): array is ReadonlyNonEmpty<T> => !!array.length
 
 export type KeysMatching<T, V> = {
   [K in keyof T]-?: T[K] extends V ? K : never
@@ -37,6 +36,12 @@ export type KeysMatching<T, V> = {
 export type RequireKeys<T, K extends keyof T> = Required<Pick<T, K>> & T
 
 export type Override<T, U> = Omit<T, keyof U> & U
+
+export type UnionToIntersection<T> = (
+  T extends unknown ? (arg: T) => void : never
+) extends (arg: infer U) => void
+  ? U
+  : never
 
 export type CollectionValue<T extends Collection<unknown, unknown>> =
   T extends Collection<unknown, infer V> ? V : never
@@ -207,7 +212,7 @@ Options: ${codeBlock('json', JSON.stringify(options.data, null, 2))}`
 
 // #endregion
 
-// #region Fetching
+// #region Fetching/Discord API
 
 export const fetchChannel = async <T extends CommandInteraction>(
   interaction: T
@@ -233,18 +238,44 @@ export const fetchGuild = async ({
 }: BaseCommandInteraction<InGuildCacheType>): Promise<Guild> =>
   client.guilds.fetch(guildId)
 
-export const replyAndFetch = async (
+export const enum ReplyMode {
+  REPLY,
+  EDIT_REPLY,
+  FOLLOW_UP
+}
+
+export const replyAndFetch: {
+  (
+    interaction: CommandInteraction,
+    options: Omit<InteractionReplyOptions, 'fetchReply'>
+  ): Promise<Message>
+  <T extends ReplyMode>(
+    interaction: CommandInteraction,
+    options: Omit<
+      UnionToIntersection<
+        T extends ReplyMode.EDIT_REPLY
+          ? WebhookEditMessageOptions
+          : InteractionReplyOptions
+      >,
+      'fetchReply'
+    >,
+    mode: T
+  ): Promise<Message>
+} = async (
   interaction: CommandInteraction,
-  options: Omit<InteractionReplyOptions, 'fetchReply'>,
-  followUp = false
+  options: Omit<
+    InteractionReplyOptions | WebhookEditMessageOptions,
+    'fetchReply'
+  >,
+  mode = ReplyMode.REPLY
 ): Promise<Message> => {
-  const opts: InteractionReplyOptions & {fetchReply: true} = {
-    ...options,
-    fetchReply: true
-  }
-  const message = await (followUp
-    ? interaction.followUp(opts)
-    : interaction.reply(opts))
+  const message = await interaction[
+    mode === ReplyMode.REPLY
+      ? 'reply'
+      : mode === ReplyMode.EDIT_REPLY
+      ? 'editReply'
+      : 'followUp'
+  ]({...options, fetchReply: true})
   return message instanceof D.Message
     ? message
     : (
@@ -252,6 +283,26 @@ export const replyAndFetch = async (
           interaction.channelId
         ))! as TextBasedChannel
       ).messages.fetch(message.id)
+  // TODO: investigate strange TS thing where it only sometimes thinks message
+  // can be void in watch mode, editing file fixes things
+  // ).messages.fetch((message as Exclude<typeof message, void>).id)
+}
+
+export const deleteMessage = async (
+  client: Client,
+  channelId: Snowflake,
+  messageId: Snowflake
+): Promise<void> => {
+  await (
+    client['api'] as {
+      channels: (id: Snowflake) => {
+        messages: (id: Snowflake) => {delete: () => Promise<unknown>}
+      }
+    }
+  )
+    .channels(channelId)
+    .messages(messageId)
+    .delete()
 }
 
 // #endregion
@@ -311,3 +362,39 @@ export const imageField = (name: string, url: string): EmbedFieldData => ({
   name,
   value: hyperlink('Link', url)
 })
+
+export const BACK = 'back'
+export const FORWARD = 'forward'
+
+const backButtonOptions: MessageButtonOptions = {
+  style: 'SECONDARY',
+  label: 'Back',
+  emoji: emojis.left,
+  customId: BACK
+}
+const forwardButtonOptions: MessageButtonOptions = {
+  style: 'SECONDARY',
+  label: 'Forward',
+  emoji: emojis.right,
+  customId: FORWARD
+}
+
+export const backButton = new MessageButton(backButtonOptions)
+export const forwardButton = new MessageButton(forwardButtonOptions)
+export const backButtonDisabled = new MessageButton({
+  ...backButtonOptions,
+  disabled: true
+})
+export const forwardButtonDisabled = new MessageButton({
+  ...forwardButtonOptions,
+  disabled: true
+})
+
+export const timeoutFollowUp = async (
+  interaction: CommandInteraction
+): Promise<void> => {
+  await interaction.followUp({
+    content: 'You took too long to answer.',
+    ephemeral: true
+  })
+}
