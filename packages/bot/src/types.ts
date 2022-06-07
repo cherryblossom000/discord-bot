@@ -1,4 +1,5 @@
 import type {
+  ContextMenuCommandBuilder,
   SlashCommandBuilder,
   SlashCommandSubcommandsOnlyBuilder
 } from '@discordjs/builders'
@@ -15,25 +16,20 @@ import type {Db} from './database'
 
 export * from './types/discord.js-patches'
 
-/** @template T The type of the interaction in `execute`. */
-interface CommandBase<T> {
-  /**
-   * Whether or not the command is only available in a guild.
-   * @default false
-   */
-  guildOnly?: boolean
-
+interface CommandBase<I, D> {
   /** The actual command. */
-  execute: (interaction: T, database: Db) => Promise<void>
+  execute: (interaction: I, database: Db) => Promise<void>
+
+  /** The data of the slash command for Discord. */
+  data: D
 }
 
-interface SlashCommandBase<T extends SlashCommandInteraction>
-  extends CommandBase<T> {
-  /** The data of the slash command for Discord. */
-  data:
+interface SlashCommandBase<I extends SlashCommandInteraction>
+  extends CommandBase<
+    I,
     | Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'>
     | SlashCommandSubcommandsOnlyBuilder
-
+  > {
   /** More docs. */
   usage?: string
 
@@ -44,37 +40,25 @@ interface SlashCommandBase<T extends SlashCommandInteraction>
   hidden?: boolean
 }
 
-type GuildOnly<T extends CommandBase<never>> = T & {guildOnly: true}
-type GuildOrDM<T extends CommandBase<never>> = T & {guildOnly?: false}
-
-export type GuildOnlySlashCommand = GuildOnly<
+export type GuildOnlySlashCommand =
   SlashCommandBase<GuildSlashCommandInteraction>
->
-export type AnySlashCommand = GuildOrDM<
-  SlashCommandBase<SlashCommandInteraction>
->
+export type AnySlashCommand = SlashCommandBase<SlashCommandInteraction>
 export type SlashCommand = AnySlashCommand | GuildOnlySlashCommand
 
-interface ContextMenuCommandBase<T> extends CommandBase<T> {
-  name: string
-}
+type ContextMenuCommandBase<I> = CommandBase<I, ContextMenuCommandBuilder>
 
-export type GuildOnlyMessageContextMenuCommand = GuildOnly<
+export type GuildOnlyMessageContextMenuCommand =
   ContextMenuCommandBase<GuildMessageContextMenuInteraction>
->
-export type AnyMessageContextMenuCommand = GuildOrDM<
+export type AnyMessageContextMenuCommand =
   ContextMenuCommandBase<MessageContextMenuInteraction>
->
 export type MessageContextMenuCommand =
   | AnyMessageContextMenuCommand
   | GuildOnlyMessageContextMenuCommand
 
-type GuildOnlyUserContextMenuCommand = GuildOnly<
+type GuildOnlyUserContextMenuCommand =
   ContextMenuCommandBase<GuildUserContextMenuInteraction>
->
-export type AnyUserContextMenuCommand = GuildOrDM<
+export type AnyUserContextMenuCommand =
   ContextMenuCommandBase<UserContextMenuInteraction>
->
 export type UserContextMenuCommand =
   | AnyUserContextMenuCommand
   | GuildOnlyUserContextMenuCommand

@@ -1,14 +1,13 @@
-// TODO: config allowed channels
-
-import {hyperlink} from '@discordjs/builders'
+import {ContextMenuCommandBuilder, hyperlink} from '@discordjs/builders'
 import {fetchValue} from '../../database.js'
 import {checkPermissions} from '../../utils.js'
 import type {Snowflake} from 'discord.js'
 import type {GuildOnlyMessageContextMenuCommand} from '../../types'
 
 const command: GuildOnlyMessageContextMenuCommand = {
-  name: 'Pin Message',
-  guildOnly: true,
+  data: new ContextMenuCommandBuilder()
+    .setName('Pin Message')
+    .setDMPermission(false),
   async execute(interaction, database) {
     if (
       !(

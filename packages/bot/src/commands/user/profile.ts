@@ -1,4 +1,4 @@
-import {hyperlink} from '@discordjs/builders'
+import {ContextMenuCommandBuilder, hyperlink} from '@discordjs/builders'
 import {fetchTimeZone} from '../../database.js'
 import {
   checkPermissions,
@@ -186,7 +186,7 @@ Streaming: ${formatBoolean(streaming)}`
 ]
 
 const command: AnyUserContextMenuCommand = {
-  name: 'Profile',
+  data: new ContextMenuCommandBuilder().setName('Profile'),
   async execute(interaction, database) {
     if (!(await checkPermissions(interaction, 'EMBED_LINKS'))) return
 

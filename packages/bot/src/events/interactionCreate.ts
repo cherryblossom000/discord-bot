@@ -37,14 +37,6 @@ const listener: EventListener<'interactionCreate'> = (client, database) => {
       return
     }
 
-    if ((command.guildOnly ?? false) && !interaction.inGuild()) {
-      await interaction.reply({
-        content: 'This command is only available in servers! Noot noot.',
-        ephemeral: true
-      })
-      return
-    }
-
     await (
       command as {
         execute: (

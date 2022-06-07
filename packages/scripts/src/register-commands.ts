@@ -19,11 +19,12 @@ const rest = new REST({version: '9'}).setToken(process.env.DISCORD_TOKEN!)
 const contextMenuCommandToJSON =
   (type: ApplicationCommandType.Message | ApplicationCommandType.User) =>
   ({
-    name
-  }: ContextMenuCommand): RESTPostAPIContextMenuApplicationCommandsJSONBody => ({
-    type,
-    name
-  })
+    data
+  }: ContextMenuCommand): RESTPostAPIContextMenuApplicationCommandsJSONBody =>
+    // TODO: fix types
+    data
+      .setType(type)
+      .toJSON() as RESTPostAPIContextMenuApplicationCommandsJSONBody
 
 const body: RESTPutAPIApplicationCommandsJSONBody = [
   ...slashCommands.map(({data}) => data.toJSON()),

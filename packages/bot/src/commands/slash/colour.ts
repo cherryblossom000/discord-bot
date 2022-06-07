@@ -107,6 +107,7 @@ const command: GuildOnlySlashCommand = {
   data: new SlashCommandBuilder()
     .setName('colour')
     .setDescription('Change your colour (using a role).')
+    .setDMPermission(false)
     .addSubcommand(subcommand =>
       subcommand
         .setName(ENABLE)
@@ -133,7 +134,6 @@ const command: GuildOnlySlashCommand = {
     .addSubcommand(subcommand =>
       subcommand.setName(REMOVE).setDescription('Remove your colour.')
     ),
-  guildOnly: true,
   async execute(interaction, database) {
     const subCommand = interaction.options.getSubcommand()
     const isEnable = subCommand === ENABLE

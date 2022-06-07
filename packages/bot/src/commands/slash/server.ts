@@ -15,8 +15,8 @@ import type {GuildOnlySlashCommand} from '../../types'
 const command: GuildOnlySlashCommand = {
   data: new SlashCommandBuilder()
     .setName('server')
-    .setDescription('Gets information on this server.'),
-  guildOnly: true,
+    .setDescription('Gets information on this server.')
+    .setDMPermission(false),
   async execute(interaction, database) {
     const {client, user} = interaction
     if (!(await checkPermissions(interaction, 'EMBED_LINKS'))) return

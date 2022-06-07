@@ -10,6 +10,7 @@ const command: GuildOnlySlashCommand = {
   data: new SlashCommandBuilder()
     .setName('pin')
     .setDescription('Manage settings for the ‘Pin Message’ command.')
+    .setDMPermission(false)
     .addSubcommand(subcommand =>
       subcommand
         .setName(ENABLE)
@@ -20,7 +21,6 @@ const command: GuildOnlySlashCommand = {
         .setName(DISABLE)
         .setDescription('Disable allowing anyone to pin a message.')
     ),
-  guildOnly: true,
   async execute(interaction, database) {
     const subCommand = interaction.options.getSubcommand()
     const isEnable = subCommand === ENABLE

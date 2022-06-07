@@ -1,3 +1,4 @@
+import {ContextMenuCommandBuilder} from '@discordjs/builders'
 import {
   Collection,
   MessageActionRow,
@@ -85,7 +86,7 @@ const attachmentEmbedOptions = (
 })
 
 const command: AnyMessageContextMenuCommand = {
-  name: 'Rotate Image',
+  data: new ContextMenuCommandBuilder().setName('Rotate Image'),
   async execute(interaction) {
     if (!(await checkPermissions(interaction, 'ATTACH_FILES'))) return
 

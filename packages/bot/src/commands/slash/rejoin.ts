@@ -231,6 +231,7 @@ const command: GuildOnlySlashCommand = {
     .setDescription(
       'Manages settings for what to do when a member rejoins this server.'
     )
+    .setDMPermission(false)
     .addSubcommand(subcommand =>
       subcommand
         .setName(STATUS)
@@ -259,7 +260,6 @@ const command: GuildOnlySlashCommand = {
           'Stops doing anything when a member rejoins this server.'
         )
     ),
-  guildOnly: true,
   async execute(interaction, database) {
     switch (interaction.options.getSubcommand()) {
       case STATUS:

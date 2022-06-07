@@ -5,8 +5,8 @@ import type {GuildOnlySlashCommand} from '../../types'
 const command: GuildOnlySlashCommand = {
   data: new SlashCommandBuilder()
     .setName('icon')
-    .setDescription('Gets the server icon.'),
-  guildOnly: true,
+    .setDescription('Gets the server icon.')
+    .setDMPermission(false),
   async execute(interaction) {
     if (!(await checkPermissions(interaction, 'ATTACH_FILES'))) return
     const icon = (await fetchGuild(interaction)).iconURL({size: 4096})

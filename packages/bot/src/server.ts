@@ -14,7 +14,7 @@ import {
 import type {AddressInfo} from 'node:net'
 import type {Collection} from 'discord.js'
 import type {
-  ContextMenuCommand,
+  Command,
   MessageContextMenuCommand,
   SlashCommand,
   Trigger,
@@ -140,40 +140,40 @@ client.once('ready', async () => {
   Guilds: ${client.guilds.cache.size}`)
 })
 
-// Initialise event listeners
-await importFolder<EventListener<keyof ClientEvents>>(
-  'events',
-  (listener, name) =>
-    client.on(name as keyof ClientEvents, listener(client, database))
-)
-
-const addContextMenuCommand =
-  <T extends ContextMenuCommand>(
+const addCommand =
+  <T extends Command>(
     collectionKey: KeysMatching<Client, Collection<string, T>>
   ) =>
   (command: T): void => {
-    ;(client[collectionKey] as Collection<string, T>).set(command.name, command)
+    ;(client[collectionKey] as Collection<string, T>).set(
+      command.data.name,
+      command
+    )
   }
 
-// Initialise commands
+// Initialise event listeners and commands
 await Promise.all([
+  importFolder<EventListener<keyof ClientEvents>>('events', (listener, name) =>
+    client.on(name as keyof ClientEvents, listener(client, database))
+  ),
   importFolder<SlashCommand>(
     'commands/slash',
-    command => client.slashCommands.set(command.data.name, command),
+    addCommand('slashCommands'),
     commandFiles
   ),
   importFolder<MessageContextMenuCommand>(
     'commands/message',
-    addContextMenuCommand('messageCommands')
+    addCommand('messageCommands')
   ),
   importFolder<UserContextMenuCommand>(
     'commands/user',
-    addContextMenuCommand('userCommands')
+    addCommand('userCommands')
   ),
   importFolder<Trigger>('triggers', command =>
     client.triggers.set(command.regex, command.message)
   )
 ])
+
 const listener = app.listen(Number(process.env.PORT), () => {
   if (dev)
     console.log(`http://localhost:${(listener.address() as AddressInfo).port}`)
