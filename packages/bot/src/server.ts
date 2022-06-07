@@ -2,7 +2,6 @@ import {inlineCode} from '@discordjs/builders'
 import Koa from 'koa'
 import serve from 'koa-static'
 import {Client, type ClientEvents, type EventListener} from './Client.js'
-import {addListeners} from './commands/slash/rejoin.js'
 import {dev} from './constants.js'
 import {connect, fetchRejoinGuilds} from './database.js'
 import {
@@ -11,6 +10,7 @@ import {
   importFolder as utilsImportFolder,
   type KeysMatching
 } from './utils.js'
+import * as rejoin from './utils/rejoin.js'
 import type {AddressInfo} from 'node:net'
 import type {Collection} from 'discord.js'
 import type {
@@ -131,7 +131,12 @@ client.once('ready', async () => {
   // Initialise rejoin listeners
   // eslint-disable-next-line unicorn/no-array-for-each -- not array
   await fetchRejoinGuilds(database).forEach(({_id, rejoinFlags}) =>
-    addListeners(client, client.guilds.cache.get(_id)!, database, rejoinFlags)
+    rejoin.addListeners(
+      client,
+      client.guilds.cache.get(_id)!,
+      database,
+      rejoinFlags
+    )
   )
 
   console.log(`READY

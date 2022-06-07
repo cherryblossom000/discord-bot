@@ -1,19 +1,12 @@
 import {bold, inlineCode, SlashCommandBuilder} from '@discordjs/builders'
 import {Constants, type GuildMember, type Role} from 'discord.js'
-import {fetchValue, setValue} from '../../database.js'
-import {
-  checkIfAdmin,
-  checkPermissions,
-  fetchGuild,
-  inObject
-} from '../../utils.js'
+import {fetchValue} from '../../database.js'
+import {checkPermissions, fetchGuild, inObject} from '../../utils.js'
 import type {
   GuildSlashCommandInteraction,
   GuildOnlySlashCommand
 } from '../../types'
 
-const ENABLE = 'enable'
-const DISABLE = 'disable'
 const SET = 'set'
 const COLOUR = 'colour'
 const REMOVE = 'remove'
@@ -110,16 +103,6 @@ const command: GuildOnlySlashCommand = {
     .setDMPermission(false)
     .addSubcommand(subcommand =>
       subcommand
-        .setName(ENABLE)
-        .setDescription('Enable allowing users to change their colour.')
-    )
-    .addSubcommand(subcommand =>
-      subcommand
-        .setName(DISABLE)
-        .setDescription('Disable allowing users to change their colour.')
-    )
-    .addSubcommand(subcommand =>
-      subcommand
         .setName(SET)
         .setDescription('Set your colour.')
         .addStringOption(option =>
@@ -134,26 +117,6 @@ const command: GuildOnlySlashCommand = {
     ),
   usage: `You can use a hex colour or one of ${VALID_COLOURS}.`,
   async execute(interaction, database) {
-    const subCommand = interaction.options.getSubcommand()
-    const isEnable = subCommand === ENABLE
-    if (isEnable || subCommand === DISABLE) {
-      const guild = await fetchGuild(interaction)
-      if (!(await checkIfAdmin(interaction, guild))) return
-      if (isEnable && !(await checkPermissions(interaction, 'MANAGE_ROLES')))
-        return
-      await setValue(
-        database,
-        'guilds',
-        guild.id,
-        'enableColourRoles',
-        isEnable
-      )
-      await interaction.reply(
-        `Successfully ${isEnable ? 'enabled' : 'disabled'}! Noot noot.`
-      )
-      return
-    }
-
     if (
       !(
         (await fetchValue(
@@ -172,7 +135,9 @@ const command: GuildOnlySlashCommand = {
     }
 
     if (!(await checkPermissions(interaction, 'MANAGE_ROLES'))) return
-    await (subCommand === SET ? set : remove)(interaction)
+    await (interaction.options.getSubcommand() === SET ? set : remove)(
+      interaction
+    )
   }
 }
 export default command

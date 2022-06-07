@@ -3,6 +3,7 @@ import {
   ApplicationCommandOptionType,
   type APIApplicationCommandOption,
   type APIApplicationCommandSubcommandOption,
+  type APIApplicationCommandSubcommandGroupOption,
   type RESTPostAPIChatInputApplicationCommandsJSONBody
 } from 'discord-api-types/v9'
 import {
@@ -12,7 +13,7 @@ import {
   removeJSExtension,
   type FormatCommandSyntaxInput
 } from '../../utils.js'
-import type {EmbedFieldData} from 'discord.js'
+import type {EmbedFieldData, MessageEmbedOptions} from 'discord.js'
 import type {AnySlashCommand} from '../../types'
 
 const HELP = 'help'
@@ -24,6 +25,28 @@ const optionFields = (command: {
   command.options?.map(opt => ({
     name: opt.name,
     value: opt.description
+  }))
+
+const basicEmbed = (
+  name: string,
+  description: string,
+  usage?: string
+): MessageEmbedOptions => ({
+  title: name,
+  description: description + (usage === undefined ? '' : `\n${usage}`)
+})
+
+const subcommandEmbeds = (
+  name: string,
+  options: readonly APIApplicationCommandSubcommandOption[]
+): MessageEmbedOptions[] =>
+  options.map(subcommand => ({
+    title: `${name} ${subcommand.name}`,
+    description: formatCommandSyntax(subcommand as FormatCommandSyntaxInput, {
+      prefix: name,
+      includeDescription: true
+    }),
+    fields: optionFields(subcommand)
   }))
 
 let allCommands: string | undefined
@@ -76,34 +99,46 @@ You can send ${inlineCode(
     // TODO: fix @discordjs/builders types
     const cmd = data.toJSON() as RESTPostAPIChatInputApplicationCommandsJSONBody
     const {name, description, options} = cmd
-    const hasSubcommands =
-      options?.[0]?.type === ApplicationCommandOptionType.Subcommand
-    await interaction.reply({
-      embeds: [
-        {
-          title: name,
-          description: hasSubcommands
-            ? description + (usage === undefined ? '' : `\n${usage}`)
-            : formatCommandSyntax(cmd as FormatCommandSyntaxInput, {
-                includeDescription: true
-              }) + formatCommandUsage(usage),
-          fields: hasSubcommands ? undefined : optionFields(cmd)
-        },
-        ...(hasSubcommands
-          ? // For now I don't use any subcommand groups, so this is fine
-            (options as APIApplicationCommandSubcommandOption[]).map(c => ({
-              title: `${name} ${c.name}`,
+    const embeds: MessageEmbedOptions[] =
+      options?.[0]?.type === ApplicationCommandOptionType.SubcommandGroup
+        ? [
+            basicEmbed(name, description, usage),
+            ...(
+              options as APIApplicationCommandSubcommandGroupOption[]
+            ).flatMap(group => [
+              basicEmbed(group.name, group.description),
+              ...subcommandEmbeds(group.name, group.options!)
+            ])
+          ]
+        : options?.[0]?.type === ApplicationCommandOptionType.Subcommand
+        ? [
+            basicEmbed(name, description, usage),
+            ...subcommandEmbeds(
+              name,
+              options as APIApplicationCommandSubcommandOption[]
+            )
+          ]
+        : [
+            {
+              title: name,
               description:
-                formatCommandSyntax(c as FormatCommandSyntaxInput, {
-                  prefix: name,
+                formatCommandSyntax(cmd as FormatCommandSyntaxInput, {
                   includeDescription: true
                 }) + formatCommandUsage(usage),
-              fields: optionFields(c)
-            }))
-          : [])
-      ],
-      ephemeral: true
-    })
+              fields: optionFields(cmd)
+            }
+          ]
+    await interaction.reply({embeds: embeds.slice(0, 10), ephemeral: true})
+    if (embeds.length > 10) {
+      await Promise.all(
+        Array.from({length: Math.ceil(embeds.length / 10) - 1}, async (_, i) =>
+          interaction.followUp({
+            embeds: embeds.slice(10 * (i + 1), 10 * (i + 2)),
+            ephemeral: true
+          })
+        )
+      )
+    }
   }
 }
 export default command

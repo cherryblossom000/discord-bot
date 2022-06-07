@@ -1,4 +1,3 @@
-import {SlashCommandBuilder} from '@discordjs/builders'
 import {
   MemberRejoinFlags,
   addMemberRejoinInfo,
@@ -9,35 +8,27 @@ import {
   removeMember,
   setValue,
   type Db
-} from '../../database.js'
-import {
-  checkIfAdmin,
-  checkPermissions,
-  fetchGuild,
-  handleError
-} from '../../utils.js'
+} from '../database.js'
+import {checkPermissions, fetchGuild, handleError} from './utils.js'
 import type {Guild, GuildMember} from 'discord.js'
-import type {Client, Listener} from '../../Client'
-import type {
-  GuildSlashCommandInteraction,
-  GuildOnlySlashCommand
-} from '../../types'
+import type {Client, Listener} from '../Client'
+import type {GuildSlashCommandInteraction} from '../types'
 
-const fetchOwner = async (guild: Guild): Promise<GuildMember | undefined> =>
-  // eslint-disable-next-line unicorn/no-useless-undefined -- undefined not void
-  guild.fetchOwner().catch(() => undefined)
-
-const enum Mode {
+export const enum RejoinMode {
   Roles = 'roles',
   Nickname = 'nickname',
   Both = 'both'
 }
 
-const modeToFlags: Readonly<Record<Mode, MemberRejoinFlags>> = {
-  [Mode.Roles]: MemberRejoinFlags.Roles,
-  [Mode.Nickname]: MemberRejoinFlags.Nickname,
-  [Mode.Both]: MemberRejoinFlags.Roles | MemberRejoinFlags.Nickname
+const rejoinModeToFlags: Readonly<Record<RejoinMode, MemberRejoinFlags>> = {
+  [RejoinMode.Roles]: MemberRejoinFlags.Roles,
+  [RejoinMode.Nickname]: MemberRejoinFlags.Nickname,
+  [RejoinMode.Both]: MemberRejoinFlags.Roles | MemberRejoinFlags.Nickname
 }
+
+const fetchOwner = async (guild: Guild): Promise<GuildMember | undefined> =>
+  // eslint-disable-next-line unicorn/no-useless-undefined -- undefined not void
+  guild.fetchOwner().catch(() => undefined)
 
 export const addListeners = (
   client: Client,
@@ -134,7 +125,7 @@ ${owner} sorry, but you have to do this yourself.`
             }.${
               owner
                 ? `
-  ${owner} sorry, but when they rejoin, you may have to manually ${
+${owner} sorry, but when they rejoin, you may have to manually ${
                     enabledRoles ? 'assign their roles' : ''
                   }${enabledAll ? ' and/or ' : ''}${
                     enabledNickname ? 'set their nickname' : ''
@@ -155,7 +146,7 @@ ${owner} sorry, but you have to do this yourself.`
     })
 }
 
-const status = async (
+export const status = async (
   interaction: GuildSlashCommandInteraction,
   database: Db
 ): Promise<void> => {
@@ -175,15 +166,13 @@ const status = async (
   )
 }
 
-const set = async (
+export const set = async (
   interaction: GuildSlashCommandInteraction,
-  mode: Mode,
-  database: Db
+  database: Db,
+  mode: RejoinMode
 ): Promise<void> => {
+  const flags = rejoinModeToFlags[mode]
   const guild = await fetchGuild(interaction)
-  if (!(await checkIfAdmin(interaction, guild))) return
-
-  const flags = modeToFlags[mode]
   if (
     !(await checkPermissions(interaction, [
       ...(flags & MemberRejoinFlags.Roles ? (['MANAGE_ROLES'] as const) : []),
@@ -199,13 +188,10 @@ const set = async (
   await interaction.reply('Successfully enabled! Noot noot.')
 }
 
-const disable = async (
+export const disable = async (
   interaction: GuildSlashCommandInteraction,
   database: Db
 ): Promise<void> => {
-  const guild = await fetchGuild(interaction)
-  if (!(await checkIfAdmin(interaction, guild))) return
-
   const {client, guildId} = interaction
   const listeners = client.rejoinListeners.get(guildId)
   if (!listeners) {
@@ -219,62 +205,3 @@ const disable = async (
     .off('guildMemberRemove', listeners.guildMemberRemove)
     .rejoinListeners.delete(guildId)
 }
-
-const STATUS = 'status'
-const SET = 'set'
-const MODE = 'mode'
-const DISABLE = 'disable'
-
-const command: GuildOnlySlashCommand = {
-  data: new SlashCommandBuilder()
-    .setName('rejoin')
-    .setDescription(
-      'Manages settings for what to do when a member rejoins this server.'
-    )
-    .setDMPermission(false)
-    .addSubcommand(subcommand =>
-      subcommand
-        .setName(STATUS)
-        .setDescription('Get this server’s rejoining configuration.')
-    )
-    .addSubcommand(subcommand =>
-      subcommand
-        .setName(SET)
-        .setDescription('Configure what I do when a member rejoins the server.')
-        .addStringOption(option =>
-          option
-            .setName(MODE)
-            .setDescription('What to restore when a member rejoins the server.')
-            .setRequired(true)
-            .addChoices(
-              {name: 'roles', value: Mode.Roles},
-              {name: 'nickname', value: Mode.Nickname},
-              {name: 'both', value: Mode.Both}
-            )
-        )
-    )
-    .addSubcommand(subcommand =>
-      subcommand
-        .setName(DISABLE)
-        .setDescription(
-          'Stops doing anything when a member rejoins this server.'
-        )
-    ),
-  async execute(interaction, database) {
-    switch (interaction.options.getSubcommand()) {
-      case STATUS:
-        await status(interaction, database)
-        break
-      case SET:
-        await set(
-          interaction,
-          interaction.options.getString(MODE, true) as Mode,
-          database
-        )
-        break
-      case DISABLE:
-        await disable(interaction, database)
-    }
-  }
-}
-export default command
