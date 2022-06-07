@@ -21,6 +21,7 @@ import D, {
 import originalCleanStack from 'clean-stack'
 import * as undici from 'undici'
 import {dev, emojis, me} from '../constants.js'
+import type {APIMessage} from 'discord-api-types/v9'
 import type {Client} from '../Client'
 import type {
   CommandInteraction,
@@ -269,7 +270,9 @@ export const replyAndFetch: {
   >,
   mode = ReplyMode.REPLY
 ): Promise<Message> => {
-  const message = await interaction[
+  // TODO: investigate strange TS thing where it only sometimes thinks message
+  // can be void without this annotation
+  const message: APIMessage | D.Message = await interaction[
     mode === ReplyMode.REPLY
       ? 'reply'
       : mode === ReplyMode.EDIT_REPLY
@@ -283,9 +286,6 @@ export const replyAndFetch: {
           interaction.channelId
         ))! as TextBasedChannel
       ).messages.fetch(message.id)
-  // TODO: investigate strange TS thing where it only sometimes thinks message
-  // can be void in watch mode, editing file fixes things
-  // ).messages.fetch((message as Exclude<typeof message, void>).id)
 }
 
 export const deleteMessage = async (
