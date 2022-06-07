@@ -1,6 +1,6 @@
 import {SlashCommandBuilder} from '@discordjs/builders'
 import {setValue} from '../../database.js'
-import {checkIfAdmin, checkPermissions, fetchGuild} from '../../utils.js'
+import {checkPermissions} from '../../utils.js'
 import type {GuildOnlySlashCommand} from '../../types'
 
 const ENABLE = 'enable'
@@ -11,6 +11,7 @@ const command: GuildOnlySlashCommand = {
     .setName('pin')
     .setDescription('Manage settings for the ‘Pin Message’ command.')
     .setDMPermission(false)
+    .setDefaultMemberPermissions(0)
     .addSubcommand(subcommand =>
       subcommand
         .setName(ENABLE)
@@ -24,11 +25,15 @@ const command: GuildOnlySlashCommand = {
   async execute(interaction, database) {
     const subCommand = interaction.options.getSubcommand()
     const isEnable = subCommand === ENABLE
-    const guild = await fetchGuild(interaction)
-    if (!(await checkIfAdmin(interaction, guild))) return
     if (isEnable && !(await checkPermissions(interaction, 'MANAGE_MESSAGES')))
       return
-    await setValue(database, 'guilds', guild.id, 'enablePinning', isEnable)
+    await setValue(
+      database,
+      'guilds',
+      interaction.guildId,
+      'enablePinning',
+      isEnable
+    )
     await interaction.reply(
       `Successfully ${isEnable ? 'enabled' : 'disabled'}! Noot noot.`
     )
