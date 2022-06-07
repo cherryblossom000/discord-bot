@@ -272,13 +272,13 @@ export const replyAndFetch: {
 ): Promise<Message> => {
   // TODO: investigate strange TS thing where it only sometimes thinks message
   // can be void without this annotation
-  const message: APIMessage | D.Message = await interaction[
+  const message = (await interaction[
     mode === ReplyMode.REPLY
       ? 'reply'
       : mode === ReplyMode.EDIT_REPLY
       ? 'editReply'
       : 'followUp'
-  ]({...options, fetchReply: true})
+  ]({...options, fetchReply: true})) as APIMessage | D.Message
   return message instanceof D.Message
     ? message
     : (
