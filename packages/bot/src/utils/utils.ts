@@ -69,14 +69,14 @@ Body: ${body}`
 
 export const request = async (
   message: string,
-  url: string
+  url: URL | string
 ): Promise<undici.Dispatcher.ResponseData['body']> => {
   const {statusCode, body} = await undici.request(url)
   if (statusCode !== 200) {
     throw new RequestError(
       statusCode,
       message,
-      url,
+      url.toString(),
       await body
         .text()
         .then(codeBlock)
