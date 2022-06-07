@@ -125,15 +125,14 @@ const command: GuildOnlySlashCommand = {
         .addStringOption(option =>
           option
             .setName(COLOUR)
-            .setDescription(
-              'The colour, e.g. ‘#abcdef’ or ‘red’. Run the command for more info.'
-            )
+            .setDescription('The colour, e.g. ‘#abcdef’ or ‘red’.')
             .setRequired(true)
         )
     )
     .addSubcommand(subcommand =>
       subcommand.setName(REMOVE).setDescription('Remove your colour.')
     ),
+  usage: `You can use a hex colour or one of ${VALID_COLOURS}.`,
   async execute(interaction, database) {
     const subCommand = interaction.options.getSubcommand()
     const isEnable = subCommand === ENABLE
