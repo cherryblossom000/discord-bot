@@ -5,6 +5,7 @@ import {
   MessageButton,
   MessageEmbed,
   Util,
+  type InteractionReplyOptions,
   type User
 } from 'discord.js'
 import {dev, emojis} from '../../constants.js'
@@ -23,9 +24,11 @@ import {Difficulty, Type, fetchQuestion} from '../../opentdb.js'
 import {
   BACK,
   backButton,
+  backButtonDisabled,
   checkPermissions,
   fetchGuild,
   forwardButton,
+  forwardButtonDisabled,
   handleError,
   replyAndFetch,
   replyDeletable,
@@ -314,35 +317,41 @@ const leaderboard = async (
     return users
   }
 
-  const generateEmbed = async (start: number): Promise<MessageEmbed> => {
+  const messageOptions = async (
+    start: number
+  ): Promise<Pick<InteractionReplyOptions, 'components' | 'embeds'>> => {
     const users = await getUsers(start)
-    return new MessageEmbed()
-      .setTitle(
-        `Showing users ${start + 1}-${
-          start + users.length
-        } out of ${totalUsers}`
-      )
-      .addFields(
-        await Promise.all(
-          users.map(async ({_id: id, correct, total, percentage}, i) => ({
-            name: `${i + start + 1}. ${
-              (
-                await guild.members.fetch(id)
-              ).user.tag
-            }`,
-            value: formatPercentage(correct, total, percentage)
-          }))
-        )
-      )
+    return {
+      embeds: [
+        {
+          title: `Showing users ${start + 1}-${
+            start + users.length
+          } out of ${totalUsers}`,
+          fields: await Promise.all(
+            users.map(async ({_id: id, correct, total, percentage}, i) => ({
+              name: `${i + start + 1}. ${
+                (
+                  await guild.members.fetch(id)
+                ).user.tag
+              }`,
+              value: formatPercentage(correct, total, percentage)
+            }))
+          )
+        }
+      ],
+      components: [
+        new MessageActionRow({
+          components: [
+            start ? backButton : backButtonDisabled,
+            start + 10 < totalUsers ? forwardButton : forwardButtonDisabled
+          ]
+        })
+      ]
+    }
   }
 
   const canFitOnOnePage = totalUsers <= 10
-  const embedMessage = await replyAndFetch(interaction, {
-    embeds: [await generateEmbed(0)],
-    components: canFitOnOnePage
-      ? []
-      : [new MessageActionRow({components: [forwardButton]})]
-  })
+  const embedMessage = await replyAndFetch(interaction, await messageOptions(0))
   if (canFitOnOnePage) return
 
   const collector = embedMessage.createMessageComponentCollector()
@@ -361,17 +370,7 @@ const leaderboard = async (
       buttonInteraction.customId === BACK
         ? (currentIndex -= 10)
         : (currentIndex += 10)
-      await buttonInteraction.update({
-        embeds: [await generateEmbed(currentIndex)],
-        components: [
-          new MessageActionRow({
-            components: [
-              ...(currentIndex ? [backButton] : []),
-              ...(currentIndex + 10 < totalUsers ? [forwardButton] : [])
-            ]
-          })
-        ]
-      })
+      await buttonInteraction.update(await messageOptions(currentIndex))
     } catch (error) {
       handleError(
         interaction.client,
