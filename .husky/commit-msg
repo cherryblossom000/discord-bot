@@ -1,5 +1,10 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
+if type dum > /dev/null
+  then alias run=dum
+  else alias run=pnpm
+fi
+
 # https://github.com/conventional-changelog/commitlint/issues/2742
-dum is-ci || dum commitlint -g commitlint.config.cjs -e $1
+run is-ci || run commitlint -g commitlint.config.cjs -e $1
