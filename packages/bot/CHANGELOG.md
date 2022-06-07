@@ -1,5 +1,13 @@
 # Changelog
 
+# [4.3.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@4.2.4...@comrade-pingu/bot@4.3.0) (2022-06-07)
+
+
+### Features
+
+* **bot:** add urban command ([bf1ed6c](https://github.com/cherryblossom000/comrade-pingu/commit/bf1ed6c8f39b7210b3d75fb26803dc39ac1b4268))
+* **bot:** rework `rotate` command so it’s a lot nicer to use ([77e213f](https://github.com/cherryblossom000/comrade-pingu/commit/77e213f3a054635ea1023c1759159eb9e6296b02))
+
 ## [4.2.4](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@4.2.3...@comrade-pingu/bot@4.2.4) (2022-03-05)
 
 
