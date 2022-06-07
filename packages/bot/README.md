@@ -26,7 +26,7 @@ permission and then use
 | `colour` | Change your colour (using a role). | `/colour enable`: Enable allowing users to change their colour.<br><br>`/colour disable`: Disable allowing users to change their colour.<br><br>`/colour set <colour: string>`: Set your colour.<br>`colour`: The colour, e.g. ‘#abcdef’ or ‘red’. Run the command for more info.<br><br>`/colour remove`: Remove your colour. |
 | `dog` | Gets a random image of a dog from random.dog. | `/dog` |
 | `emoji` | Gets the image for an emoji. | `/emoji <emoji: string>`<br>`emoji`: The emoji to get the image of. |
-| `help` | Lists all my commands or gets info about a specific command. | `/help [command: calculate\|colour\|dog\|emoji\|eval\|icon\|info\|invite\|maths\|meme\|pin\|ping\|profile\|rejoin\|rotate\|server\|stats\|timezone\|trivia\|uptime\|website]`<br>`command`: The command that you want to get info about. If omitted, all the commands will be listed. |
+| `help` | Lists all my commands or gets info about a specific command. | `/help [command: calculate\|colour\|dog\|emoji\|eval\|icon\|info\|invite\|maths\|meme\|pin\|ping\|profile\|rejoin\|server\|stats\|timezone\|trivia\|uptime\|website]`<br>`command`: The command that you want to get info about. If omitted, all the commands will be listed. |
 | `icon` | Gets the server icon. | `/icon` |
 | `info` | Gets info about me. | `/info` |
 | `invite` | Gets my invite link. | `/invite` |
@@ -36,7 +36,6 @@ permission and then use
 | `ping` | Gets my current latency. | `/ping` |
 | `profile` | Gets information on a user. | `/profile [user: user]`<br>`user`: The user to display information about. Defaults to you. |
 | `rejoin` | Manages settings for what to do when a member rejoins this server. | `/rejoin status`: Get this server’s rejoining configuration.<br><br>`/rejoin set <mode: roles\|nickname\|both>`: Configure what I do when a member rejoins the server.<br>`mode`: What to restore when a member rejoins the server.<br><br>`/rejoin disable`: Stops doing anything when a member rejoins this server. |
-| `rotate` | Rotates an image. | `/rotate <angle: number> [attachment: integer]`<br>`angle`: The angle in degrees to rotate the image clockwise. Negative values work as well!<br>`attachment`: The index of the attachment/image you want to rotate. Defaults to 1 (the first image).<br><br>Use Rotate Image after right-clicking on a message with the image you want to rotate, and then use this command. Negative angles rotate the image counterclockwise. |
 | `server` | Gets information on this server. | `/server` |
 | `stats` | Gets my stats. | `/stats` |
 | `timezone` | Manages time zone preferences for commands such as `profile` that show times. | `/timezone [timezone: string]`<br>`timezone`: An IANA time zone. Spaces will be automatically converted into underscores.<br><br>See [here](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) for a list of timezones. |
