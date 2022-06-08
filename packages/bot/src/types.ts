@@ -63,6 +63,9 @@ export type UserContextMenuCommand =
   | AnyUserContextMenuCommand
   | GuildOnlyUserContextMenuCommand
 
+// TODO: figure out how to make ESLInt resolve @comrade-pingu/bot/dist/src/types
+// to this file
+// eslint-disable-next-line import/no-unused-modules -- is used in scripts
 export type ContextMenuCommand =
   | MessageContextMenuCommand
   | UserContextMenuCommand
