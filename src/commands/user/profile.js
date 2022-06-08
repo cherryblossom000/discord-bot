@@ -1,4 +1,4 @@
-import { hyperlink } from '@discordjs/builders';
+import { ContextMenuCommandBuilder, hyperlink } from '@discordjs/builders';
 import { fetchTimeZone } from '../../database.js';
 import { checkPermissions, createDateFormatter, fetchGuild, formatBoolean, imageField, startCase, upperFirst } from '../../utils.js';
 const formatStatus = (status) => status === 'dnd' ? 'Do Not Disturb' : upperFirst(status);
@@ -6,7 +6,7 @@ const userInfoFields = (user, avatarURL, formatDate) => {
     const { avatar, createdAt, id } = user;
     const flags = user.flags?.toArray();
     return [
-        { name: 'ID', value: id },
+        { name: 'Id', value: id },
         { name: 'Joined Discord', value: formatDate(createdAt) },
         imageField(`Avatar${avatar == null ? ' (Default)' : ''}`, avatarURL),
         ...((flags?.length ?? 0)
@@ -16,7 +16,8 @@ const userInfoFields = (user, avatarURL, formatDate) => {
                     value: flags
                         .map(flag => startCase(flag)
                         .replace('Hypesquad', 'HypeSquad')
-                        .replace('Bughunter', 'Bug Hunter'))
+                        .replace('Bughunter', 'Bug Hunter')
+                        .replace('Http', 'HTTP'))
                         .join('\n')
                 }
             ]
@@ -114,7 +115,7 @@ Streaming: ${formatBoolean(streaming)}`
         : [])
 ];
 const command = {
-    name: 'Profile',
+    data: new ContextMenuCommandBuilder().setName('Profile'),
     async execute(interaction, database) {
         if (!(await checkPermissions(interaction, 'EMBED_LINKS')))
             return;

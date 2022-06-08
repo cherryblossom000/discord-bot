@@ -1,4 +1,5 @@
 import { inlineCode } from '@discordjs/builders';
+import * as D from 'discord-api-types/v9';
 export const createDateFormatter = (timeZone) => {
     const format = new Intl.DateTimeFormat('en-AU', {
         dateStyle: 'short',
@@ -13,14 +14,15 @@ export const createDateFormatter = (timeZone) => {
 };
 export const formatBoolean = (boolean) => boolean ?? false ? 'Yes' : 'No';
 const optionsToString = {
-    [3]: 'string',
-    [4]: 'integer',
-    [5]: 'boolean',
-    [6]: 'user',
-    [7]: 'channel',
-    [8]: 'role',
-    [9]: 'mentionable',
-    [10]: 'number'
+    [D.ApplicationCommandOptionType.String]: 'string',
+    [D.ApplicationCommandOptionType.Integer]: 'integer',
+    [D.ApplicationCommandOptionType.Boolean]: 'boolean',
+    [D.ApplicationCommandOptionType.User]: 'user',
+    [D.ApplicationCommandOptionType.Channel]: 'channel',
+    [D.ApplicationCommandOptionType.Role]: 'role',
+    [D.ApplicationCommandOptionType.Mentionable]: 'mentionable',
+    [D.ApplicationCommandOptionType.Number]: 'number',
+    [D.ApplicationCommandOptionType.Attachment]: 'attachment'
 };
 export const formatCommandSyntax = ({ name, description, options = [] }, { prefix, includeDescription = false, pipeChar = '|' } = {}) => {
     const resolvedPrefix = prefix === undefined ? '' : `${prefix} `;

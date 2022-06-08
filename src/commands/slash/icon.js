@@ -3,8 +3,8 @@ import { checkPermissions, fetchGuild, replyDeletable } from '../../utils.js';
 const command = {
     data: new SlashCommandBuilder()
         .setName('icon')
-        .setDescription('Gets the server icon.'),
-    guildOnly: true,
+        .setDescription('Gets the server icon.')
+        .setDMPermission(false),
     async execute(interaction) {
         if (!(await checkPermissions(interaction, 'ATTACH_FILES')))
             return;

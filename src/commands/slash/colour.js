@@ -1,9 +1,7 @@
 import { bold, inlineCode, SlashCommandBuilder } from '@discordjs/builders';
 import { Constants } from 'discord.js';
-import { fetchValue, setValue } from '../../database.js';
-import { checkIfAdmin, checkPermissions, fetchGuild } from '../../utils.js';
-const ENABLE = 'enable';
-const DISABLE = 'disable';
+import { fetchValue } from '../../database.js';
+import { checkPermissions, fetchGuild, inObject } from '../../utils.js';
 const SET = 'set';
 const COLOUR = 'colour';
 const REMOVE = 'remove';
@@ -20,7 +18,7 @@ const VALID_COLOURS = Object.keys(COLOURS)
     .join(', ');
 const parseColour = (string) => {
     const input = string.toUpperCase().replaceAll('-', '_').replaceAll(' ', '_');
-    if (input in COLOURS)
+    if (inObject(COLOURS, input))
         return COLOURS[input];
     const hex = input.startsWith('#') ? input.slice(1) : input;
     return SHORT_HEX_RE.test(hex)
@@ -72,34 +70,17 @@ const command = {
     data: new SlashCommandBuilder()
         .setName('colour')
         .setDescription('Change your colour (using a role).')
-        .addSubcommand(subcommand => subcommand
-        .setName(ENABLE)
-        .setDescription('Enable allowing users to change their colour.'))
-        .addSubcommand(subcommand => subcommand
-        .setName(DISABLE)
-        .setDescription('Disable allowing users to change their colour.'))
+        .setDMPermission(false)
         .addSubcommand(subcommand => subcommand
         .setName(SET)
         .setDescription('Set your colour.')
         .addStringOption(option => option
         .setName(COLOUR)
-        .setDescription('The colour, e.g. ‘#abcdef’ or ‘red’. Run the command for more info.')
+        .setDescription('The colour, e.g. ‘#abcdef’ or ‘red’.')
         .setRequired(true)))
         .addSubcommand(subcommand => subcommand.setName(REMOVE).setDescription('Remove your colour.')),
-    guildOnly: true,
+    usage: `You can use a hex colour or one of ${VALID_COLOURS}.`,
     async execute(interaction, database) {
-        const subCommand = interaction.options.getSubcommand();
-        const isEnable = subCommand === ENABLE;
-        if (isEnable || subCommand === DISABLE) {
-            const guild = await fetchGuild(interaction);
-            if (!(await checkIfAdmin(interaction, guild)))
-                return;
-            if (isEnable && !(await checkPermissions(interaction, 'MANAGE_ROLES')))
-                return;
-            await setValue(database, 'guilds', guild.id, 'enableColourRoles', isEnable);
-            await interaction.reply(`Successfully ${isEnable ? 'enabled' : 'disabled'}! Noot noot.`);
-            return;
-        }
         if (!((await fetchValue(database, 'guilds', interaction.guildId, 'enableColourRoles')) ?? false)) {
             await interaction.reply({
                 content: 'You can’t change your colour in this server! Noot noot.',
@@ -109,7 +90,7 @@ const command = {
         }
         if (!(await checkPermissions(interaction, 'MANAGE_ROLES')))
             return;
-        await (subCommand === SET ? set : remove)(interaction);
+        await (interaction.options.getSubcommand() === SET ? set : remove)(interaction);
     }
 };
 export default command;

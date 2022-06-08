@@ -13,9 +13,12 @@ export const emojis = {
     cross: '❌',
     clock: '🕒',
     smirk: '😏',
-    thumbsUp: '👍'
+    thumbsUp: '👍',
+    anticlockwise: '⤴️',
+    clockwise: '⤵️'
 };
 export const defaultTimeZone = 'UTC';
+export const timeout = dev ? 5000 : 60000;
 export const pinguNouns = [
     'bots?',
     'pingu',

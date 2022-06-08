@@ -14,10 +14,7 @@ const command = {
         .setName(MEME)
         .setDescription('The meme to get.')
         .setRequired(true)
-        .addChoices([
-        [IWMELC, "iwmelc"],
-        [HTKB, "htkb"]
-    ])),
+        .addChoices({ name: IWMELC, value: "iwmelc" }, { name: HTKB, value: "htkb" })),
     usage: `!${hyperlink(IWMELC, './assets/img/iwmelc.jpg')}<br><img src="./assets/img/htkb.jpg" alt="${HTKB}" width="320">`,
     async execute(interaction) {
         if (!(await checkPermissions(interaction, 'ATTACH_FILES')))

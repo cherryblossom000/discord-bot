@@ -32,12 +32,6 @@ export class Client extends D.Client {
             writable: true,
             value: new Collection()
         });
-        Object.defineProperty(this, "rotateAttachments", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: new Collection()
-        });
     }
     setActivity() {
         this.user.setActivity(`capitalist scum in ${this.guilds.cache.size} servers`, { type: 'WATCHING' });

@@ -10,13 +10,6 @@ const listener = (client, database) => {
             handleError(client, new Error(`Command ${commandName} not found`));
             return;
         }
-        if ((command.guildOnly ?? false) && !interaction.inGuild()) {
-            await interaction.reply({
-                content: 'This command is only available in servers! Noot noot.',
-                ephemeral: true
-            });
-            return;
-        }
         await command
             .execute(interaction, database)
             .catch(handleInteractionError(interaction));

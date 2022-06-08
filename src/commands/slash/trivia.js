@@ -3,7 +3,7 @@ import { Collection, MessageActionRow, MessageButton, MessageEmbed, Util } from 
 import { dev, emojis } from '../../constants.js';
 import { addTriviaQuestion, aggregateTriviaUsers, collection, fetchValue, triviaUsersCount, triviaUsersCountQuery } from '../../database.js';
 import { Difficulty, fetchQuestion } from '../../opentdb.js';
-import { checkPermissions, handleError, fetchGuild, replyAndFetch, replyDeletable, shuffle } from '../../utils.js';
+import { BACK, backButton, backButtonDisabled, checkPermissions, fetchGuild, forwardButton, forwardButtonDisabled, handleError, replyAndFetch, replyDeletable, shuffle } from '../../utils.js';
 const TRUE = 'true';
 const FALSE = 'false';
 const booleanButtons = [
@@ -20,20 +20,6 @@ const booleanButtons = [
         emoji: emojis.cross
     })
 ];
-const BACK = 'back';
-const FORWARD = 'forward';
-const backButton = new MessageButton({
-    style: 'SECONDARY',
-    label: 'Back',
-    emoji: emojis.left,
-    customId: BACK
-});
-const forwardButton = new MessageButton({
-    style: 'SECONDARY',
-    label: 'Forward',
-    emoji: emojis.right,
-    customId: FORWARD
-});
 const format = (answer) => typeof answer === 'boolean' ? (answer ? 'True' : 'False') : answer;
 const play = async (interaction, database) => {
     const { client, user } = interaction;
@@ -201,22 +187,30 @@ const leaderboard = async (interaction, database) => {
         usersCache.set(skip, users);
         return users;
     };
-    const generateEmbed = async (start) => {
+    const messageOptions = async (start) => {
         const users = await getUsers(start);
-        return new MessageEmbed()
-            .setTitle(`Showing users ${start + 1}-${start + users.length} out of ${totalUsers}`)
-            .addFields(await Promise.all(users.map(async ({ _id: id, correct, total, percentage }, i) => ({
-            name: `${i + start + 1}. ${(await guild.members.fetch(id)).user.tag}`,
-            value: formatPercentage(correct, total, percentage)
-        }))));
+        return {
+            embeds: [
+                {
+                    title: `Showing users ${start + 1}-${start + users.length} out of ${totalUsers}`,
+                    fields: await Promise.all(users.map(async ({ _id: id, correct, total, percentage }, i) => ({
+                        name: `${i + start + 1}. ${(await guild.members.fetch(id)).user.tag}`,
+                        value: formatPercentage(correct, total, percentage)
+                    })))
+                }
+            ],
+            components: [
+                new MessageActionRow({
+                    components: [
+                        start ? backButton : backButtonDisabled,
+                        start + 10 < totalUsers ? forwardButton : forwardButtonDisabled
+                    ]
+                })
+            ]
+        };
     };
     const canFitOnOnePage = totalUsers <= 10;
-    const embedMessage = await replyAndFetch(interaction, {
-        embeds: [await generateEmbed(0)],
-        components: canFitOnOnePage
-            ? []
-            : [new MessageActionRow({ components: [forwardButton] })]
-    });
+    const embedMessage = await replyAndFetch(interaction, await messageOptions(0));
     if (canFitOnOnePage)
         return;
     const collector = embedMessage.createMessageComponentCollector();
@@ -233,17 +227,7 @@ const leaderboard = async (interaction, database) => {
             buttonInteraction.customId === BACK
                 ? (currentIndex -= 10)
                 : (currentIndex += 10);
-            await buttonInteraction.update({
-                embeds: [await generateEmbed(currentIndex)],
-                components: [
-                    new MessageActionRow({
-                        components: [
-                            ...(currentIndex ? [backButton] : []),
-                            ...(currentIndex + 10 < totalUsers ? [forwardButton] : [])
-                        ]
-                    })
-                ]
-            });
+            await buttonInteraction.update(await messageOptions(currentIndex));
         }
         catch (error) {
             handleError(interaction.client, error, 'trivia leaderboard: collect collector event', { to: interaction });

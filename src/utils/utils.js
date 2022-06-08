@@ -1,9 +1,51 @@
 import path from 'node:path';
 import { homedir } from 'node:os';
-import { bold, codeBlock, hyperlink } from '@discordjs/builders';
+import { bold, codeBlock, hyperlink, inlineCode } from '@discordjs/builders';
+import D, { Constants, DiscordAPIError, MessageButton } from 'discord.js';
 import originalCleanStack from 'clean-stack';
-import D, { Constants, DiscordAPIError } from 'discord.js';
-import { dev, me } from '../constants.js';
+import * as undici from 'undici';
+import { dev, emojis, me } from '../constants.js';
+export const inObject = (object, key) => key in object;
+class RequestError extends Error {
+    constructor(statusCode, message, url, body) {
+        super(`${message} (url: ${url}) failed with status code ${statusCode}
+Body: ${body}`);
+        Object.defineProperty(this, "statusCode", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: statusCode
+        });
+        Object.defineProperty(this, "url", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: url
+        });
+        Object.defineProperty(this, "body", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: body
+        });
+        Object.defineProperty(this, "name", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: 'RequestError'
+        });
+    }
+}
+export const request = async (message, url) => {
+    const { statusCode, body } = await undici.request(url);
+    if (statusCode !== 200) {
+        throw new RequestError(statusCode, message, url.toString(), await body
+            .text()
+            .then(codeBlock)
+            .catch(error => `${inlineCode('body.text()')} failed: ${error}`));
+    }
+    return body;
+};
 const stackBasePath = path.join(homedir(), ...(dev
     ? ['dev', 'node', 'comrade-pingu', 'packages', 'bot']
     : ['comrade-pingu']));
@@ -69,23 +111,27 @@ ${debugInteractionDetails(interaction)}`);
     return channel;
 };
 export const fetchGuild = async ({ client, guildId }) => client.guilds.fetch(guildId);
-export const replyAndFetch = async (interaction, options, followUp = false) => {
-    const opts = {
-        ...options,
-        fetchReply: true
-    };
-    const message = await (followUp
-        ? interaction.followUp(opts)
-        : interaction.reply(opts));
+export const replyAndFetch = async (interaction, options, mode = 0) => {
+    const message = (await interaction[mode === 0
+        ? 'reply'
+        : mode === 1
+            ? 'editReply'
+            : 'followUp']({ ...options, fetchReply: true }));
     return message instanceof D.Message
         ? message
         : (await interaction.client.channels.fetch(interaction.channelId)).messages.fetch(message.id);
+};
+export const deleteMessage = async (client, channelId, messageId) => {
+    await client['api']
+        .channels(channelId)
+        .messages(messageId)
+        .delete();
 };
 export const checkPermissions = async (interaction, permissions) => {
     if (!interaction.inGuild())
         return true;
     const { client, guildId } = interaction;
-    const channel = (await fetchChannel(interaction));
+    const channel = await fetchChannel(interaction);
     const channelPermissions = channel.permissionsFor(client.user);
     if (channelPermissions?.has(permissions) !== true) {
         const neededPermissions = Array.isArray(permissions)
@@ -117,4 +163,34 @@ export const imageField = (name, url) => ({
     name,
     value: hyperlink('Link', url)
 });
+export const BACK = 'back';
+export const FORWARD = 'forward';
+const backButtonOptions = {
+    style: 'SECONDARY',
+    label: 'Back',
+    emoji: emojis.left,
+    customId: BACK
+};
+const forwardButtonOptions = {
+    style: 'SECONDARY',
+    label: 'Forward',
+    emoji: emojis.right,
+    customId: FORWARD
+};
+export const backButton = new MessageButton(backButtonOptions);
+export const forwardButton = new MessageButton(forwardButtonOptions);
+export const backButtonDisabled = new MessageButton({
+    ...backButtonOptions,
+    disabled: true
+});
+export const forwardButtonDisabled = new MessageButton({
+    ...forwardButtonOptions,
+    disabled: true
+});
+export const timeoutFollowUp = async (interaction) => {
+    await interaction.followUp({
+        content: 'You took too long to answer.',
+        ephemeral: true
+    });
+};
 //# sourceMappingURL=utils.js.map

@@ -4,8 +4,8 @@ import { checkPermissions, createDateFormatter, fetchGuild, formatBoolean, image
 const command = {
     data: new SlashCommandBuilder()
         .setName('server')
-        .setDescription('Gets information on this server.'),
-    guildOnly: true,
+        .setDescription('Gets information on this server.')
+        .setDMPermission(false),
     async execute(interaction, database) {
         const { client, user } = interaction;
         if (!(await checkPermissions(interaction, 'EMBED_LINKS')))
@@ -17,9 +17,9 @@ const command = {
             if (channelId === null)
                 return [];
             const suffix = getSuffix();
-            const channel = await client.channels
+            const channel = (await client.channels
                 .fetch(channelId)
-                .catch(() => undefined);
+                .catch(() => undefined));
             return [
                 channel
                     ? {

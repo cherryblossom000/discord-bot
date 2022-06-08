@@ -2,10 +2,10 @@ import { inlineCode } from '@discordjs/builders';
 import Koa from 'koa';
 import serve from 'koa-static';
 import { Client } from './Client.js';
-import { addListeners } from './commands/slash/rejoin.js';
 import { dev } from './constants.js';
 import { connect, fetchRejoinGuilds } from './database.js';
 import { commandFiles, handleError, importFolder as utilsImportFolder } from './utils.js';
+import * as rejoin from './utils/rejoin.js';
 import 'dotenv/config';
 const assetsFolder = new URL('../assets/', import.meta.url);
 const app = new Koa();
@@ -68,21 +68,21 @@ const importFolder = async (folderPath, fn, files) => {
 };
 client.once('ready', async () => {
     client.setActivity();
-    await fetchRejoinGuilds(database).forEach(({ _id, rejoinFlags }) => addListeners(client, client.guilds.cache.get(_id), database, rejoinFlags));
+    await fetchRejoinGuilds(database).forEach(({ _id, rejoinFlags }) => rejoin.addListeners(client, client.guilds.cache.get(_id), database, rejoinFlags));
     console.log(`READY
   Users: ${client.users.cache.size}
   Channels: ${client.channels.cache.size}
   Guilds: ${client.guilds.cache.size}`);
 });
-await importFolder('events', (listener, name) => client.on(name, listener(client, database)));
-const addContextMenuCommand = (collectionKey) => (command) => {
+const addCommand = (collectionKey) => (command) => {
     ;
-    client[collectionKey].set(command.name, command);
+    client[collectionKey].set(command.data.name, command);
 };
 await Promise.all([
-    importFolder('commands/slash', command => client.slashCommands.set(command.data.name, command), commandFiles),
-    importFolder('commands/message', addContextMenuCommand('messageCommands')),
-    importFolder('commands/user', addContextMenuCommand('userCommands')),
+    importFolder('events', (listener, name) => client.on(name, listener(client, database))),
+    importFolder('commands/slash', addCommand('slashCommands'), commandFiles),
+    importFolder('commands/message', addCommand('messageCommands')),
+    importFolder('commands/user', addCommand('userCommands')),
     importFolder('triggers', command => client.triggers.set(command.regex, command.message))
 ]);
 const listener = app.listen(Number(process.env.PORT), () => {
