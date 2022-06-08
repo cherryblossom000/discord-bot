@@ -26,7 +26,6 @@ import type {Client} from '../Client'
 import type {
   CommandInteraction,
   GuildCommandInteraction,
-  GuildSlashCommandInteraction,
   InGuildCacheType
 } from '../types'
 
@@ -333,24 +332,6 @@ To fix this, ask an admin or the owner of the server to add th${
       }${permissionsString} to ${(
         await client.guilds.fetch(guildId)
       ).me!.roles.cache.find(role => role.managed)!}.`,
-      ephemeral: true
-    })
-    return false
-  }
-  return true
-}
-
-export const checkIfAdmin = async (
-  interaction: GuildSlashCommandInteraction,
-  guild: Guild
-): Promise<boolean> => {
-  if (
-    !(await guild.members.fetch(interaction.user.id)).permissions.has(
-      'ADMINISTRATOR'
-    )
-  ) {
-    await interaction.reply({
-      content: 'This command can only be used by an administrator!',
       ephemeral: true
     })
     return false
