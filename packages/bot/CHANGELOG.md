@@ -1,5 +1,19 @@
 # Changelog
 
+# [5.0.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@4.3.0...@comrade-pingu/bot@5.0.0) (2022-06-08)
+
+
+### Features
+
+* **bot:** add `settings` command ([7d2f40a](https://github.com/cherryblossom000/comrade-pingu/commit/7d2f40aabbcdc83f411ea2a48cf227e8a03b5a58))
+* **bot:** server-only commands don’t show up in DMs ([1a772ac](https://github.com/cherryblossom000/comrade-pingu/commit/1a772ac01fffaf2b5279c7da5bd8dda39551982a))
+* **bot/colour:** add more info to help description ([10da90f](https://github.com/cherryblossom000/comrade-pingu/commit/10da90fee977d9d1518cd69a5afa04d2b0acdd16))
+
+
+### BREAKING CHANGES
+
+* **bot:** Removed commands: /colour enable, /colour disable, /rejoin, /pin
+
 # [4.3.0](https://github.com/cherryblossom000/comrade-pingu/compare/@comrade-pingu/bot@4.2.4...@comrade-pingu/bot@4.3.0) (2022-06-07)
 
 
