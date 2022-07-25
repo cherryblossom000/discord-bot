@@ -333,10 +333,14 @@ To fix this, ask an admin or the owner of the server to add th${
 	return true
 }
 
-export const imageField = (name: string, url: string): APIEmbedField => ({
+export const inlineField = (name: string, value: string): APIEmbedField => ({
 	name,
-	value: hyperlink('Link', url)
+	value,
+	inline: true
 })
+
+export const imageField = (name: string, url: string): APIEmbedField =>
+	inlineField(name, hyperlink('Link', url))
 
 export const BACK = 'back'
 export const FORWARD = 'forward'

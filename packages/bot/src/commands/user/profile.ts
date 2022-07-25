@@ -18,6 +18,7 @@ import {
 	fetchGuild,
 	formatBoolean,
 	imageField,
+	inlineField as f,
 	pascalToStartCase,
 	upperFirst,
 	type DateFormatter
@@ -37,21 +38,21 @@ const userInfoFields = (
 	const flags = user.flags?.toArray()
 
 	return [
-		{name: 'Id', value: id},
-		{name: 'Joined Discord', value: formatDate(createdAt)},
+		f('Id', id),
+		f('Joined Discord', formatDate(createdAt)),
 		imageField(`Avatar${avatar == null ? ' (Default)' : ''}`, avatarURL),
 		...(flags?.length ?? 0
 			? [
-					{
-						name: 'Flags',
-						value: flags!
+					f(
+						'Flags',
+						flags!
 							.map(flag =>
 								pascalToStartCase(flag)
 									.replace('Hypesquad', 'HypeSquad')
 									.replace('Http', 'HTTP')
 							)
 							.join('\n')
-					}
+					)
 			  ]
 			: [])
 	]
@@ -69,26 +70,25 @@ const presenceFields = (
 		: undefined
 
 	return [
-		{
-			name: 'Status',
-			value: `**${formatStatus(status)}**${
+		f(
+			'Status',
+			`**${formatStatus(status)}**${
 				clientStatuses?.length ?? 0
 					? `\n${clientStatuses!
 							.map(([k, v]) => `${upperFirst(k)}: ${formatStatus(v)}`)
 							.join('\n')}`
 					: ''
 			}`
-		},
+		),
 		...(activities.length
-			? activities.map(activity => ({
-					name:
+			? activities.map(activity =>
+					f(
 						ActivityType[activity.type]! +
-						(activity.type === ActivityType.Listening
-							? ' to'
-							: activity.type === ActivityType.Competing
-							? ' in'
-							: ''),
-					value:
+							(activity.type === ActivityType.Listening
+								? ' to'
+								: activity.type === ActivityType.Competing
+								? ' in'
+								: ''),
 						activity.type === ActivityType.Custom
 							? (activity.emoji
 									? `${
@@ -98,38 +98,39 @@ const presenceFields = (
 									  } `
 									: '') + activity.state!
 							: activity.name +
-							  (activity.state == null ? '' : `\nState: ${activity.state}`) +
-							  (activity.details == null
-									? ''
-									: `\nDetails: ${activity.details}`) +
-							  (activity.url == null
-									? ''
-									: `\n${hyperlink('URL', activity.url)}`) +
-							  (Number.isNaN(activity.createdAt.getTime())
-									? ''
-									: `\nStart: ${formatDate(activity.createdAt)}`) +
-							  (activity.timestamps?.end
-									? `\nEnd: ${formatDate(activity.timestamps.end)}`
-									: '') +
-							  (activity.assets?.largeText == null
-									? ''
-									: `\nLarge Text: ${activity.assets.largeText}`) +
-							  (activity.assets?.largeImage == null
-									? ''
-									: `\n${hyperlink(
-											'Large Image URL',
-											activity.assets.largeImageURL()!
-									  )}`) +
-							  (activity.assets?.smallText == null
-									? ''
-									: `\nSmall Text: ${activity.assets.smallText}`) +
-							  (activity.assets?.smallImage == null
-									? ''
-									: `\n${hyperlink(
-											'Small Image URL',
-											activity.assets.smallImageURL()!
-									  )}`)
-			  }))
+									(activity.state == null ? '' : `\nState: ${activity.state}`) +
+									(activity.details == null
+										? ''
+										: `\nDetails: ${activity.details}`) +
+									(activity.url == null
+										? ''
+										: `\n${hyperlink('URL', activity.url)}`) +
+									(Number.isNaN(activity.createdAt.getTime())
+										? ''
+										: `\nStart: ${formatDate(activity.createdAt)}`) +
+									(activity.timestamps?.end
+										? `\nEnd: ${formatDate(activity.timestamps.end)}`
+										: '') +
+									(activity.assets?.largeText == null
+										? ''
+										: `\nLarge Text: ${activity.assets.largeText}`) +
+									(activity.assets?.largeImage == null
+										? ''
+										: `\n${hyperlink(
+												'Large Image URL',
+												activity.assets.largeImageURL()!
+										  )}`) +
+									(activity.assets?.smallText == null
+										? ''
+										: `\nSmall Text: ${activity.assets.smallText}`) +
+									(activity.assets?.smallImage == null
+										? ''
+										: `\n${hyperlink(
+												'Small Image URL',
+												activity.assets.smallImageURL()!
+										  )}`)
+					)
+			  )
 			: [])
 	]
 }
@@ -155,34 +156,32 @@ const memberInfoFields = (
 	formatDate: DateFormatter
 ): readonly APIEmbedField[] => [
 	...(presence ? presenceFields(presence, formatDate) : []),
-	...(joinedAt
-		? [{name: 'Joined this Server', value: formatDate(joinedAt)}]
-		: []),
+	...(joinedAt ? [f('Joined this Server', formatDate(joinedAt))] : []),
 	...(premiumSince
-		? [{name: 'Boosting this server since', value: formatDate(premiumSince)}]
+		? [f('Boosting this server since', formatDate(premiumSince))]
 		: []),
-	...(nickname === null ? [] : [{name: 'Nickname', value: nickname}]),
+	...(nickname === null ? [] : [f('Nickname', nickname)]),
 	...(roles.cache.size > 1
 		? [
-				{
-					name: 'Roles',
-					value: roles.cache
+				f(
+					'Roles',
+					roles.cache
 						.filter(r => r.name !== '@everyone')
 						.map(r => r.name)
 						.join('\n')
-				}
+				)
 		  ]
 		: []),
-	...(displayColor ? [{name: 'Colour', value: displayHexColor}] : []),
+	...(displayColor ? [f('Colour', displayHexColor)] : []),
 	...(channel
 		? [
-				{
-					name: 'Voice',
-					value: `Channel: ${channel.name}
+				f(
+					'Voice',
+					`Channel: ${channel.name}
 Muted: ${formatBoolean(mute)}${serverMute === true ? ' (server)' : ''}
 Deafened: ${formatBoolean(deaf)}${serverDeaf === true ? ' (server)' : ''}
 Streaming: ${formatBoolean(streaming)}`
-				}
+				)
 		  ]
 		: [])
 ]
