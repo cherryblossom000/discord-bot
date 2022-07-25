@@ -1,9 +1,4 @@
-import {
-	SlashCommandBuilder,
-	codeBlock,
-	hyperlink,
-	inlineCode
-} from '@discordjs/builders'
+import {SlashCommandBuilder, codeBlock, hyperlink, inlineCode} from 'discord.js'
 import {ResultSet, evaluate, simplify} from 'mathjs'
 import type {AnySlashCommand} from '../../types'
 

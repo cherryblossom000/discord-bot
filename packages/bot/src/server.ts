@@ -1,4 +1,4 @@
-import {inlineCode} from '@discordjs/builders'
+import {inlineCode, type Collection} from 'discord.js'
 import Koa from 'koa'
 import serve from 'koa-static'
 import {Client, type ClientEvents, type EventListener} from './Client.js'
@@ -12,7 +12,6 @@ import {
 } from './utils.js'
 import * as rejoin from './utils/rejoin.js'
 import type {AddressInfo} from 'node:net'
-import type {Collection} from 'discord.js'
 import type {
 	Command,
 	MessageContextMenuCommand,
@@ -55,24 +54,24 @@ const client = new Client({
 	allowedMentions: {parse: ['roles', 'users']},
 	intents: [
 		// Guild create (logging in, presence)
-		'GUILDS',
+		'Guilds',
 		// Roles and nicknames changing, members leaving and joining (rejoin),
 		// fetching of members for trivia leaderboard
-		'GUILD_MEMBERS',
+		'GuildMembers',
 		// Emoji command
-		'GUILD_EMOJIS_AND_STICKERS',
+		'GuildEmojisAndStickers',
 		// Guild reactions
-		'GUILD_MESSAGE_REACTIONS',
+		'GuildMessageReactions',
 		// Members joining voice channels
-		'GUILD_VOICE_STATES',
+		'GuildVoiceStates',
 		// Presences in profile
-		'GUILD_PRESENCES',
+		'GuildPresences',
 		// Guild commands
-		'GUILD_MESSAGES',
+		'GuildMessages',
 		// DM commands
-		'DIRECT_MESSAGES',
+		'DirectMessages',
 		// DM reactions
-		'DIRECT_MESSAGE_REACTIONS'
+		'DirectMessageReactions'
 	]
 })
 

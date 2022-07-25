@@ -1,4 +1,4 @@
-import {SlashCommandBuilder, hyperlink, inlineCode} from '@discordjs/builders'
+import {SlashCommandBuilder, hyperlink, inlineCode} from 'discord.js'
 import sharp from 'sharp'
 import {checkPermissions, handleError, replyDeletable} from '../../utils.js'
 import type {MathJax} from 'mathjax'
@@ -27,7 +27,7 @@ const command: AnySlashCommand = {
 		'http://docs.mathjax.org/en/latest/input/tex/macros/index.html'
 	)} for supported tags. ${inlineCode('ams')} is the only package loaded.`,
 	async execute(interaction) {
-		if (!(await checkPermissions(interaction, 'ATTACH_FILES'))) return
+		if (!(await checkPermissions(interaction, ['AttachFiles']))) return
 
 		const input = interaction.options.getString(LATEX, true)
 		if (!mathJax) {

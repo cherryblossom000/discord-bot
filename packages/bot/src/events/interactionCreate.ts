@@ -1,11 +1,15 @@
-import {inlineCode} from '@discordjs/builders'
+import {
+	ApplicationCommandType,
+	inlineCode,
+	InteractionType,
+	type Collection
+} from 'discord.js'
 import {
 	debugInteractionDetails,
 	handleError,
 	type CollectionValue,
 	type KeysMatching
 } from '../utils.js'
-import type {Collection} from 'discord.js'
 import type {Client, EventListener} from '../Client'
 import type {Db} from '../database'
 import type {Command, CommandInteraction} from '../types'
@@ -50,11 +54,18 @@ const listener: EventListener<'interactionCreate'> = (client, database) => {
 	}
 
 	return async (interaction): Promise<void> => {
-		if (interaction.isCommand()) await runCommand(interaction, 'slashCommands')
-		else if (interaction.isMessageContextMenu())
-			await runCommand(interaction, 'messageCommands')
-		else if (interaction.isUserContextMenu())
-			await runCommand(interaction, 'userCommands')
+		if (interaction.type === InteractionType.ApplicationCommand) {
+			switch (interaction.commandType) {
+				case ApplicationCommandType.ChatInput:
+					await runCommand(interaction, 'slashCommands')
+					break
+				case ApplicationCommandType.Message:
+					await runCommand(interaction, 'messageCommands')
+					break
+				case ApplicationCommandType.User:
+					await runCommand(interaction, 'userCommands')
+			}
+		}
 	}
 }
 export default listener

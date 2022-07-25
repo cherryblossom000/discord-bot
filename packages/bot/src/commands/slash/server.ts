@@ -1,4 +1,12 @@
-import {SlashCommandBuilder} from '@discordjs/builders'
+import {
+	GuildDefaultMessageNotifications,
+	GuildPremiumTier,
+	GuildVerificationLevel,
+	SlashCommandBuilder,
+	type APIEmbedField,
+	type GuildBasedChannel,
+	type VoiceChannel
+} from 'discord.js'
 import {fetchTimeZone} from '../../database.js'
 import {
 	checkPermissions,
@@ -6,10 +14,9 @@ import {
 	fetchGuild,
 	formatBoolean,
 	imageField,
-	startCase,
-	startCaseFromParts
+	pascalToStartCase,
+	screamingSnakeToStartCase
 } from '../../utils.js'
-import type {GuildBasedChannel, EmbedFieldData, VoiceChannel} from 'discord.js'
 import type {GuildOnlySlashCommand} from '../../types'
 
 const command: GuildOnlySlashCommand = {
@@ -19,7 +26,7 @@ const command: GuildOnlySlashCommand = {
 		.setDMPermission(false),
 	async execute(interaction, database) {
 		const {client, user} = interaction
-		if (!(await checkPermissions(interaction, 'EMBED_LINKS'))) return
+		if (!(await checkPermissions(interaction, ['EmbedLinks']))) return
 		const guild = await fetchGuild(interaction)
 		const {
 			afkChannelId,
@@ -61,7 +68,7 @@ const command: GuildOnlySlashCommand = {
 			// maybe the TextBasedChannel mixin is interfering?
 			// eslint-disable-next-line @typescript-eslint/no-base-to-string -- false positive
 			value = (channel: GuildBasedChannel): string => `${channel}`
-		): Promise<readonly EmbedFieldData[]> => {
+		): Promise<readonly APIEmbedField[]> => {
 			if (channelId === null) return []
 			const suffix = getSuffix()
 			const channel = (await client.channels
@@ -117,7 +124,7 @@ const command: GuildOnlySlashCommand = {
 											.map(feature =>
 												feature === 'VIP_REGIONS'
 													? 'VIP Regions'
-													: startCase(feature)
+													: screamingSnakeToStartCase(feature)
 											)
 											.join('\n')
 									}
@@ -148,8 +155,8 @@ const command: GuildOnlySlashCommand = {
 							chan => (chan as VoiceChannel).name
 						)),
 						...(systemChannelFlags.has([
-							'SUPPRESS_JOIN_NOTIFICATIONS',
-							'SUPPRESS_PREMIUM_SUBSCRIPTIONS'
+							'SuppressJoinNotifications',
+							'SuppressPremiumSubscriptions'
 						])
 							? []
 							: await channelFieldData(
@@ -158,14 +165,10 @@ const command: GuildOnlySlashCommand = {
 									() =>
 										` (${systemChannelFlags
 											.missing([
-												'SUPPRESS_JOIN_NOTIFICATIONS',
-												'SUPPRESS_PREMIUM_SUBSCRIPTIONS'
+												'SuppressJoinNotifications',
+												'SuppressPremiumSubscriptions'
 											])
-											.map(string =>
-												startCaseFromParts(
-													string.toLowerCase().split('_').slice(1)
-												)
-											)
+											.map(string => pascalToStartCase(string.slice(8))) // 'Suppress'.length === 8
 											.join(', ')})`
 							  )),
 						...(widgetEnabled ?? false
@@ -181,7 +184,7 @@ const command: GuildOnlySlashCommand = {
 									{
 										name: 'Sever Boost Status',
 										value: `${
-											premiumTier === 'NONE'
+											premiumTier === GuildPremiumTier.None
 												? 'No Server Boost'
 												: `Level ${premiumTier}`
 										} (${premiumSubscriptionCount} boosts)`
@@ -191,16 +194,17 @@ const command: GuildOnlySlashCommand = {
 						{
 							name: 'Default Notifications',
 							value:
-								defaultMessageNotifications === 'ALL_MESSAGES'
+								defaultMessageNotifications ===
+								GuildDefaultMessageNotifications.AllMessages
 									? 'All Messages'
 									: 'Only @mentions'
 						},
 						{
 							name: 'Verification Level',
 							value:
-								verificationLevel === 'VERY_HIGH'
+								verificationLevel === GuildVerificationLevel.VeryHigh
 									? 'Highest'
-									: startCase(verificationLevel)
+									: GuildVerificationLevel[verificationLevel]!
 						},
 						{
 							name: 'Requires 2FA for moderation',

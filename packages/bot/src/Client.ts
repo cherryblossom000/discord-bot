@@ -1,7 +1,12 @@
-import D, {Collection, type GuildMember, type Snowflake} from 'discord.js'
+import D, {
+	ActivityType,
+	Collection,
+	type GuildMember,
+	type Snowflake
+} from 'discord.js'
 import type {Db} from './database.js'
 import type {
-	InteractionBase,
+	Interaction,
 	MessageContextMenuCommand,
 	SlashCommand,
 	Trigger,
@@ -17,7 +22,7 @@ declare global {
 export interface ClientEvents extends D.ClientEvents {
 	// Not using partials
 	guildMemberRemove: [GuildMember]
-	interactionCreate: [InteractionBase]
+	interactionCreate: [Interaction]
 }
 
 export type Listener<K extends keyof ClientEvents> = (
@@ -64,7 +69,7 @@ export class Client extends D.Client {
 	setActivity(): void {
 		this.user!.setActivity(
 			`capitalist scum in ${this.guilds.cache.size} servers`,
-			{type: 'WATCHING'}
+			{type: ActivityType.Watching}
 		)
 	}
 }

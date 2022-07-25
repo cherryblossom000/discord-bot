@@ -1,4 +1,4 @@
-import {SlashCommandBuilder, bold} from '@discordjs/builders'
+import {SlashCommandBuilder, bold} from 'discord.js'
 import {emojis} from '../../constants.js'
 import {fetchValue, setValue, type Db} from '../../database.js'
 import {checkPermissions} from '../../utils.js'
@@ -6,7 +6,7 @@ import * as rejoin from '../../utils/rejoin.js'
 import {RejoinMode} from '../../utils/rejoin.js'
 import type {
 	GuildOnlySlashCommand,
-	GuildSlashCommandInteraction
+	GuildChatInputInteraction
 } from '../../types'
 
 const COLOUR = 'colour'
@@ -26,7 +26,7 @@ const statusMessage = (boolean: boolean, string: string): string =>
 
 const colour = async (
 	subcommand: string,
-	interaction: GuildSlashCommandInteraction,
+	interaction: GuildChatInputInteraction,
 	database: Db
 ): Promise<void> => {
 	if (subcommand === STATUS) {
@@ -45,7 +45,8 @@ const colour = async (
 	}
 
 	const isEnable = subcommand === ENABLE
-	if (isEnable && !(await checkPermissions(interaction, 'MANAGE_ROLES'))) return
+	if (isEnable && !(await checkPermissions(interaction, ['ManageRoles'])))
+		return
 	await setValue(
 		database,
 		'guilds',
@@ -62,7 +63,7 @@ const colour = async (
 
 const pin = async (
 	subcommand: string,
-	interaction: GuildSlashCommandInteraction,
+	interaction: GuildChatInputInteraction,
 	database: Db
 ): Promise<void> => {
 	if (subcommand === STATUS) {
@@ -81,7 +82,7 @@ const pin = async (
 	}
 
 	const isEnable = subcommand === ENABLE
-	if (isEnable && !(await checkPermissions(interaction, 'MANAGE_MESSAGES')))
+	if (isEnable && !(await checkPermissions(interaction, ['ManageMessages'])))
 		return
 	await setValue(
 		database,

@@ -1,4 +1,4 @@
-import {SlashCommandBuilder, bold} from '@discordjs/builders'
+import {EmbedBuilder, SlashCommandBuilder, bold} from 'discord.js'
 import {checkPermissions, request} from '../../utils.js'
 import type {AnySlashCommand} from '../../types'
 
@@ -17,7 +17,7 @@ const command: AnySlashCommand = {
 				.setRequired(true)
 		),
 	async execute(interaction) {
-		if (!(await checkPermissions(interaction, 'EMBED_LINKS'))) return
+		if (!(await checkPermissions(interaction, ['EmbedLinks']))) return
 
 		const query = interaction.options.getString(QUERY, true)
 		const url = new URL(baseURL)
@@ -60,7 +60,7 @@ const command: AnySlashCommand = {
 		} = def
 		await interaction.reply({
 			embeds: [
-				{
+				new EmbedBuilder({
 					author: {name: author},
 					title: word,
 					url: permalink,
@@ -72,7 +72,7 @@ const command: AnySlashCommand = {
 					],
 					footer: {text: 'Written on'},
 					timestamp: new Date(written_on)
-				}
+				})
 			]
 		})
 	}

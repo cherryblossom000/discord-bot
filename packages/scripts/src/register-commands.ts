@@ -4,7 +4,7 @@ import {
 	Routes,
 	type RESTPutAPIApplicationCommandsJSONBody,
 	type RESTPostAPIContextMenuApplicationCommandsJSONBody
-} from 'discord-api-types/v9'
+} from 'discord.js'
 import {dev} from '@comrade-pingu/bot/dist/src/constants.js'
 import {messageCommands, slashCommands, userCommands} from './commands.js'
 import exitOnError from './exit-on-error.js'

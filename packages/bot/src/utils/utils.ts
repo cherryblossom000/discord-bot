@@ -1,27 +1,30 @@
 import path from 'node:path'
 import {homedir} from 'node:os'
-import {bold, codeBlock, hyperlink, inlineCode} from '@discordjs/builders'
 import D, {
-	Constants,
+	ButtonBuilder,
+	ButtonStyle,
 	DiscordAPIError,
-	MessageButton,
-	type BaseCommandInteraction,
+	RESTJSONErrorCodes,
+	bold,
+	codeBlock,
+	hyperlink,
+	inlineCode,
+	type APIEmbedField,
+	type APIMessage,
+	type BaseInteraction,
+	type ButtonComponentData,
 	type Collection,
-	type EmbedFieldData,
 	type Guild,
 	type GuildTextBasedChannel,
 	type InteractionReplyOptions,
 	type Message,
-	type MessageButtonOptions,
-	type PermissionString,
-	type Snowflake,
+	type PermissionsString,
 	type TextBasedChannel,
 	type WebhookEditMessageOptions
 } from 'discord.js'
 import originalCleanStack from 'clean-stack'
 import * as undici from 'undici'
 import {dev, emojis, me} from '../constants.js'
-import type {APIMessage} from 'discord-api-types/v9'
 import type {Client} from '../Client'
 import type {
 	CommandInteraction,
@@ -50,6 +53,20 @@ export const inObject = <T extends object, K extends PropertyKey>(
 	object: T,
 	key: K
 ): key is K & keyof T => key in object
+
+// Shamelessly stolen from lodash
+export const shuffle = <T>(collection: readonly T[]): readonly T[] => {
+	const {length} = collection
+	const array = [...collection]
+	let i = -1
+	while (++i < length) {
+		const rand = i + Math.floor(Math.random() * (length - i))
+		const value = array[rand]
+		array[rand] = array[i]!
+		array[i] = value!
+	}
+	return array
+}
 
 class RequestError extends Error {
 	override readonly name = 'RequestError'
@@ -106,15 +123,9 @@ const cleanErrorsStack = <T extends Error>(error: T): T & {stack: string} => {
 
 /** Creates a `catch` handler that ignores `DiscordAPIError`s. */
 export const ignoreError =
-	(key: keyof typeof Constants.APIErrors) =>
+	(code: RESTJSONErrorCodes) =>
 	(error: unknown): void => {
-		if (
-			!(
-				error instanceof DiscordAPIError &&
-				error.code === Constants.APIErrors[key]
-			)
-		)
-			throw error
+		if (!(error instanceof DiscordAPIError && error.code === code)) throw error
 	}
 
 /**
@@ -159,7 +170,7 @@ export const handleError: (
 	;(async (): Promise<void> => {
 		if (error instanceof Error) cleanErrorsStack(error)
 		if (channelOrInteraction) {
-			await (channelOrInteraction instanceof D.Interaction
+			await (channelOrInteraction instanceof D.BaseInteraction
 				? followUp
 					? channelOrInteraction.followUp({content, ephemeral: true})
 					: channelOrInteraction.reply({content, ephemeral: true})
@@ -184,15 +195,15 @@ export const handleError: (
 					error instanceof DiscordAPIError
 						? `
 Code: ${error.code} (${
-								Object.entries(Constants.APIErrors).find(
+								Object.entries(RESTJSONErrorCodes).find(
 									([, code]) => code === error.code
 								)?.[0] ?? 'unknown'
 						  })
-Path: ${error.path}
+URL: ${error.url}
 Method: ${error.method}
-Status: ${error.httpStatus}
-Request data:
-${codeBlock('json', JSON.stringify(error.requestData, null, 2))}`
+Status: ${error.status}
+Request body:
+${codeBlock('json', JSON.stringify(error.requestBody, null, 2))}`
 						: ''
 				}`
 			)
@@ -235,7 +246,7 @@ ${debugInteractionDetails(interaction)}`
 export const fetchGuild = async ({
 	client,
 	guildId
-}: BaseCommandInteraction<InGuildCacheType>): Promise<Guild> =>
+}: BaseInteraction<InGuildCacheType>): Promise<Guild> =>
 	client.guilds.fetch(guildId)
 
 export const enum ReplyMode {
@@ -287,29 +298,12 @@ export const replyAndFetch: {
 		  ).messages.fetch(message.id)
 }
 
-export const deleteMessage = async (
-	client: Client,
-	channelId: Snowflake,
-	messageId: Snowflake
-): Promise<void> => {
-	await (
-		client['api'] as {
-			channels: (id: Snowflake) => {
-				messages: (id: Snowflake) => {delete: () => Promise<unknown>}
-			}
-		}
-	)
-		.channels(channelId)
-		.messages(messageId)
-		.delete()
-}
-
 // #endregion
 
 /** Check if the bot has permissions and sends a message if it doesn't. */
 export const checkPermissions = async (
 	interaction: CommandInteraction,
-	permissions: PermissionString | readonly PermissionString[]
+	permissions: readonly PermissionsString[]
 ): Promise<boolean> => {
 	if (!interaction.inGuild()) return true
 	const {client, guildId} = interaction
@@ -317,9 +311,9 @@ export const checkPermissions = async (
 
 	const channelPermissions = channel.permissionsFor(client.user!)
 	if (channelPermissions?.has(permissions) !== true) {
-		const neededPermissions = Array.isArray(permissions)
-			? permissions.filter(p => channelPermissions?.has(p) === true)
-			: [permissions]
+		const neededPermissions = permissions.filter(
+			p => channelPermissions?.has(p) === true
+		)
 
 		const plural = neededPermissions.length !== 1
 		const permissionsString = ` permission${plural ? 's' : ''}`
@@ -331,7 +325,7 @@ To fix this, ask an admin or the owner of the server to add th${
 				plural ? 'ose' : 'at'
 			}${permissionsString} to ${(
 				await client.guilds.fetch(guildId)
-			).me!.roles.cache.find(role => role.managed)!}.`,
+			).members.me!.roles.cache.find(role => role.managed)!}.`,
 			ephemeral: true
 		})
 		return false
@@ -339,7 +333,7 @@ To fix this, ask an admin or the owner of the server to add th${
 	return true
 }
 
-export const imageField = (name: string, url: string): EmbedFieldData => ({
+export const imageField = (name: string, url: string): APIEmbedField => ({
 	name,
 	value: hyperlink('Link', url)
 })
@@ -347,26 +341,26 @@ export const imageField = (name: string, url: string): EmbedFieldData => ({
 export const BACK = 'back'
 export const FORWARD = 'forward'
 
-const backButtonOptions: MessageButtonOptions = {
-	style: 'SECONDARY',
+const backButtonOptions: Partial<ButtonComponentData> = {
+	style: ButtonStyle.Secondary,
 	label: 'Back',
 	emoji: emojis.left,
 	customId: BACK
 }
-const forwardButtonOptions: MessageButtonOptions = {
-	style: 'SECONDARY',
+const forwardButtonOptions: Partial<ButtonComponentData> = {
+	style: ButtonStyle.Secondary,
 	label: 'Forward',
 	emoji: emojis.right,
 	customId: FORWARD
 }
 
-export const backButton = new MessageButton(backButtonOptions)
-export const forwardButton = new MessageButton(forwardButtonOptions)
-export const backButtonDisabled = new MessageButton({
+export const backButton = new ButtonBuilder(backButtonOptions)
+export const forwardButton = new ButtonBuilder(forwardButtonOptions)
+export const backButtonDisabled = new ButtonBuilder({
 	...backButtonOptions,
 	disabled: true
 })
-export const forwardButtonDisabled = new MessageButton({
+export const forwardButtonDisabled = new ButtonBuilder({
 	...forwardButtonOptions,
 	disabled: true
 })

@@ -1,5 +1,30 @@
-import {inlineCode} from '@discordjs/builders'
-import * as D from 'discord-api-types/v9'
+import {inlineCode} from 'discord.js'
+import * as D from 'discord.js'
+
+export const upperFirst = (string: string): string =>
+	string && string[0]!.toUpperCase() + string.slice(1)
+
+export const screamingSnakeToStartCase = (string: string): string =>
+	string.toLowerCase().split('_').map(upperFirst).join(' ')
+
+export const pascalToStartCase = (string: string): string =>
+	string.split(/(?=[A-Z\d])/u).join(' ')
+
+export const splitMessage = (string: string, max = 2000): string[] => {
+	const go = (
+		lines: readonly string[],
+		acc: readonly string[] = [],
+		length = 0
+	): string[] => {
+		if (!lines.length) return []
+		const [head, ...tail] = lines as readonly [string, ...string[]]
+		const newLength = length + head.length + 1
+		return newLength > max
+			? [acc.join('\n'), ...go(tail)]
+			: go(lines, [...acc, head], newLength)
+	}
+	return go(string.split('\n'))
+}
 
 export type DateFormatter = (date: Date) => string
 

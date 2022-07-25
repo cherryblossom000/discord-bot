@@ -1,4 +1,16 @@
-import {ContextMenuCommandBuilder, hyperlink} from '@discordjs/builders'
+import {
+	ActivityType,
+	ContextMenuCommandBuilder,
+	EmbedBuilder,
+	hyperlink,
+	type ClientPresenceStatus,
+	type ClientPresenceStatusData,
+	type APIEmbedField,
+	type GuildMember,
+	type Presence,
+	type PresenceStatus,
+	type User
+} from 'discord.js'
 import {fetchTimeZone} from '../../database.js'
 import {
 	checkPermissions,
@@ -6,19 +18,10 @@ import {
 	fetchGuild,
 	formatBoolean,
 	imageField,
-	startCase,
+	pascalToStartCase,
 	upperFirst,
 	type DateFormatter
 } from '../../utils.js'
-import type {
-	ClientPresenceStatus,
-	ClientPresenceStatusData,
-	EmbedFieldData,
-	GuildMember,
-	Presence,
-	PresenceStatus,
-	User
-} from 'discord.js'
 import type {AnyUserContextMenuCommand} from '../../types'
 
 const formatStatus = (status: PresenceStatus): string =>
@@ -28,7 +31,7 @@ const userInfoFields = (
 	user: User,
 	avatarURL: string,
 	formatDate: DateFormatter
-): readonly EmbedFieldData[] => {
+): readonly APIEmbedField[] => {
 	const {avatar, createdAt, id} = user
 
 	const flags = user.flags?.toArray()
@@ -43,9 +46,8 @@ const userInfoFields = (
 						name: 'Flags',
 						value: flags!
 							.map(flag =>
-								startCase(flag)
+								pascalToStartCase(flag)
 									.replace('Hypesquad', 'HypeSquad')
-									.replace('Bughunter', 'Bug Hunter')
 									.replace('Http', 'HTTP')
 							)
 							.join('\n')
@@ -58,7 +60,7 @@ const userInfoFields = (
 const presenceFields = (
 	{activities, clientStatus, status}: Presence,
 	formatDate: DateFormatter
-): readonly EmbedFieldData[] => {
+): readonly APIEmbedField[] => {
 	const clientStatuses = clientStatus
 		? (Object.entries(clientStatus) as readonly (readonly [
 				keyof ClientPresenceStatusData,
@@ -80,14 +82,14 @@ const presenceFields = (
 		...(activities.length
 			? activities.map(activity => ({
 					name:
-						startCase(activity.type) +
-						(activity.type === 'LISTENING'
+						ActivityType[activity.type]! +
+						(activity.type === ActivityType.Listening
 							? ' to'
-							: activity.type === 'COMPETING'
+							: activity.type === ActivityType.Competing
 							? ' in'
 							: ''),
 					value:
-						activity.type === 'CUSTOM'
+						activity.type === ActivityType.Custom
 							? (activity.emoji
 									? `${
 											activity.emoji.id == null
@@ -151,7 +153,7 @@ const memberInfoFields = (
 		}
 	}: GuildMember,
 	formatDate: DateFormatter
-): readonly EmbedFieldData[] => [
+): readonly APIEmbedField[] => [
 	...(presence ? presenceFields(presence, formatDate) : []),
 	...(joinedAt
 		? [{name: 'Joined this Server', value: formatDate(joinedAt)}]
@@ -188,7 +190,7 @@ Streaming: ${formatBoolean(streaming)}`
 const command: AnyUserContextMenuCommand = {
 	data: new ContextMenuCommandBuilder().setName('Profile'),
 	async execute(interaction, database) {
-		if (!(await checkPermissions(interaction, 'EMBED_LINKS'))) return
+		if (!(await checkPermissions(interaction, ['EmbedLinks']))) return
 
 		const user = interaction.options.getUser('user', true)
 		const formatDate = createDateFormatter(
@@ -198,7 +200,7 @@ const command: AnyUserContextMenuCommand = {
 		const avatarURL = user.displayAvatarURL({size: 4096})
 		await interaction.reply({
 			embeds: [
-				{
+				new EmbedBuilder({
 					title: tag + (bot ? ' (Bot)' : ''),
 					thumbnail: {url: avatarURL},
 					fields: [
@@ -215,7 +217,7 @@ const command: AnyUserContextMenuCommand = {
 						iconURL: interaction.user.displayAvatarURL()
 					},
 					timestamp: Date.now()
-				}
+				})
 			]
 		})
 	}

@@ -1,4 +1,4 @@
-import {inlineCode} from '@discordjs/builders'
+import {ChannelType, inlineCode} from 'discord.js'
 import {handleError} from '../utils.js'
 import type {EventListener} from '../Client'
 
@@ -18,7 +18,7 @@ const listener: EventListener<'messageCreate'> =
 					client,
 					error,
 					`Responding to mention failed in channel ${channel.id}${
-						channel.type === 'DM'
+						channel.type === ChannelType.DM
 							? ''
 							: ` (#${channel.name}) (guild ${channel.guild.id} (${channel.guild.name}))`
 					}.`

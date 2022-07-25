@@ -1,8 +1,7 @@
 import {inspect} from 'node:util'
-import {SlashCommandBuilder, codeBlock, inlineCode} from '@discordjs/builders'
-import Discord, {Util} from 'discord.js'
+import Discord, {SlashCommandBuilder, codeBlock, inlineCode} from 'discord.js'
 import {emojis, me} from '../../constants.js'
-import {replyDeletable} from '../../utils.js'
+import {replyDeletable, splitMessage} from '../../utils.js'
 import type {AnySlashCommand} from '../../types'
 
 declare global {
@@ -92,7 +91,7 @@ const command: AnySlashCommand = {
 			return
 		}
 
-		for (const [i, text] of Util.splitMessage(
+		for (const [i, text] of splitMessage(
 			['DISCORD_TOKEN', 'DB_USER', 'DB_PASSWORD', 'REPLIT_DB_URL'].reduce(
 				(acc, key) => {
 					const value = process.env[key]
@@ -100,7 +99,8 @@ const command: AnySlashCommand = {
 				},
 				inspect(result)
 			),
-			{maxLength: 1990} // '```js\n'.length + '\n```'.length == 10
+			// '```js\n'.length + '\n```'.length === 10
+			1990
 		).entries()) {
 			/* eslint-disable-next-line no-await-in-loop -- There's been issues with
 			 * the follow-up messages attempting to send before Discord.js knows that

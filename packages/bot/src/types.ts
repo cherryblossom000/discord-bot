@@ -1,15 +1,15 @@
 import type {
 	ContextMenuCommandBuilder,
+	Message,
 	SlashCommandBuilder,
 	SlashCommandSubcommandsOnlyBuilder
-} from '@discordjs/builders'
-import type {Message} from 'discord.js'
+} from 'discord.js'
 import type {
 	GuildMessageContextMenuInteraction,
-	GuildSlashCommandInteraction,
+	GuildChatInputInteraction,
 	GuildUserContextMenuInteraction,
 	MessageContextMenuInteraction,
-	SlashCommandInteraction,
+	ChatInputInteraction,
 	UserContextMenuInteraction
 } from './types/discord.js-patches'
 import type {Db} from './database'
@@ -24,7 +24,7 @@ interface CommandBase<I, D> {
 	data: D
 }
 
-interface SlashCommandBase<I extends SlashCommandInteraction>
+interface SlashCommandBase<I extends ChatInputInteraction>
 	extends CommandBase<
 		I,
 		| Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'>
@@ -40,9 +40,8 @@ interface SlashCommandBase<I extends SlashCommandInteraction>
 	hidden?: boolean
 }
 
-export type GuildOnlySlashCommand =
-	SlashCommandBase<GuildSlashCommandInteraction>
-export type AnySlashCommand = SlashCommandBase<SlashCommandInteraction>
+export type GuildOnlySlashCommand = SlashCommandBase<GuildChatInputInteraction>
+export type AnySlashCommand = SlashCommandBase<ChatInputInteraction>
 export type SlashCommand = AnySlashCommand | GuildOnlySlashCommand
 
 type ContextMenuCommandBase<I> = CommandBase<I, ContextMenuCommandBuilder>

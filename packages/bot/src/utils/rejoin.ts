@@ -12,7 +12,7 @@ import {
 import {checkPermissions, fetchGuild, handleError} from './utils.js'
 import type {Guild, GuildMember} from 'discord.js'
 import type {Client, Listener} from '../Client'
-import type {GuildSlashCommandInteraction} from '../types'
+import type {GuildChatInputInteraction} from '../types'
 
 export const enum RejoinMode {
 	Roles = 'roles',
@@ -70,7 +70,7 @@ export const addListeners = (
 					`Rejoin guildMemberAdd failed (member ${member.id}, flags ${flags})`,
 					{
 						to:
-							(!guild.systemChannelFlags.has('SUPPRESS_JOIN_NOTIFICATIONS') &&
+							(!guild.systemChannelFlags.has('SuppressJoinNotifications') &&
 								guild.systemChannel) ||
 							undefined,
 						response: `Welcome, ${member}! Unfortunately, there was an error trying to ${
@@ -113,7 +113,7 @@ ${owner} sorry, but you have to do this yourself.`
 					`Rejoin guildMemberRemove failed (member ${member.id}, flags ${flags})`,
 					{
 						to:
-							(!guild.systemChannelFlags.has('SUPPRESS_JOIN_NOTIFICATIONS') &&
+							(!guild.systemChannelFlags.has('SuppressJoinNotifications') &&
 								guild.systemChannel) ||
 							undefined,
 						response: `${
@@ -147,7 +147,7 @@ ${owner} sorry, but when they rejoin, you may have to manually ${
 }
 
 export const status = async (
-	interaction: GuildSlashCommandInteraction,
+	interaction: GuildChatInputInteraction,
 	database: Db
 ): Promise<void> => {
 	const rejoinFlags = await fetchValue(
@@ -167,7 +167,7 @@ export const status = async (
 }
 
 export const set = async (
-	interaction: GuildSlashCommandInteraction,
+	interaction: GuildChatInputInteraction,
 	database: Db,
 	mode: RejoinMode
 ): Promise<void> => {
@@ -175,9 +175,9 @@ export const set = async (
 	const guild = await fetchGuild(interaction)
 	if (
 		!(await checkPermissions(interaction, [
-			...(flags & MemberRejoinFlags.Roles ? (['MANAGE_ROLES'] as const) : []),
+			...(flags & MemberRejoinFlags.Roles ? (['ManageRoles'] as const) : []),
 			...(flags & MemberRejoinFlags.Nickname
-				? (['MANAGE_NICKNAMES'] as const)
+				? (['ManageNicknames'] as const)
 				: [])
 		]))
 	)
@@ -189,7 +189,7 @@ export const set = async (
 }
 
 export const disable = async (
-	interaction: GuildSlashCommandInteraction,
+	interaction: GuildChatInputInteraction,
 	database: Db
 ): Promise<void> => {
 	const {client, guildId} = interaction

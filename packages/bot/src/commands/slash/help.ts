@@ -1,11 +1,14 @@
-import {SlashCommandBuilder, inlineCode} from '@discordjs/builders'
 import {
 	ApplicationCommandOptionType,
+	SlashCommandBuilder,
+	inlineCode,
 	type APIApplicationCommandOption,
 	type APIApplicationCommandSubcommandOption,
 	type APIApplicationCommandSubcommandGroupOption,
+	type APIEmbed,
+	type APIEmbedField,
 	type RESTPostAPIChatInputApplicationCommandsJSONBody
-} from 'discord-api-types/v9'
+} from 'discord.js'
 import {
 	commandFiles,
 	formatCommandSyntax,
@@ -13,7 +16,6 @@ import {
 	removeJSExtension,
 	type FormatCommandSyntaxInput
 } from '../../utils.js'
-import type {EmbedFieldData, MessageEmbedOptions} from 'discord.js'
 import type {AnySlashCommand} from '../../types'
 
 const HELP = 'help'
@@ -21,7 +23,7 @@ const COMMAND = 'command'
 
 const optionFields = (command: {
 	options?: readonly APIApplicationCommandOption[]
-}): EmbedFieldData[] | undefined =>
+}): APIEmbedField[] | undefined =>
 	command.options?.map(opt => ({
 		name: opt.name,
 		value: opt.description
@@ -31,7 +33,7 @@ const basicEmbed = (
 	name: string,
 	description: string,
 	usage?: string
-): MessageEmbedOptions => ({
+): APIEmbed => ({
 	title: name,
 	description: description + (usage === undefined ? '' : `\n${usage}`)
 })
@@ -39,7 +41,7 @@ const basicEmbed = (
 const subcommandEmbeds = (
 	name: string,
 	options: readonly APIApplicationCommandSubcommandOption[]
-): MessageEmbedOptions[] =>
+): APIEmbed[] =>
 	options.map(subcommand => ({
 		title: `${name} ${subcommand.name}`,
 		description: formatCommandSyntax(subcommand as FormatCommandSyntaxInput, {
@@ -99,7 +101,7 @@ You can send ${inlineCode(
 		// TODO: fix @discordjs/builders types
 		const cmd = data.toJSON() as RESTPostAPIChatInputApplicationCommandsJSONBody
 		const {name, description, options} = cmd
-		const embeds: MessageEmbedOptions[] =
+		const embeds: APIEmbed[] =
 			options?.[0]?.type === ApplicationCommandOptionType.SubcommandGroup
 				? [
 						basicEmbed(name, description, usage),

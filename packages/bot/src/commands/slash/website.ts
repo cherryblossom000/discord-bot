@@ -1,23 +1,25 @@
 import {
-	MessageActionRow,
-	MessageButton,
+	ButtonBuilder,
+	ButtonStyle,
+	ComponentType,
+	SlashCommandBuilder,
 	type InteractionReplyOptions
 } from 'discord.js'
-import {SlashCommandBuilder} from '@discordjs/builders'
 import type {AnySlashCommand} from '../../types'
 
 const options: InteractionReplyOptions = {
 	content: 'Here’s my website!',
 	components: [
-		new MessageActionRow({
+		{
+			type: ComponentType.ActionRow,
 			components: [
-				new MessageButton({
-					style: 'LINK',
+				new ButtonBuilder({
+					style: ButtonStyle.Link,
 					label: 'Comrade Pingu Website',
 					url: 'https://comrade-pingu--cherryblossom00.repl.co'
 				})
 			]
-		})
+		}
 	]
 }
 

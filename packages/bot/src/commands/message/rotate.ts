@@ -1,10 +1,13 @@
-import {ContextMenuCommandBuilder} from '@discordjs/builders'
 import {
+	ButtonBuilder,
+	ButtonStyle,
+	ComponentType,
+	ContextMenuCommandBuilder,
 	Collection,
-	MessageActionRow,
-	MessageButton,
-	type InteractionReplyOptions,
-	type MessageEmbedOptions
+	Routes,
+	type APIAttachment,
+	type APIEmbed,
+	type InteractionReplyOptions
 } from 'discord.js'
 import sharp from 'sharp'
 import {emojis, timeout} from '../../constants.js'
@@ -14,7 +17,6 @@ import {
 	backButton,
 	backButtonDisabled,
 	checkPermissions,
-	deleteMessage,
 	fetchChannel,
 	forwardButton,
 	forwardButtonDisabled,
@@ -22,49 +24,48 @@ import {
 	request,
 	timeoutFollowUp
 } from '../../utils.js'
-import type {APIAttachment} from 'discord-api-types/v9'
 import type {AnyMessageContextMenuCommand} from '../../types'
 
 const TICK = 'tick'
-const tickButton = new MessageButton({
-	style: 'SUCCESS',
+const tickButton = new ButtonBuilder({
+	style: ButtonStyle.Success,
 	label: 'Select',
 	customId: TICK
 })
 
 const CANCEL = 'cancel'
-const cancelButton = new MessageButton({
-	style: 'DANGER',
+const cancelButton = new ButtonBuilder({
+	style: ButtonStyle.Danger,
 	label: 'Cancel',
 	customId: CANCEL
 })
 
 const ANTICLOCKWISE = 'anticlockwise'
-const anticlockwiseButton = new MessageButton({
-	style: 'SECONDARY',
+const anticlockwiseButton = new ButtonBuilder({
+	style: ButtonStyle.Secondary,
 	label: '-90°',
 	emoji: emojis.anticlockwise,
 	customId: ANTICLOCKWISE
 })
 
 const CLOCKWISE = 'clockwise'
-const clockwiseButton = new MessageButton({
-	style: 'SECONDARY',
+const clockwiseButton = new ButtonBuilder({
+	style: ButtonStyle.Secondary,
 	label: '90°',
 	emoji: emojis.clockwise,
 	customId: CLOCKWISE
 })
 
 const UPSIDE_DOWN = 'upsideDown'
-const upsideDownButton = new MessageButton({
-	style: 'SECONDARY',
+const upsideDownButton = new ButtonBuilder({
+	style: ButtonStyle.Secondary,
 	label: '180°',
 	customId: UPSIDE_DOWN
 })
 
 const CUSTOM = 'custom'
-const customButton = new MessageButton({
-	style: 'SECONDARY',
+const customButton = new ButtonBuilder({
+	style: ButtonStyle.Secondary,
 	label: 'Custom',
 	customId: CUSTOM
 })
@@ -73,9 +74,7 @@ type Attachment = Readonly<
 	Pick<APIAttachment, 'description' | 'filename' | 'url'>
 >
 
-const attachmentEmbedOptions = (
-	attachment: Attachment
-): MessageEmbedOptions => ({
+const attachmentEmbedOptions = (attachment: Attachment): APIEmbed => ({
 	fields: [
 		{name: 'Name', value: attachment.filename},
 		...(attachment.description === undefined
@@ -88,7 +87,7 @@ const attachmentEmbedOptions = (
 const command: AnyMessageContextMenuCommand = {
 	data: new ContextMenuCommandBuilder().setName('Rotate Image'),
 	async execute(interaction) {
-		if (!(await checkPermissions(interaction, 'ATTACH_FILES'))) return
+		if (!(await checkPermissions(interaction, ['AttachFiles']))) return
 
 		const {channelId, client, options, user} = interaction
 		const message = options.getMessage('message', true)
@@ -124,7 +123,8 @@ const command: AnyMessageContextMenuCommand = {
 				}
 			],
 			components: [
-				new MessageActionRow({
+				{
+					type: ComponentType.ActionRow,
 					components: [
 						tickButton,
 						index ? backButton : backButtonDisabled,
@@ -133,7 +133,7 @@ const command: AnyMessageContextMenuCommand = {
 							: forwardButtonDisabled,
 						cancelButton
 					]
-				})
+				}
 			]
 		})
 
@@ -214,7 +214,8 @@ const command: AnyMessageContextMenuCommand = {
 						}
 					],
 					components: [
-						new MessageActionRow({
+						{
+							type: ComponentType.ActionRow,
 							components: [
 								anticlockwiseButton,
 								upsideDownButton,
@@ -222,7 +223,7 @@ const command: AnyMessageContextMenuCommand = {
 								customButton,
 								cancelButton
 							]
-						})
+						}
 					]
 				},
 				singleAttachment ? ReplyMode.REPLY : ReplyMode.EDIT_REPLY
@@ -230,7 +231,7 @@ const command: AnyMessageContextMenuCommand = {
 			switch (
 				(
 					await reply.awaitMessageComponent({
-						componentType: 'BUTTON'
+						componentType: ComponentType.Button
 					})
 				).customId
 			) {
@@ -282,7 +283,7 @@ const command: AnyMessageContextMenuCommand = {
 				}
 				default:
 					// CANCEL
-					await deleteMessage(client, channelId, reply.id)
+					await client.rest.delete(Routes.channelMessage(channelId, reply.id))
 			}
 		}
 		const angle = await getAngle()

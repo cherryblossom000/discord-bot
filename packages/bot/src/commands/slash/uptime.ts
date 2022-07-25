@@ -1,4 +1,4 @@
-import {SlashCommandBuilder} from '@discordjs/builders'
+import {SlashCommandBuilder} from 'discord.js'
 import ms from 'ms'
 import type {AnySlashCommand} from '../../types'
 

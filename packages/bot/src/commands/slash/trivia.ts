@@ -1,10 +1,12 @@
-import {SlashCommandBuilder, bold} from '@discordjs/builders'
 import {
+	ButtonBuilder,
+	ButtonStyle,
 	Collection,
-	MessageActionRow,
-	MessageButton,
-	MessageEmbed,
-	Util,
+	ComponentType,
+	EmbedBuilder,
+	SlashCommandBuilder,
+	bold,
+	escapeMarkdown,
 	type InteractionReplyOptions,
 	type User
 } from 'discord.js'
@@ -34,19 +36,19 @@ import {
 	replyDeletable,
 	shuffle
 } from '../../utils.js'
-import type {AnySlashCommand, SlashCommandInteraction} from '../../types'
+import type {AnySlashCommand, ChatInputInteraction} from '../../types'
 
 const TRUE = 'true'
 const FALSE = 'false'
 const booleanButtons = [
-	new MessageButton({
-		style: 'SUCCESS',
+	new ButtonBuilder({
+		style: ButtonStyle.Success,
 		customId: TRUE,
 		label: 'True',
 		emoji: emojis.tick
 	}),
-	new MessageButton({
-		style: 'DANGER',
+	new ButtonBuilder({
+		style: ButtonStyle.Danger,
 		customId: FALSE,
 		label: 'False',
 		emoji: emojis.cross
@@ -58,11 +60,17 @@ const format = (answer: boolean | string): string =>
 	typeof answer === 'boolean' ? (answer ? 'True' : 'False') : answer
 
 const play = async (
-	interaction: SlashCommandInteraction,
+	interaction: ChatInputInteraction,
 	database: Db
 ): Promise<void> => {
 	const {client, user} = interaction
-	if (!(await checkPermissions(interaction, ['EMBED_LINKS', 'ADD_REACTIONS'])))
+	if (
+		!(await checkPermissions(interaction, [
+			'EmbedLinks',
+			'ReadMessageHistory',
+			'AddReactions'
+		]))
+	)
 		return
 
 	const question = await fetchQuestion()
@@ -80,7 +88,7 @@ const play = async (
 	 * @param questionPrefix A prefix to put at the beginning of the question on the embed title.
 	 */
 	const execute = async (
-		buttons: readonly MessageButton[],
+		buttons: readonly ButtonBuilder[],
 		{
 			getSelectedAnswer = (x): string => x,
 			questionPrefix = ''
@@ -92,12 +100,12 @@ const play = async (
 		const message = await replyAndFetch(interaction, {
 			embeds: [
 				{
-					title: questionPrefix + Util.escapeMarkdown(question.question),
+					title: questionPrefix + escapeMarkdown(question.question),
 					description: 'You have 15 seconds to answer.',
 					fields: [
 						{
 							name: 'Category',
-							value: Util.escapeMarkdown(question.category),
+							value: escapeMarkdown(question.category),
 							inline: true
 						},
 						{
@@ -108,7 +116,7 @@ const play = async (
 					]
 				}
 			],
-			components: [new MessageActionRow({components: [...buttons]})]
+			components: [{type: ComponentType.ActionRow, components: [...buttons]}]
 		})
 
 		const correctAnswer = format(question.correctAnswer)
@@ -181,10 +189,10 @@ const play = async (
 		await execute(
 			answers.map(
 				answer =>
-					new MessageButton({
-						style: 'SECONDARY',
+					new ButtonBuilder({
+						style: ButtonStyle.Secondary,
 						customId: answer,
-						label: Util.escapeMarkdown(answer)
+						label: escapeMarkdown(answer)
 					})
 			)
 		)
@@ -199,13 +207,13 @@ const formatPercentage = (
 ): string => `${numerator}/${denominator} (${(percentage * 100).toFixed(2)}%)`
 
 const stats = async (
-	interaction: SlashCommandInteraction,
+	interaction: ChatInputInteraction,
 	user: User,
 	database: Db
 ): Promise<void> => {
-	if (!(await checkPermissions(interaction, 'EMBED_LINKS'))) return
+	if (!(await checkPermissions(interaction, ['EmbedLinks']))) return
 
-	const embed = new MessageEmbed()
+	const embed = new EmbedBuilder()
 		.setTitle(user.tag)
 		.setThumbnail(user.displayAvatarURL())
 		.setFooter({
@@ -280,7 +288,7 @@ const stats = async (
 }
 
 const leaderboard = async (
-	interaction: SlashCommandInteraction,
+	interaction: ChatInputInteraction,
 	database: Db
 ): Promise<void> => {
 	// TODO: register a trivia command for DMs and one for guilds
@@ -293,9 +301,9 @@ const leaderboard = async (
 	}
 	if (
 		!(await checkPermissions(interaction, [
-			'EMBED_LINKS',
-			'READ_MESSAGE_HISTORY',
-			'ADD_REACTIONS'
+			'EmbedLinks',
+			'ReadMessageHistory',
+			'AddReactions'
 		]))
 	)
 		return
@@ -340,12 +348,13 @@ const leaderboard = async (
 				}
 			],
 			components: [
-				new MessageActionRow({
+				{
+					type: ComponentType.ActionRow,
 					components: [
 						start ? backButton : backButtonDisabled,
 						start + 10 < totalUsers ? forwardButton : forwardButtonDisabled
 					]
-				})
+				}
 			]
 		}
 	}

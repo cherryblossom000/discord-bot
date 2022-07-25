@@ -1,5 +1,4 @@
-import {SlashCommandBuilder} from '@discordjs/builders'
-import {Constants} from 'discord.js'
+import {SlashCommandBuilder} from 'discord.js'
 import type {AnySlashCommand} from '../../types'
 
 const EMOJI = 'emoji'
@@ -30,13 +29,7 @@ const command: AnySlashCommand = {
 
 		const [, animated, id] = match
 		await interaction.reply({
-			files: [
-				// eslint-disable-next-line new-cap -- just the API
-				Constants.Endpoints.CDN(interaction.client.options.http!.cdn!).Emoji(
-					id,
-					animated ? 'gif' : 'png'
-				)
-			]
+			files: [interaction.client.rest.cdn.emoji(id, animated ? 'gif' : 'png')]
 		})
 	}
 }

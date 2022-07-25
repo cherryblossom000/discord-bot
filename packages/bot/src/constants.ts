@@ -1,15 +1,14 @@
-import type {PermissionString} from 'discord.js'
+import {PermissionFlagsBits} from 'discord.js'
 
 /** Whether this is a development environment. */
 export const dev = process.env.NODE_ENV !== 'production'
 
 /** The permissions needed for the bot to work fully. */
-export const permissions: PermissionString[] = [
-	'VIEW_CHANNEL',
-	'SEND_MESSAGES',
-	'EMBED_LINKS',
-	'ATTACH_FILES'
-]
+export const permissions =
+	PermissionFlagsBits.ViewChannel |
+	PermissionFlagsBits.SendMessages |
+	PermissionFlagsBits.EmbedLinks |
+	PermissionFlagsBits.AttachFiles
 
 /** The user id of the creator, cherryblossom. */
 export const me = '506054261717598210'

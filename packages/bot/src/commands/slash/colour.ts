@@ -1,9 +1,15 @@
-import {bold, inlineCode, SlashCommandBuilder} from '@discordjs/builders'
-import {Constants, type GuildMember, type Role} from 'discord.js'
+import {
+	Colors,
+	SlashCommandBuilder,
+	bold,
+	inlineCode,
+	type GuildMember,
+	type Role
+} from 'discord.js'
 import {fetchValue} from '../../database.js'
 import {checkPermissions, fetchGuild, inObject} from '../../utils.js'
 import type {
-	GuildSlashCommandInteraction,
+	GuildChatInputInteraction,
 	GuildOnlySlashCommand
 } from '../../types'
 
@@ -18,7 +24,7 @@ const ROLE_RE = /^#[\da-f]{6}$/u
 const isColourRole = ({name}: Role): boolean => ROLE_RE.test(name)
 
 const COLOURS = {
-	...Constants.Colors,
+	...Colors,
 	DISCORD_DARK_BACKGROUND: 0x36393f
 }
 
@@ -48,9 +54,7 @@ const removeOldRoles = async (member: GuildMember): Promise<void> => {
 	)
 }
 
-const set = async (
-	interaction: GuildSlashCommandInteraction
-): Promise<void> => {
+const set = async (interaction: GuildChatInputInteraction): Promise<void> => {
 	const input = interaction.options.getString(COLOUR, true)
 	const colour = parseColour(input)
 	if (colour === undefined) {
@@ -79,7 +83,7 @@ const set = async (
 			permissions: 0n,
 			position:
 				newPosition === undefined
-					? guild.me?.roles.highest.position
+					? guild.members.me?.roles.highest.position
 					: newPosition + 1
 		}))
 	await removeOldRoles(member)
@@ -88,7 +92,7 @@ const set = async (
 }
 
 const remove = async (
-	interaction: GuildSlashCommandInteraction
+	interaction: GuildChatInputInteraction
 ): Promise<void> => {
 	await removeOldRoles(
 		await (await fetchGuild(interaction)).members.fetch(interaction.user.id)
@@ -134,7 +138,7 @@ const command: GuildOnlySlashCommand = {
 			return
 		}
 
-		if (!(await checkPermissions(interaction, 'MANAGE_ROLES'))) return
+		if (!(await checkPermissions(interaction, ['ManageRoles']))) return
 		await (interaction.options.getSubcommand() === SET ? set : remove)(
 			interaction
 		)

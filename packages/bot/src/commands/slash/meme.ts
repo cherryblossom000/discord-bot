@@ -1,4 +1,4 @@
-import {SlashCommandBuilder, hyperlink} from '@discordjs/builders'
+import {SlashCommandBuilder, hyperlink} from 'discord.js'
 import {checkPermissions} from '../../utils.js'
 import type {AnySlashCommand} from '../../types'
 
@@ -37,7 +37,7 @@ const command: AnySlashCommand = {
 		'./assets/img/iwmelc.jpg'
 	)}<br><img src="./assets/img/htkb.jpg" alt="${HTKB}" width="320">`,
 	async execute(interaction) {
-		if (!(await checkPermissions(interaction, 'ATTACH_FILES'))) return
+		if (!(await checkPermissions(interaction, ['AttachFiles']))) return
 		await interaction.reply({
 			files: [
 				interaction.options.getString(MEME, true) === Meme.IWMELC

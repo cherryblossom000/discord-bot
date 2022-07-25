@@ -1,11 +1,10 @@
 import fs, {mkdir, writeFile} from 'node:fs/promises'
-import {inlineCode} from '@discordjs/builders'
 import {
 	ApplicationCommandOptionType,
+	inlineCode,
 	type APIApplicationCommandSubcommandOption,
 	type RESTPostAPIChatInputApplicationCommandsJSONBody
-} from 'discord-api-types/v9'
-import {Permissions} from 'discord.js'
+} from 'discord.js'
 import MarkdownIt from 'markdown-it'
 import {markdownTable} from 'markdown-table'
 import {permissions} from '@comrade-pingu/bot/dist/src/constants.js'
@@ -95,10 +94,7 @@ const [newReadme, template] = await Promise.all([
 				/(?<=<!-- DOCS START -->\n\n)[\s\S]*(?=\n\n<!-- DOCS END -->)/u,
 				markdownTable(docs, {alignDelimiters: false})
 			)
-			.replace(
-				/(?<=permissions=)\d+/u,
-				new Permissions(permissions).bitfield.toString()
-			)
+			.replace(/(?<=permissions=)\d+/u, String(permissions))
 	),
 	// Get HTML template
 	readFile(new URL('template.html', scriptsFolder)),

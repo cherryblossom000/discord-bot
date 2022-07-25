@@ -1,5 +1,5 @@
 import {readFile} from 'node:fs/promises'
-import {SlashCommandBuilder, inlineCode} from '@discordjs/builders'
+import {SlashCommandBuilder, inlineCode} from 'discord.js'
 import type {AnySlashCommand} from '../../types'
 import type {PackageJson} from 'type-fest'
 
