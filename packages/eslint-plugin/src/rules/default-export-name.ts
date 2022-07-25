@@ -24,7 +24,11 @@ const rule: TSESLint.RuleModule<
 		return {
 			ExportDefaultDeclaration({declaration}): void {
 				if (declaration.type !== AST_NODE_TYPES.Identifier) {
-					context.report({node: declaration, messageId: 'wrongExport'})
+					context.report({
+						node: declaration,
+						messageId: 'wrongExport',
+						data: {expected: name}
+					})
 					return
 				}
 
