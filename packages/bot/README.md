@@ -26,14 +26,13 @@ permission and then use
 | `colour` | Change your colour (using a role). | `/colour set <colour: string>`: Set your colour.<br>`colour`: The colour, e.g. ‘#abcdef’ or ‘red’.<br><br>`/colour remove`: Remove your colour. |
 | `dog` | Gets a random image of a dog from random.dog. | `/dog` |
 | `emoji` | Gets the image for an emoji. | `/emoji <emoji: string>`<br>`emoji`: The emoji to get the image of. |
-| `help` | Lists all my commands or gets info about a specific command. | `/help [command: calculate\|colour\|dog\|emoji\|eval\|icon\|info\|invite\|maths\|meme\|ping\|profile\|server\|settings\|stats\|timezone\|trivia\|uptime\|urban\|website]`<br>`command`: The command that you want to get info about. If omitted, all the commands will be listed. |
+| `help` | Lists all my commands or gets info about a specific command. | `/help [command: calculate\|colour\|dog\|emoji\|eval\|icon\|info\|invite\|maths\|meme\|ping\|server\|settings\|stats\|timezone\|trivia\|uptime\|urban\|website]`<br>`command`: The command that you want to get info about. If omitted, all the commands will be listed. |
 | `icon` | Gets the server icon. | `/icon` |
 | `info` | Gets info about me. | `/info` |
 | `invite` | Gets my invite link. | `/invite` |
 | `maths` | Convert LaTeX into an image. | `/maths <latex: string>`<br>`latex`: The LaTeX to convert.<br><br>See [the MathJax docs](http://docs.mathjax.org/en/latest/input/tex/macros/index.html) for supported tags. `ams` is the only package loaded. |
 | `meme` | Gets a Pingu-related meme. | `/meme <meme: I will murder every last capitalist\|how to kiss boy>`<br>`meme`: The meme to get.<br><br>![I will murder every last capitalist](./assets/img/iwmelc.jpg)<br><img src="./assets/img/htkb.jpg" alt="how to kiss boy" width="320"> |
 | `ping` | Gets my current latency. | `/ping` |
-| `profile` | Gets information on a user. | `/profile [user: user]`<br>`user`: The user to display information about. Defaults to you. |
 | `server` | Gets information on this server. | `/server` |
 | `settings` | Manage settings. | `/settings colour status`: Get whether users are allowed to change their colour.<br><br>`/settings colour enable`: Enable allowing users to change their colour.<br><br>`/settings colour disable`: Disable allowing users to change their colour.<br><br>`/settings rejoin status`: Get this server’s rejoining configuration.<br><br>`/settings rejoin set <mode: roles\|nickname\|both>`: Configure what I do when a member rejoins the server.<br>`mode`: What to restore when a member rejoins the server.<br><br>`/settings rejoin disable`: Stops doing anything when a member rejoins this server.<br><br>`/settings pin status`: Get whether users are allowed to pin a message.<br><br>`/settings pin enable`: Enable allowing anyone to pin a message.<br><br>`/settings pin disable`: Disable allowing anyone to pin a message. |
 | `stats` | Gets my stats. | `/stats` |
