@@ -1,41 +1,41 @@
 {
-  "name": "@comrade-pingu/semantic-release",
-  "version": "1.2.0",
-  "private": true,
-  "publishConfig": {
-    "access": "restricted"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/cherryblossom000/comrade-pingu",
-    "directory": "packages/semantic-release"
-  },
-  "main": "dist",
-  "type": "commonjs",
-  "engines": {
-    "node": ">=16"
-  },
-  "scripts": {
-    "lint": "eslint --max-warnings 0 --ext ts --cache .",
-    "build": "tsc -b",
-    "watch": "dum build -- -w"
-  },
-  "dependencies": {
-    "@semantic-release/changelog": "^6.0.1",
-    "@semantic-release/github": "^8.0.5",
-    "debug": "^4.3.4",
-    "fs-extra": "^10.1.0",
-    "lodash": "^4.17.21",
-    "mime": "^3.0.0",
-    "tslib": "^2.4.0"
-  },
-  "devDependencies": {
-    "@octokit/rest": "^19.0.3",
-    "@types/debug": "^4.1.7",
-    "@types/fs-extra": "^9.0.13",
-    "@types/lodash": "^4.14.182",
-    "@types/mime": "^2.0.3",
-    "@types/node": "^16.11.45",
-    "@types/semantic-release": "^17.2.4"
-  }
+	"name": "@comrade-pingu/semantic-release",
+	"version": "1.2.0",
+	"private": true,
+	"publishConfig": {
+		"access": "restricted"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/cherryblossom000/comrade-pingu",
+		"directory": "packages/semantic-release"
+	},
+	"main": "dist",
+	"type": "commonjs",
+	"engines": {
+		"node": ">=16"
+	},
+	"scripts": {
+		"lint": "eslint --max-warnings 0 --ext ts --cache .",
+		"build": "tsc -b",
+		"watch": "dum build -- -w"
+	},
+	"dependencies": {
+		"@semantic-release/changelog": "^6.0.1",
+		"@semantic-release/github": "^8.0.5",
+		"debug": "^4.3.4",
+		"fs-extra": "^10.1.0",
+		"lodash": "^4.17.21",
+		"mime": "^3.0.0",
+		"tslib": "^2.4.0"
+	},
+	"devDependencies": {
+		"@octokit/rest": "^19.0.3",
+		"@types/debug": "^4.1.7",
+		"@types/fs-extra": "^9.0.13",
+		"@types/lodash": "^4.14.182",
+		"@types/mime": "^2.0.3",
+		"@types/node": "^16.11.45",
+		"@types/semantic-release": "^17.2.4"
+	}
 }

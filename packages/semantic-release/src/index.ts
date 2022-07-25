@@ -11,57 +11,57 @@ let changelogVerified: boolean
 let githubVerified: boolean
 
 export const verifyConditions: Plugin = async (pluginConfig, context) => {
-  // https://github.com/semantic-release/changelog/blob/v6.0.1/index.js#L19-L20
-  verifyChangelog(pluginConfig)
-  changelogVerified = true
+	// https://github.com/semantic-release/changelog/blob/v6.0.1/index.js#L19-L20
+	verifyChangelog(pluginConfig)
+	changelogVerified = true
 
-  // https://github.com/semantic-release/github/blob/v7.2.0/index.js#L27
-  await verifyGithub(pluginConfig, context)
-  githubVerified = true
+	// https://github.com/semantic-release/github/blob/v7.2.0/index.js#L27
+	await verifyGithub(pluginConfig, context)
+	githubVerified = true
 }
 
 export const prepare: PluginWithNextRelease = async (pluginConfig, context) => {
-  // https://github.com/semantic-release/changelog/blob/v6.0.1/index.js#L23-L30
-  if (!changelogVerified) {
-    verifyChangelog(pluginConfig)
-    changelogVerified = true
-  }
-  await prepareChangelog(pluginConfig, context)
+	// https://github.com/semantic-release/changelog/blob/v6.0.1/index.js#L23-L30
+	if (!changelogVerified) {
+		verifyChangelog(pluginConfig)
+		changelogVerified = true
+	}
+	await prepareChangelog(pluginConfig, context)
 }
 
 // https://github.com/semantic-release/github/blob/v7.2.0/index.js#L31-L65
 export const publish: PublishPlugin = async (pluginConfig, context) => {
-  if (!githubVerified) {
-    await verifyGithub(pluginConfig, context)
-    // eslint-disable-next-line require-atomic-updates -- not a race condition
-    githubVerified = true
-  }
-  return publishGithub(pluginConfig, context)
+	if (!githubVerified) {
+		await verifyGithub(pluginConfig, context)
+		// eslint-disable-next-line require-atomic-updates -- not a race condition
+		githubVerified = true
+	}
+	return publishGithub(pluginConfig, context)
 }
 
 export const addChannel: PublishPlugin = async (pluginConfig, context) => {
-  if (!githubVerified) {
-    await verifyGithub(pluginConfig, context)
-    // eslint-disable-next-line require-atomic-updates -- not a race condition
-    githubVerified = true
-  }
-  return addChannelGithub(pluginConfig, context)
+	if (!githubVerified) {
+		await verifyGithub(pluginConfig, context)
+		// eslint-disable-next-line require-atomic-updates -- not a race condition
+		githubVerified = true
+	}
+	return addChannelGithub(pluginConfig, context)
 }
 
 export const success: Plugin = async (pluginConfig, context) => {
-  if (!githubVerified) {
-    await verifyGithub(pluginConfig, context)
-    // eslint-disable-next-line require-atomic-updates -- not a race condition
-    githubVerified = true
-  }
-  await successGithub(pluginConfig, context)
+	if (!githubVerified) {
+		await verifyGithub(pluginConfig, context)
+		// eslint-disable-next-line require-atomic-updates -- not a race condition
+		githubVerified = true
+	}
+	await successGithub(pluginConfig, context)
 }
 
 export const fail: Plugin = async (pluginConfig, context) => {
-  if (!githubVerified) {
-    await verifyGithub(pluginConfig, context)
-    // eslint-disable-next-line require-atomic-updates -- not a race condition
-    githubVerified = true
-  }
-  await failGithub(pluginConfig, context)
+	if (!githubVerified) {
+		await verifyGithub(pluginConfig, context)
+		// eslint-disable-next-line require-atomic-updates -- not a race condition
+		githubVerified = true
+	}
+	await failGithub(pluginConfig, context)
 }

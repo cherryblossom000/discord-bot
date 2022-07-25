@@ -1,9 +1,9 @@
 import {REST} from '@discordjs/rest'
 import {
-  ApplicationCommandType,
-  Routes,
-  type RESTPutAPIApplicationCommandsJSONBody,
-  type RESTPostAPIContextMenuApplicationCommandsJSONBody
+	ApplicationCommandType,
+	Routes,
+	type RESTPutAPIApplicationCommandsJSONBody,
+	type RESTPostAPIContextMenuApplicationCommandsJSONBody
 } from 'discord-api-types/v9'
 import {dev} from '@comrade-pingu/bot/dist/src/constants.js'
 import {messageCommands, slashCommands, userCommands} from './commands.js'
@@ -17,26 +17,26 @@ const applicationId = process.env.APP_ID!
 const rest = new REST({version: '9'}).setToken(process.env.DISCORD_TOKEN!)
 
 const contextMenuCommandToJSON =
-  (type: ApplicationCommandType.Message | ApplicationCommandType.User) =>
-  ({
-    data
-  }: ContextMenuCommand): RESTPostAPIContextMenuApplicationCommandsJSONBody =>
-    // TODO: fix types
-    data
-      .setType(type)
-      .toJSON() as RESTPostAPIContextMenuApplicationCommandsJSONBody
+	(type: ApplicationCommandType.Message | ApplicationCommandType.User) =>
+	({
+		data
+	}: ContextMenuCommand): RESTPostAPIContextMenuApplicationCommandsJSONBody =>
+		// TODO: fix types
+		data
+			.setType(type)
+			.toJSON() as RESTPostAPIContextMenuApplicationCommandsJSONBody
 
 const body: RESTPutAPIApplicationCommandsJSONBody = [
-  ...slashCommands.map(({data}) => data.toJSON()),
-  ...messageCommands.map(
-    contextMenuCommandToJSON(ApplicationCommandType.Message)
-  ),
-  ...userCommands.map(contextMenuCommandToJSON(ApplicationCommandType.User))
+	...slashCommands.map(({data}) => data.toJSON()),
+	...messageCommands.map(
+		contextMenuCommandToJSON(ApplicationCommandType.Message)
+	),
+	...userCommands.map(contextMenuCommandToJSON(ApplicationCommandType.User))
 ]
 
 await rest.put(
-  dev
-    ? Routes.applicationGuildCommands(applicationId, process.env.TEST_GUILD_ID!)
-    : Routes.applicationCommands(applicationId),
-  {body}
+	dev
+		? Routes.applicationGuildCommands(applicationId, process.env.TEST_GUILD_ID!)
+		: Routes.applicationCommands(applicationId),
+	{body}
 )

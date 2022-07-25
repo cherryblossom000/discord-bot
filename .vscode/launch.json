@@ -1,106 +1,106 @@
 {
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Launch",
-      "program": "${workspaceFolder}/packages/bot/src/server.ts",
-      "outFiles": ["${workspaceFolder}/packages/bot/dist/src/**/*.js"],
-      "skipFiles": ["<node_internals>/**"],
-      "presentation": {"group": "0 launch"}
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Launch ignoring node_modules",
-      "program": "${workspaceFolder}/packages/bot/src/server.ts",
-      "outFiles": ["${workspaceFolder}/packages/bot/dist/src/**/*.js"],
-      "skipFiles": ["<node_internals>/**", "node_modules/**"],
-      "presentation": {"group": "0 launch"}
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Launch (watch)",
-      "runtimeExecutable": "nodemon",
-      "program": "${workspaceFolder}/packages/bot/src/server.ts",
-      "outFiles": ["${workspaceFolder}/packages/bot/dist/src/**/*.js"],
-      "restart": true,
-      "skipFiles": ["<node_internals>/**"],
-      "presentation": {"group": "1 watch"}
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Launch (watch) ignoring node_modules",
-      "runtimeExecutable": "nodemon",
-      "program": "${workspaceFolder}/packages/bot/src/server.ts",
-      "outFiles": ["${workspaceFolder}/packages/bot/dist/src/**/*.js"],
-      "restart": true,
-      "skipFiles": ["<node_internals>/**", "node_modules/**"],
-      "presentation": {"group": "1 watch"}
-    },
-    {
-      "type": "node",
-      "request": "attach",
-      "name": "Attach",
-      "processId": "${command:PickProcess}",
-      "outFiles": ["${workspaceFolder}/packages/bot/dist/src/**/*.js"],
-      "skipFiles": ["<node_internals>/**"]
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Build Docs",
-      "program": "${workspaceFolder}/packages/scripts/src/docs.ts",
-      "outFiles": ["${workspaceFolder}/packages/scripts/dist/**/*.js"],
-      "skipFiles": ["<node_internals>/**", "node_modules/**"],
-      "presentation": {"group": "scripts"}
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Register Commands",
-      "program": "${workspaceFolder}/packages/scripts/src/register-commands.ts",
-      "outFiles": ["${workspaceFolder}/packages/scripts/dist/**/*.js"],
-      "skipFiles": ["<node_internals>/**", "node_modules/**"],
-      "presentation": {"group": "scripts"}
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Launch Current File",
-      "runtimeArgs": ["-r", "ts-node/register"],
-      "args": ["${file}"],
-      "env": {"TS_NODE_LOG_ERROR": "true"},
-      "skipFiles": ["<node_internals>/**", "node_modules/**"]
-    },
-    {
-      "type": "node",
-      "name": "Tests (main)",
-      "request": "launch",
-      "cwd": "${workspaceFolder}/packages/bot",
-      "program": "${workspaceFolder}/node_modules/jest/bin/jest",
-      "args": ["-c", "jest.config.dev.cjs", "-i", "--forceExit"],
-      "env": {
-        "NODE_OPTIONS": "--experimental-vm-modules"
-      },
-      "skipFiles": ["<node_internals>/**"],
-      "presentation": {"group": "test"}
-    },
-    {
-      "type": "node",
-      "name": "Test Current File (main)",
-      "request": "launch",
-      "cwd": "${workspaceFolder}/packages/bot",
-      "program": "${workspaceFolder}/node_modules/jest/bin/jest",
-      "args": ["-c", "jest.config.dev.cjs", "-i", "--forceExit", "^${file}$"],
-      "env": {
-        "NODE_OPTIONS": "--experimental-vm-modules"
-      },
-      "skipFiles": ["<node_internals>/**"],
-      "presentation": {"group": "test"}
-    }
-  ]
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Launch",
+			"program": "${workspaceFolder}/packages/bot/src/server.ts",
+			"outFiles": ["${workspaceFolder}/packages/bot/dist/src/**/*.js"],
+			"skipFiles": ["<node_internals>/**"],
+			"presentation": {"group": "0 launch"}
+		},
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Launch ignoring node_modules",
+			"program": "${workspaceFolder}/packages/bot/src/server.ts",
+			"outFiles": ["${workspaceFolder}/packages/bot/dist/src/**/*.js"],
+			"skipFiles": ["<node_internals>/**", "node_modules/**"],
+			"presentation": {"group": "0 launch"}
+		},
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Launch (watch)",
+			"runtimeExecutable": "nodemon",
+			"program": "${workspaceFolder}/packages/bot/src/server.ts",
+			"outFiles": ["${workspaceFolder}/packages/bot/dist/src/**/*.js"],
+			"restart": true,
+			"skipFiles": ["<node_internals>/**"],
+			"presentation": {"group": "1 watch"}
+		},
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Launch (watch) ignoring node_modules",
+			"runtimeExecutable": "nodemon",
+			"program": "${workspaceFolder}/packages/bot/src/server.ts",
+			"outFiles": ["${workspaceFolder}/packages/bot/dist/src/**/*.js"],
+			"restart": true,
+			"skipFiles": ["<node_internals>/**", "node_modules/**"],
+			"presentation": {"group": "1 watch"}
+		},
+		{
+			"type": "node",
+			"request": "attach",
+			"name": "Attach",
+			"processId": "${command:PickProcess}",
+			"outFiles": ["${workspaceFolder}/packages/bot/dist/src/**/*.js"],
+			"skipFiles": ["<node_internals>/**"]
+		},
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Build Docs",
+			"program": "${workspaceFolder}/packages/scripts/src/docs.ts",
+			"outFiles": ["${workspaceFolder}/packages/scripts/dist/**/*.js"],
+			"skipFiles": ["<node_internals>/**", "node_modules/**"],
+			"presentation": {"group": "scripts"}
+		},
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Register Commands",
+			"program": "${workspaceFolder}/packages/scripts/src/register-commands.ts",
+			"outFiles": ["${workspaceFolder}/packages/scripts/dist/**/*.js"],
+			"skipFiles": ["<node_internals>/**", "node_modules/**"],
+			"presentation": {"group": "scripts"}
+		},
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Launch Current File",
+			"runtimeArgs": ["-r", "ts-node/register"],
+			"args": ["${file}"],
+			"env": {"TS_NODE_LOG_ERROR": "true"},
+			"skipFiles": ["<node_internals>/**", "node_modules/**"]
+		},
+		{
+			"type": "node",
+			"name": "Tests (main)",
+			"request": "launch",
+			"cwd": "${workspaceFolder}/packages/bot",
+			"program": "${workspaceFolder}/node_modules/jest/bin/jest",
+			"args": ["-c", "jest.config.dev.cjs", "-i", "--forceExit"],
+			"env": {
+				"NODE_OPTIONS": "--experimental-vm-modules"
+			},
+			"skipFiles": ["<node_internals>/**"],
+			"presentation": {"group": "test"}
+		},
+		{
+			"type": "node",
+			"name": "Test Current File (main)",
+			"request": "launch",
+			"cwd": "${workspaceFolder}/packages/bot",
+			"program": "${workspaceFolder}/node_modules/jest/bin/jest",
+			"args": ["-c", "jest.config.dev.cjs", "-i", "--forceExit", "^${file}$"],
+			"env": {
+				"NODE_OPTIONS": "--experimental-vm-modules"
+			},
+			"skipFiles": ["<node_internals>/**"],
+			"presentation": {"group": "test"}
+		}
+	]
 }

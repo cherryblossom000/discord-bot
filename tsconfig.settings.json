@@ -1,28 +1,28 @@
 {
-  "exclude": ["**/node_modules/", "**/dist/"],
-  "compilerOptions": {
-    "composite": true,
-    "incremental": true,
-    "skipLibCheck": true,
-    "lib": ["ES2021"],
-    "target": "ES2021",
-    "module": "ESNext",
-    "moduleResolution": "Node",
-    "esModuleInterop": true,
-    "declarationMap": true,
-    "sourceMap": true,
-    "importHelpers": true,
-    "removeComments": true,
+	"exclude": ["**/node_modules/", "**/dist/"],
+	"compilerOptions": {
+		"composite": true,
+		"incremental": true,
+		"skipLibCheck": true,
+		"lib": ["ES2021"],
+		"target": "ES2021",
+		"module": "ESNext",
+		"moduleResolution": "Node",
+		"esModuleInterop": true,
+		"declarationMap": true,
+		"sourceMap": true,
+		"importHelpers": true,
+		"removeComments": true,
 
-    "allowUnreachableCode": false,
-    "forceConsistentCasingInFileNames": true,
-    "importsNotUsedAsValues": "error",
-    "noImplicitOverride": true,
-    "noUncheckedIndexedAccess": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "useDefineForClassFields": true,
-    "useUnknownInCatchVariables": true,
-    "strict": true
-  }
+		"allowUnreachableCode": false,
+		"forceConsistentCasingInFileNames": true,
+		"importsNotUsedAsValues": "error",
+		"noImplicitOverride": true,
+		"noUncheckedIndexedAccess": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"useDefineForClassFields": true,
+		"useUnknownInCatchVariables": true,
+		"strict": true
+	}
 }

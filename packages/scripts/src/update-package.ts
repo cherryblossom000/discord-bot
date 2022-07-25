@@ -6,10 +6,10 @@ import type {PackageJson} from 'type-fest'
 exitOnError()
 
 const package_ = JSON.parse(
-  await readFile(new URL('package.json', botFolder), 'utf8')
+	await readFile(new URL('package.json', botFolder), 'utf8')
 ) as PackageJson
 delete package_.devDependencies
 await writeFile(
-  new URL('package.json', botDistFolder),
-  `${JSON.stringify(package_, null, 2)}\n`
+	new URL('package.json', botDistFolder),
+	`${JSON.stringify(package_, null, 2)}\n`
 )

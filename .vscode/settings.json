@@ -1,22 +1,22 @@
 {
-  "jest.jestCommandLine": "pnpm -C packages/bot test:dev",
-  "typescript.tsc.autoDetect": "off",
-  "typescript.tsdk": "./node_modules/typescript/lib",
-  "typescript.preferences.importModuleSpecifierEnding": "js",
-  "search.exclude": {
-    "dist/": true,
-    "node_modules/": true,
-    "pnpm-lock.yaml": true,
-    "packages/bot/tests/coverage/": true
-  },
-  "cSpell.words": [
-    "Deletable",
-    "Noot",
-    "Pingu",
-    "Pingu’s",
-    "cummunism",
-    "cummunist",
-    "iwillmurdereverylastcapitalist",
-    "iwmelc"
-  ]
+	"jest.jestCommandLine": "pnpm -C packages/bot test:dev",
+	"typescript.tsc.autoDetect": "off",
+	"typescript.tsdk": "./node_modules/typescript/lib",
+	"typescript.preferences.importModuleSpecifierEnding": "js",
+	"search.exclude": {
+		"dist/": true,
+		"node_modules/": true,
+		"pnpm-lock.yaml": true,
+		"packages/bot/tests/coverage/": true
+	},
+	"cSpell.words": [
+		"Deletable",
+		"Noot",
+		"Pingu",
+		"Pingu’s",
+		"cummunism",
+		"cummunist",
+		"iwillmurdereverylastcapitalist",
+		"iwmelc"
+	]
 }

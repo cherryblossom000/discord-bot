@@ -1,68 +1,68 @@
 {
-  "version": "2.0.0",
-  "tasks": [
-    {
-      "label": "Watch (all)",
-      "command": "dum",
-      "args": ["watch"],
-      "problemMatcher": "$tsc-watch",
-      "isBackground": true,
-      "presentation": {
-        "reveal": "never"
-      },
-      "group": "build"
-    },
-    {
-      "label": "Watch (bot)",
-      "command": "dum",
-      "args": ["-c", "packages/bot", "watch"],
-      "problemMatcher": {
-        "base": "$tsc-watch",
-        "fileLocation": ["relative", "${workspaceFolder}/packages/bot"]
-      },
-      "isBackground": true,
-      "presentation": {
-        "reveal": "never"
-      },
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      }
-    },
-    {
-      "label": "Watch (eslint-plugin)",
-      "command": "dum",
-      "args": ["-c", "packages/eslint-plugin", "watch"],
-      "problemMatcher": {
-        "base": "$tsc-watch",
-        "fileLocation": ["relative", "${workspaceFolder}/packages/eslint-plugin"]
-      },
-      "isBackground": true,
-      "presentation": {
-        "reveal": "never"
-      },
-      "group": "build"
-    },
-    {
-      "label": "Watch (semantic-release)",
-      "command": "dum",
-      "args": ["-c", "packages/semantic-release", "watch"],
-      "problemMatcher": {
-        "base": "$tsc-watch",
-        "fileLocation": ["relative", "${workspaceFolder}/packages/semantic-release"]
-      },
-      "isBackground": true,
-      "presentation": {
-        "reveal": "never"
-      },
-      "group": "build"
-    },
-    {
-      "label": "Build (all)",
-      "command": "dum",
-      "args": ["build"],
-      "problemMatcher": "$tsc",
-      "group": "build"
-    },
-  ]
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Watch (all)",
+			"command": "dum",
+			"args": ["watch"],
+			"problemMatcher": "$tsc-watch",
+			"isBackground": true,
+			"presentation": {
+				"reveal": "never"
+			},
+			"group": "build"
+		},
+		{
+			"label": "Watch (bot)",
+			"command": "dum",
+			"args": ["-c", "packages/bot", "watch"],
+			"problemMatcher": {
+				"base": "$tsc-watch",
+				"fileLocation": ["relative", "${workspaceFolder}/packages/bot"]
+			},
+			"isBackground": true,
+			"presentation": {
+				"reveal": "never"
+			},
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"label": "Watch (eslint-plugin)",
+			"command": "dum",
+			"args": ["-c", "packages/eslint-plugin", "watch"],
+			"problemMatcher": {
+				"base": "$tsc-watch",
+				"fileLocation": ["relative", "${workspaceFolder}/packages/eslint-plugin"]
+			},
+			"isBackground": true,
+			"presentation": {
+				"reveal": "never"
+			},
+			"group": "build"
+		},
+		{
+			"label": "Watch (semantic-release)",
+			"command": "dum",
+			"args": ["-c", "packages/semantic-release", "watch"],
+			"problemMatcher": {
+				"base": "$tsc-watch",
+				"fileLocation": ["relative", "${workspaceFolder}/packages/semantic-release"]
+			},
+			"isBackground": true,
+			"presentation": {
+				"reveal": "never"
+			},
+			"group": "build"
+		},
+		{
+			"label": "Build (all)",
+			"command": "dum",
+			"args": ["build"],
+			"problemMatcher": "$tsc",
+			"group": "build"
+		},
+	]
 }

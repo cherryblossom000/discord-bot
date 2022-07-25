@@ -1,5 +1,5 @@
 import type {EventListener} from '../Client'
 
 const listener: EventListener<'guildDelete'> = client => (): void =>
-  client.setActivity()
+	client.setActivity()
 export default listener

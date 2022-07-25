@@ -20,122 +20,122 @@ const debug = _debug('semantic-release:comrade-pingu:github')
 
 // https://github.com/semantic-release/github/blob/v8.0.2/lib/publish.js#L13-L106
 const publishGithub: PublishPlugin = async (pluginConfig, context) => {
-  const {
-    cwd,
-    options: {repositoryUrl},
-    branch,
-    nextRelease: {name, gitTag, notes},
-    logger
-  } = context
-  const {githubToken, githubUrl, githubApiPathPrefix, proxy, assets} =
-    resolveConfig(pluginConfig, context)
-  const {owner, repo} = parseGithubUrl(repositoryUrl) as {
-    owner: string
-    repo: string
-  }
-  const github = getClient({githubToken, githubUrl, githubApiPathPrefix, proxy})
-  const release = {
-    owner,
-    repo,
-    /* eslint-disable @typescript-eslint/naming-convention -- required */
-    tag_name: gitTag,
-    target_commitish: branch.name,
-    /* eslint-enable @typescript-eslint/naming-convention -- required */
-    name,
-    body: editNotes(notes),
-    prerelease: isPrerelease(branch)
-  }
+	const {
+		cwd,
+		options: {repositoryUrl},
+		branch,
+		nextRelease: {name, gitTag, notes},
+		logger
+	} = context
+	const {githubToken, githubUrl, githubApiPathPrefix, proxy, assets} =
+		resolveConfig(pluginConfig, context)
+	const {owner, repo} = parseGithubUrl(repositoryUrl) as {
+		owner: string
+		repo: string
+	}
+	const github = getClient({githubToken, githubUrl, githubApiPathPrefix, proxy})
+	const release = {
+		owner,
+		repo,
+		/* eslint-disable @typescript-eslint/naming-convention -- required */
+		tag_name: gitTag,
+		target_commitish: branch.name,
+		/* eslint-enable @typescript-eslint/naming-convention -- required */
+		name,
+		body: editNotes(notes),
+		prerelease: isPrerelease(branch)
+	}
 
-  debug('release object: %O', release)
+	debug('release object: %O', release)
 
-  if (!assets || !assets.length) {
-    const {
-      data: {html_url: url, id: releaseId}
-    } = await github.repos.createRelease(release)
-    logger.log('Published GitHub release: %s', url)
-    return {url, name: RELEASE_NAME, id: releaseId}
-  }
+	if (!assets || !assets.length) {
+		const {
+			data: {html_url: url, id: releaseId}
+		} = await github.repos.createRelease(release)
+		logger.log('Published GitHub release: %s', url)
+		return {url, name: RELEASE_NAME, id: releaseId}
+	}
 
-  const draftRelease = {...release, draft: true}
-  const {
-    data: {upload_url: uploadUrl, id: releaseId}
-  } = await github.repos.createRelease(draftRelease)
+	const draftRelease = {...release, draft: true}
+	const {
+		data: {upload_url: uploadUrl, id: releaseId}
+	} = await github.repos.createRelease(draftRelease)
 
-  const globbedAssets = await globAssets(context, assets)
-  debug('globbed assets: %o', globAssets)
+	const globbedAssets = await globAssets(context, assets)
+	debug('globbed assets: %o', globAssets)
 
-  await Promise.all(
-    globbedAssets.map(async asset => {
-      const filePath = (isPlainObject as (value?: unknown) => value is object)(
-        asset
-      )
-        ? asset.path
-        : asset
-      let file
+	await Promise.all(
+		globbedAssets.map(async asset => {
+			const filePath = (isPlainObject as (value?: unknown) => value is object)(
+				asset
+			)
+				? asset.path
+				: asset
+			let file
 
-      try {
-        file = await stat(path.resolve(cwd, filePath))
-      } catch {
-        logger.error(
-          'The asset %s cannot be read, and will be ignored.',
-          filePath
-        )
-        return
-      }
+			try {
+				file = await stat(path.resolve(cwd, filePath))
+			} catch {
+				logger.error(
+					'The asset %s cannot be read, and will be ignored.',
+					filePath
+				)
+				return
+			}
 
-      if (!file.isFile()) {
-        logger.error(
-          'The asset %s is not a file, and will be ignored.',
-          filePath
-        )
-        return
-      }
+			if (!file.isFile()) {
+				logger.error(
+					'The asset %s is not a file, and will be ignored.',
+					filePath
+				)
+				return
+			}
 
-      const fileName = template(
-        typeof asset === 'string' ? path.basename(filePath) : asset.name
-      )(context)
-      const upload = {
-        url: uploadUrl,
-        data: await readFile(path.resolve(cwd, filePath)),
-        name: fileName,
-        headers: {
-          'content-type': mime.getType(path.extname(fileName)) ?? 'text/plain',
-          'content-length': file.size
-        }
-        // data prop should be string not Buffer
-        // seems to work in @semantic-release/github though
-      } as unknown as NonNullable<
-        Parameters<Octokit['repos']['uploadReleaseAsset']>[0]
-      >
+			const fileName = template(
+				typeof asset === 'string' ? path.basename(filePath) : asset.name
+			)(context)
+			const upload = {
+				url: uploadUrl,
+				data: await readFile(path.resolve(cwd, filePath)),
+				name: fileName,
+				headers: {
+					'content-type': mime.getType(path.extname(fileName)) ?? 'text/plain',
+					'content-length': file.size
+				}
+				// data prop should be string not Buffer
+				// seems to work in @semantic-release/github though
+			} as unknown as NonNullable<
+				Parameters<Octokit['repos']['uploadReleaseAsset']>[0]
+			>
 
-      debug('file path: %o', filePath)
-      debug('file name: %o', fileName)
+			debug('file path: %o', filePath)
+			debug('file name: %o', fileName)
 
-      if (
-        (isPlainObject as (value?: unknown) => value is object)(asset) &&
-        asset.label !== undefined &&
-        asset.label !== ''
-      )
-        upload.label = template(asset.label)(context)
+			if (
+				(isPlainObject as (value?: unknown) => value is object)(asset) &&
+				asset.label !== undefined &&
+				asset.label !== ''
+			)
+				upload.label = template(asset.label)(context)
 
-      const {
-        data: {browser_download_url: downloadUrl}
-      } = await github.repos.uploadReleaseAsset(upload)
-      logger.log('Published file %s', downloadUrl)
-    })
-  )
+			const {
+				data: {browser_download_url: downloadUrl}
+			} = await github.repos.uploadReleaseAsset(upload)
+			logger.log('Published file %s', downloadUrl)
+		})
+	)
 
-  const {
-    data: {html_url: url}
-  } = await github.repos.updateRelease({
-    owner,
-    repo,
-    // eslint-disable-next-line @typescript-eslint/naming-convention -- required
-    release_id: releaseId,
-    draft: false
-  })
+	const {
+		data: {html_url: url}
+	} = await github.repos.updateRelease({
+		owner,
+		repo,
+		// eslint-disable-next-line @typescript-eslint/naming-convention -- required
+		release_id: releaseId,
+		draft: false
+	})
 
-  logger.log('Published GitHub release %s', url)
-  return {url, name: RELEASE_NAME, id: releaseId}
+	logger.log('Published GitHub release %s', url)
+	return {url, name: RELEASE_NAME, id: releaseId}
 }
 export default publishGithub

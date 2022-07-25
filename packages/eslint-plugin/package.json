@@ -1,33 +1,33 @@
 {
-  "name": "@comrade-pingu/eslint-plugin",
-  "version": "3.0.0",
-  "private": true,
-  "publishConfig": {
-    "access": "restricted"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/cherryblossom000/comrade-pingu",
-    "directory": "packages/eslint-plugin"
-  },
-  "main": "dist",
-  "engines": {
-    "node": ">=16"
-  },
-  "scripts": {
-    "lint": "eslint --max-warnings 0 --ext ts --cache .",
-    "build": "tsc -b",
-    "watch": "dum build -- -w"
-  },
-  "dependencies": {
-    "@typescript-eslint/experimental-utils": "^5.30.7",
-    "tslib": "^2.4.0"
-  },
-  "peerDependencies": {
-    "@typescript-eslint/parser": "^5"
-  },
-  "devDependencies": {
-    "@types/eslint": "^8.4.5",
-    "eslint-plugin-eslint-plugin": "^5.0.1"
-  }
+	"name": "@comrade-pingu/eslint-plugin",
+	"version": "3.0.0",
+	"private": true,
+	"publishConfig": {
+		"access": "restricted"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/cherryblossom000/comrade-pingu",
+		"directory": "packages/eslint-plugin"
+	},
+	"main": "dist",
+	"engines": {
+		"node": ">=16"
+	},
+	"scripts": {
+		"lint": "eslint --max-warnings 0 --ext ts --cache .",
+		"build": "tsc -b",
+		"watch": "dum build -- -w"
+	},
+	"dependencies": {
+		"@typescript-eslint/experimental-utils": "^5.30.7",
+		"tslib": "^2.4.0"
+	},
+	"peerDependencies": {
+		"@typescript-eslint/parser": "^5"
+	},
+	"devDependencies": {
+		"@types/eslint": "^8.4.5",
+		"eslint-plugin-eslint-plugin": "^5.0.1"
+	}
 }

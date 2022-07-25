@@ -7,27 +7,27 @@ type Promisable<T> = Promise<T> | T
 export type RequiredPick<T, K extends keyof T> = Required<Pick<T, K>> & T
 
 declare module 'semantic-release' {
-  // eslint-disable-next-line @typescript-eslint/no-shadow -- module augmentation
-  interface Context {
-    cwd: string
-  }
+	// eslint-disable-next-line @typescript-eslint/no-shadow -- module augmentation
+	interface Context {
+		cwd: string
+	}
 }
 
 interface PluginConfig extends Changelog.PluginConfig, Github.PluginConfig {}
 
 export type Plugin = (
-  pluginConfig: PluginConfig,
-  context: Context
+	pluginConfig: PluginConfig,
+	context: Context
 ) => Promisable<void>
 
 type ContextWithNextRelease = RequiredPick<Context, 'nextRelease' | 'options'>
 
 export type PluginWithNextRelease = (
-  pluginConfig: PluginConfig,
-  context: ContextWithNextRelease
+	pluginConfig: PluginConfig,
+	context: ContextWithNextRelease
 ) => Promisable<void>
 
 export type PublishPlugin = (
-  pluginConfig: PluginConfig,
-  context: ContextWithNextRelease
+	pluginConfig: PluginConfig,
+	context: ContextWithNextRelease
 ) => Promisable<{url: string; name: string}>
