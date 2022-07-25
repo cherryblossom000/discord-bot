@@ -154,7 +154,7 @@ export const setValue = async <
     }
   ).updateOne(
     {_id: id},
-    {$set: {[key]: value} as MatchKeysAndValues<DatabaseType<C>>},
+    {$set: {[key]: value} as unknown as MatchKeysAndValues<DatabaseType<C>>},
     {upsert: true}
   )
 }

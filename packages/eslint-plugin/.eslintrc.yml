@@ -2,8 +2,6 @@ extends: plugin:eslint-plugin/recommended
 plugins: [eslint-plugin]
 rules:
   eslint-plugin/no-deprecated-context-methods: 2
-  eslint-plugin/prefer-object-rule: 2
-  eslint-plugin/prefer-output-null: 2
   eslint-plugin/prefer-placeholders: 2
   eslint-plugin/prefer-replace-text: 2
   eslint-plugin/test-case-property-ordering: 1

@@ -88,9 +88,9 @@ declare module '@semantic-release/github/lib/glob-assets' {
 }
 
 declare module '@semantic-release/github/lib/is-prerelease' {
-  type Branch = import('./types').Branch
+  import type {BranchObject} from 'semantic-release'
 
-  const isPrerelease: (branch: Branch) => boolean
+  const isPrerelease: (branch: BranchObject) => boolean
   export = isPrerelease
 }
 
