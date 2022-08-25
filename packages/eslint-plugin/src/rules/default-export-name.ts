@@ -4,9 +4,9 @@ import {
 	type TSESTree
 } from '@typescript-eslint/experimental-utils'
 
-const rule: TSESLint.RuleModule<
-	'incorrectName' | 'wrongExport',
-	[{name: string}]
+const rule: Omit<
+	TSESLint.RuleModule<'incorrectName' | 'wrongExport', [{name: string}]>,
+	'defaultOptions'
 > = {
 	meta: {
 		type: 'suggestion',
