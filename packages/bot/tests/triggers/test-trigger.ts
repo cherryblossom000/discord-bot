@@ -1,3 +1,4 @@
+import {describe, expect, test} from 'vitest'
 import type {Trigger} from '../../src/types'
 
 export default (
@@ -5,7 +6,7 @@ export default (
 	{regex}: Trigger,
 	success: string[],
 	fail: string[]
-): void =>
+): void => {
 	describe(name, () => {
 		describe('regex', () => {
 			describe('success', () =>
@@ -14,3 +15,4 @@ export default (
 				test.each(fail)('%s', string => expect(string).not.toMatch(regex)))
 		})
 	})
+}

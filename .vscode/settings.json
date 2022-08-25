@@ -1,5 +1,4 @@
 {
-	"jest.jestCommandLine": "pnpm -C packages/bot test:dev",
 	"typescript.tsc.autoDetect": "off",
 	"typescript.tsdk": "./node_modules/typescript/lib",
 	"typescript.preferences.importModuleSpecifierEnding": "js",

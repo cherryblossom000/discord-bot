@@ -40,8 +40,6 @@ module.exports = {
 		{
 			files: '**/*.config*.cjs',
 			rules: {
-				// Allow @typedef {import('ts-jest')} (stops 'Tag @typedef must have a name/namepath in "typescript" mode')
-				'jsdoc/valid-types': 0,
 				'node/no-unpublished-require': 0
 			}
 		},

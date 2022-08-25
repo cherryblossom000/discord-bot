@@ -31,9 +31,6 @@
 		},
 		"test": {
 			"outputs": []
-		},
-		"test:dev": {
-			"outputs": []
 		}
 	}
 }
