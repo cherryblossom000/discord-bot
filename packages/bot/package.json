@@ -23,7 +23,8 @@
 		"build:all": "dum build && dum build:site",
 		"watch": "tsc -b -w",
 		"start": "node .",
-		"test": "vitest"
+		"test": "vitest run",
+		"test:dev": "vitest"
 	},
 	"dependencies": {
 		"clean-stack": "^4.2.0",

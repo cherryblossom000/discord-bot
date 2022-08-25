@@ -24,6 +24,7 @@
 		"watch": "tsc -b -w",
 		"clean": "trash '**/{*.tsbuildinfo,.eslintcache,dist}' '!**/node_modules/**'",
 		"test": "turbo run test",
+		"test:dev": "dum -c packages/bot test:dev",
 		"register-commands": "node packages/scripts/dist/register-commands",
 		"start": "dum -c packages/bot start"
 	},
