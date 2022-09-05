@@ -114,8 +114,25 @@ jobs:
         GIT_AUTHOR_EMAIL: actions@github.com
         GIT_COMMITTER_EMAIL: actions@github.com
 
+    # TODO: fix
+
+    # 1206 verbose stack TypeError: Cannot read properties of null (reading 'matches')
+    # 1206 verbose stack     at Link.matches (/opt/hostedtoolcache/node/16.17.0/x64/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/node.js:1107:41)
+    # 1206 verbose stack     at Link.canDedupe (/opt/hostedtoolcache/node/16.17.0/x64/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/node.js:1061:15)
+    # 1206 verbose stack     at PlaceDep.pruneDedupable (/opt/hostedtoolcache/node/16.17.0/x64/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/place-dep.js:468:14)
+    # 1206 verbose stack     at PlaceDep.placeInTree (/opt/hostedtoolcache/node/16.17.0/x64/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/place-dep.js:329:14)
+    # 1206 verbose stack     at PlaceDep.place (/opt/hostedtoolcache/node/16.17.0/x64/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/place-dep.js:216:10)
+    # 1206 verbose stack     at new PlaceDep (/opt/hostedtoolcache/node/16.17.0/x64/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/place-dep.js:73:10)
+    # 1206 verbose stack     at PlaceDep.placeInTree (/opt/hostedtoolcache/node/16.17.0/x64/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/place-dep.js:365:26)
+    # 1206 verbose stack     at PlaceDep.place (/opt/hostedtoolcache/node/16.17.0/x64/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/place-dep.js:216:10)
+    # 1206 verbose stack     at new PlaceDep (/opt/hostedtoolcache/node/16.17.0/x64/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/place-dep.js:73:10)
+    # 1206 verbose stack     at /opt/hostedtoolcache/node/16.17.0/x64/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/arborist/build-ideal-tree.js:990:31
+
+    # also EUNSUPPORTEDPROTOCOL because of link:
+
     - name: Release
       run: pnpx multi-semantic-release
+      if: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GIT_COMMITTER_NAME: cherryblossom
