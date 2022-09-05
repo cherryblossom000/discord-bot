@@ -149,16 +149,6 @@ To fix this, ask an admin or the owner of the server to add th${plural ? 'ose' :
     }
     return true;
 };
-export const checkIfAdmin = async (interaction, guild) => {
-    if (!(await guild.members.fetch(interaction.user.id)).permissions.has('ADMINISTRATOR')) {
-        await interaction.reply({
-            content: 'This command can only be used by an administrator!',
-            ephemeral: true
-        });
-        return false;
-    }
-    return true;
-};
 export const imageField = (name, url) => ({
     name,
     value: hyperlink('Link', url)
