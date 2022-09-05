@@ -13,14 +13,18 @@ node packages/scripts/dist/update-package
 	cd packages/bot/dist
 
 	# Add .replit
-	echo 'run = "pnpm install && node src/server"' > .replit
+	echo 'run = "pnpm install && pnpx node src/server"' > .replit
 
 	# Add replit.nix
 	echo '{ pkgs }: {
 	deps = [
 		pkgs.nodejs-slim-16_x
 		(pkgs.nodePackages_latest.pnpm.override {
-			postInstall = "mkdir -p $out/bin && ln -s $out/lib/node_modules/pnpm/bin/pnpm.cjs $out/bin/pnpm";
+			postInstall = ''
+				mkdir -p $out/bin
+				ln -s $out/lib/node_modules/pnpm/bin/pnpm.cjs $out/bin/pnpm
+				ln -s $out/lib/node_modules/pnpm/bin/pnpx.cjs $out/bin/pnpx
+			'';
 		})
 	];
 }' > replit.nix
