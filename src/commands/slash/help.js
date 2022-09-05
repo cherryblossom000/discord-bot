@@ -1,5 +1,4 @@
-import { SlashCommandBuilder, inlineCode } from '@discordjs/builders';
-import { ApplicationCommandOptionType } from 'discord-api-types/v9';
+import { ApplicationCommandOptionType, SlashCommandBuilder, inlineCode } from 'discord.js';
 import { commandFiles, formatCommandSyntax, formatCommandUsage, removeJSExtension } from '../../utils.js';
 const HELP = 'help';
 const COMMAND = 'command';

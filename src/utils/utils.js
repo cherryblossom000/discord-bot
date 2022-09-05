@@ -1,11 +1,22 @@
 import path from 'node:path';
 import { homedir } from 'node:os';
-import { bold, codeBlock, hyperlink, inlineCode } from '@discordjs/builders';
-import D, { Constants, DiscordAPIError, MessageButton } from 'discord.js';
+import D, { ButtonBuilder, ButtonStyle, DiscordAPIError, RESTJSONErrorCodes, bold, codeBlock, hyperlink, inlineCode } from 'discord.js';
 import originalCleanStack from 'clean-stack';
 import * as undici from 'undici';
 import { dev, emojis, me } from '../constants.js';
 export const inObject = (object, key) => key in object;
+export const shuffle = (collection) => {
+    const { length } = collection;
+    const array = [...collection];
+    let i = -1;
+    while (++i < length) {
+        const rand = i + Math.floor(Math.random() * (length - i));
+        const value = array[rand];
+        array[rand] = array[i];
+        array[i] = value;
+    }
+    return array;
+};
 class RequestError extends Error {
     constructor(statusCode, message, url, body) {
         super(`${message} (url: ${url}) failed with status code ${statusCode}
@@ -54,9 +65,8 @@ const cleanErrorsStack = (error) => {
     error.stack = error.stack === undefined ? '' : cleanStack(error.stack);
     return error;
 };
-export const ignoreError = (key) => (error) => {
-    if (!(error instanceof DiscordAPIError &&
-        error.code === Constants.APIErrors[key]))
+export const ignoreError = (code) => (error) => {
+    if (!(error instanceof DiscordAPIError && error.code === code))
         throw error;
 };
 export const handleError = (client, error, info, { to: channelOrInteraction, response: content = 'Unfortunately, there was an error trying to execute that command. Noot noot.', followUp = false } = {}) => {
@@ -69,7 +79,7 @@ export const handleError = (client, error, info, { to: channelOrInteraction, res
         if (error instanceof Error)
             cleanErrorsStack(error);
         if (channelOrInteraction) {
-            await (channelOrInteraction instanceof D.Interaction
+            await (channelOrInteraction instanceof D.BaseInteraction
                 ? followUp
                     ? channelOrInteraction.followUp({ content, ephemeral: true })
                     : channelOrInteraction.reply({ content, ephemeral: true })
@@ -85,12 +95,12 @@ export const handleError = (client, error, info, { to: channelOrInteraction, res
                     : ''
                 : error}${error instanceof DiscordAPIError
                 ? `
-Code: ${error.code} (${Object.entries(Constants.APIErrors).find(([, code]) => code === error.code)?.[0] ?? 'unknown'})
-Path: ${error.path}
+Code: ${error.code} (${Object.entries(RESTJSONErrorCodes).find(([, code]) => code === error.code)?.[0] ?? 'unknown'})
+URL: ${error.url}
 Method: ${error.method}
-Status: ${error.httpStatus}
-Request data:
-${codeBlock('json', JSON.stringify(error.requestData, null, 2))}`
+Status: ${error.status}
+Request body:
+${codeBlock('json', JSON.stringify(error.requestBody, null, 2))}`
                 : ''}`);
         }
         catch (error_) {
@@ -121,12 +131,6 @@ export const replyAndFetch = async (interaction, options, mode = 0) => {
         ? message
         : (await interaction.client.channels.fetch(interaction.channelId)).messages.fetch(message.id);
 };
-export const deleteMessage = async (client, channelId, messageId) => {
-    await client['api']
-        .channels(channelId)
-        .messages(messageId)
-        .delete();
-};
 export const checkPermissions = async (interaction, permissions) => {
     if (!interaction.inGuild())
         return true;
@@ -134,46 +138,46 @@ export const checkPermissions = async (interaction, permissions) => {
     const channel = await fetchChannel(interaction);
     const channelPermissions = channel.permissionsFor(client.user);
     if (channelPermissions?.has(permissions) !== true) {
-        const neededPermissions = Array.isArray(permissions)
-            ? permissions.filter(p => channelPermissions?.has(p) === true)
-            : [permissions];
+        const neededPermissions = permissions.filter(p => channelPermissions?.has(p) === true);
         const plural = neededPermissions.length !== 1;
         const permissionsString = ` permission${plural ? 's' : ''}`;
         await interaction.reply({
             content: `I don’t have th${plural ? 'ese' : 'is'}${permissionsString}!
 ${neededPermissions.map(p => `- ${p}`).join('\n')}
-To fix this, ask an admin or the owner of the server to add th${plural ? 'ose' : 'at'}${permissionsString} to ${(await client.guilds.fetch(guildId)).me.roles.cache.find(role => role.managed)}.`,
+To fix this, ask an admin or the owner of the server to add th${plural ? 'ose' : 'at'}${permissionsString} to ${(await client.guilds.fetch(guildId)).members.me.roles.cache.find(role => role.managed)}.`,
             ephemeral: true
         });
         return false;
     }
     return true;
 };
-export const imageField = (name, url) => ({
+export const inlineField = (name, value) => ({
     name,
-    value: hyperlink('Link', url)
+    value,
+    inline: true
 });
+export const imageField = (name, url) => inlineField(name, hyperlink('Link', url));
 export const BACK = 'back';
 export const FORWARD = 'forward';
 const backButtonOptions = {
-    style: 'SECONDARY',
+    style: ButtonStyle.Secondary,
     label: 'Back',
     emoji: emojis.left,
     customId: BACK
 };
 const forwardButtonOptions = {
-    style: 'SECONDARY',
+    style: ButtonStyle.Secondary,
     label: 'Forward',
     emoji: emojis.right,
     customId: FORWARD
 };
-export const backButton = new MessageButton(backButtonOptions);
-export const forwardButton = new MessageButton(forwardButtonOptions);
-export const backButtonDisabled = new MessageButton({
+export const backButton = new ButtonBuilder(backButtonOptions);
+export const forwardButton = new ButtonBuilder(forwardButtonOptions);
+export const backButtonDisabled = new ButtonBuilder({
     ...backButtonOptions,
     disabled: true
 });
-export const forwardButtonDisabled = new MessageButton({
+export const forwardButtonDisabled = new ButtonBuilder({
     ...forwardButtonOptions,
     disabled: true
 });

@@ -1,4 +1,4 @@
-import { inlineCode } from '@discordjs/builders';
+import { ApplicationCommandType, inlineCode, InteractionType } from 'discord.js';
 import { debugInteractionDetails, handleError } from '../utils.js';
 const handleInteractionError = (interaction) => (error) => handleError(interaction.client, error, `Command ${inlineCode(interaction.commandName)} failed
 ${debugInteractionDetails(interaction)}`, { to: interaction });
@@ -15,12 +15,18 @@ const listener = (client, database) => {
             .catch(handleInteractionError(interaction));
     };
     return async (interaction) => {
-        if (interaction.isCommand())
-            await runCommand(interaction, 'slashCommands');
-        else if (interaction.isMessageContextMenu())
-            await runCommand(interaction, 'messageCommands');
-        else if (interaction.isUserContextMenu())
-            await runCommand(interaction, 'userCommands');
+        if (interaction.type === InteractionType.ApplicationCommand) {
+            switch (interaction.commandType) {
+                case ApplicationCommandType.ChatInput:
+                    await runCommand(interaction, 'slashCommands');
+                    break;
+                case ApplicationCommandType.Message:
+                    await runCommand(interaction, 'messageCommands');
+                    break;
+                case ApplicationCommandType.User:
+                    await runCommand(interaction, 'userCommands');
+            }
+        }
     };
 };
 export default listener;

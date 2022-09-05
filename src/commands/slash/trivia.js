@@ -1,5 +1,4 @@
-import { SlashCommandBuilder, bold } from '@discordjs/builders';
-import { Collection, MessageActionRow, MessageButton, MessageEmbed, Util } from 'discord.js';
+import { ButtonBuilder, ButtonStyle, Collection, ComponentType, EmbedBuilder, SlashCommandBuilder, bold, escapeMarkdown } from 'discord.js';
 import { dev, emojis } from '../../constants.js';
 import { addTriviaQuestion, aggregateTriviaUsers, collection, fetchValue, triviaUsersCount, triviaUsersCountQuery } from '../../database.js';
 import { Difficulty, fetchQuestion } from '../../opentdb.js';
@@ -7,14 +6,14 @@ import { BACK, backButton, backButtonDisabled, checkPermissions, fetchGuild, for
 const TRUE = 'true';
 const FALSE = 'false';
 const booleanButtons = [
-    new MessageButton({
-        style: 'SUCCESS',
+    new ButtonBuilder({
+        style: ButtonStyle.Success,
         customId: TRUE,
         label: 'True',
         emoji: emojis.tick
     }),
-    new MessageButton({
-        style: 'DANGER',
+    new ButtonBuilder({
+        style: ButtonStyle.Danger,
         customId: FALSE,
         label: 'False',
         emoji: emojis.cross
@@ -23,7 +22,11 @@ const booleanButtons = [
 const format = (answer) => typeof answer === 'boolean' ? (answer ? 'True' : 'False') : answer;
 const play = async (interaction, database) => {
     const { client, user } = interaction;
-    if (!(await checkPermissions(interaction, ['EMBED_LINKS', 'ADD_REACTIONS'])))
+    if (!(await checkPermissions(interaction, [
+        'EmbedLinks',
+        'ReadMessageHistory',
+        'AddReactions'
+    ])))
         return;
     const question = await fetchQuestion();
     if (!question) {
@@ -34,12 +37,12 @@ const play = async (interaction, database) => {
         const message = await replyAndFetch(interaction, {
             embeds: [
                 {
-                    title: questionPrefix + Util.escapeMarkdown(question.question),
+                    title: questionPrefix + escapeMarkdown(question.question),
                     description: 'You have 15 seconds to answer.',
                     fields: [
                         {
                             name: 'Category',
-                            value: Util.escapeMarkdown(question.category),
+                            value: escapeMarkdown(question.category),
                             inline: true
                         },
                         {
@@ -50,7 +53,7 @@ const play = async (interaction, database) => {
                     ]
                 }
             ],
-            components: [new MessageActionRow({ components: [...buttons] })]
+            components: [{ type: ComponentType.ActionRow, components: [...buttons] }]
         });
         const correctAnswer = format(question.correctAnswer);
         if (dev)
@@ -105,18 +108,18 @@ const play = async (interaction, database) => {
             ...question.incorrectAnswers,
             question.correctAnswer
         ]);
-        await execute(answers.map(answer => new MessageButton({
-            style: 'SECONDARY',
+        await execute(answers.map(answer => new ButtonBuilder({
+            style: ButtonStyle.Secondary,
             customId: answer,
-            label: Util.escapeMarkdown(answer)
+            label: escapeMarkdown(answer)
         })));
     }
 };
 const formatPercentage = (numerator, denominator, percentage = numerator / denominator) => `${numerator}/${denominator} (${(percentage * 100).toFixed(2)}%)`;
 const stats = async (interaction, user, database) => {
-    if (!(await checkPermissions(interaction, 'EMBED_LINKS')))
+    if (!(await checkPermissions(interaction, ['EmbedLinks'])))
         return;
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
         .setTitle(user.tag)
         .setThumbnail(user.displayAvatarURL())
         .setFooter({
@@ -169,9 +172,9 @@ const leaderboard = async (interaction, database) => {
         return;
     }
     if (!(await checkPermissions(interaction, [
-        'EMBED_LINKS',
-        'READ_MESSAGE_HISTORY',
-        'ADD_REACTIONS'
+        'EmbedLinks',
+        'ReadMessageHistory',
+        'AddReactions'
     ])))
         return;
     const guild = await fetchGuild(interaction);
@@ -200,12 +203,13 @@ const leaderboard = async (interaction, database) => {
                 }
             ],
             components: [
-                new MessageActionRow({
+                {
+                    type: ComponentType.ActionRow,
                     components: [
                         start ? backButton : backButtonDisabled,
                         start + 10 < totalUsers ? forwardButton : forwardButtonDisabled
                     ]
-                })
+                }
             ]
         };
     };

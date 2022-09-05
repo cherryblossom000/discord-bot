@@ -1,4 +1,4 @@
-import { ContextMenuCommandBuilder, hyperlink } from '@discordjs/builders';
+import { ContextMenuCommandBuilder, Routes, hyperlink } from 'discord.js';
 import { fetchValue } from '../../database.js';
 import { checkPermissions } from '../../utils.js';
 const command = {
@@ -13,17 +13,16 @@ const command = {
             });
             return;
         }
-        if (!(await checkPermissions(interaction, 'MANAGE_MESSAGES')))
+        if (!(await checkPermissions(interaction, ['ManageMessages'])))
             return;
         const { channelId, client, guildId, options, user } = interaction;
         const messageId = options.getMessage('message', true).id;
-        await client['api']
-            .channels(channelId)
-            .pins(messageId)
-            .put({ reason: `‘Pin Message’ from ${user.tag} (${user.id})` });
+        await client.rest.put(Routes.channelPin(channelId, messageId), {
+            reason: `‘Pin Message’ from ${user.tag} (${user.id})`
+        });
         await interaction.reply({
             content: `Pinned ${hyperlink(`message ${messageId}`, `https://discord.com/channels/${guildId}/${channelId}/${messageId}`)}. Noot noot.`,
-            flags: 'SUPPRESS_EMBEDS'
+            flags: 'SuppressEmbeds'
         });
     }
 };

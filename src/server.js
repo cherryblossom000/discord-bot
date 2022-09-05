@@ -1,4 +1,4 @@
-import { inlineCode } from '@discordjs/builders';
+import { inlineCode } from 'discord.js';
 import Koa from 'koa';
 import serve from 'koa-static';
 import { Client } from './Client.js';
@@ -36,15 +36,15 @@ app
 const client = new Client({
     allowedMentions: { parse: ['roles', 'users'] },
     intents: [
-        'GUILDS',
-        'GUILD_MEMBERS',
-        'GUILD_EMOJIS_AND_STICKERS',
-        'GUILD_MESSAGE_REACTIONS',
-        'GUILD_VOICE_STATES',
-        'GUILD_PRESENCES',
-        'GUILD_MESSAGES',
-        'DIRECT_MESSAGES',
-        'DIRECT_MESSAGE_REACTIONS'
+        'Guilds',
+        'GuildMembers',
+        'GuildEmojisAndStickers',
+        'GuildMessageReactions',
+        'GuildVoiceStates',
+        'GuildPresences',
+        'GuildMessages',
+        'DirectMessages',
+        'DirectMessageReactions'
     ]
 });
 if (dev) {

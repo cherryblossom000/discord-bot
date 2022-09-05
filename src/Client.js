@@ -1,4 +1,4 @@
-import D, { Collection } from 'discord.js';
+import D, { ActivityType, Collection } from 'discord.js';
 export class Client extends D.Client {
     constructor() {
         super(...arguments);
@@ -34,7 +34,7 @@ export class Client extends D.Client {
         });
     }
     setActivity() {
-        this.user.setActivity(`capitalist scum in ${this.guilds.cache.size} servers`, { type: 'WATCHING' });
+        this.user.setActivity(`capitalist scum in ${this.guilds.cache.size} servers`, { type: ActivityType.Watching });
     }
 }
 //# sourceMappingURL=Client.js.map

@@ -1,5 +1,4 @@
-import { SlashCommandBuilder } from '@discordjs/builders';
-import { MessageActionRow, MessageButton } from 'discord.js';
+import { ButtonBuilder, ButtonStyle, ComponentType, OAuth2Scopes, SlashCommandBuilder } from 'discord.js';
 import { permissions } from '../../constants.js';
 let options;
 const command = {
@@ -10,18 +9,19 @@ const command = {
         await interaction.reply((options ??= {
             content: 'Invite me using this link!',
             components: [
-                new MessageActionRow({
+                {
+                    type: ComponentType.ActionRow,
                     components: [
-                        new MessageButton({
-                            style: 'LINK',
+                        new ButtonBuilder({
+                            style: ButtonStyle.Link,
                             label: 'Invite link',
                             url: interaction.client.generateInvite({
-                                scopes: ['applications.commands', 'bot'],
+                                scopes: [OAuth2Scopes.ApplicationsCommands, OAuth2Scopes.Bot],
                                 permissions
                             })
                         })
                     ]
-                })
+                }
             ]
         }));
     }

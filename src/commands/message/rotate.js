@@ -1,43 +1,42 @@
-import { ContextMenuCommandBuilder } from '@discordjs/builders';
-import { Collection, MessageActionRow, MessageButton } from 'discord.js';
+import { ButtonBuilder, ButtonStyle, ComponentType, ContextMenuCommandBuilder, Collection, Routes } from 'discord.js';
 import sharp from 'sharp';
 import { emojis, timeout } from '../../constants.js';
-import { BACK, backButton, backButtonDisabled, checkPermissions, deleteMessage, fetchChannel, forwardButton, forwardButtonDisabled, replyAndFetch, request, timeoutFollowUp } from '../../utils.js';
+import { BACK, backButton, backButtonDisabled, checkPermissions, fetchChannel, forwardButton, forwardButtonDisabled, replyAndFetch, request, timeoutFollowUp } from '../../utils.js';
 const TICK = 'tick';
-const tickButton = new MessageButton({
-    style: 'SUCCESS',
+const tickButton = new ButtonBuilder({
+    style: ButtonStyle.Success,
     label: 'Select',
     customId: TICK
 });
 const CANCEL = 'cancel';
-const cancelButton = new MessageButton({
-    style: 'DANGER',
+const cancelButton = new ButtonBuilder({
+    style: ButtonStyle.Danger,
     label: 'Cancel',
     customId: CANCEL
 });
 const ANTICLOCKWISE = 'anticlockwise';
-const anticlockwiseButton = new MessageButton({
-    style: 'SECONDARY',
+const anticlockwiseButton = new ButtonBuilder({
+    style: ButtonStyle.Secondary,
     label: '-90°',
     emoji: emojis.anticlockwise,
     customId: ANTICLOCKWISE
 });
 const CLOCKWISE = 'clockwise';
-const clockwiseButton = new MessageButton({
-    style: 'SECONDARY',
+const clockwiseButton = new ButtonBuilder({
+    style: ButtonStyle.Secondary,
     label: '90°',
     emoji: emojis.clockwise,
     customId: CLOCKWISE
 });
 const UPSIDE_DOWN = 'upsideDown';
-const upsideDownButton = new MessageButton({
-    style: 'SECONDARY',
+const upsideDownButton = new ButtonBuilder({
+    style: ButtonStyle.Secondary,
     label: '180°',
     customId: UPSIDE_DOWN
 });
 const CUSTOM = 'custom';
-const customButton = new MessageButton({
-    style: 'SECONDARY',
+const customButton = new ButtonBuilder({
+    style: ButtonStyle.Secondary,
     label: 'Custom',
     customId: CUSTOM
 });
@@ -53,7 +52,7 @@ const attachmentEmbedOptions = (attachment) => ({
 const command = {
     data: new ContextMenuCommandBuilder().setName('Rotate Image'),
     async execute(interaction) {
-        if (!(await checkPermissions(interaction, 'ATTACH_FILES')))
+        if (!(await checkPermissions(interaction, ['AttachFiles'])))
             return;
         const { channelId, client, options, user } = interaction;
         const message = options.getMessage('message', true);
@@ -80,7 +79,8 @@ const command = {
                 }
             ],
             components: [
-                new MessageActionRow({
+                {
+                    type: ComponentType.ActionRow,
                     components: [
                         tickButton,
                         index ? backButton : backButtonDisabled,
@@ -89,7 +89,7 @@ const command = {
                             : forwardButtonDisabled,
                         cancelButton
                     ]
-                })
+                }
             ]
         });
         const selectAttachment = async () => {
@@ -155,7 +155,8 @@ const command = {
                     }
                 ],
                 components: [
-                    new MessageActionRow({
+                    {
+                        type: ComponentType.ActionRow,
                         components: [
                             anticlockwiseButton,
                             upsideDownButton,
@@ -163,11 +164,11 @@ const command = {
                             customButton,
                             cancelButton
                         ]
-                    })
+                    }
                 ]
             }, singleAttachment ? 0 : 1);
             switch ((await reply.awaitMessageComponent({
-                componentType: 'BUTTON'
+                componentType: ComponentType.Button
             })).customId) {
                 case ANTICLOCKWISE:
                     return -90;
@@ -216,7 +217,7 @@ const command = {
                     return customAngle;
                 }
                 default:
-                    await deleteMessage(client, channelId, reply.id);
+                    await client.rest.delete(Routes.channelMessage(channelId, reply.id));
             }
         };
         const angle = await getAngle();

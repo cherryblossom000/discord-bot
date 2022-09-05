@@ -1,4 +1,4 @@
-import { inlineCode } from '@discordjs/builders';
+import { ChannelType, inlineCode } from 'discord.js';
 import { handleError } from '../utils.js';
 const listener = client => async (message) => {
     const { author, content, channel } = message;
@@ -10,7 +10,7 @@ const listener = client => async (message) => {
     I use slash commands now — type ${inlineCode('/')} to see my commands.`);
         }
         catch (error) {
-            handleError(client, error, `Responding to mention failed in channel ${channel.id}${channel.type === 'DM'
+            handleError(client, error, `Responding to mention failed in channel ${channel.id}${channel.type === ChannelType.DM
                 ? ''
                 : ` (#${channel.name}) (guild ${channel.guild.id} (${channel.guild.name}))`}.`);
         }

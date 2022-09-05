@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from '@discordjs/builders';
+import { SlashCommandBuilder } from 'discord.js';
 import { checkPermissions, fetchGuild, replyDeletable } from '../../utils.js';
 const command = {
     data: new SlashCommandBuilder()
@@ -6,7 +6,7 @@ const command = {
         .setDescription('Gets the server icon.')
         .setDMPermission(false),
     async execute(interaction) {
-        if (!(await checkPermissions(interaction, 'ATTACH_FILES')))
+        if (!(await checkPermissions(interaction, ['AttachFiles'])))
             return;
         const icon = (await fetchGuild(interaction)).iconURL({ size: 4096 });
         await replyDeletable(interaction, icon === null

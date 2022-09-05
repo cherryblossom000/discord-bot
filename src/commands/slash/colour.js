@@ -1,5 +1,4 @@
-import { bold, inlineCode, SlashCommandBuilder } from '@discordjs/builders';
-import { Constants } from 'discord.js';
+import { Colors, SlashCommandBuilder, bold, inlineCode } from 'discord.js';
 import { fetchValue } from '../../database.js';
 import { checkPermissions, fetchGuild, inObject } from '../../utils.js';
 const SET = 'set';
@@ -10,7 +9,7 @@ const LONG_HEX_RE = /^[\da-f]{6}$/iu;
 const ROLE_RE = /^#[\da-f]{6}$/u;
 const isColourRole = ({ name }) => ROLE_RE.test(name);
 const COLOURS = {
-    ...Constants.Colors,
+    ...Colors,
     DISCORD_DARK_BACKGROUND: 0x36393f
 };
 const VALID_COLOURS = Object.keys(COLOURS)
@@ -55,7 +54,7 @@ const set = async (interaction) => {
             color: colour,
             permissions: 0n,
             position: newPosition === undefined
-                ? guild.me?.roles.highest.position
+                ? guild.members.me?.roles.highest.position
                 : newPosition + 1
         }));
     await removeOldRoles(member);
@@ -88,7 +87,7 @@ const command = {
             });
             return;
         }
-        if (!(await checkPermissions(interaction, 'MANAGE_ROLES')))
+        if (!(await checkPermissions(interaction, ['ManageRoles'])))
             return;
         await (interaction.options.getSubcommand() === SET ? set : remove)(interaction);
     }

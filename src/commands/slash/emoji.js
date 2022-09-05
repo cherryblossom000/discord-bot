@@ -1,5 +1,4 @@
-import { SlashCommandBuilder } from '@discordjs/builders';
-import { Constants } from 'discord.js';
+import { SlashCommandBuilder } from 'discord.js';
 const EMOJI = 'emoji';
 const command = {
     data: new SlashCommandBuilder()
@@ -18,9 +17,7 @@ const command = {
         }
         const [, animated, id] = match;
         await interaction.reply({
-            files: [
-                Constants.Endpoints.CDN(interaction.client.options.http.cdn).Emoji(id, animated ? 'gif' : 'png')
-            ]
+            files: [interaction.client.rest.cdn.emoji(id, animated ? 'gif' : 'png')]
         });
     }
 };

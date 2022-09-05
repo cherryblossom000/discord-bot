@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, bold } from '@discordjs/builders';
+import { EmbedBuilder, SlashCommandBuilder, bold } from 'discord.js';
 import { checkPermissions, request } from '../../utils.js';
 const baseURL = 'https://api.urbandictionary.com/v0/define';
 const QUERY = 'query';
@@ -11,7 +11,7 @@ const command = {
         .setDescription('The word/phrase to define.')
         .setRequired(true)),
     async execute(interaction) {
-        if (!(await checkPermissions(interaction, 'EMBED_LINKS')))
+        if (!(await checkPermissions(interaction, ['EmbedLinks'])))
             return;
         const query = interaction.options.getString(QUERY, true);
         const url = new URL(baseURL);
@@ -24,7 +24,7 @@ const command = {
         const { word, definition, example, permalink, author, thumbs_up, thumbs_down, written_on } = def;
         await interaction.reply({
             embeds: [
-                {
+                new EmbedBuilder({
                     author: { name: author },
                     title: word,
                     url: permalink,
@@ -36,7 +36,7 @@ const command = {
                     ],
                     footer: { text: 'Written on' },
                     timestamp: new Date(written_on)
-                }
+                })
             ]
         });
     }

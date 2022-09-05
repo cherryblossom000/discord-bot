@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from '@discordjs/builders';
+import { SlashCommandBuilder } from 'discord.js';
 import { checkPermissions, request } from '../../utils.js';
 const randomDog = 'https://random.dog/';
 const command = {
@@ -6,7 +6,7 @@ const command = {
         .setName('dog')
         .setDescription('Gets a random image of a dog from random.dog.'),
     async execute(interaction) {
-        if (!(await checkPermissions(interaction, ['ATTACH_FILES', 'EMBED_LINKS'])))
+        if (!(await checkPermissions(interaction, ['AttachFiles', 'EmbedLinks'])))
             return;
         await interaction.reply({
             embeds: [

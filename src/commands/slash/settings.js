@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, bold } from '@discordjs/builders';
+import { SlashCommandBuilder, bold } from 'discord.js';
 import { emojis } from '../../constants.js';
 import { fetchValue, setValue } from '../../database.js';
 import { checkPermissions } from '../../utils.js';
@@ -19,7 +19,7 @@ const colour = async (subcommand, interaction, database) => {
         return;
     }
     const isEnable = subcommand === ENABLE;
-    if (isEnable && !(await checkPermissions(interaction, 'MANAGE_ROLES')))
+    if (isEnable && !(await checkPermissions(interaction, ['ManageRoles'])))
         return;
     await setValue(database, 'guilds', interaction.guildId, 'enableColourRoles', isEnable);
     await interaction.reply(`Successfully ${bold(isEnable ? 'enabled' : 'disabled')} /colour! Noot noot.`);
@@ -30,7 +30,7 @@ const pin = async (subcommand, interaction, database) => {
         return;
     }
     const isEnable = subcommand === ENABLE;
-    if (isEnable && !(await checkPermissions(interaction, 'MANAGE_MESSAGES')))
+    if (isEnable && !(await checkPermissions(interaction, ['ManageMessages'])))
         return;
     await setValue(database, 'guilds', interaction.guildId, 'enablePinning', isEnable);
     await interaction.reply(`Successfully ${bold(isEnable ? 'enabled' : 'disabled')}! Noot noot.`);

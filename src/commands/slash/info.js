@@ -1,5 +1,5 @@
 import { readFile } from 'node:fs/promises';
-import { SlashCommandBuilder, inlineCode } from '@discordjs/builders';
+import { SlashCommandBuilder, inlineCode } from 'discord.js';
 const { version } = JSON.parse(await readFile(new URL('../../../package.json', import.meta.url).pathname, 'utf8'));
 const command = {
     data: new SlashCommandBuilder()

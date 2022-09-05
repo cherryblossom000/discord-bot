@@ -1,17 +1,17 @@
-import { MessageActionRow, MessageButton } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
+import { ButtonBuilder, ButtonStyle, ComponentType, SlashCommandBuilder } from 'discord.js';
 const options = {
     content: 'Here’s my website!',
     components: [
-        new MessageActionRow({
+        {
+            type: ComponentType.ActionRow,
             components: [
-                new MessageButton({
-                    style: 'LINK',
+                new ButtonBuilder({
+                    style: ButtonStyle.Link,
                     label: 'Comrade Pingu Website',
                     url: 'https://comrade-pingu--cherryblossom00.repl.co'
                 })
             ]
-        })
+        }
     ]
 };
 const command = {

@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, hyperlink } from '@discordjs/builders';
+import { SlashCommandBuilder, hyperlink } from 'discord.js';
 import { checkPermissions } from '../../utils.js';
 const IWMELC = 'I will murder every last capitalist';
 const HTKB = 'how to kiss boy';
@@ -17,7 +17,7 @@ const command = {
         .addChoices({ name: IWMELC, value: "iwmelc" }, { name: HTKB, value: "htkb" })),
     usage: `!${hyperlink(IWMELC, './assets/img/iwmelc.jpg')}<br><img src="./assets/img/htkb.jpg" alt="${HTKB}" width="320">`,
     async execute(interaction) {
-        if (!(await checkPermissions(interaction, 'ATTACH_FILES')))
+        if (!(await checkPermissions(interaction, ['AttachFiles'])))
             return;
         await interaction.reply({
             files: [

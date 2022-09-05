@@ -1,8 +1,7 @@
 import { inspect } from 'node:util';
-import { SlashCommandBuilder, codeBlock, inlineCode } from '@discordjs/builders';
-import Discord, { Util } from 'discord.js';
+import Discord, { SlashCommandBuilder, codeBlock, inlineCode } from 'discord.js';
 import { emojis, me } from '../../constants.js';
-import { replyDeletable } from '../../utils.js';
+import { replyDeletable, splitMessage } from '../../utils.js';
 const AsyncFunction = (async () => { })
     .constructor;
 const JAVASCRIPT = 'javascript';
@@ -51,10 +50,10 @@ const command = {
             await interaction.reply({ content: emojis.thumbsUp, ephemeral: true });
             return;
         }
-        for (const [i, text] of Util.splitMessage(['DISCORD_TOKEN', 'DB_USER', 'DB_PASSWORD', 'REPLIT_DB_URL'].reduce((acc, key) => {
+        for (const [i, text] of splitMessage(['DISCORD_TOKEN', 'DB_USER', 'DB_PASSWORD', 'REPLIT_DB_URL'].reduce((acc, key) => {
             const value = process.env[key];
             return value === undefined ? acc : acc.replaceAll(value, `<${key}>`);
-        }, inspect(result)), { maxLength: 1990 }).entries()) {
+        }, inspect(result)), 1990).entries()) {
             await replyDeletable(interaction, {
                 content: codeBlock('js', text),
                 ephemeral

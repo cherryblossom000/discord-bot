@@ -29,7 +29,7 @@ export const addListeners = (client, guild, database, flags) => {
             catch (error) {
                 const owner = await fetchOwner(guild);
                 handleError(client, error, `Rejoin guildMemberAdd failed (member ${member.id}, flags ${flags})`, {
-                    to: (!guild.systemChannelFlags.has('SUPPRESS_JOIN_NOTIFICATIONS') &&
+                    to: (!guild.systemChannelFlags.has('SuppressJoinNotifications') &&
                         guild.systemChannel) ||
                         undefined,
                     response: `Welcome, ${member}! Unfortunately, there was an error trying to ${enabledRoles ? 'assign roles to you' : ''}${enabledAll ? ' and/or ' : ''}${enabledNickname ? 'set your nickname' : ''}.${owner
@@ -47,7 +47,7 @@ ${owner} sorry, but you have to do this yourself.`
             await addMemberRejoinInfo(database, enabledRoles, enabledNickname, member).catch(async (error) => {
                 const owner = await fetchOwner(guild);
                 handleError(client, error, `Rejoin guildMemberRemove failed (member ${member.id}, flags ${flags})`, {
-                    to: (!guild.systemChannelFlags.has('SUPPRESS_JOIN_NOTIFICATIONS') &&
+                    to: (!guild.systemChannelFlags.has('SuppressJoinNotifications') &&
                         guild.systemChannel) ||
                         undefined,
                     response: `${member.displayName} has left the server. Unfortunately, there was an error trying to save their ${enabledRoles ? 'roles' : ''}${enabledAll ? ' and/or ' : ''}${enabledNickname ? 'nickname' : ''}.${owner
@@ -79,9 +79,9 @@ export const set = async (interaction, database, mode) => {
     const flags = rejoinModeToFlags[mode];
     const guild = await fetchGuild(interaction);
     if (!(await checkPermissions(interaction, [
-        ...(flags & 1 ? ['MANAGE_ROLES'] : []),
+        ...(flags & 1 ? ['ManageRoles'] : []),
         ...(flags & 2
-            ? ['MANAGE_NICKNAMES']
+            ? ['ManageNicknames']
             : [])
     ])))
         return;

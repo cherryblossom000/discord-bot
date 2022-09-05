@@ -1,10 +1,9 @@
+import { PermissionFlagsBits } from 'discord.js';
 export const dev = process.env.NODE_ENV !== 'production';
-export const permissions = [
-    'VIEW_CHANNEL',
-    'SEND_MESSAGES',
-    'EMBED_LINKS',
-    'ATTACH_FILES'
-];
+export const permissions = PermissionFlagsBits.ViewChannel |
+    PermissionFlagsBits.SendMessages |
+    PermissionFlagsBits.EmbedLinks |
+    PermissionFlagsBits.AttachFiles;
 export const me = '506054261717598210';
 export const emojis = {
     left: '⬅',

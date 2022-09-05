@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, hyperlink, inlineCode } from '@discordjs/builders';
+import { SlashCommandBuilder, hyperlink, inlineCode } from 'discord.js';
 import { fetchTimeZone, setValue } from '../../database.js';
 const TIMEZONE = 'timezone';
 const command = {
