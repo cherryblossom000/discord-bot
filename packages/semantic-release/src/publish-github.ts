@@ -48,7 +48,6 @@ const publishGithub: PublishPlugin = async (pluginConfig, context) => {
 
 	debug('release object: %O', release)
 
-	// eslint-disable-next-line @typescript-eslint/prefer-optional-chain -- asserts assets isn't undefined
 	if (!assets || !assets.length) {
 		const {
 			data: {html_url: url, id: releaseId}
