@@ -1,0 +1,1 @@
+run = "pnpm install && pnpx node src/server"
