@@ -1,1 +1,1 @@
-run = "pnpm install && node src/server"
+run = "pnpm install && pnpx node src/server"

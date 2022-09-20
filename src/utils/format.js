@@ -6,12 +6,12 @@ export const pascalToStartCase = (string) => string.split(/(?=[A-Z\d])/u).join('
 export const splitMessage = (string, max = 2000) => {
     const go = (lines, acc = [], length = 0) => {
         if (!lines.length)
-            return [];
+            return [acc.join('\n')];
         const [head, ...tail] = lines;
         const newLength = length + head.length + 1;
         return newLength > max
-            ? [acc.join('\n'), ...go(tail)]
-            : go(lines, [...acc, head], newLength);
+            ? [acc.join('\n'), ...go(tail, [head], head.length)]
+            : go(tail, [...acc, head], newLength);
     };
     return go(string.split('\n'));
 };
