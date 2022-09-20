@@ -16,12 +16,12 @@ export const splitMessage = (string: string, max = 2000): string[] => {
 		acc: readonly string[] = [],
 		length = 0
 	): string[] => {
-		if (!lines.length) return []
+		if (!lines.length) return [acc.join('\n')]
 		const [head, ...tail] = lines as readonly [string, ...string[]]
 		const newLength = length + head.length + 1
 		return newLength > max
-			? [acc.join('\n'), ...go(tail)]
-			: go(lines, [...acc, head], newLength)
+			? [acc.join('\n'), ...go(tail, [head], head.length)]
+			: go(tail, [...acc, head], newLength)
 	}
 	return go(string.split('\n'))
 }
