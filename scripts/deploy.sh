@@ -20,11 +20,11 @@ node packages/scripts/dist/update-package
 	deps = [
 		pkgs.nodejs-slim-16_x
 		(pkgs.nodePackages_latest.pnpm.override {
-			postInstall = ''
+			postInstall = '"''"'
 				mkdir -p $out/bin
 				ln -s $out/lib/node_modules/pnpm/bin/pnpm.cjs $out/bin/pnpm
 				ln -s $out/lib/node_modules/pnpm/bin/pnpx.cjs $out/bin/pnpx
-			'';
+			'"''"';
 		})
 	];
 }' > replit.nix
