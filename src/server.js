@@ -44,7 +44,8 @@ const client = new Client({
         'GuildPresences',
         'GuildMessages',
         'DirectMessages',
-        'DirectMessageReactions'
+        'DirectMessageReactions',
+        'MessageContent'
     ]
 });
 if (dev) {
