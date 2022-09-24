@@ -71,7 +71,9 @@ const client = new Client({
 		// DM commands
 		'DirectMessages',
 		// DM reactions
-		'DirectMessageReactions'
+		'DirectMessageReactions',
+		// Noot noot etc.
+		'MessageContent'
 	]
 })
 
