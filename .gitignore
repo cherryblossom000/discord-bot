@@ -1,3 +1,4 @@
+.terraform/
 .turbo/
 dist/
 node_modules/
@@ -6,7 +7,8 @@ node_modules/
 .eslintcache
 .env
 .pnpm-debug.log
+*.tfstate.backup
 *.tsbuildinfo
 
-db/
+/db/
 *.mongodb

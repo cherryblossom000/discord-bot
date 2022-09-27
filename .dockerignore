@@ -1,0 +1,10 @@
+*
+!.npmrc
+!LICENSE
+!tsconfig.settings.json
+!package.json
+!pnpm-lock.yaml
+!pnpm-workspace.yaml
+!packages
+**/.eslintrc*
+**/tests

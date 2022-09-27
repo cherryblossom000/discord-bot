@@ -1,11 +1,11 @@
-#!/usr/bin/env bash
-set -xeuo pipefail
+#!/usr/bin/env sh
+set -xeu
 
 # Copy assets
 (
   cd dist
   mkdir -p assets
-  trash assets/img
+  rm -rf assets/img
   cp -r ../assets/img assets/img
 )
 
