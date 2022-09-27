@@ -275,7 +275,8 @@ export const replyAndFetch: {
 } = async (
 	interaction: CommandInteraction,
 	options: Omit<
-		InteractionReplyOptions | WebhookEditMessageOptions,
+		// TODO: investigate/fix why InteractionReplyOptions['content'] can't be null but WebhookEditMessageOptions['content'] can
+		{content?: string} & (InteractionReplyOptions | WebhookEditMessageOptions),
 		'fetchReply'
 	>,
 	mode = ReplyMode.REPLY
@@ -309,7 +310,7 @@ export const checkPermissions = async (
 	const {client, guildId} = interaction
 	const channel = await fetchChannel(interaction)
 
-	const channelPermissions = channel.permissionsFor(client.user!)
+	const channelPermissions = channel.permissionsFor(client.user)
 	if (channelPermissions?.has(permissions) !== true) {
 		const neededPermissions = permissions.filter(
 			p => channelPermissions?.has(p) === true

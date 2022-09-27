@@ -35,13 +35,13 @@
 		"@comrade-pingu/semantic-release": "workspace:^1.2.0",
 		"@semantic-release/changelog": "^6.0.1",
 		"@semantic-release/git": "^10.0.1",
-		"@types/node": "~16.11.59",
-		"@typescript-eslint/eslint-plugin": "^5.38.0",
-		"@typescript-eslint/parser": "^5.38.0",
+		"@types/node": "~16.11.62",
+		"@typescript-eslint/eslint-plugin": "^5.38.1",
+		"@typescript-eslint/parser": "^5.38.1",
 		"commitizen": "^4.2.5",
 		"commitlint": "^17.1.2",
 		"cz-conventional-changelog": "^3.3.0",
-		"eslint": "^8.23.1",
+		"eslint": "^8.24.0",
 		"eslint-import-resolver-typescript": "^3.5.1",
 		"eslint-plugin-eslint-comments": "^3.2.0",
 		"eslint-plugin-import": "^2.26.0",
@@ -57,7 +57,7 @@
 		"purgecss": "^5.0.0",
 		"semantic-release": "^19.0.5",
 		"trash-cli": "^5.0.0",
-		"turbo": "^1.4.7",
+		"turbo": "^1.5.3",
 		"typescript": "~4.8.3"
 	}
 }

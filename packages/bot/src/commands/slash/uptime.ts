@@ -7,7 +7,7 @@ const command: AnySlashCommand = {
 		.setName('uptime')
 		.setDescription('Gets my uptime.'),
 	async execute(interaction) {
-		await interaction.reply(`Uptime: ${ms(interaction.client.uptime!)}`)
+		await interaction.reply(`Uptime: ${ms(interaction.client.uptime)}`)
 	}
 }
 export default command
