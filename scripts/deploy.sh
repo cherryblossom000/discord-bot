@@ -5,15 +5,15 @@ shopt -s globstar
 # Register commands
 pnpm register-commands
 
-# Update package.json (could have changed due to semantic-release) and remove
-# devDependencies so they aren't installed on Repl.it
+# Update package.json (could have changed due to semantic-release) and adds
+# node@16.17 as a dependency
 node packages/scripts/dist/update-package
 
 (
 	cd packages/bot/dist
 
 	# Add .replit
-	echo 'run = "pnpm install && pnpx node src/server"' > .replit
+	echo 'run = "pnpm install -P && pnpx node src/server"' > .replit
 
 	# Add replit.nix
 	echo '{ pkgs }: {

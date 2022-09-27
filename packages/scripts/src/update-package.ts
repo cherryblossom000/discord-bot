@@ -10,7 +10,6 @@ const package_ = JSON.parse(
 ) as PackageJson
 // Repl.it only has v16.7 which doesn't have Object.hasOwn which discord.js needs
 package_.dependencies!.node = '^16.17.0'
-delete package_.devDependencies
 await writeFile(
 	new URL('package.json', botDistFolder),
 	`${JSON.stringify(package_, null, 2)}\n`
