@@ -188,7 +188,7 @@ jobs:
       env:
         TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN_app_terraform_io }}
     - name: Apply Terraform
-      run: terraform apply -auto-approve -input=false
+      run: terraform apply -auto-approve -input=false "-var=sha=${GITHUB_SHA:0:7}"
       env:
         KOYEB_TOKEN: ${{ secrets.KOYEB_TOKEN }}
         TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN_app_terraform_io }}

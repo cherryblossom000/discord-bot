@@ -20,6 +20,11 @@ locals {
 	port     = 3000
 }
 
+variable "sha" {
+	type     = string
+	nullable = false
+}
+
 resource "koyeb_app" "comrade-pingu" {
 	name = local.app_name
 }
@@ -29,7 +34,7 @@ resource "koyeb_service" "discord-bot" {
 	definition {
 		name = "discord-bot"
 		docker {
-			image                = "ghcr.io/cherryblossom000/${local.app_name}"
+			image                = "ghcr.io/cherryblossom000/${local.app_name}:sha-${var.sha}"
 			image_registy_secret = "github-package-read"
 			# https://github.com/koyeb/terraform-provider-koyeb/issues/24
 			# args                 = ["port=${local.port}"]
@@ -61,6 +66,10 @@ resource "koyeb_service" "discord-bot" {
 		env {
 			key    = "DISCORD_TOKEN"
 			secret = "${local.app_name}-discord-token"
+		}
+		env {
+			key    = "DB_NAME"
+			secret = "${local.app_name}-db-name"
 		}
 		env {
 			key    = "DB_USER"
