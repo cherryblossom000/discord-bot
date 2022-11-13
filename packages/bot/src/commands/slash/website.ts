@@ -1,3 +1,4 @@
+import {readFile} from 'node:fs/promises'
 import {
 	ButtonBuilder,
 	ButtonStyle,
@@ -5,7 +6,15 @@ import {
 	SlashCommandBuilder,
 	type InteractionReplyOptions
 } from 'discord.js'
+import type {PackageJson} from 'type-fest'
 import type {AnySlashCommand} from '../../types'
+
+const {homepage} = JSON.parse(
+	await readFile(
+		new URL('../../../package.json', import.meta.url).pathname,
+		'utf8'
+	)
+) as PackageJson
 
 const options: InteractionReplyOptions = {
 	content: 'Here’s my website!',
@@ -16,7 +25,7 @@ const options: InteractionReplyOptions = {
 				new ButtonBuilder({
 					style: ButtonStyle.Link,
 					label: 'Comrade Pingu Website',
-					url: 'https://comrade-pingu--cherryblossom00.repl.co'
+					url: homepage
 				})
 			]
 		}

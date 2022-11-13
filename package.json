@@ -10,7 +10,7 @@
 		"packages/eslint-plugin",
 		"packages/semantic-release"
 	],
-	"homepage": "https://comrade-pingu--cherryblossom00.repl.co",
+	"homepage": "https://comrade-pingu-cherryblossom.koyeb.app",
 	"repository": "github:cherryblossom000/comrade-pingu",
 	"engines": {
 		"node": ">=16.6"
