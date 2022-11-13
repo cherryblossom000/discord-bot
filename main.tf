@@ -2,7 +2,7 @@ terraform {
 	required_providers {
 		koyeb = {
 			source  = "koyeb/koyeb"
-			version = "~> 0.1.0"
+			version = "~> 0.1.1"
 		}
 	}
 	cloud {
@@ -34,10 +34,9 @@ resource "koyeb_service" "discord-bot" {
 	definition {
 		name = "discord-bot"
 		docker {
-			image                = "ghcr.io/cherryblossom000/${local.app_name}:sha-${var.sha}"
-			image_registy_secret = "github-package-read"
-			# https://github.com/koyeb/terraform-provider-koyeb/issues/24
-			# args                 = ["port=${local.port}"]
+			image                 = "ghcr.io/cherryblossom000/${local.app_name}:sha-${var.sha}"
+			image_registry_secret = "github-package-read"
+			args                  = ["port=${local.port}"]
 		}
 		instance_types {
 			type = "nano"
