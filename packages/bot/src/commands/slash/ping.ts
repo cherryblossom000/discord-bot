@@ -6,9 +6,9 @@ const command: AnySlashCommand = {
 		.setName('ping')
 		.setDescription('Gets my current latency.'),
 	async execute(interaction) {
-		await interaction.reply('Pinging…')
+		const responseInteraction = await interaction.reply('Pinging…')
 		await interaction.editReply(`Noot noot!
-Latency: ${Date.now() - interaction.createdTimestamp} ms
+Latency: ${Date.now() - responseInteraction.interaction.createdTimestamp} ms
 Websocket: ${interaction.client.ws.ping} ms`)
 	}
 }
