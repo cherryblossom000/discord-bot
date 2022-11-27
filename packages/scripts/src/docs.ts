@@ -2,8 +2,7 @@ import fs, {mkdir, writeFile} from 'node:fs/promises'
 import {
 	ApplicationCommandOptionType,
 	inlineCode,
-	type APIApplicationCommandSubcommandOption,
-	type RESTPostAPIChatInputApplicationCommandsJSONBody
+	type APIApplicationCommandSubcommandOption
 } from 'discord.js'
 import MarkdownIt from 'markdown-it'
 import {markdownTable} from 'markdown-table'
@@ -78,8 +77,7 @@ const docs = [
 	...slashCommands
 		.filter(({hidden = false}) => !hidden)
 		.map(({data, usage}) => {
-			const command =
-				data.toJSON() as RESTPostAPIChatInputApplicationCommandsJSONBody
+			const command = data.toJSON()
 			const {name, description} = command
 			return [inlineCode(name), description, formatCommand(command, usage)]
 		})
@@ -141,7 +139,7 @@ await Promise.all([
 		'Kill all the capitalist scum!',
 		'',
 		newReadme
-			.replace(/\.\/assets\/img/gu, '')
+			.replaceAll('./assets/img', '')
 			.replace('LICENSE', 'license')
 			.replace('CHANGELOG.md', 'changelog')
 	),

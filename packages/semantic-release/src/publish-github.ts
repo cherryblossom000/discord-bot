@@ -48,6 +48,7 @@ const publishGithub: PublishPlugin = async (pluginConfig, context) => {
 
 	debug('release object: %O', release)
 
+	// eslint-disable-next-line @typescript-eslint/prefer-optional-chain -- better type for assets later
 	if (!assets || !assets.length) {
 		const {
 			data: {html_url: url, id: releaseId}

@@ -122,7 +122,10 @@ const play = async (
 		const correctAnswer = format(question.correctAnswer)
 		if (dev) await interaction.followUp(correctAnswer)
 
-		const collector = message.createMessageComponentCollector({time: 15_000})
+		const collector =
+			message.createMessageComponentCollector<ComponentType.Button>({
+				time: 15_000
+			})
 		collector
 			.on('collect', async buttonInteraction => {
 				try {
@@ -363,7 +366,8 @@ const leaderboard = async (
 	const embedMessage = await replyAndFetch(interaction, await messageOptions(0))
 	if (canFitOnOnePage) return
 
-	const collector = embedMessage.createMessageComponentCollector()
+	const collector =
+		embedMessage.createMessageComponentCollector<ComponentType.Button>()
 
 	let currentIndex = 0
 	collector.on('collect', async buttonInteraction => {

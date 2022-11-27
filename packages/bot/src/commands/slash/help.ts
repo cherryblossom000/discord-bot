@@ -6,8 +6,7 @@ import {
 	type APIApplicationCommandSubcommandOption,
 	type APIApplicationCommandSubcommandGroupOption,
 	type APIEmbed,
-	type APIEmbedField,
-	type RESTPostAPIChatInputApplicationCommandsJSONBody
+	type APIEmbedField
 } from 'discord.js'
 import {
 	commandFiles,
@@ -98,8 +97,7 @@ You can send ${inlineCode(
 
 		// Specific command
 		const {data, usage} = slashCommands.get(commandName)!
-		// TODO: fix @discordjs/builders types
-		const cmd = data.toJSON() as RESTPostAPIChatInputApplicationCommandsJSONBody
+		const cmd = data.toJSON()
 		const {name, description, options} = cmd
 		const embeds: APIEmbed[] =
 			options?.[0]?.type === ApplicationCommandOptionType.SubcommandGroup

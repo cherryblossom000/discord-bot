@@ -35,7 +35,7 @@ const adjLast = `(?:${nouns} ${alternate(copulas)}?(?: (?:${alternate(
 const adjFirst = `(${bad} ${nouns})`
 // bad pingu | pingu (is) (a) (very) (bad | not (very) good)
 const regex = new RegExp(
-	alternateS(adjLast, adjFirst).replace(/\s+/gu, '\\s*'),
+	alternateS(adjLast, adjFirst).replaceAll(/\s+/gu, '\\s*'),
 	'ui'
 )
 

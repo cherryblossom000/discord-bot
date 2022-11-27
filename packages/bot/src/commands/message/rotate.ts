@@ -139,9 +139,10 @@ const command: AnyMessageContextMenuCommand = {
 
 		const selectAttachment = async (): Promise<Attachment | undefined> => {
 			const embedMessage = await replyAndFetch(interaction, messageOptions(0))
-			const collector = embedMessage.createMessageComponentCollector({
-				time: timeout
-			})
+			const collector =
+				embedMessage.createMessageComponentCollector<ComponentType.Button>({
+					time: timeout
+				})
 
 			let currentIndex = 0
 			const collected = await new Promise<Attachment | string | undefined>(

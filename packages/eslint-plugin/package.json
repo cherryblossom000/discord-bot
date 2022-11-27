@@ -20,14 +20,14 @@
 		"watch": "dum build -- -w"
 	},
 	"dependencies": {
-		"@typescript-eslint/experimental-utils": "^5.38.1",
-		"tslib": "^2.4.0"
+		"@typescript-eslint/experimental-utils": "^5.44.0",
+		"tslib": "^2.4.1"
 	},
 	"peerDependencies": {
 		"@typescript-eslint/parser": "^5"
 	},
 	"devDependencies": {
-		"@types/eslint": "^8.4.6",
+		"@types/eslint": "^8.4.10",
 		"eslint-plugin-eslint-plugin": "^5.0.6"
 	}
 }

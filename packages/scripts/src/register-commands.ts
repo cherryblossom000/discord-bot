@@ -21,10 +21,7 @@ const contextMenuCommandToJSON =
 	({
 		data
 	}: ContextMenuCommand): RESTPostAPIContextMenuApplicationCommandsJSONBody =>
-		// TODO: fix types
-		data
-			.setType(type)
-			.toJSON() as RESTPostAPIContextMenuApplicationCommandsJSONBody
+		data.setType(type).toJSON()
 
 const body: RESTPutAPIApplicationCommandsJSONBody = [
 	...slashCommands.map(({data}) => data.toJSON()),

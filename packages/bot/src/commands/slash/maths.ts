@@ -30,21 +30,19 @@ const command: AnySlashCommand = {
 		if (!(await checkPermissions(interaction, ['AttachFiles']))) return
 
 		const input = interaction.options.getString(LATEX, true)
-		if (!mathJax) {
-			// eslint-disable-next-line require-atomic-updates -- not a race condition
-			mathJax = await (
-				await import('mathjax')
-			).init({
-				loader: {
-					load: ['input/tex-base', '[tex]/ams', 'output/svg'],
-					failed: (error): void =>
-						handleError(interaction.client, error, 'MathJax loader error')
-				},
-				startup: {typeset: false},
-				tex: {packages: {'[+]': ['ams']}},
-				svg: {internalSpeechTitles: false}
-			})
-		}
+		// eslint-disable-next-line require-atomic-updates -- not a race condition
+		mathJax ??= await (
+			await import('mathjax')
+		).init({
+			loader: {
+				load: ['input/tex-base', '[tex]/ams', 'output/svg'],
+				failed: (error): void =>
+					handleError(interaction.client, error, 'MathJax loader error')
+			},
+			startup: {typeset: false},
+			tex: {packages: {'[+]': ['ams']}},
+			svg: {internalSpeechTitles: false}
+		})
 
 		const [svg] = mathJax.tex2svg(input).children as [LiteElement]
 		const [g] = (svg.children[1] as LiteElement).children as [LiteElement]

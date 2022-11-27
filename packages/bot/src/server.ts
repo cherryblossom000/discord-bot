@@ -27,7 +27,7 @@ const assetsFolder = new URL('../assets/', import.meta.url)
 const app = new Koa()
 app
 	.use(async (ctx, next) => {
-		const cleanedPath = ctx.path.replace(/^\/|\/$/gu, '')
+		const cleanedPath = ctx.path.replaceAll(/^\/|\/$/gu, '')
 		let redirected: string
 		switch (cleanedPath) {
 			case 'index':

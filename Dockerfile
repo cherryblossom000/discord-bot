@@ -3,7 +3,8 @@
 FROM node:16-alpine AS workspace
 WORKDIR /app
 
-RUN apk --no-cache add curl
+# https://github.com/vercel/turbo/issues/2198#issuecomment-1277664591
+RUN apk --no-cache add curl libc6-compat
 RUN curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm
 
 # https://pnpm.io/cli/fetch
